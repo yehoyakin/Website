@@ -98,8 +98,6 @@ scenes:
     align: "center"
   - image: "images/blog/music1/image (14).webp"
     align: "center"    
-  - image: "images/blog/music1/image (15).webp"
-    align: "center"   
 
 videos:
   - src: "https://www.youtube.com/watch?v=TFsTz02Eavo"

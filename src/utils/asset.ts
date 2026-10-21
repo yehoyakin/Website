@@ -1,5 +1,5 @@
 export const asset = (path: string) =>
-  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
+  `${import.meta.env.BASE_URL}${encodeURI(path.replace(/^\/+/, ""))}`;
 
 /**
  * True for absolute URLs (https:, protocol-relative //, data:, blob:) that must

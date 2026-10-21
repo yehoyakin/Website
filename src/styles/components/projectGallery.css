@@ -241,7 +241,7 @@
   max-width: clamp(260px, 40vw, 480px);
 }
 
-.thumb-links :global(.retro-link) {
+.thumb-links .retro-link {
   font-size: 0.75rem !important;
   padding: 0.3rem 0.6rem !important;
   border-radius: 0 !important;
@@ -250,7 +250,7 @@
   letter-spacing: 0.1em !important;
 }
 
-.thumb-links :global(.retro-link:hover) {
+.thumb-links .retro-link:hover {
   transform: none !important;
   box-shadow: none !important;
 }
@@ -439,7 +439,7 @@
     gap: 0.3rem;
   }
 
-  .thumb-links :global(.retro-link) {
+  .thumb-links .retro-link {
     font-size: 0.65rem !important;
     padding: 0.25rem 0.5rem !important;
   }
