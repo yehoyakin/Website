@@ -1,0 +1,40 @@
+---
+// Purpose: Component - src/components/shared/Icon.astro (Pixel icon by name)
+//
+// Usage: <Icon name="Handbag" /> resolves public/images/genIcons/Handbag.png.
+// Unknown names render nothing instead of a broken image.
+import { iconPath } from "../../config/icons";
+import { asset } from "../../utils/asset";
+
+interface Props {
+  name: string;
+  class?: string;
+  alt?: string;
+}
+
+const { name, class: extraClass = "h-5 w-5", alt = "" } = Astro.props as Props;
+
+const src = iconPath(name);
+
+const classes = [
+  "inline-block shrink-0 object-contain [image-rendering:pixelated]",
+  extraClass,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{
+  src && (
+    <img
+      src={asset(src)}
+      alt={alt}
+      aria-hidden={alt ? undefined : "true"}
+      width="120"
+      height="120"
+      loading="lazy"
+      decoding="async"
+      class={classes}
+    />
+  )
+}

@@ -1,0 +1,57 @@
+---
+// Purpose: Section - src/components/sections/ContactPanel.astro (Top-right contact quicklinks)
+import SocialLink from "../shared/Link.astro";
+
+const links = [
+  { href: "mailto:joaquinignacio.herrerabriones@email.com", text: "Email", external: false },
+  { href: "https://github.com/yehoyakin", text: "GitHub", external: true },
+  { href: "https://gitlab.com/yehoyakin", text: "GitLab", external: true },
+  { href: "https://www.linkedin.com/in/joaquín-herrera-366b2a175", text: "LinkedIn", external: true}
+];
+---
+
+{/* Hover / tap floating tab. Behaviour lives in scripts/socialsHook.js. */}
+<div
+  id="socials-container"
+  class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-2.75rem)] [&.socials-open]:translate-x-0"
+>
+  {/* The clickable/hoverable chainlink tab handle */}
+  <button
+    id="socials-toggle"
+    class="bg-black text-white p-3 rounded-none shadow-lg cursor-pointer select-none border border-r-0 border-white/20 group-[.socials-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
+    aria-label="Toggle Social Links"
+    type="button"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-6 h-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 11-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+      ></path>
+    </svg>
+  </button>
+
+  <div
+    id="socials-panel"
+    class="bg-zinc-900/95 backdrop-blur-md p-6 rounded-none border border-white/10 shadow-2xl w-64 max-h-[70vh] overflow-y-auto"
+  >
+    <div class="space-y-3">
+      {
+        links.map((link) => (
+          <SocialLink
+            href={link.href}
+            text={link.text}
+            external={link.external}
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>

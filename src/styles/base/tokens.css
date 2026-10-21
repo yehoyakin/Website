@@ -1,0 +1,83 @@
+/* Purpose: Styles - src/styles/base/tokens.css (Design tokens: colors, spacing, sizes)
+   
+   THEME SYSTEM:
+   Add any new theme here with the --theme-{name} convention.
+   Then reference it in any .md file with theme: "{name}".
+   No other files need to change.
+
+   Examples:
+     --theme-primary: rgb(236, 251, 32);
+     --theme-forest: rgb(34, 197, 94);
+     --theme-sunset: rgb(251, 146, 60);
+*/
+
+:root {
+  /* ── Theme colors — add new themes here ── */
+  --theme-primary: rgb(255, 155, 105);
+  --theme-secondary: rgb(163, 101, 255);
+  --theme-terminal: rgb(255, 227, 117);
+  --theme-forest: rgb(215, 255, 96);
+  --theme-sunset: rgb(248, 98, 190);
+  --theme-ocean: rgb(0, 123, 255);
+  --theme-forest2: rgb(69, 254, 143);
+
+  
+  /* UI neutrals */
+  --ui-base: rgb(228 228 231);
+  --ui-muted: rgb(161 161 170);
+  --ui-invert: rgb(255 255 255);
+
+  /* Project tag / accent color system
+     - --project-tag-color: per-component or per-page token to choose the base hue
+     - --accent-bold: tag color mixed with 10% white (90% tag + 10% white)
+     - --accent-italic: tag color mixed with 15% white (85% tag + 15% white)
+  */
+  --project-tag-color: var(--theme-primary);
+  /* Provide safe fallbacks for browsers without `color-mix()` support: default to the raw tag color. */
+  --accent-bold: var(--project-tag-color);
+  --accent-italic: var(--project-tag-color);
+
+  /* If the user agent supports `color-mix()`, override the accents with softer mixes. */
+  @supports (color: color-mix(in srgb, red 10%, white)) {
+    :root {
+      --accent-bold: color-mix(
+        in srgb,
+        var(--project-tag-color, white) 90%,
+        white 10%
+      );
+      --accent-italic: color-mix(
+        in srgb,
+        var(--project-tag-color, white) 85%,
+        white 15%
+      );
+    }
+  }
+  /* Contribution font sizing (centralized) */
+  --contribution-font-size: 1rem;
+  --contribution-heading-size: 0.95rem;
+  --contribution-badge-font-size: 0.78rem;
+
+  /* ── Motion ──
+     One set of curves and durations for every hover / reveal transition, so
+     things move at the same tempo site-wide.
+
+     Why not the CSS `ease` keyword: it barely leaves the start of the curve and
+     then snaps at the end, which makes short transitions (a 6px card lift, a
+     colour swap) read as jumpy. These curves leave quickly and settle slowly,
+     which is what reads as "smooth".
+
+       --ease-settle  movement that arrives and stops: lifts, zooms, reveals
+       --ease-soft    symmetrical in-out: fades, colour and background changes
+       --ease-press   snappy in, for tap / press feedback
+
+     Stepped easings (`steps(4)`) are intentional in this project — the pixel
+     themes use them for retro colour flips. Leave those alone. */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-press: cubic-bezier(0.3, 0, 0.2, 1);
+
+  --duration-press: 120ms;
+  --duration-fast: 180ms;
+  --duration-base: 240ms;
+  --duration-slow: 360ms;
+}

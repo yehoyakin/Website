@@ -1,0 +1,775 @@
+---
+// Purpose: Page - src/pages/blog/[slug].astro (Blog post template)
+
+import MyLayout from "../../layouts/MyLayout.astro";
+
+import BackLink from "../../components/shared/BackLink.astro";
+
+import BlogBackgrounds from "../../components/Blog/BlogBackgrounds.astro";
+
+import BlogHeader from "../../components/Blog/BlogHeader.astro";
+
+import BlogContent from "../../components/Blog/BlogContent.astro";
+
+import BlogSidebar from "../../components/Blog/BlogSidebar.astro";
+
+import { getCollection } from "astro:content";
+
+import { asset, isRemoteUrl } from "../../utils/asset";
+
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
+  return posts.map((post) => ({
+    params: { slug: post.id },
+  }));
+}
+
+const slug = Astro.params.slug;
+
+const posts = await getCollection("blog");
+
+const post = posts.find((entry) => entry.id === slug);
+
+if (!post) {
+  throw new Response("Post not found", { status: 404 });
+}
+
+const cards = post.data.cards ?? [];
+
+/* ---------------------------------------------------------
+ * Normalize content scenes through asset()
+ * --------------------------------------------------------- */
+
+const scenes = Array.isArray(post.data.scenes)
+  ? post.data.scenes.map((s) => ({
+      image: asset(s.image),
+      align: s.align ?? "center",
+    }))
+  : [];
+
+/* ---------------------------------------------------------
+ * Normalize content videos through asset()
+ * Remote links (YouTube, Vimeo, hosted files) are kept as-is;
+ * everything else is treated as a path inside public/.
+ * --------------------------------------------------------- */
+
+const resolveMedia = (path: string) => (isRemoteUrl(path) ? path : asset(path));
+
+const videos = Array.isArray(post.data.videos)
+  ? post.data.videos.map((v) => ({
+      src: resolveMedia(v.src),
+      poster: v.poster ? resolveMedia(v.poster) : undefined,
+      align: v.align ?? "center",
+      size: v.size ?? "auto",
+      caption: v.caption,
+      title: v.title,
+      type: v.type ?? "auto",
+    }))
+  : [];
+
+/* ---------------------------------------------------------
+ * Normalize backgrounds through asset()
+ * --------------------------------------------------------- */
+
+const rawBackgrounds = post.data.backgrounds ?? [];
+
+const backgrounds = Array.isArray(rawBackgrounds)
+  ? rawBackgrounds.map((b) => ({
+      image: asset(b.image),
+    }))
+  : [];
+
+/* ---------------------------------------------------------
+ * Replace [background[x]] markers in rendered body HTML
+ * with invisible runtime anchors.
+ * --------------------------------------------------------- */
+
+const backgroundMarkerRe = /\[background\[(\d+)\]\]/g;
+
+const bodyHtml = (post.rendered?.html ?? "").replace(
+  backgroundMarkerRe,
+  (_match, indexStr: string) => {
+    const index = Number.parseInt(indexStr, 10);
+
+    if (!Number.isInteger(index) || index < 0 || index >= backgrounds.length) {
+      return "";
+    }
+
+    return `<span class="bg-marker" data-bg-index="${index}"></span>`;
+  },
+);
+
+/* ---------------------------------------------------------
+ * Hero / background settings
+ * --------------------------------------------------------- */
+
+const heroImage = post.data.background ? asset(post.data.background) : "";
+
+const backgroundBlur = post.data.backgroundBlur ?? 0;
+
+const backgroundOpacity = post.data.backgroundOpacity ?? 1;
+
+const backgroundParallax = post.data.backgroundParallax ?? 0.2;
+
+/* ---------------------------------------------------------
+ * Theme resolution
+ * --------------------------------------------------------- */
+
+const themeName = toThemeName(post.data.theme);
+
+const postDynamicToken = resolveThemeToken(themeName);
+
+/* ---------------------------------------------------------
+ * Base URL
+ * --------------------------------------------------------- */
+
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+/* ---------------------------------------------------------
+ * Preload hero + article backgrounds
+ * --------------------------------------------------------- */
+
+const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
+  Boolean,
+);
+---
+
+<MyLayout
+  title={post.data.title}
+  theme={themeName}
+  preloadImages={imagesToPreload}
+>
+  <!-- -----------------------------------------------------
+       BACK LINK
+       ----------------------------------------------------- -->
+
+  <div class="relative z-30">
+    <BackLink href={`${baseUrl}blog/`} text="← Back to blog" />
+  </div>
+
+  <!-- -----------------------------------------------------
+       BLOG CONTENT
+       ----------------------------------------------------- -->
+
+  <section
+    id="blog-article-section"
+    class="relative py-12 md:py-16 px-4 max-w-4xl mx-auto w-full"
+    style={`--project-tag-color: ${postDynamicToken}`}
+  >
+    <!-- Background rendering layer -->
+
+    <BlogBackgrounds
+      backgrounds={backgrounds}
+      heroImage={heroImage}
+      backgroundBlur={backgroundBlur}
+      backgroundOpacity={backgroundOpacity}
+    />
+
+    <!-- Article -->
+
+    <div class="mt-12 w-full min-w-0">
+      <div class="flex flex-col gap-6 sm:gap-8 w-full min-w-0">
+        <BlogHeader
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.date}
+          theme={themeName}
+        />
+
+        <BlogContent bodyHtml={bodyHtml} scenes={scenes} videos={videos} />
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------
+         End-of-article sentinel
+         --------------------------------------------------- -->
+
+    <div id="blog-end-sentinel" class="w-full h-1"></div>
+  </section>
+
+  <!-- -----------------------------------------------------
+       THAT'S ALL MESSAGE
+       ----------------------------------------------------- -->
+
+  <div id="thats-all-msg" class="thats-all-overlay">
+    <span class="thats-all-text"> That's all for today folks! </span>
+  </div>
+
+  <!-- -----------------------------------------------------
+       FLOATING SIDEBAR
+       ----------------------------------------------------- -->
+
+  <div
+    id="sidebar-container"
+    class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-2.75rem)] [&.sidebar-open]:translate-x-0"
+  >
+    <button
+      id="sidebar-toggle"
+      class="bg-black text-white p-3 rounded-none shadow-lg cursor-pointer select-none border border-r-0 border-white/20 group-[.sidebar-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
+      aria-label="Toggle Sidebar"
+      type="button"
+    >
+      <!-- Chainlink Icon -->
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        class="w-5 h-5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
+        ></path>
+      </svg>
+    </button>
+
+    <!-- Sidebar content -->
+
+    <div id="sidebar-panel" class="w-80 max-h-[70vh] overflow-y-auto">
+      <BlogSidebar cards={cards} />
+    </div>
+  </div>
+
+  <!-- The overlay's styles live in styles/components/thatsAll.css -->
+
+  <!-- -----------------------------------------------------
+       BLOG PAGE CONTROLLERS
+       -----------------------------------------------------
+
+       IMPORTANT:
+
+       data-astro-rerun makes this script execute again when
+       Astro performs a client-side navigation.
+
+       Before creating the new controller we destroy the
+       previous page's controller.
+
+       This prevents old blog pages from leaving scroll,
+       resize, sidebar, or IntersectionObserver listeners
+       behind.
+       ----------------------------------------------------- -->
+
+  <script
+    define:vars={{
+      backgrounds,
+      backgroundOpacity,
+      backgroundBlur,
+      backgroundParallax,
+    }}
+    data-astro-rerun
+  >
+    /* =====================================================
+       CLEAN UP PREVIOUS BLOG PAGE
+       ===================================================== */
+    if (window.__blogPageCleanup) {
+      try {
+        window.__blogPageCleanup();
+      } catch (error) {
+        console.warn("[Blog] Failed to clean previous page:", error);
+      }
+    }
+
+    /* =====================================================
+       BACKGROUND CONFIGURATION
+       ===================================================== */
+    const currentBackgrounds = Array.isArray(backgrounds)
+      ? backgrounds.map((background) => ({
+          image: background.image,
+        }))
+      : [];
+    const bgOpacity = Number(backgroundOpacity ?? 1);
+    const bgBlur = Number(backgroundBlur ?? 0);
+    const parallaxFactor = Number(backgroundParallax ?? 0.2);
+
+    /* =====================================================
+       BACKGROUND STATE
+       ===================================================== */
+    let markerTops = [];
+    let layerRanges = [];
+    let resizeFrame = 0;
+    let destroyed = false;
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+    const clamp = (value, min, max) => {
+      return Math.min(max, Math.max(min, value));
+    };
+
+    /* =====================================================
+       FIND MARKERS
+       =====================================================
+       Each marker is converted into an absolute document
+       position.
+       Example:
+       [background[0]]
+       [background[1]]
+       [background[2]]
+       becomes:
+       marker 0 -> document Y
+       marker 1 -> document Y
+       marker 2 -> document Y
+       ===================================================== */
+    const getMarkerTops = () => {
+      const markers = document.querySelectorAll(".bg-marker");
+      if (!markers.length) {
+        return [];
+      }
+      return Array.from(markers)
+        .map((element) => {
+          let top = 0;
+          let node = element;
+          while (node) {
+            top += node.offsetTop;
+            node = node.offsetParent;
+          }
+          const index = Number.parseInt(element.dataset.bgIndex ?? "0", 10);
+          return {
+            top,
+            index,
+          };
+        })
+        .filter((marker) => {
+          return (
+            Number.isInteger(marker.index) &&
+            marker.index >= 0 &&
+            marker.index < currentBackgrounds.length
+          );
+        })
+        .sort((a, b) => {
+          return a.top - b.top;
+        });
+    };
+
+    /* =====================================================
+       CALCULATE EACH BACKGROUND'S PARALLAX RANGE
+       ===================================================== */
+    const computeLayerRanges = () => {
+      const total = currentBackgrounds.length;
+      layerRanges = new Array(total).fill(null);
+      if (!total) {
+        return;
+      }
+      const documentHeight = Math.max(
+        document.body?.scrollHeight ?? 0,
+        document.documentElement?.scrollHeight ?? 0,
+      );
+
+      /*
+       * No markers:
+       *
+       * Background 0 is used for the whole article.
+       */
+      if (!markerTops.length) {
+        layerRanges[0] = {
+          start: 0,
+          end: Math.max(1, documentHeight),
+        };
+        return;
+      }
+
+      /*
+       * Each background gets its own segment.
+       *
+       * The first marker for a background determines
+       * where that background starts.
+       *
+       * The next marker belonging to another background
+       * determines where it ends.
+       */
+      for (let i = 0; i < markerTops.length; i++) {
+        const { index, top } = markerTops[i];
+
+        /*
+         * Duplicate markers for the same background
+         * don't reset its range.
+         */
+        if (layerRanges[index]) {
+          continue;
+        }
+        let end = Math.max(1, documentHeight);
+        for (let j = i + 1; j < markerTops.length; j++) {
+          if (markerTops[j].index !== index) {
+            end = markerTops[j].top;
+            break;
+          }
+        }
+        layerRanges[index] = {
+          start: index === 0 ? 0 : top,
+          end: Math.max(top + 1, end),
+        };
+      }
+    };
+
+    /* =====================================================
+       UPDATE BACKGROUNDS
+       ===================================================== */
+    const updateBackgrounds = () => {
+      if (destroyed) {
+        return;
+      }
+      if (!currentBackgrounds.length) {
+        return;
+      }
+
+      /*
+       * The viewport center is used as the focus point.
+       *
+       * This replaces the old "focus" variable issue and
+       * gives us one consistent coordinate system.
+       */
+      const centerLine = window.scrollY + window.innerHeight * 0.5;
+
+      /* ---------------------------------------------------
+         Determine active background
+         --------------------------------------------------- */
+      let activeIndex = 0;
+      for (let i = 0; i < markerTops.length; i++) {
+        if (markerTops[i].top <= centerLine) {
+          activeIndex = markerTops[i].index;
+        } else {
+          break;
+        }
+      }
+      activeIndex = clamp(activeIndex, 0, currentBackgrounds.length - 1);
+
+      /* ---------------------------------------------------
+         Parallax amplitude
+         --------------------------------------------------- */
+      const amplitude = clamp(parallaxFactor, 0, 0.19) * window.innerHeight;
+
+      /* ---------------------------------------------------
+         Calculate offset for one background
+         --------------------------------------------------- */
+      const offsetForLayer = (index) => {
+        const range = layerRanges[index];
+
+        /*
+         * A background without a valid range keeps the
+         * maximum positive offset.
+         */
+        if (!range) {
+          return amplitude;
+        }
+        const segmentLength = Math.max(1, range.end - range.start);
+        const progress = clamp(
+          (centerLine - range.start) / segmentLength,
+          0,
+          1,
+        );
+
+        /*
+         * +A at beginning
+         *  0 in middle
+         * -A at end
+         */
+        return amplitude * (1 - 2 * progress);
+      };
+
+      /* ---------------------------------------------------
+         Apply state to current background elements
+         --------------------------------------------------- */
+      currentBackgrounds.forEach((background, index) => {
+        const backgroundElement = document.getElementById(
+          `dynamic-bg-${index}`,
+        );
+        if (!backgroundElement) {
+          return;
+        }
+
+        /*
+         * Set image every update so the element always
+         * belongs to the current page's background data.
+         */
+        backgroundElement.style.backgroundImage = `url("${background.image}")`;
+        backgroundElement.style.filter = `blur(${bgBlur * 24}px)`;
+        backgroundElement.style.transform = `translate3d(0, ${offsetForLayer(index)}px, 0)`;
+        const isActive = index === activeIndex;
+        backgroundElement.style.opacity = isActive ? String(bgOpacity) : "0";
+        backgroundElement.dataset.active = isActive ? "1" : "0";
+      });
+    };
+
+    /* =====================================================
+       MEASURE EVERYTHING
+       ===================================================== */
+    const remeasure = () => {
+      if (destroyed) {
+        return;
+      }
+      markerTops = getMarkerTops();
+      computeLayerRanges();
+      updateBackgrounds();
+    };
+
+    /* =====================================================
+       QUEUED MEASUREMENT
+       =====================================================
+       ResizeObserver can fire several times while fonts,
+       images and layout settle.
+       requestAnimationFrame prevents excessive recalculation.
+       ===================================================== */
+    const queueRemeasure = () => {
+      if (destroyed) {
+        return;
+      }
+      if (resizeFrame) {
+        return;
+      }
+      resizeFrame = window.requestAnimationFrame(() => {
+        resizeFrame = 0;
+        remeasure();
+      });
+    };
+
+    /* =====================================================
+       SCROLL
+       ===================================================== */
+    const onScroll = () => {
+      updateBackgrounds();
+    };
+
+    /* =====================================================
+       RESIZE
+       ===================================================== */
+    const onResize = () => {
+      queueRemeasure();
+    };
+
+    /* =====================================================
+       RESIZE OBSERVER
+       =====================================================
+       `html, body { height: 100% }` (base/rules.css) pins the
+       <body> box to the viewport height, so it never changes
+       size when the article grows. Observing <body> therefore
+       never fires and the measurement taken before the scene
+       images decode is never corrected.
+       Observe the wrappers that actually grow with the article
+       instead, so late layout changes are picked up.
+       ===================================================== */
+    const resizeTargets = [
+      document.querySelector("main"),
+      document.getElementById("blog-content"),
+    ].filter(Boolean);
+    const resizeObserver = new ResizeObserver(() => {
+      queueRemeasure();
+    });
+    resizeTargets.forEach((target) => {
+      resizeObserver.observe(target);
+    });
+    if (!resizeTargets.length && document.body) {
+      resizeObserver.observe(document.body);
+    }
+
+    /* =====================================================
+       EVENT REGISTRATION
+       ===================================================== */
+    window.addEventListener("scroll", onScroll, {
+      passive: true,
+    });
+    window.addEventListener("resize", onResize);
+
+    /* =====================================================
+       INITIAL MEASUREMENT
+       ===================================================== */
+    remeasure();
+
+    /*
+     * Run another measurement on the next frame.
+     *
+     * This catches layout changes caused by the current
+     * page becoming visible during an Astro transition.
+     */
+    window.requestAnimationFrame(() => {
+      if (!destroyed) {
+        remeasure();
+      }
+    });
+
+    /*
+     * Cold-load safety net.
+     *
+     * On an uncached first load the scene images and webfonts
+     * are still decoding when the script runs, so the article is
+     * far shorter than its final layout. The ResizeObserver above
+     * catches most of the growth, but a font swap can shift marker
+     * positions without changing any observed box, and the last
+     * image to decode can land after the observer's final frame.
+     *
+     * Re-measure once every image has loaded and once the webfonts
+     * are ready so the first load always matches a reload.
+     */
+    if (document.readyState === "complete") {
+      /* Script re-ran after load — measure on the next frame. */
+      queueRemeasure();
+    } else {
+      window.addEventListener("load", queueRemeasure, {
+        once: true,
+      });
+    }
+    if (document.fonts?.ready) {
+      document.fonts.ready
+        .then(() => {
+          queueRemeasure();
+        })
+        .catch(() => {
+          /* Font loading API unavailable — the load event covers us. */
+        });
+    }
+
+    /* =====================================================
+       SIDEBAR
+       ===================================================== */
+    const sidebarContainer = document.getElementById("sidebar-container");
+    const sidebarToggle = document.getElementById("sidebar-toggle");
+    const onSidebarToggle = (event) => {
+      event.stopPropagation();
+      if (!sidebarContainer) {
+        return;
+      }
+      sidebarContainer.classList.toggle("sidebar-open");
+    };
+    const onSidebarMouseEnter = () => {
+      sidebarContainer?.classList.add("sidebar-open");
+    };
+    const onSidebarMouseLeave = () => {
+      sidebarContainer?.classList.remove("sidebar-open");
+    };
+    const onDocumentClick = (event) => {
+      if (!sidebarContainer) {
+        return;
+      }
+      const target = event.target;
+      if (target instanceof Node && !sidebarContainer.contains(target)) {
+        sidebarContainer.classList.remove("sidebar-open");
+      }
+    };
+    if (sidebarContainer && sidebarToggle) {
+      sidebarToggle.addEventListener("click", onSidebarToggle);
+
+      /*
+       * Hover-to-open is pointer-only. On touch screens a tap fires
+       * `mouseenter` and then `click`, so the click toggle closed the
+       * panel the hover had just opened — the sidebar needed two taps.
+       */
+      const canHover =
+        window.matchMedia?.("(hover: hover) and (pointer: fine)").matches ??
+        false;
+      if (canHover) {
+        sidebarContainer.addEventListener("mouseenter", onSidebarMouseEnter);
+        sidebarContainer.addEventListener("mouseleave", onSidebarMouseLeave);
+      }
+      document.addEventListener("click", onDocumentClick);
+    }
+
+    /* =====================================================
+       THAT'S ALL MESSAGE
+       ===================================================== */
+    const sentinel = document.getElementById("blog-end-sentinel");
+    const thatsAllMessage = document.getElementById("thats-all-msg");
+    let thatsAllObserver = null;
+    let thatsAllTimeout = 0;
+    if (sentinel && thatsAllMessage) {
+      let hasShown = false;
+      thatsAllObserver = new IntersectionObserver(
+        (entries) => {
+          if (destroyed) {
+            return;
+          }
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !hasShown) {
+              hasShown = true;
+              thatsAllMessage.classList.add("visible");
+              thatsAllTimeout = window.setTimeout(() => {
+                if (!destroyed) {
+                  thatsAllMessage.classList.remove("visible");
+                }
+              }, 2500);
+              thatsAllObserver?.unobserve(sentinel);
+            }
+          });
+        },
+        {
+          threshold: 0.5,
+        },
+      );
+      thatsAllObserver.observe(sentinel);
+    }
+
+    /* =====================================================
+       PAGE CLEANUP
+       ===================================================== */
+    const cleanup = () => {
+      if (destroyed) {
+        return;
+      }
+      destroyed = true;
+
+      /* Cancel queued measurement */
+      if (resizeFrame) {
+        window.cancelAnimationFrame(resizeFrame);
+        resizeFrame = 0;
+      }
+
+      /* Remove background listeners */
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+
+      /* Remove cold-load measurement hooks */
+      window.removeEventListener("load", queueRemeasure);
+
+      /* Remove ResizeObserver */
+      resizeObserver.disconnect();
+
+      /* Remove sidebar listeners */
+      if (sidebarContainer && sidebarToggle) {
+        sidebarToggle.removeEventListener("click", onSidebarToggle);
+        sidebarContainer.removeEventListener("mouseenter", onSidebarMouseEnter);
+        sidebarContainer.removeEventListener("mouseleave", onSidebarMouseLeave);
+        document.removeEventListener("click", onDocumentClick);
+      }
+
+      /* Remove "That's all" observer */
+      if (thatsAllObserver) {
+        thatsAllObserver.disconnect();
+        thatsAllObserver = null;
+      }
+
+      /* Remove timeout */
+      if (thatsAllTimeout) {
+        window.clearTimeout(thatsAllTimeout);
+        thatsAllTimeout = 0;
+      }
+
+      /*
+       * Clear active state from the page's background
+       * elements before the next page takes over.
+       */
+      currentBackgrounds.forEach((_background, index) => {
+        const backgroundElement = document.getElementById(
+          `dynamic-bg-${index}`,
+        );
+        if (!backgroundElement) {
+          return;
+        }
+        backgroundElement.style.opacity = "0";
+        backgroundElement.style.transform = "";
+        backgroundElement.dataset.active = "0";
+      });
+    };
+
+    /* =====================================================
+       REGISTER GLOBAL CLEANUP
+       ===================================================== */
+    window.__blogPageCleanup = cleanup;
+  </script>
+</MyLayout>

@@ -1,0 +1,72 @@
+---
+// Purpose: Component - src/components/Blog/BlogBackgrounds.astro (Dynamic layered backgrounds for posts)
+interface BackgroundLayer {
+  image: string;
+}
+
+interface Props {
+  /** Already resolved through utils/asset.ts by the page. */
+  backgrounds: BackgroundLayer[];
+  heroImage: string;
+  backgroundBlur: number;
+  backgroundOpacity: number;
+}
+
+const {
+  backgrounds = [],
+  heroImage = "",
+  backgroundBlur = 0,
+  backgroundOpacity = 1,
+} = Astro.props as Props;
+
+/* Image URLs and opacity are per-post values, so they are handed to CSS as
+   inline custom properties; the layer's visual rules live in
+   styles/base/layout.css. */
+const layerStyle = (image: string, opacity: number) =>
+  [
+    `background-image: url('${image}')`,
+    `--layer-opacity: ${opacity}`,
+    `--layer-blur: ${backgroundBlur * 24}px`,
+  ].join("; ");
+
+// Layers beyond index 0 start invisible so the client script owns the
+// crossfade without a visible SSR/CSR mismatch on first paint.
+const initialOpacity = (index: number, total: number) =>
+  index === 0 && total > 0 ? backgroundOpacity : 0;
+---
+
+<div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+  {
+    backgrounds.length > 0 ? (
+      backgrounds.map((bg, index) => (
+        <div
+          id={`dynamic-bg-${index}`}
+          data-active={index === 0 ? "1" : "0"}
+          class="bg-layer absolute -inset-[20vh] bg-center bg-cover will-change-transform"
+          style={layerStyle(
+            bg.image,
+            initialOpacity(index, backgrounds.length),
+          )}
+        />
+      ))
+    ) : (
+      /* Single hero fallback when no per-section backgrounds are defined.
+         The client script treats an empty backgrounds array as a no-op, so
+         this element is never touched after first paint — it simply keeps the
+         hero image for the lifetime of the page. */
+      <div
+        id="dynamic-bg-0"
+        data-active="1"
+        class="bg-layer absolute -inset-[15vh] bg-center bg-cover will-change-transform"
+        style={layerStyle(heroImage, backgroundOpacity)}
+      />
+    )
+  }
+
+  <div
+    id="dynamic-bg-blend"
+    class="bg-blend-layer absolute inset-0 pointer-events-none"
+    style={`--layer-opacity: ${Math.min(0.45, backgroundOpacity * 0.6)}`}
+  >
+  </div>
+</div>

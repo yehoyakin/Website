@@ -1,0 +1,81 @@
+/* Purpose: Styles - src/styles/base/font-faces.css
+   All @font-face declarations for the LOCAL fonts in `src/fonts/`.
+
+   The URLs are RELATIVE on purpose. Vite resolves them at build time,
+   fingerprints the files and prefixes the configured site base, so they
+   keep working in dev and in the deployed build.
+   Absolute `/fonts/…` URLs are treated as `public/` paths: there is no
+   `public/fonts`, which is why these faces silently 404'd before.
+
+   Font tokens that choose one of these families live in base/fonts.css.
+   To use another variant in a theme, just point a --font-* token at one
+   of the family names declared below.
+*/
+
+/* ── Pixel Operator — the canonical pixel font ─────────────────────── */
+@font-face {
+  font-family: "Pixel Operator";
+  src: url("../../fonts/PixelOperator.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator";
+  src: url("../../fonts/PixelOperator-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ── Pixel Operator Mono ───────────────────────────────────────────── */
+@font-face {
+  font-family: "Pixel Operator Mono";
+  src: url("../../fonts/PixelOperatorMono.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator Mono";
+  src: url("../../fonts/PixelOperatorMono-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ── Pixel Operator HB (half-bold) + small caps ────────────────────── */
+@font-face {
+  font-family: "Pixel Operator HB";
+  src: url("../../fonts/PixelOperatorHB.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator HB SC";
+  src: url("../../fonts/PixelOperatorHBSC.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* ── Pixeloid Sans ─────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Pixeloid Sans";
+  src: url("../../fonts/PixeloidSans.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixeloid Sans";
+  src: url("../../fonts/PixeloidSans-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}

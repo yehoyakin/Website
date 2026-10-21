@@ -1,0 +1,21 @@
+/* Purpose: Styles - src/styles/components/components.css (Shared component baseline styles)
+   UI text colours. Body.astro / Title.applyTheme select these through
+   config/uiDictionary.ts, and the same classes can be used directly. */
+
+.text-ui-base {
+  color: var(--ui-base);
+}
+
+.text-ui-muted {
+  color: var(--ui-muted);
+}
+
+.text-ui-invert {
+  color: var(--ui-invert);
+}
+
+/* Project tag utility: use the resolved `--project-tag-color` set on the
+   component or page. */
+.text-project-tag {
+  color: var(--project-tag-color);
+}

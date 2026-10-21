@@ -1,0 +1,39 @@
+---
+// Purpose: Component - src/components/shared/Link.astro (Retro link button)
+import Icon from "./Icon.astro";
+
+interface Props {
+  href: string;
+  text?: string;
+  external?: boolean;
+  class?: string;
+  /** Icon name from public/images/genIcons, e.g. "Handbag". */
+  icon?: string;
+}
+
+const { href, text = "", external, class: extraClass = "", icon } = Astro.props;
+
+const classes = [
+  "retro-link group relative overflow-hidden flex items-center justify-center gap-2",
+  "rounded-none px-4 py-2 text-xs uppercase tracking-[0.25em] text-white",
+  "bg-zinc-950 border-2 border-white/70",
+  "transition-all duration-100 ease-[steps(2)]",
+  "hover:bg-white hover:text-zinc-950 hover:border-white",
+  "hover:translate-x-[-0.125rem] hover:translate-y-[-0.125rem]",
+  "hover:shadow-[0.25rem_0.25rem_0px_0px_white]",
+  extraClass,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<a
+  href={href}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  class={classes}
+>
+  {icon && <Icon name={icon} class="relative z-10 h-8 w-8" />}
+  <span class="relative z-10">{text}</span>
+  <span class="pixel-highlight"></span>
+</a>

@@ -1,0 +1,87 @@
+---
+// Purpose: Section - src/components/sections/SplitLanding.astro (Split hero landing component)
+import Body from "../UI/Body.astro";
+import Portrait from "../shared/MyImage.astro";
+import Card from "./Card.astro";
+
+interface CardData {
+  href: string;
+  tag: string;
+  title: string;
+  description: string;
+  actionText: string;
+  theme?: string;
+  imageSrc: string;
+}
+
+interface Props {
+  /** Optional backdrop image. Omit it to use the flat overlay only. */
+  background?: string;
+  left: CardData;
+  right: CardData;
+  footerText?: string;
+}
+
+const { background, left, right, footerText = "" } = Astro.props as Props;
+---
+
+{/* Allow the landing section to grow vertically as content expands. */}
+<section class="relative flex-1 w-full h-full">
+  {
+    background && (
+      <div
+        class="absolute inset-0 bg-cover bg-center opacity-20 pointer-events-none"
+        style={`background-image: url('${background}')`}
+      />
+    )
+  }
+
+  <div class="absolute inset-0 bg-zinc-950/85 pointer-events-none"></div>
+
+  <div class="relative z-10 flex min-h-full flex-col justify-between">
+    <div class="grid grid-cols-1 gap-0 md:grid-cols-2 flex-1 w-full min-h-0">
+      <div class="w-full h-full min-h-[12rem] md:min-h-[22rem]">
+        <Card
+          href={left.href}
+          tag={left.tag}
+          title={left.title}
+          description={left.description}
+          actionText={left.actionText}
+          theme={left.theme ?? "primary"}
+          class="h-full w-full border-b border-zinc-800/60 md:border-b-0 md:border-r border-zinc-800/60"
+        >
+          <Portrait slot="background" src={left.imageSrc} size="xl" />
+        </Card>
+      </div>
+
+      {/* RIGHT CARD CONTAINER */}
+      <div class="w-full h-full min-h-[12rem] md:min-h-[22rem]">
+        <Card
+          href={right.href}
+          tag={right.tag}
+          title={right.title}
+          description={right.description}
+          actionText={right.actionText}
+          theme={right.theme ?? "primary"}
+          class="h-full w-full"
+        >
+          <Portrait slot="background" src={right.imageSrc} size="xl" />
+        </Card>
+      </div>
+    </div>
+
+    {/* FOOTER BAR */}
+    <div
+      class="shrink-0 border-t border-zinc-800/60 bg-zinc-950/50 px-3 py-2 sm:px-8 sm:py-6 backdrop-blur-md"
+    >
+      <div class="mx-auto max-w-2xl text-center">
+        <Body
+          theme="primary"
+          class="text-[0.625rem] sm:text-sm italic text-zinc-500"
+        >
+          {footerText}
+        </Body>
+      </div>
+    </div>
+  </div>
+</section>

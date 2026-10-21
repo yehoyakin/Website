@@ -1,0 +1,143 @@
+/* ================================================================
+   FONT TOKENS — one font set per theme, keyed off the theme token
+   declared in tokens.css (`--theme-{name}`).
+
+   The token is the value that goes into `data-theme`:
+     <html data-theme="--theme-terminal">   ← a page-wide theme
+     <h1 data-theme="--theme-terminal">     ← a single component
+
+   Assigning `theme="terminal"` to Title/Body, or `theme="terminal"`
+   to MyLayout, is all it takes — the matching set below is used.
+   Elements with no theme token keep the page / `:root` fonts.
+   ================================================================ */
+
+/* DEFAULT (fallback when no theme is assigned) */
+:root {
+  --font-title: "Manrope", sans-serif;
+  --font-ui: "Barlow Condensed", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-terminal: "JetBrains Mono", monospace;
+}
+
+/* Retro components (cards, link buttons, contributions) ask for --retro-font.
+   Declared on the root AND on any element carrying a theme token, so the
+   reference resolves against the --font-ui of whichever element is themed
+   (a page-wide theme or a single component) instead of going invalid. */
+:root,
+[data-theme^="--theme-"] {
+  --retro-font: var(--font-ui);
+}
+
+/* EASY READ */
+[data-theme="--theme-forest"] {
+  --font-title: " ", sans-serif;
+  --font-ui: "Barlow Condensed", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-terminal: "JetBrains Mono", monospace;
+}
+/* GBA / PIXEL RPG — local pixel fonts.
+   The @font-face declarations live in base/font-faces.css (imported just
+   before this file). Families available there:
+     "Pixel Operator"     — regular 400 + bold 700
+     "Pixel Operator Mono"— regular 400 + bold 700
+     "Pixel Operator HB"  — 400
+     "Pixel Operator HB SC" — 400 (small caps)
+     "Pixeloid Sans"      — regular 400 + bold 700
+   Swap any --font-* value below for another family name to restyle. */
+
+[data-theme="--theme-terminal"] {
+  --font-title: "Bebas Neue", sans-serif;
+  --font-ui: "Barlow Condensed", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-terminal: "Roboto Mono", monospace;
+}
+
+/* RETRO-FUTURISTIC */
+[data-theme="--theme-secondary"] {
+  --font-title: "Manrope", sans-serif;
+  --font-ui: "Barlow Condensed", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-terminal: "Roboto Mono", monospace;
+}
+
+/* UNREAL RETRO */
+[data-theme="--theme-primary"] {
+  --font-title: "Manrope", sans-serif;
+  --font-ui: "Barlow Condensed", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-terminal: "Roboto Mono", monospace;
+}
+
+/* CINEMATIC */
+[data-theme="--theme-sunset"] {
+  --font-title: "Bebas Neue", sans-serif;
+  --font-ui: "Barlow Condensed", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-terminal: "Roboto Mono", monospace;
+}
+
+/* ================================================================
+   BASE APPLICATION — set the document's font family from the
+   resolved --font-body / --font-title tokens.  These rules live
+   HERE (not in global.css) so they are guaranteed to be declared
+   AFTER the theme blocks above and therefore see the correct
+   per-theme token values.
+   ================================================================ */
+
+html {
+  font-family: var(--font-body) !important;
+}
+
+body {
+  font-family: inherit;
+}
+
+p,
+span,
+a,
+button,
+input,
+textarea,
+li,
+blockquote,
+figure,
+figcaption {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-title);
+}
+
+/* ================================================================
+   THEMED ELEMENTS — an element carrying a theme token must resolve
+   that theme's fonts for itself.  `font-family: inherit` above would
+   otherwise hand it the parent's (page-level) font and the token
+   would only change the colours.  Mirrors the base rules: headings
+   take --font-title, everything else --font-body.
+   ================================================================ */
+
+[data-theme^="--theme-"] {
+  font-family: var(--font-body);
+}
+
+[data-theme^="--theme-"]:is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-title);
+}
+
+body {
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}

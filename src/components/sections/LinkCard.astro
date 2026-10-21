@@ -1,0 +1,129 @@
+---
+// Purpose: Section - src/components/sections/LinkCard.astro (Small link card used across sidebars)
+import Title from "../UI/Title.astro";
+import Body from "../UI/Body.astro";
+import Link from "../shared/Link.astro";
+
+interface LinkItem {
+  href: string;
+  text?: string;
+  /** Icon name from public/images/genIcons, e.g. "Handbag". */
+  icon?: string;
+}
+
+interface Props {
+  href?: string;
+  links?: LinkItem[];
+  tag?: string;
+  title: string;
+  description?: string;
+  actionText?: string;
+  backgroundImage?: string;
+  class?: string;
+}
+
+const {
+  href,
+  links = [],
+  tag = "",
+  title,
+  description = "",
+  actionText = "",
+  backgroundImage = "",
+  class: extraClass = "",
+} = Astro.props as Props;
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const resolve = (path?: string) => {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+  return `${base}${cleanPath}`;
+};
+
+const isExternal = (url?: string) =>
+  url?.startsWith("http://") || url?.startsWith("https://");
+---
+
+{
+  links.length > 0 ? (
+    <div
+      class={`group block overflow-hidden transition backdrop-blur-[1.5rem] ${extraClass}`}
+    >
+      <div class="p-4">
+        {backgroundImage && (
+          <div class="w-full h-36 mb-4 overflow-hidden">
+            <img
+              src={resolve(backgroundImage)}
+              class="w-full h-full object-cover"
+              alt=""
+            />
+          </div>
+        )}
+
+        {tag && (
+          <div class="text-xs uppercase tracking-[0.2em] text-ui-muted">
+            {tag}
+          </div>
+        )}
+
+        <Body class="mt-2 text-lg font-semibold">{title}</Body>
+
+        {description && <Body class="mt-2 text-sm">{description}</Body>}
+
+        <div class="mt-4 flex flex-col gap-2">
+          {links.map((l: LinkItem) => (
+            <Link
+              href={resolve(l.href)}
+              text={l.text ?? "Open"}
+              icon={l.icon}
+              external={isExternal(l.href)}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  ) : (
+    <a
+      href={resolve(href)}
+      target={isExternal(href) ? "_blank" : undefined}
+      rel={isExternal(href) ? "noopener noreferrer" : undefined}
+      class={` overflow-hidden border border-zinc-800 bg-zinc-950/60 transition hover:scale-[1.01] ${extraClass}`}
+    >
+      <div class="flex items-center gap-4 p-4">
+        {backgroundImage && (
+          <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-none">
+            <img
+              src={resolve(backgroundImage)}
+              class="w-full h-full object-cover"
+              alt=""
+            />
+          </div>
+        )}
+
+        <div class="flex-1">
+          {tag && (
+            <div class="text-xs uppercase tracking-[0.2em] text-ui-muted">
+              {tag}
+            </div>
+          )}
+
+          <Title level={4} class="mt-1">
+            {title}
+          </Title>
+
+          <Body class="mt-2 text-sm">{description}</Body>
+        </div>
+
+        <div class="flex items-center">
+          <span class="inline-flex items-center gap-1.5 text-sm font-medium">
+            {actionText || "Open"}
+          </span>
+        </div>
+      </div>
+    </a>
+  )
+}

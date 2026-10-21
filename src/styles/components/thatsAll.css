@@ -1,0 +1,37 @@
+/* Purpose: Styles - src/styles/components/thatsAll.css (That's all message overlay) */
+
+.thats-all-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5%;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.thats-all-overlay.visible {
+  opacity: 1;
+}
+
+.thats-all-text {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  color: white;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(255, 155, 105, 0.3);
+  letter-spacing: 0.05em;
+  transform: translateY(1rem);
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.thats-all-overlay.visible .thats-all-text {
+  transform: translateY(0);
+}

@@ -1,0 +1,42 @@
+---
+// Purpose: Component - src/components/Blog/BlogHeader.astro (Blog post header: title, date, description)
+import Title from "../UI/Title.astro";
+import Body from "../UI/Body.astro";
+import Icon from "../shared/Icon.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  theme?: string;
+}
+
+const { title, description, date, theme = "primary" } = Astro.props as Props;
+---
+
+<header
+  class="space-y-6 rounded-none border border-zinc-800/60 bg-black/60 p-8 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[inset_0_0_80px_rgba(0,0,0,0.4)] text-center relative overflow-hidden"
+>
+  <Title
+    level={1}
+    theme={theme}
+    class="text-4xl sm:text-5xl md:text-6xl mx-auto tracking-tight font-bold readable-text"
+  >
+    {title}
+  </Title>
+
+  <Body
+    theme={theme}
+    class="mx-auto max-w-3xl text-zinc-400 text-center text-sm sm:text-base readable-text"
+  >
+    {description}
+  </Body>
+
+  <time
+    class="flex items-center justify-center gap-2 tracking-wider"
+    datetime={date.toISOString()}
+  >
+    <Icon name="Calendar" class="h-10 w-10" />
+    {date.toLocaleDateString()}
+  </time>
+</header>

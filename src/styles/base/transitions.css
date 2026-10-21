@@ -1,0 +1,36 @@
+/* Purpose: Styles - src/styles/base/transitions.css
+   Centralized transition and animation definitions.
+   All keyframes and reusable transition utilities live here.
+
+   Timing tokens (--ease-* / --duration-*) live in base/tokens.css. */
+
+/* ═══════════════════════════════════════════════════════════════
+   KEYFRAMES
+
+   Only animations used by more than one component belong here. An
+   animation used by a single component is declared in that component's
+   file, next to the element it animates — duplicate @keyframes silently
+   override each other depending on bundle order.
+
+   The page transition is a view transition, so its keyframes live in
+   base/viewTransitions.css and its pixelation grids in MyLayout.astro.
+   The split-card texture scroll is declared in components/card.css.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   HOVER GLOW — soft drop shadow on any icon inside a hovered `group`
+   ═══════════════════════════════════════════════════════════════ */
+
+.group:hover svg {
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.75));
+}
+
+/* ── Reduced motion ──
+   The decorative loops never stop on their own and, unlike hover
+   transitions, they are pure ornament — drop the animation and leave the
+   static state. (components/linkSweep.css covers the idle shake.) */
+@media (prefers-reduced-motion: reduce) {
+  .split-card-background {
+    animation: none;
+  }
+}

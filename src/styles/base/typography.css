@@ -1,0 +1,104 @@
+/* Purpose: Styles - src/styles/base/typography.css (Typography tokens and font rules) */
+
+/* Shadow for readability against blurred backgrounds */
+.readable-text {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TITLE OUTLINES — even black border around text
+   Title.astro picks .outline-2, or .outline-3 for a level-1 heading.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Font outline base — ensures crisp rendering */
+.outline-2,
+.outline-3 {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 2px outline — standard */
+.outline-2 {
+  text-shadow:
+    0 2px 0 #000,
+    0 -2px 0 #000,
+    2px 0 0 #000,
+    -2px 0 0 #000,
+    2px 2px 0 #000,
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000;
+}
+
+/* 3px outline — thick, for h1 */
+.outline-3 {
+  text-shadow:
+    0 3px 0 #000,
+    0 -3px 0 #000,
+    3px 0 0 #000,
+    -3px 0 0 #000,
+    3px 3px 0 #000,
+    -3px -3px 0 #000,
+    3px -3px 0 #000,
+    -3px 3px 0 #000;
+}
+
+#blog-content {
+  color: var(--ui-base);
+  font-size: 1.1rem;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+#blog-content p {
+  margin: 1.5rem 0;
+  text-align: justify;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+#blog-content h1,
+#blog-content h2,
+#blog-content h3 {
+  color: #f4f4f5;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Bold / italic coloring moved to theme-colors.css for project-wide reuse */
+/* Inherit the project tag colour from the page-level `--project-tag-color` */
+#blog-content {
+  --project-tag-color: inherit;
+}
+
+#blog-content h1,
+#blog-content h2,
+#blog-content h3,
+#blog-content h4 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* links */
+#blog-content a {
+  color: var(--theme-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+#blog-content a:hover {
+  opacity: 0.8;
+}
+
+/* lists */
+#blog-content ul,
+#blog-content ol {
+  padding-left: 1.5rem;
+}
+
+/* blockquotes */
+#blog-content blockquote {
+  border-left: 4px solid var(--theme-primary);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem 1.5rem;
+}

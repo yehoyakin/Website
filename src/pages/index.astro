@@ -1,0 +1,81 @@
+---
+// Purpose: Page - src/pages/index.astro (Home / landing)
+import MyLayout from "../layouts/MyLayout.astro";
+import SplitLanding from "../components/sections/SplitLanding.astro";
+import ContactPanel from "../components/sections/ContactPanel.astro";
+import HeaderInfo from "../components/sections/InfoHeader.astro";
+import { asset } from "../utils/asset";
+---
+
+<MyLayout title="Home">
+  {/* Full-screen backdrop for the landing experience. */}
+  <div
+    id="landing-viewport"
+    class="fixed inset-0 w-full h-screen overflow-y-auto md:overflow-hidden bg-zinc-950"
+  >
+    {/* Background image layer with a soft blur effect. */}
+    <div class="fixed inset-0 z-0 pointer-events-none style3d blurred-bg-layer">
+      <img
+        src={asset("images/kbg.gif")}
+        class="w-full h-full object-cover opacity-100"
+        alt=""
+      />
+    </div>
+
+    {/* Dark overlay to improve text contrast. */}
+    <div class="fixed inset-0 z-10 pointer-events-none"></div>
+
+    {/* Split layout for the hero and supporting content. */}
+    <div
+      id="landing-content"
+      class="relative z-20 flex flex-col h-auto md:h-screen md:max-h-screen w-full overflow-hidden min-h-screen pb-20 md:pb-0"
+    >
+      <header class="absolute top-0 right-0 px-8 py-6 z-50">
+        <ContactPanel />
+      </header>
+
+      {
+        /* HEADER SECTION: Max height limits keep it from drowning out the splits */
+      }
+      <div
+        class="w-full md:max-h-[75vh] md:min-h-[50vh] flex items-center justify-center overflow-hidden p-2"
+      >
+        <HeaderInfo
+          name="Joaquin Herrera"
+          description="
+           Game Dev: Unreal Engine C++ & Unity"
+          portraitSrc={asset("images/frontPage/mypixelart.webp")}
+          theme="secondary"
+        />
+      </div>
+
+      {
+        /* SPLIT CONTENT: Takes up the entire remaining vertical viewport portion */
+      }
+      <div
+        class="w-full flex-1 md:flex-1 flex items-center justify-center overflow-hidden px-2 pb-2 md:p-2"
+      >
+        <SplitLanding
+          left={{
+            href: `${import.meta.env.BASE_URL}portfolio/`,
+            tag: "My projects",
+            title: "Portfolio",
+            description: "Take a look at my Unity and Unreal Engine projects.",
+            actionText: "View projects",
+            imageSrc: asset("images/kbg2.gif"),
+          }}
+          right={{
+            href: `${import.meta.env.BASE_URL}blog/`,
+            tag: "My thoughts",
+            title: "Blog",
+            description:
+              "Just my thoughts on videogames, game development and movies.",
+            actionText: "Read articles",
+            imageSrc: asset("images/kbg1.gif"),
+          }}
+          footerText="Pixel art by Kirokaze!"
+        />
+      </div>
+    </div>
+  </div>
+</MyLayout>

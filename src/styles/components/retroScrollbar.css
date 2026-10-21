@@ -1,0 +1,13 @@
+/* Purpose: Styles - src/styles/components/retroScrollbar.css (Retro scrollbar detailing for overflowing widget containers) */
+
+.retro-scrollbar::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.retro-scrollbar::-webkit-scrollbar-track {
+  background: rgba(9, 9, 11, 0.5);
+}
+
+.retro-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(63, 63, 70, 0.8);
+}

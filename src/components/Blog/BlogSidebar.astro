@@ -1,0 +1,47 @@
+---
+// Purpose: Component - src/components/Blog/BlogSidebar.astro (Sidebar content for blog pages)
+import LinkCard from "../sections/LinkCard.astro";
+
+interface CardItem {
+  href?: string;
+  tag?: string;
+  title: string;
+  description?: string;
+  actionText?: string;
+  backgroundImage?: string;
+  links?: {
+    href: string;
+    text?: string;
+    /** Icon name from public/images/genIcons, e.g. "Handbag". */
+    icon?: string;
+  }[];
+}
+
+interface Props {
+  cards: CardItem[];
+}
+
+const { cards = [] } = Astro.props as Props;
+---
+
+<aside
+  class="relative z-20 w-full lg:sticky lg:top-24 lg:h-fit
+         lg:max-h-[calc(100vh-6rem)] overflow-y-auto retro-scrollbar"
+>
+  {
+    cards.map((card) => (
+      <div class="w-full overflow-hidden border border-zinc-900/40 bg-zinc-950/40">
+        <LinkCard
+          href={card.href}
+          links={card.links}
+          tag={card.tag}
+          title={card.title}
+          description={card.description}
+          actionText={card.actionText}
+          backgroundImage={card.backgroundImage}
+          class="h-auto"
+        />
+      </div>
+    ))
+  }
+</aside>

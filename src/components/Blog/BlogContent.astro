@@ -1,0 +1,445 @@
+---
+// Purpose: Component - src/components/Blog/BlogContent.astro (Render post body and scene images)
+import { asset } from "../../utils/asset";
+
+interface SceneItem {
+  image: string;
+  align?: "left" | "right" | "center";
+  size?: "auto" | "16:9" | "4:3";
+  caption?: string;
+}
+
+interface VideoItem {
+  src: string;
+  poster?: string;
+  align?: "left" | "right" | "center";
+  size?: "auto" | "16:9" | "4:3" | "9:16";
+  caption?: string;
+  title?: string;
+  type?: "auto" | "file" | "embed";
+}
+
+interface Props {
+  bodyHtml: string;
+  scenes?: SceneItem[];
+  videos?: VideoItem[];
+}
+
+const { bodyHtml, scenes = [], videos = [] } = Astro.props as Props;
+
+/**
+ * Replace [scene[x]] and [scene[x,y,z]] markers with image blocks.
+ * SAFE for BOTH raw paths and asset() resolved paths.
+ */
+const getAspectClass = (size?: SceneItem["size"]) => {
+  switch (size) {
+    case "16:9":
+      return "aspect-video";
+    case "4:3":
+      return "aspect-[4/3]";
+    default:
+      return "";
+  }
+};
+
+const getCaptionAlignmentClass = (align?: string) => {
+  switch (align) {
+    case "left":
+      return "text-left";
+    case "right":
+      return "text-right";
+    default:
+      return "text-center";
+  }
+};
+
+const getSceneSizeClass = (size?: string) => {
+  switch (size) {
+    case "wide":
+      return "max-w-[80vw]";
+    case "large":
+      return "max-w-[90vw]";
+    case "full":
+      return "max-w-[95vw]";
+    default:
+      return "max-w-[60vw]";
+  }
+};
+
+/**
+ * Clean up a caption string: strip quotes (straight or curly), HTML entities, trim.
+ */
+const cleanCaption = (raw: string): string => {
+  return raw
+    .replace(/^[\s,]*/, "")
+    .replace(/&quot;/g, '"')
+    .replace(/&ldquo;/g, '"')
+    .replace(/&rdquo;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lsquo;/g, "'")
+    .replace(/&rsquo;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/^["""\u201c\u201d]/, "")
+    .replace(/["""\u201c\u201d]$/, "")
+    .replace(/^['''\u2018\u2019]/, "")
+    .replace(/['''\u2018\u2019]$/, "")
+    .trim();
+};
+
+const renderScene = (
+  sceneIndex: number,
+  alignOverride?: string,
+  captionOverride?: string,
+  sizeOverride?: string,
+) => {
+  const scene = scenes[sceneIndex];
+  if (!scene?.image) return "";
+
+  const align = (alignOverride ?? scene.align ?? "center").toLowerCase();
+  const aspectClass = getAspectClass(scene.size ?? "auto");
+  const captionText = captionOverride ?? scene.caption ?? "";
+  const sizeClass = getSceneSizeClass(sizeOverride || "default");
+
+  let figureClass = `scene-reveal my-6 overflow-hidden rounded-none border border-zinc-800 bg-black w-full ${sizeClass} mx-auto`;
+
+  let imgClass = "block w-full h-auto";
+
+  if (aspectClass) {
+    figureClass += ` ${aspectClass}`;
+    imgClass = "block h-full w-full object-cover object-center";
+  }
+
+  switch (align) {
+    case "left":
+      figureClass += " float-left max-w-[45%] mr-6 mb-4";
+      break;
+
+    case "right":
+      figureClass += " float-right max-w-[45%] ml-6 mb-4";
+      break;
+
+    default:
+      figureClass += " mb-5";
+      break;
+  }
+
+  const caption = captionText
+    ? `
+      <figcaption
+        class="blog-figcaption"
+      >
+        ${captionText}
+      </figcaption>
+    `
+    : "";
+
+  return `
+    <figure class="${figureClass}">
+      <img
+        src="${scene.image}"
+        alt="Scene ${sceneIndex}"
+        class="${imgClass}"
+      />
+    </figure>
+    ${caption}
+  `;
+};
+
+/**
+ * Match scene markers in rendered HTML.
+ * Handles: [scene[0]], [scene[0,1,2]], [scene[0, wide]], [scene[0], "caption"]
+ * Works regardless of quote type (straight, curly, HTML entities).
+ *
+ * Pattern: [scene[indexes, optional_size], optional_caption_text]
+ * We capture everything after the inner ] as the raw caption text.
+ */
+const SCENE_MARKER_RE =
+  /\[scene\[([0-9,\s]+)(?:,\s*(wide|large|full))?\](?:,\s*([^\]]*))?\]/g;
+
+const parseSceneMarker = (match: string) => {
+  const result = SCENE_MARKER_RE.exec(match);
+  if (!result) return null;
+
+  const [, rawIndexes = "", sizeToken = "", rawCaption = ""] = result;
+
+  const indexes = rawIndexes
+    .split(",")
+    .map((v) => Number.parseInt(v.trim(), 10))
+    .filter((v): v is number => Number.isInteger(v) && v >= 0);
+
+  const caption = cleanCaption(rawCaption);
+
+  return { indexes, caption, size: sizeToken || undefined };
+};
+
+/**
+ * Replace [video[x]] and [video[x, "caption"]] markers with video blocks.
+ */
+const getVideoAspectClass = (size: VideoItem["size"]) => {
+  switch (size) {
+    case "4:3":
+      return "aspect-[4/3]";
+    case "9:16":
+      return "aspect-[9/16]";
+    case "16:9":
+      return "aspect-video";
+    default:
+      return "aspect-video";
+  }
+};
+
+const VIDEO_FILE_RE = /\.(?:mp4|webm|ogg|ogv|mov|m4v)(?:[?#].*)?$/i;
+
+const YOUTUBE_RE =
+  /(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/i;
+
+const VIMEO_RE = /vimeo\.com\/(?:video\/)?(\d+)/i;
+
+/**
+ * Turn a video link into an embed URL.
+ * Returns null when the source should be played as a <video> file instead.
+ */
+const getVideoEmbedUrl = (src: string, type?: VideoItem["type"]) => {
+  const url = src.trim();
+  if (type === "file") return null;
+
+  const youtube = url.match(YOUTUBE_RE);
+  if (youtube) {
+    return `https://www.youtube-nocookie.com/embed/${youtube[1]}?rel=0`;
+  }
+
+  const vimeo = url.match(VIMEO_RE);
+  if (vimeo) {
+    return `https://player.vimeo.com/video/${vimeo[1]}`;
+  }
+
+  if (type === "embed") return url;
+
+  /* Local paths and direct file links play natively. */
+  if (VIDEO_FILE_RE.test(url) || !/^[a-z][a-z0-9+.-]*:\/\//i.test(url)) {
+    return null;
+  }
+
+  /* Any other external page is assumed to be embeddable. */
+  return url;
+};
+
+const renderVideo = (
+  videoIndex: number,
+  sizeOverride?: string,
+  captionOverride?: string,
+) => {
+  const video = videos[videoIndex];
+  if (!video?.src) return "";
+
+  const align = (video.align ?? "center").toLowerCase();
+  /* `||` (not `??`): an empty marker caption falls back to `caption:`. */
+  const captionText = cleanCaption(captionOverride || video.caption || "");
+  const embedUrl = getVideoEmbedUrl(video.src, video.type);
+  const aspectClass = getVideoAspectClass(video.size);
+  const title = video.title || `Video ${videoIndex}`;
+
+  let figureClass =
+    "scene-reveal my-6 overflow-hidden rounded-none border border-zinc-800 bg-black w-full";
+
+  switch (align) {
+    case "left":
+      figureClass += " float-left max-w-[45%] mr-6 mb-4";
+      break;
+
+    case "right":
+      figureClass += " float-right max-w-[45%] ml-6 mb-4";
+      break;
+
+    default:
+      figureClass += ` ${getSceneSizeClass(sizeOverride || "default")} mx-auto mb-5`;
+      break;
+  }
+
+  /*
+   * The aspect ratio lives on an inner box so the caption stays
+   * outside of it. Embeds always need a ratio; files keep their
+   * natural one unless `size` asks otherwise.
+   */
+  const hasFixedAspect =
+    Boolean(embedUrl) || Boolean(video.size && video.size !== "auto");
+  const frameClass = hasFixedAspect
+    ? `relative w-full ${aspectClass}`
+    : "w-full";
+
+  const media = embedUrl
+    ? `<iframe
+        src="${embedUrl}"
+        title="${title}"
+        class="absolute inset-0 block h-full w-full border-0"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>`
+    : `<video
+        src="${video.src}"
+        ${video.poster ? `poster="${video.poster}"` : ""}
+        class="block w-full ${hasFixedAspect ? "h-full object-cover object-center" : "h-auto"}"
+        controls
+        playsinline
+        preload="metadata"
+      ></video>`;
+
+  const caption = captionText
+    ? `
+      <figcaption class="blog-figcaption ${getCaptionAlignmentClass(align)}">
+        ${captionText}
+      </figcaption>
+    `
+    : "";
+
+  return `
+    <figure class="${figureClass}">
+      <div class="${frameClass}">
+        ${media}
+      </div>
+      ${caption}
+    </figure>
+  `;
+};
+
+/**
+ * Match video markers in rendered HTML.
+ * Handles: [video[0]], [video[0, wide]], [video[0], "caption"]
+ */
+const VIDEO_MARKER_RE =
+  /\[video\[(\d+)(?:,\s*(wide|large|full))?\](?:,\s*([^\]]*))?\]/g;
+
+const parseVideoMarker = (match: string) => {
+  const result = VIDEO_MARKER_RE.exec(match);
+  if (!result) return null;
+
+  const [, rawIndex = "", sizeToken = "", rawCaption = ""] = result;
+  const index = Number.parseInt(rawIndex, 10);
+  if (!Number.isInteger(index) || index < 0) return null;
+
+  return {
+    index,
+    caption: cleanCaption(rawCaption),
+    size: sizeToken || undefined,
+  };
+};
+
+const videoHtml =
+  Array.isArray(videos) && videos.length > 0
+    ? bodyHtml.replace(VIDEO_MARKER_RE, (match: string) => {
+        VIDEO_MARKER_RE.lastIndex = 0;
+        const parsed = parseVideoMarker(match);
+        if (!parsed) return match;
+
+        return renderVideo(parsed.index, parsed.size, parsed.caption) || match;
+      })
+    : bodyHtml;
+
+const sceneHtml =
+  Array.isArray(scenes) && scenes.length > 0
+    ? videoHtml.replace(SCENE_MARKER_RE, (match: string) => {
+        // Reset lastIndex since we're using a global regex
+        SCENE_MARKER_RE.lastIndex = 0;
+        const parsed = parseSceneMarker(match);
+        if (!parsed) return match;
+
+        const { indexes, caption, size } = parsed;
+        if (indexes.length === 0) return match;
+
+        if (indexes.length === 1) {
+          return renderScene(indexes[0], undefined, caption, size) || match;
+        }
+
+        const groupSizeClass =
+          size === "wide"
+            ? "max-w-[80vw] mx-auto"
+            : size === "large"
+              ? "max-w-[90vw] mx-auto"
+              : size === "full"
+                ? "max-w-[95vw] mx-auto"
+                : "max-w-[85vw] mx-auto";
+        const groupClass =
+          `scene-reveal my-8 grid gap-4 sm:grid-cols-2 ${groupSizeClass}`.trim();
+        const groupCaptionText = cleanCaption(
+          caption || scenes[indexes[0]]?.caption || "",
+        );
+
+        const groupedScenes = indexes
+          .map((sceneIndex: number) => {
+            const scene = scenes[sceneIndex];
+            if (!scene?.image) return "";
+
+            const aspectClass = getAspectClass(scene.size ?? "auto");
+            const figureClass =
+              `my-0 overflow-hidden rounded-none border border-zinc-800 bg-black w-full ${aspectClass ? aspectClass : ""}`.trim();
+            const imgClass = aspectClass
+              ? "block h-full w-full object-cover object-center"
+              : "block w-full h-auto";
+
+            return `
+              <figure class="${figureClass}">
+                <img
+                  src="${scene.image}"
+                  alt="Scene ${sceneIndex}"
+                  class="${imgClass}"
+                />
+              </figure>
+            `;
+          })
+          .filter(Boolean)
+          .join("\n");
+
+        const groupCaptionMarkup = groupCaptionText
+          ? `
+            <figcaption
+              class="blog-figcaption"
+            >
+              ${groupCaptionText}
+            </figcaption>
+          `
+          : "";
+
+        return `<div class="${groupClass}">${groupedScenes}</div>${groupCaptionMarkup}`;
+      })
+    : videoHtml;
+---
+
+{/* Article content container. */}
+<div
+  class="prose prose-invert max-w-none rounded-none
+         border border-zinc-800/50 bg-black/60
+         p-4 sm:p-6 md:p-8 backdrop-blur-2xl
+         shadow-[inset_0_0_80px_rgba(0,0,0,0.4)]"
+  id="blog-content"
+>
+  <div set:html={sceneHtml} />
+</div>
+
+<script is:inline>
+  (function () {
+    const initReveal = () => {
+      const figures = document.querySelectorAll(".scene-reveal");
+      if (!figures.length) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -50px 0px" },
+      );
+
+      figures.forEach((fig) => observer.observe(fig));
+    };
+
+    document.addEventListener("astro:page-load", initReveal);
+    document.addEventListener("DOMContentLoaded", initReveal);
+    initReveal();
+  })();
+</script>

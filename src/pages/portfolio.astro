@@ -1,0 +1,64 @@
+---
+// Purpose: Page - src/pages/portfolio.astro (Portfolio listing)
+import MyLayout from "../layouts/MyLayout.astro";
+import Title from "../components/UI/Title.astro";
+import Body from "../components/UI/Body.astro";
+import BackLink from "../components/shared/BackLink.astro";
+import ProjectGallery from "../components/sections/ProjectGallery.astro";
+
+import { getCollection } from "astro:content";
+import { asset } from "../utils/asset";
+
+const rawProjects = await getCollection("projects");
+
+const projects = await Promise.all(
+  rawProjects.map(async (project) => ({
+    ...project,
+    rendered: project.rendered?.html ?? "",
+  })),
+);
+
+const bgGif = asset("images/kbg2.gif");
+
+const cardPreviews = projects
+  .map((p) => asset(p.data.images[0]))
+  .filter(Boolean);
+
+const imagesToPreload = [bgGif, ...cardPreviews];
+---
+
+<MyLayout title="Portfolio | JoacoDev" preloadImages={imagesToPreload}>
+  <div
+    class="absolute inset-0 w-full min-h-screen overflow-x-hidden bg-zinc-950"
+  >
+    <div class="fixed inset-0 z-0 pointer-events-none style3d blurred-bg-layer">
+      <img
+        src={bgGif}
+        class="w-full h-full object-cover opacity-100"
+        alt=""
+        role="presentation"
+      />
+    </div>
+
+    <div class="absolute inset-0 z-10 pointer-events-none"></div>
+
+    <div class="relative z-20 py-16 md:py-24 px-4 sm:px-6 md:px-8 w-full">
+      <BackLink />
+
+      <section class="mt-6 w-full text-center">
+        <Title class="mt-3 text-5xl md:text-6xl" level={1} theme="primary">
+          Portfolio
+        </Title>
+
+        <Body theme="secondary" class="mt-4 max-w-2xl mx-auto" shadow={true}>
+          Browse through my projects. Click any project to expand it and explore
+          the full development breakdown.
+        </Body>
+
+        <div class="mt-12">
+          <ProjectGallery projects={projects} />
+        </div>
+      </section>
+    </div>
+  </div>
+</MyLayout>

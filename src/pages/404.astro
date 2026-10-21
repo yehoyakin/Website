@@ -1,0 +1,20 @@
+---
+// Purpose: Page - src/pages/404.astro (Not found page)
+import MyLayout from "../layouts/MyLayout.astro";
+import BackLink from "../components/shared/BackLink.astro";
+---
+
+<MyLayout title="Page not found">
+  <section class="py-24 text-center">
+    <div class="mx-auto max-w-3xl">
+      <p class="text-sm uppercase tracking-[0.3em] text-project-tag">404</p>
+      <h1 class="mt-6 text-5xl font-semibold text-white">Page not found</h1>
+      <p class="mt-6 text-base text-zinc-400">
+        The page you are looking for does not exist or has been moved.
+      </p>
+      <div class="mt-10 flex justify-center">
+        <BackLink />
+      </div>
+    </div>
+  </section>
+</MyLayout>

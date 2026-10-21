@@ -1,0 +1,465 @@
+/* Purpose: Styles - src/styles/components/projectGallery.css (Project gallery styles) */
+
+.project-gallery {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   SHARED BACKGROUND
+============================================================ */
+
+.gallery-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gallery-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  height: 0%;
+  object-fit: contain;
+  transform: scale(1.45);
+  filter: blur(36px) saturate(0.8) contrast(0.9);
+  opacity: 0;
+  transition:
+    opacity 600ms var(--ease-soft),
+    transform 900ms var(--ease-settle);
+}
+
+.gallery-bg-overlay {
+  position: absolute;
+  inset: 0;
+  /*
+  background: linear-gradient(90deg, rgba(0,0,0,0.58), rgba(0,0,0,0.35));
+  */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ============================================================
+   THUMBNAIL GRID - Horizontal scrollable
+============================================================ */
+
+.gallery-thumbnails-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  padding: 1rem 0 2rem 0;
+  position: relative;
+  z-index: 3;
+}
+
+.gallery-thumbnails-wrapper::-webkit-scrollbar {
+  height: 0.65rem;
+}
+
+.gallery-thumbnails-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gallery-thumbnails-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+}
+
+.gallery-thumbnails {
+  display: flex;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  padding: 0 1rem;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: min-content;
+}
+
+/* ============================================================
+   PROJECT ITEM - Contains thumbnail + links (NOT panel)
+============================================================ */
+
+.gallery-project-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 0 0 auto;
+  transition: transform 320ms var(--ease-settle);
+}
+
+/* ============================================================
+   THUMBNAIL BUTTON - Responsive with aspect-ratio
+============================================================ */
+
+.gallery-thumb {
+  width: clamp(260px, 40vw, 480px) !important;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  border-radius: 0 !important;
+  cursor: pointer;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  transition:
+    transform 260ms var(--ease-settle),
+    box-shadow 340ms var(--ease-soft),
+    border-color 340ms var(--ease-soft);
+}
+
+.gallery-thumb:hover {
+  border-color: var(--thumb-theme-color, rgba(255, 255, 255, 0.3));
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.5),
+    0 0 20px
+      color-mix(in srgb, var(--thumb-theme-color, white) 15%, transparent);
+  transform: translateY(-6px);
+}
+
+.gallery-thumb:focus {
+  outline: none;
+  border-color: white;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.2),
+    0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================
+   CAROUSEL
+============================================================ */
+
+.thumb-carousel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumb-carousel-img {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transform: scale(1);
+  transition:
+    opacity 480ms var(--ease-soft),
+    transform 480ms var(--ease-settle);
+}
+
+.thumb-carousel-img.active {
+  opacity: 1;
+}
+
+/* Image scales up on hover */
+.gallery-thumb:hover .thumb-carousel-img.active {
+  transform: scale(1.05);
+}
+
+/* Dark overlay like split card */
+.thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  transition: opacity 320ms var(--ease-soft);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gallery-thumb:hover .thumb-overlay {
+  opacity: 0.4;
+}
+
+/* ============================================================
+   BOTTOM INFO BAR - Title + Tag on solid black bar
+============================================================ */
+
+.thumb-info-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.6rem 0.75rem;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  pointer-events: none;
+  z-index: 4;
+  transition: background-color 340ms var(--ease-soft);
+}
+
+.gallery-thumb:hover .thumb-info-bar {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.thumb-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumb-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================================================
+   LINKS BELOW THUMBNAIL - Always visible
+============================================================ */
+
+.thumb-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  max-width: clamp(260px, 40vw, 480px);
+}
+
+.thumb-links :global(.retro-link) {
+  font-size: 0.75rem !important;
+  padding: 0.3rem 0.6rem !important;
+  border-radius: 0 !important;
+  white-space: nowrap;
+  border-width: 1px !important;
+  letter-spacing: 0.1em !important;
+}
+
+.thumb-links :global(.retro-link:hover) {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ============================================================
+   PANELS CONTAINER - Full width, breaks out of scroll
+============================================================ */
+
+.gallery-panels-container {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+/* ============================================================
+   COLLAPSE BUTTON - Forest theme arrow up
+============================================================ */
+
+.gallery-card-panel {
+  /* Panels start closed; the gallery script toggles this inline. */
+  display: none;
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.collapse-btn {
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0;
+  border: 2px solid var(--theme-forest, rgb(34, 197, 94));
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--theme-forest, rgb(34, 197, 94));
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 200ms var(--ease-soft),
+    color 200ms var(--ease-soft),
+    transform 200ms var(--ease-settle),
+    box-shadow 200ms var(--ease-soft);
+  backdrop-filter: blur(4px);
+}
+
+.collapse-btn:hover {
+  background: var(--theme-forest, rgb(34, 197, 94));
+  color: white;
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.collapse-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+}
+
+.collapse-btn svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* ============================================================
+   HOVER PREVIEW - CallCard panel appears semi-visible on hover
+============================================================ */
+
+.gallery-card-panel.panel-hover-preview {
+  opacity: 1;
+  transform: translateY(8px);
+  transition:
+    opacity 360ms var(--ease-soft),
+    transform 360ms var(--ease-settle);
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.75) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.75) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.gallery-card-panel.panel-hover-preview .collapse-btn {
+  opacity: 0;
+  transition: opacity 220ms var(--ease-soft);
+}
+
+/* Fade-out state: keeps panel visible but transitions opacity to 0 */
+.gallery-card-panel.panel-hover-fadeout {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.75) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.75) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE
+============================================================ */
+
+@media (max-width: 768px) {
+  .gallery-thumbnails {
+    gap: 1rem;
+    padding: 0 0.75rem;
+  }
+
+  .gallery-thumb {
+    width: 70vw !important;
+  }
+
+  .thumb-links {
+    max-width: 70vw;
+  }
+
+  .thumb-title {
+    font-size: 0.85rem;
+  }
+
+  .thumb-tag {
+    font-size: 0.6rem;
+  }
+
+  .collapse-btn {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .collapse-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-thumb {
+    width: 85vw !important;
+  }
+
+  .thumb-links {
+    max-width: 85vw;
+  }
+
+  .thumb-title {
+    font-size: 0.8rem;
+  }
+
+  .thumb-tag {
+    font-size: 0.55rem;
+  }
+
+  .collapse-btn {
+    width: 3.25rem;
+    height: 3.25rem;
+    top: -1.25rem;
+  }
+
+  .collapse-btn svg {
+    width: 1.625rem;
+    height: 1.625rem;
+  }
+
+  .thumb-info-bar {
+    padding: 0.5rem 0.6rem;
+  }
+
+  .thumb-links {
+    gap: 0.3rem;
+  }
+
+  .thumb-links :global(.retro-link) {
+    font-size: 0.65rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .thumb-carousel-img {
+    transition: none !important;
+  }
+
+  .gallery-thumb {
+    transition: none !important;
+  }
+
+  .gallery-project-item {
+    transition: none !important;
+  }
+
+  .gallery-card-panel.panel-hover-preview {
+    transition: none !important;
+  }
+}

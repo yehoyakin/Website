@@ -1,0 +1,74 @@
+---
+import type { BlogPost } from "../../types/blog";
+import Title from "../UI/Title.astro";
+import Body from "../UI/Body.astro";
+import Icon from "../shared/Icon.astro";
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import { asset } from "../../utils/asset";
+
+type Props = {
+  post: BlogPost;
+};
+
+const { post } = Astro.props;
+
+const date = new Date(post.data.date);
+
+const themeName = toThemeName(post.data.theme);
+const dynamicToken = resolveThemeToken(themeName);
+
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<a
+  href={`${baseUrl}blog/${post.id}/`}
+  class="blog-card group"
+  style={`--project-tag-color: ${dynamicToken}`}
+>
+  {/* TOP BAR - Date */}
+  <div class="blog-card-bar flex items-center gap-2">
+    <Icon name="Calendar" class="h-8 w-8" />
+    <Body
+      theme={themeName}
+      class="blog-card-date text-xs sm:text-sm text-zinc-400 group-hover:text-[color:var(--project-tag-color)] readable-text"
+    >
+      {date.toDateString()}
+    </Body>
+  </div>
+
+  {/* IMAGE */}
+  {
+    post.data.cardBackground && (
+      <div class="blog-card-image-wrap">
+        <img
+          class="blog-card-bg"
+          src={asset(post.data.cardBackground)}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="blog-card-overlay" />
+      </div>
+    )
+  }
+
+  {/* BOTTOM BAR - Title + Description */}
+  <div class="blog-card-bar blog-card-info-bar">
+    <Title
+      level={3}
+      theme={themeName}
+      class="blog-card-title group-hover:text-[color:var(--project-tag-color)] readable-text"
+    >
+      {post.data.title}
+    </Title>
+
+    <Body
+      theme={themeName}
+      class="blog-card-desc mt-2 text-sm sm:text-base text-zinc-400 group-hover:text-zinc-300 readable-text"
+    >
+      {post.data.description}
+    </Body>
+  </div>
+</a>

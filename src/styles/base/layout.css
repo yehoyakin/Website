@@ -1,0 +1,49 @@
+/* Purpose: Styles - src/styles/base/layout.css (Global layout helpers and containers) */
+
+/* Prevent elements from extending beyond mobile screen edges and creating
+   horizontal scrollbars. */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FULL-PAGE BACKGROUND LAYERS
+   Shared by the blog post backgrounds (BlogBackgrounds.astro) and the
+   blurred backdrops on the home / blog / portfolio pages. Per-image values
+   arrive as inline custom properties; the rules stay here.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* One fading background image inside the fixed layer stack. */
+.bg-layer {
+  opacity: var(--layer-opacity, 1);
+  filter: blur(var(--layer-blur, 0px));
+  transform: translate3d(0, 0, 0);
+  transition: opacity 700ms var(--ease-soft);
+}
+
+/* Tint + gradient that sits on top of the newest background layer. */
+.bg-blend-layer {
+  mix-blend-mode: overlay;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.12),
+    rgba(0, 0, 0, 0.36)
+  );
+  opacity: var(--layer-opacity, 1);
+}
+
+/* Softly defocused backdrop behind the listing pages. */
+.blurred-bg-layer {
+  filter: blur(0.325rem);
+  transform: scale(1.05);
+  opacity: 1;
+}

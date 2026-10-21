@@ -1,0 +1,78 @@
+---
+// Purpose: Section - src/components/sections/Card.astro (Generic content card)
+import Title from "../UI/Title.astro";
+import Body from "../UI/Body.astro";
+
+interface Props {
+  href: string;
+  tag: string;
+  title: string;
+  description: string;
+  actionText: string;
+  theme?: string;
+  backgroundImage?: string;
+  class?: string;
+}
+
+const {
+  href,
+  tag,
+  title,
+  description,
+  actionText,
+  theme = "primary",
+  backgroundImage,
+  class: extraClass = "",
+} = Astro.props;
+
+const cardClasses = ["split-card", extraClass].filter(Boolean).join(" ");
+---
+
+<a href={href} class={cardClasses}>
+  <!-- TEXTURE BACKGROUND -->
+  {
+    backgroundImage && (
+      <div
+        class="split-card-background"
+        style={`--texture:url("${backgroundImage}")`}
+      />
+    )
+  }
+
+  <!-- DARKENING LAYER -->
+  <div class="split-card-overlay"></div>
+
+  <!-- OPTIONAL EXTRA BACKGROUND SLOT -->
+  {
+    Astro.slots.has("background") && (
+      <div class="split-card-extra">
+        <slot name="background" />
+      </div>
+    )
+  }
+
+  <!-- CONTENT -->
+
+  <div class="split-card-content">
+    <Body
+      theme={theme}
+      class="text-[0.6875rem] sm:text-sm uppercase tracking-[0.25em]"
+    >
+      {tag}
+    </Body>
+
+    <Title level={2} theme={theme} class="split-card-title">
+      {title}
+    </Title>
+
+    <Body theme={theme} class="split-card-description">
+      {description}
+    </Body>
+
+    <div class="split-card-action">
+      <span>
+        {actionText}
+      </span>
+    </div>
+  </div>
+</a>

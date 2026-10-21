@@ -1,0 +1,91 @@
+/* Purpose: Styles - src/styles/components/contribution.css (Contribution / badge styles) */
+
+/* ============================================================
+   RETRO CONTRIBUTIONS
+============================================================ */
+
+.retro-contribution {
+  margin-top: 2rem;
+
+  padding: 1rem 1rem;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border-left: 1px solid white;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.retro-contribution h3 {
+  margin: 0 0 1rem;
+
+  font-family: var(--retro-font);
+
+  opacity: 1;
+  font-size: var(--contribution-heading-size, 0.95rem);
+}
+
+/* =========================
+   LIST
+========================= */
+
+.retro-contribution ul {
+  list-style: none;
+
+  display: flex;
+
+  flex-wrap: wrap;
+}
+
+.retro-contribution li {
+  padding: 0.45rem 0.8rem;
+
+  font-family: var(--retro-font);
+
+  font-weight: normal;
+  font-size: var(--contribution-font-size, 1.5rem);
+}
+
+.retro-contribution li::marker {
+  display: none;
+}
+
+/* ============================================================
+   ROLE ENUM BUTTONS
+============================================================ */
+
+.project-role {
+  padding: 0.45rem 0.85rem;
+
+  font-family: var(--retro-font);
+
+  font-size: var(--contribution-badge-font-size, 0.78rem);
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  color: #09090b;
+
+  background: white;
+
+  border: 2px solid #09090b;
+
+  box-shadow: 0.1875rem 0.1875rem 0 #09090b;
+
+  transition:
+    transform 0.12s steps(3),
+    box-shadow 0.12s steps(3);
+}
+
+.project-role:hover {
+  transform: translate(0.125rem, 0.125rem);
+
+  box-shadow: 0.0625rem 0.0625rem 0 #09090b;
+}

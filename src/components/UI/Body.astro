@@ -1,0 +1,47 @@
+---
+// Purpose: Component - src/components/UI/Body.astro (UI Body / paragraph styling)
+import {
+  getThemeConfig,
+  resolveThemeToken,
+  toThemeName,
+  toThemeToken,
+} from "../../config/uiDictionary";
+
+interface Props {
+  class?: string;
+  /** Theme name — controls font, color and transition. Any string works. */
+  theme?: string;
+  /** Add subtle text shadow for readability against blurred backgrounds. */
+  shadow?: boolean;
+}
+
+const {
+  class: customClass = "",
+  theme: rawTheme,
+  shadow = false,
+} = Astro.props;
+const themeName = toThemeName(rawTheme);
+const config = getThemeConfig(themeName);
+const themeToken = resolveThemeToken(themeName);
+
+// Only an explicitly assigned theme swaps the typeface. Without one the text
+// keeps inheriting the page's font, which is the previous behaviour.
+const hasTheme = typeof rawTheme === "string" && rawTheme.trim() !== "";
+const themeAttribute = hasTheme ? toThemeToken(themeName) : undefined;
+---
+
+<p
+  class:list={[
+    config.text.base,
+    config.text.hover,
+    "transition-colors",
+    "text-sm sm:text-base leading-relaxed break-words max-w-prose",
+    "theme-color",
+    shadow && "readable-text",
+    customClass,
+  ]}
+  data-theme={themeAttribute}
+  style={`--project-tag-color: ${themeToken}`}
+>
+  <slot />
+</p>

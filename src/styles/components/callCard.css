@@ -1,0 +1,536 @@
+/* Purpose: Styles - src/styles/components/callCard.css (Expandable call card styles) */
+
+/* ============================================================
+   CARD BASE
+============================================================ */
+
+.retro-expandable-card {
+  position: relative;
+
+  margin: 1rem auto;
+  max-width: 75vw;
+
+  min-height: clamp(14rem, 20vw, 22rem);
+
+  /* keep card background transparent so internal blurred images show through */
+  background: transparent;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  transition: transform 220ms var(--ease-settle);
+
+  touch-action: manipulation;
+  /* Accent colors delegate to global accents so mixing percentages are centralized */
+  --callcard-accent: var(
+    --accent-bold,
+    color-mix(in srgb, var(--project-tag-color, white) 50%, white 50%)
+  );
+  --callcard-italic-accent: var(
+    --accent-italic,
+    color-mix(in srgb, var(--project-tag-color, white) 50%, white 50%)
+  );
+}
+
+.retro-expandable-card:hover {
+  /*transform:translateX(6px);*/
+}
+
+.retro-expandable-card:nth-child(even):hover {
+  /* transform:translateX(-6px);*/
+}
+
+/* ============================================================
+   MAIN LAYOUT
+============================================================ */
+
+.card-main-layout {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 0;
+
+  padding: 0;
+
+  align-items: stretch;
+}
+
+/* Ensure visible content layers sit above the blurred background */
+.card-main-layout,
+.card-expanded-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Bold / italic colour rules moved to theme-colors.css for project-wide reuse */
+
+/* Use root card CSS variable as a blurred background layer (not part of layout) */
+/* Split-card style background layer (image + overlay) placed as a child, not part of layout */
+.callcard-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.callcard-bg-inner {
+  position: absolute;
+  inset: -12%;
+  transform: rotate(-2deg);
+}
+
+.callcard-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(var(--callcard-bg-scale, 1.6));
+  filter: blur(var(--callcard-bg-blur, 36px))
+    saturate(var(--callcard-bg-saturate, 0.75))
+    contrast(var(--callcard-bg-contrast, 0.95));
+  opacity: var(--callcard-bg-opacity, 0.14);
+  transition:
+    opacity 360ms var(--ease-soft),
+    transform 600ms var(--ease-settle),
+    filter 600ms var(--ease-soft);
+}
+
+/* Allow switching the blurred background image purely via CSS variable `--card-bg-url`.
+   The variable should include the url(...) wrapper, e.g. `--card-bg-url: url('/images/foo.jpg')`.
+   The pseudo-element is used so the image can be controlled from styles without touching DOM attributes. */
+.callcard-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--card-bg-url, none);
+  background-size: cover;
+  background-position: center center;
+  transform: scale(var(--callcard-bg-scale, 1.6));
+  filter: blur(var(--callcard-bg-blur, 36px))
+    saturate(var(--callcard-bg-saturate, 0.75))
+    contrast(var(--callcard-bg-contrast, 0.95));
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition:
+    opacity 360ms var(--ease-soft),
+    transform 600ms var(--ease-settle),
+    filter 600ms var(--ease-soft);
+}
+
+.retro-expandable-card[data-active="true"] .callcard-bg::before {
+  opacity: var(--callcard-bg-active-opacity, 0.22);
+  transform: scale(var(--callcard-bg-active-scale, 1.64)) rotate(-2deg);
+}
+
+.callcard-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.45));
+  z-index: 1;
+}
+
+/* Make the full-card blurred background more visible when the card is active */
+.retro-expandable-card[data-active="true"] .callcard-bg-img {
+  opacity: var(--callcard-bg-active-opacity, 0.22);
+  transform: scale(calc(var(--callcard-bg-active-scale, 1.64) * 1.25))
+    rotate(-2deg);
+}
+
+/* ============================================================
+   TEXT SIDE
+============================================================ */
+
+.card-info-panel {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-start;
+
+  align-items: flex-start;
+
+  position: relative;
+}
+
+/* Blurred, scaled background image inside the info panel */
+.info-panel-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.info-panel-bg-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160%;
+  height: 160%;
+  transform: translate(-50%, -50%) scale(1.6);
+  object-fit: cover;
+  filter: blur(26px) saturate(0.8) contrast(0.95);
+  opacity: 0.18;
+  will-change: transform, filter, opacity;
+}
+
+.card-info-panel > * {
+  position: relative;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-panel-bg-img {
+    transition: none !important;
+  }
+}
+
+.card-title-area {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+}
+
+.card-tag {
+  font-size: 0.7rem;
+
+  letter-spacing: 0.35em;
+
+  text-transform: uppercase;
+
+  /* Allow customizing the tag color via CSS variable `--project-tag-color` */
+  color: var(--project-tag-color, white);
+}
+
+.card-project-title {
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.card-description {
+  max-width: 38rem;
+
+  color: #a1a1aa;
+
+  font-size: 0.9rem;
+
+  line-height: 1.5;
+
+  text-align: justify;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.card-footer {
+  height: auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+}
+
+.card-links {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.5rem;
+}
+
+.project-description-hint {
+  font-size: 0.65rem;
+
+  letter-spacing: 0.35em;
+
+  text-transform: uppercase;
+
+  color: white;
+
+  opacity: 0.7;
+}
+
+/* ============================================================
+   IMAGE AREA
+============================================================ */
+
+/* Image frame sizing is controlled by callCardImage.css */
+
+.card-preview-frame {
+  width: 100%;
+
+  height: 100%;
+
+  overflow: hidden;
+
+  background: #000;
+}
+.card-preview-image {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  background: #000;
+
+  transform-origin: center;
+  transform: scale(1.1); /* default: subtly zoomed-in */
+  transition: transform 320ms var(--ease-settle);
+}
+
+/* Hover zoom handled by callCardImage.css */
+
+.retro-expandable-card:hover .card-info-panel,
+.retro-expandable-card[data-active="true"] .card-info-panel {
+  order: 1;
+}
+
+.retro-expandable-card:hover .card-preview-frame,
+.retro-expandable-card[data-active="true"] .card-preview-frame {
+  order: 2;
+}
+
+.card-info-panel {
+  padding: 2rem 1.5rem;
+}
+
+/* ============================================================
+   EXPANDED STATE
+============================================================ */
+
+.retro-expandable-card[data-active="true"] {
+  z-index: 40;
+}
+
+/* Desktop grid handled by callCardImage.css */
+
+/* ============================================================
+   DRAWER (inside left info panel)
+============================================================ */
+
+.card-expanded-content {
+  padding: 0;
+}
+
+.project-preview {
+  display: block;
+}
+
+.project-description-preview {
+  max-height: 4.5rem;
+
+  overflow: hidden;
+
+  opacity: 0.45;
+  text-align: justify;
+}
+
+/* All prose text across the card gets justified */
+.retro-expandable-card .prose {
+  text-align: justify;
+}
+
+.retro-expandable-card[data-active="true"] .project-preview {
+  display: none;
+}
+
+.project-drawer {
+  opacity: 0;
+
+  height: 0;
+
+  visibility: hidden;
+
+  transform: translateY(12px);
+
+  overflow: hidden;
+
+  transition:
+    opacity 150ms steps(4),
+    transform 150ms steps(4);
+}
+
+.retro-expandable-card[data-active="true"] .project-drawer {
+  opacity: 1;
+
+  height: auto;
+
+  visibility: visible;
+
+  transform: translateY(0);
+}
+
+.project-drawer-inner {
+  padding: 1rem;
+
+  /* semi-opaque black background to ensure text remains readable over blurred image */
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(6px) saturate(0.95);
+}
+
+/* Improve readability: more breathing room for paragraphs and sentences */
+.project-drawer-inner .prose p {
+  margin-bottom: 1rem; /* increase paragraph gap */
+  line-height: 1.7; /* slightly more leading for easier reading */
+  text-align: justify;
+}
+
+/* Add a bit more spacing after sentence-ending punctuation inside paragraphs */
+.project-drawer-inner .prose p::after {
+  content: "";
+  display: block;
+  height: 0.25rem;
+}
+
+/* ============================================================
+   ROLES / CONTRIBUTIONS
+============================================================ */
+
+.project-role-list {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0.6rem 0 0.75rem 0;
+}
+
+.project-role {
+  display: inline-block;
+  padding: 0.22rem 0.5rem;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.03);
+  color: #e6e6e6;
+  font-size: var(--contribution-badge-font-size, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Retro contribution block styling for improved readability */
+.retro-contribution {
+  margin: 0.6rem 0 0.15rem 0;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.004);
+  border-left: 2px solid rgba(255, 255, 255, 0.02);
+  border-radius: 0;
+  line-height: 1.48;
+  color: #cfcfd6;
+  font-weight: 400;
+  font-size: var(--contribution-font-size, 1rem);
+  opacity: 0.95;
+}
+
+.retro-contribution h3,
+.retro-contribution h2 {
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  font-size: var(--contribution-heading-size, 0.95rem);
+  letter-spacing: 0.03em;
+  text-transform: none;
+  font-weight: 500;
+  color: #d6d6db;
+}
+
+.retro-contribution ul {
+  margin: 0.35rem 0 0 1rem;
+}
+
+.retro-contribution li {
+  margin-bottom: 0.45rem;
+  color: #d0d0d6;
+  font-size: var(--contribution-font-size, 1rem);
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 900px) {
+  .retro-expandable-card {
+    min-height: auto;
+    margin: 0.75rem auto;
+    max-width: 95vw;
+  }
+
+  .card-main-layout {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    padding: 0.9rem;
+  }
+
+  .card-info-panel {
+    min-height: auto;
+    gap: 0.75rem;
+  }
+
+  .card-title-area {
+    gap: 0.35rem;
+  }
+
+  .card-project-title {
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+
+  .card-description {
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+
+  .card-footer {
+    margin-top: 0.75rem;
+    gap: 0.45rem;
+  }
+
+  .card-preview-frame {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .card-expanded-content {
+    padding: 0 0.9rem 0.9rem;
+  }
+
+  .project-drawer-inner {
+    padding: 1rem;
+  }
+
+  /* Reorder image on mobile */
+  .retro-expandable-card:hover .card-info-panel,
+  .retro-expandable-card[data-active="true"] .card-info-panel {
+    order: 1;
+  }
+
+  .retro-expandable-card:hover .card-preview-frame,
+  .retro-expandable-card[data-active="true"] .card-preview-frame {
+    order: 2;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Ensure long text wraps and doesn't break into single-column characters */
+  .card-project-title,
+  .card-description,
+  .card-footer,
+  .card-tag,
+  .project-role {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
