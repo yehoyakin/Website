@@ -21,6 +21,9 @@
   --theme-ocean: rgb(0, 123, 255);
   --theme-forest2: rgb(69, 254, 143);
 
+  /* Night mode repaints these brighter and fully saturated so the neon pops
+     on black. A new theme needs its night value in base/timeColors.css too. */
+
   
   /* UI neutrals */
   --ui-base: rgb(228 228 231);

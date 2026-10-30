@@ -1,12 +1,21 @@
 /* Purpose: Styles - src/styles/base/timeColors.css (Day / night colours)
 
-   ONE PALETTE, TWO OPACITIES
-   --------------------------
-   Both modes keep the site's colours: near-black fills and white type. The
-   switch only changes brightness and opacity:
+   DAY IS THE DESIGN
+   -----------------
+   Day is the original site: near-black chrome, bright whites, artwork
+   untouched. Nothing here alters it.
 
-     day    the original look — bright whites, translucent dark fills
-     night  the same palette pushed darker and more opaque
+   NIGHT
+   -----
+   Night is the same site with the lights down and the neon turned up: blacks
+   go fully black, panels get denser, the type drops from white to a greyish
+   white, and every theme accent is repainted at full saturation and a few
+   points brighter so the neon glows against black.
+
+   Content artwork is never tinted or inverted, so images render identically
+   in both modes. The one exception is the full-page backdrops (the blurred
+   GIF layers behind a page and the portfolio gallery backdrop): those are
+   dimmed 33% at night so the page sits in the dark instead of glowing.
 
    THE WHOLE SET
    -------------
@@ -20,12 +29,6 @@
      --time-scrim      washes over page imagery
 
    Everything else is derived from those, so a mode is eight values.
-
-   THEME COLOURS NEVER CHANGE
-   --------------------------
-   The neon accents in base/tokens.css (--theme-*, --project-tag-color,
-   --accent-*) are deliberately NOT redefined here, so an accent reads with the
-   same hue in both modes.
 
    Mode selection: day is the default (no attribute needed). `data-mode="night"`
    on <html> is set by the toggle in `components/shared/ModeToggle.astro`,
@@ -56,17 +59,27 @@
   --time-shadow: rgb(0 0 0 / 0.6);
 }
 
-/* ── Night — same colours, darker and more opaque ── */
+/* ── Night — blacks down, panels denser, type to greyish white ── */
 :root[data-mode="night"] {
   --time-page: rgb(0 0 0);
-  --time-surface: rgb(0 0 0 / 0.92);
-  --time-panel: rgb(0 0 0 / 0.95);
-  /* Dimmed only slightly: long prose still has to carry the article. */
-  --time-ink: rgb(244 244 245 / 0.93);
-  --time-ink-muted: rgb(161 161 170 / 0.78);
-  --time-border: rgb(255 255 255 / 0.4);
-  --time-highlight: rgb(255 255 255 / 0.85);
-  --time-scrim: rgb(0 0 0 / 0.95);
+  --time-surface: rgb(0 0 0 / 0.95);
+  --time-panel: rgb(0 0 0 / 0.96);
+  --time-ink: rgb(206 206 211 / 0.95);
+  --time-ink-muted: rgb(140 140 148 / 0.85);
+  --time-border: rgb(255 255 255 / 0.5);
+  --time-highlight: rgb(255 255 255 / 0.9);
+  --time-scrim: rgb(0 0 0 / 0.96);
+
+  /* Night accents: the same hues as tokens.css, lifted to full saturation and
+     ~8 points brighter so they read as glowing neon on pure black. Day keeps
+     the original values. When adding a theme, add its night value here too. */
+  --theme-primary: rgb(255 182 146);
+  --theme-secondary: rgb(187 142 255);
+  --theme-terminal: rgb(255 233 148);
+  --theme-forest: rgb(225 255 137);
+  --theme-sunset: rgb(255 132 207);
+  --theme-ocean: rgb(41 144 255);
+  --theme-forest2: rgb(109 255 167);
 }
 
 /* ── UI text aliases ──
@@ -82,4 +95,26 @@ html,
 body {
   background-color: var(--time-page);
   color: var(--time-ink);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   NIGHT BACKDROPS — page backdrops 33% darker
+   ════════════════════════════════════════════════════════════════
+   Only the full-page background layers are dimmed (brightness 0.67 = 33%
+   less light); content images, thumbnails and portraits stay untouched.
+
+   - `.blurred-bg-layer` keeps its blur on the wrapper, so the brightness
+     goes on the <img> inside it.
+   - `.gallery-bg` is the portfolio's blurred backdrop wrapper.
+   - `.bg-layer` needs `!important` and the blur kept in the chain: the blog
+     page script writes that element's filter inline while scrolling.
+   ════════════════════════════════════════════════════════════════ */
+
+:root[data-mode="night"] .blurred-bg-layer img,
+:root[data-mode="night"] .gallery-bg {
+  filter: brightness(0.8);
+}
+
+:root[data-mode="night"] .bg-layer {
+  filter: blur(var(--layer-blur, 0px)) brightness(0.8) !important;
 }
