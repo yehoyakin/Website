@@ -18,7 +18,7 @@ const links = [
   {/* The clickable/hoverable chainlink tab handle */}
   <button
     id="socials-toggle"
-    class="bg-black text-white p-3 rounded-none shadow-lg cursor-pointer select-none border border-r-0 border-white/20 group-[.socials-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
+    class="bg-[var(--time-surface)] text-[color:var(--time-ink)] p-3 rounded-none shadow-lg cursor-pointer select-none border border-r-0 border-[color:var(--time-border-soft)] group-[.socials-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
     aria-label="Toggle Social Links"
     type="button"
   >
@@ -40,7 +40,7 @@ const links = [
 
   <div
     id="socials-panel"
-    class="bg-zinc-900/95 backdrop-blur-md p-6 rounded-none border border-white/10 shadow-2xl w-64 max-h-[70vh] overflow-y-auto"
+    class="bg-[var(--time-panel)] backdrop-blur-md p-6 rounded-none border border-[color:var(--time-border-soft)] shadow-2xl w-64 max-h-[70vh] overflow-y-auto"
   >
     <div class="space-y-3">
       {

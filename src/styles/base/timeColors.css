@@ -1,0 +1,85 @@
+/* Purpose: Styles - src/styles/base/timeColors.css (Day / night colours)
+
+   ONE PALETTE, TWO OPACITIES
+   --------------------------
+   Both modes keep the site's colours: near-black fills and white type. The
+   switch only changes brightness and opacity:
+
+     day    the original look — bright whites, translucent dark fills
+     night  the same palette pushed darker and more opaque
+
+   THE WHOLE SET
+   -------------
+     --time-page       page background and opaque frames
+     --time-surface    buttons, bars, filled controls
+     --time-panel      cards, sidebars, headers, drawers (over imagery)
+     --time-ink        main font colour
+     --time-ink-muted  secondary font colour
+     --time-border     outlines around buttons / highlights
+     --time-highlight  filled accents (action buttons, hovers); text is --time-black
+     --time-scrim      washes over page imagery
+
+   Everything else is derived from those, so a mode is eight values.
+
+   THEME COLOURS NEVER CHANGE
+   --------------------------
+   The neon accents in base/tokens.css (--theme-*, --project-tag-color,
+   --accent-*) are deliberately NOT redefined here, so an accent reads with the
+   same hue in both modes.
+
+   Mode selection: day is the default (no attribute needed). `data-mode="night"`
+   on <html> is set by the toggle in `components/shared/ModeToggle.astro`,
+   persisted by `scripts/modeToggle.js`; a first visit follows the OS
+   colour-scheme preference.
+*/
+
+:root {
+  /* ── The two time colours ── */
+  --time-white: rgb(255 255 255);
+  --time-black: rgb(9 9 11);
+
+  /* ── Day — the original look: bright whites, translucent darks ── */
+  --time-page: var(--time-black);
+  --time-surface: rgb(9 9 11 / 0.75);
+  --time-panel: rgb(9 9 11 / 0.62);
+  --time-ink: rgb(244 244 245);
+  --time-ink-muted: rgb(161 161 170);
+  --time-border: rgb(255 255 255 / 0.7);
+  --time-highlight: var(--time-white);
+  --time-scrim: rgb(9 9 11 / 0.85);
+
+  color-scheme: dark;
+
+  /* ── Derived (same formula in both modes) ── */
+  --time-border-soft: color-mix(in srgb, var(--time-border) 11%, transparent);
+  --time-wash: color-mix(in srgb, var(--time-ink) 4%, transparent);
+  --time-shadow: rgb(0 0 0 / 0.6);
+}
+
+/* ── Night — same colours, darker and more opaque ── */
+:root[data-mode="night"] {
+  --time-page: rgb(0 0 0);
+  --time-surface: rgb(0 0 0 / 0.92);
+  --time-panel: rgb(0 0 0 / 0.95);
+  /* Dimmed only slightly: long prose still has to carry the article. */
+  --time-ink: rgb(244 244 245 / 0.93);
+  --time-ink-muted: rgb(161 161 170 / 0.78);
+  --time-border: rgb(255 255 255 / 0.4);
+  --time-highlight: rgb(255 255 255 / 0.85);
+  --time-scrim: rgb(0 0 0 / 0.95);
+}
+
+/* ── UI text aliases ──
+   Title/Body pick these through config/uiDictionary.ts. */
+:root {
+  --ui-base: var(--time-ink);
+  --ui-muted: var(--time-ink-muted);
+  --ui-invert: var(--time-ink);
+}
+
+/* ── Page ── */
+html,
+body {
+  background-color: var(--time-page);
+  color: var(--time-ink);
+}

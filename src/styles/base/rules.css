@@ -16,7 +16,8 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
-  background: black;
+  /* Day / night page colour — see base/timeColors.css. */
+  background: var(--time-page, black);
 }
 
 body {

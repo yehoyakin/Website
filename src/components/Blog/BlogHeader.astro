@@ -15,7 +15,7 @@ const { title, description, date, theme = "primary" } = Astro.props as Props;
 ---
 
 <header
-  class="space-y-6 rounded-none border border-zinc-800/60 bg-black/60 p-8 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[inset_0_0_80px_rgba(0,0,0,0.4)] text-center relative overflow-hidden"
+  class="space-y-6 rounded-none border border-[color:var(--time-border-soft)] bg-[var(--time-panel)] p-8 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[inset_0_0_80px_var(--time-shadow)] text-center relative overflow-hidden"
 >
   <Title
     level={1}
@@ -27,7 +27,7 @@ const { title, description, date, theme = "primary" } = Astro.props as Props;
 
   <Body
     theme={theme}
-    class="mx-auto max-w-3xl text-zinc-400 text-center text-sm sm:text-base readable-text"
+    class="mx-auto max-w-3xl text-[color:var(--time-ink-muted)] text-center text-sm sm:text-base readable-text"
   >
     {description}
   </Body>

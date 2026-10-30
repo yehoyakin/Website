@@ -99,7 +99,7 @@ const renderScene = (
   const captionText = captionOverride ?? scene.caption ?? "";
   const sizeClass = getSceneSizeClass(sizeOverride || "default");
 
-  let figureClass = `scene-reveal my-6 overflow-hidden rounded-none border border-zinc-800 bg-black w-full ${sizeClass} mx-auto`;
+  let figureClass = `scene-reveal my-6 overflow-hidden rounded-none border border-[color:var(--time-border-soft)] bg-[var(--time-page)] w-full ${sizeClass} mx-auto`;
 
   let imgClass = "block w-full h-auto";
 
@@ -239,7 +239,7 @@ const renderVideo = (
   const title = video.title || `Video ${videoIndex}`;
 
   let figureClass =
-    "scene-reveal my-6 overflow-hidden rounded-none border border-zinc-800 bg-black w-full";
+    "scene-reveal my-6 overflow-hidden rounded-none border border-[color:var(--time-border-soft)] bg-[var(--time-page)] w-full";
 
   switch (align) {
     case "left":
@@ -372,7 +372,7 @@ const sceneHtml =
 
             const aspectClass = getAspectClass(scene.size ?? "auto");
             const figureClass =
-              `my-0 overflow-hidden rounded-none border border-zinc-800 bg-black w-full ${aspectClass ? aspectClass : ""}`.trim();
+              `my-0 overflow-hidden rounded-none border border-[color:var(--time-border-soft)] bg-[var(--time-page)] w-full ${aspectClass ? aspectClass : ""}`.trim();
             const imgClass = aspectClass
               ? "block h-full w-full object-cover object-center"
               : "block w-full h-auto";
@@ -408,9 +408,9 @@ const sceneHtml =
 {/* Article content container. */}
 <div
   class="prose prose-invert max-w-none rounded-none
-         border border-zinc-800/50 bg-black/60
+         border border-[color:var(--time-border-soft)] bg-[var(--time-panel)]
          p-4 sm:p-6 md:p-8 backdrop-blur-2xl
-         shadow-[inset_0_0_80px_rgba(0,0,0,0.4)]"
+         shadow-[inset_0_0_80px_var(--time-shadow)]"
   id="blog-content"
 >
   <div set:html={sceneHtml} />

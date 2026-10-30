@@ -23,9 +23,9 @@
 .thats-all-text {
   font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 700;
-  color: white;
+  color: var(--time-ink, white);
   text-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.8),
+    0 2px 8px var(--time-shadow, rgba(0, 0, 0, 0.8)),
     0 0 40px rgba(255, 155, 105, 0.3);
   letter-spacing: 0.05em;
   transform: translateY(1rem);

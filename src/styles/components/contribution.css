@@ -71,13 +71,15 @@
 
   text-transform: uppercase;
 
-  color: #09090b;
+  /* Follows the day/night switch: a bright white chip by day, the dimmed
+     highlight white at night (see base/timeColors.css). */
+  color: var(--time-black, #09090b);
 
-  background: white;
+  background: var(--time-highlight, white);
 
-  border: 2px solid #09090b;
+  border: 2px solid var(--time-black, #09090b);
 
-  box-shadow: 0.1875rem 0.1875rem 0 #09090b;
+  box-shadow: 0.1875rem 0.1875rem 0 var(--time-black, #09090b);
 
   transition:
     transform 0.12s steps(3),
@@ -87,5 +89,5 @@
 .project-role:hover {
   transform: translate(0.125rem, 0.125rem);
 
-  box-shadow: 0.0625rem 0.0625rem 0 #09090b;
+  box-shadow: 0.0625rem 0.0625rem 0 var(--time-black, #09090b);
 }

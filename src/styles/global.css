@@ -11,6 +11,8 @@
 
 @import "base/layout.css";
 @import "base/tokens.css";
+/* Day / night surfaces and font colours (theme accents stay untouched). */
+@import "base/timeColors.css";
 @import "base/theme-colors.css";
 @import "components/components.css";
 @import "base/typography.css";
@@ -28,6 +30,7 @@
 @import "components/blogCards.css";
 @import "components/thatsAll.css";
 @import "components/retroScrollbar.css";
+@import "components/modeToggle.css";
 @import "components/blogProse.css";
 @import "base/font-faces.css";
 @import "base/fonts.css";

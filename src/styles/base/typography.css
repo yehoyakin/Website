@@ -1,8 +1,9 @@
 /* Purpose: Styles - src/styles/base/typography.css (Typography tokens and font rules) */
 
-/* Shadow for readability against blurred backgrounds */
+/* Shadow for readability against blurred backgrounds. Light mode needs a
+   light halo around dark type, night mode a dark one — see timeColors.css. */
 .readable-text {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 3px var(--time-shadow, rgba(0, 0, 0, 0.5));
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -20,27 +21,27 @@
 /* 2px outline — standard */
 .outline-2 {
   text-shadow:
-    0 2px 0 #000,
-    0 -2px 0 #000,
-    2px 0 0 #000,
-    -2px 0 0 #000,
-    2px 2px 0 #000,
-    -2px -2px 0 #000,
-    2px -2px 0 #000,
-    -2px 2px 0 #000;
+    0 2px 0 var(--time-black),
+    0 -2px 0 var(--time-black),
+    2px 0 0 var(--time-black),
+    -2px 0 0 var(--time-black),
+    2px 2px 0 var(--time-black),
+    -2px -2px 0 var(--time-black),
+    2px -2px 0 var(--time-black),
+    -2px 2px 0 var(--time-black);
 }
 
 /* 3px outline — thick, for h1 */
 .outline-3 {
   text-shadow:
-    0 3px 0 #000,
-    0 -3px 0 #000,
-    3px 0 0 #000,
-    -3px 0 0 #000,
-    3px 3px 0 #000,
-    -3px -3px 0 #000,
-    3px -3px 0 #000,
-    -3px 3px 0 #000;
+    0 3px 0 var(--time-black),
+    0 -3px 0 var(--time-black),
+    3px 0 0 var(--time-black),
+    -3px 0 0 var(--time-black),
+    3px 3px 0 var(--time-black),
+    -3px -3px 0 var(--time-black),
+    3px -3px 0 var(--time-black),
+    -3px 3px 0 var(--time-black);
 }
 
 #blog-content {
@@ -53,14 +54,14 @@
 #blog-content p {
   margin: 1.5rem 0;
   text-align: justify;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 4px var(--time-shadow, rgba(0, 0, 0, 0.6));
 }
 
 #blog-content h1,
 #blog-content h2,
 #blog-content h3 {
-  color: #f4f4f5;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  color: var(--time-ink);
+  text-shadow: 0 2px 6px var(--time-shadow, rgba(0, 0, 0, 0.8));
   margin-top: 2.5rem;
   margin-bottom: 1rem;
 }
@@ -99,6 +100,6 @@
 /* blockquotes */
 #blog-content blockquote {
   border-left: 4px solid var(--theme-primary);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--time-wash);
   padding: 1rem 1.5rem;
 }

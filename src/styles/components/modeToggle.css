@@ -1,0 +1,80 @@
+/* Purpose: Styles - src/styles/components/modeToggle.css (Day / night switch)
+
+   The button lives in `components/shared/ModeToggle.astro` and is rendered on
+   every page by MyLayout.astro, pinned to the top-right corner. Its colours
+   come from base/timeColors.css, so it flips with the mode it switches. */
+
+.mode-toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 60;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+
+  border: 2px solid var(--time-border);
+  background: var(--time-surface);
+  color: var(--time-ink);
+  cursor: pointer;
+  touch-action: manipulation;
+
+  transition:
+    transform var(--duration-press) var(--ease-press),
+    background-color var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft),
+    color var(--duration-fast) var(--ease-soft),
+    box-shadow var(--duration-fast) var(--ease-soft);
+}
+
+.mode-toggle:hover {
+  background: var(--time-highlight);
+  color: var(--time-black);
+  border-color: var(--time-highlight);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 0 var(--time-highlight);
+}
+
+.mode-toggle:focus-visible {
+  outline: 2px solid var(--project-tag-color, var(--theme-primary));
+  outline-offset: 3px;
+}
+
+/* One icon at a time: the sun marks night mode (click to get day back), the
+   moon marks day mode. */
+.mode-toggle-icon {
+  display: none;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+:root[data-mode="night"] .mode-toggle-icon--sun {
+  display: block;
+}
+
+:root:not([data-mode="night"]) .mode-toggle-icon--moon {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .mode-toggle {
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-toggle {
+    transition: none;
+  }
+
+  .mode-toggle:hover {
+    transform: none;
+  }
+}

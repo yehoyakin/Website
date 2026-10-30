@@ -36,7 +36,7 @@ const { background, left, right, footerText = "" } = Astro.props as Props;
     )
   }
 
-  <div class="absolute inset-0 bg-zinc-950/85 pointer-events-none"></div>
+  <div class="absolute inset-0 bg-[var(--time-scrim)] pointer-events-none"></div>
 
   <div class="relative z-10 flex min-h-full flex-col justify-between">
     <div class="grid grid-cols-1 gap-0 md:grid-cols-2 flex-1 w-full min-h-0">
@@ -48,7 +48,7 @@ const { background, left, right, footerText = "" } = Astro.props as Props;
           description={left.description}
           actionText={left.actionText}
           theme={left.theme ?? "primary"}
-          class="h-full w-full border-b border-zinc-800/60 md:border-b-0 md:border-r border-zinc-800/60"
+          class="h-full w-full border-b border-[color:var(--time-border-soft)] md:border-b-0 md:border-r"
         >
           <Portrait slot="background" src={left.imageSrc} size="xl" />
         </Card>
@@ -72,12 +72,12 @@ const { background, left, right, footerText = "" } = Astro.props as Props;
 
     {/* FOOTER BAR */}
     <div
-      class="shrink-0 border-t border-zinc-800/60 bg-zinc-950/50 px-3 py-2 sm:px-8 sm:py-6 backdrop-blur-md"
+      class="shrink-0 border-t border-[color:var(--time-border-soft)] bg-[var(--time-panel)] px-3 py-2 sm:px-8 sm:py-6 backdrop-blur-md"
     >
       <div class="mx-auto max-w-2xl text-center">
         <Body
           theme="primary"
-          class="text-[0.625rem] sm:text-sm italic text-zinc-500"
+          class="text-[0.625rem] sm:text-sm italic text-[color:var(--time-ink-muted)]"
         >
           {footerText}
         </Body>

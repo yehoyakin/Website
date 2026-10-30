@@ -91,7 +91,7 @@ const isExternal = (url?: string) =>
       href={resolve(href)}
       target={isExternal(href) ? "_blank" : undefined}
       rel={isExternal(href) ? "noopener noreferrer" : undefined}
-      class={` overflow-hidden border border-zinc-800 bg-zinc-950/60 transition hover:scale-[1.01] ${extraClass}`}
+      class={` overflow-hidden border border-[color:var(--time-border-soft)] bg-[var(--time-panel)] transition hover:scale-[1.01] ${extraClass}`}
     >
       <div class="flex items-center gap-4 p-4">
         {backgroundImage && (

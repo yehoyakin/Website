@@ -108,7 +108,7 @@ const cardClasses = [
 
         <Title
           theme={themeName}
-          class={`card-project-title text-white ${baseText}`}
+          class={`card-project-title text-[color:var(--time-ink)] ${baseText}`}
         >
           {title}
         </Title>
@@ -144,7 +144,7 @@ const cardClasses = [
             <div class="project-preview">
               <div class="project-description-preview">
                 <div
-                  class="prose prose-invert max-w-none text-sm sm:text-base text-zinc-300 drop-shadow-[0_1px_3px_rgba(0,0,0,1)] theme-color readable-text"
+                  class="prose prose-invert max-w-none text-sm sm:text-base text-[color:var(--time-ink)] drop-shadow-[0_1px_3px_rgba(0,0,0,1)] theme-color readable-text"
                   style={`--project-tag-color: ${dynamicToken}`}
                   set:html={fullDescription}
                 />
@@ -158,7 +158,7 @@ const cardClasses = [
             <div class="project-drawer">
               <div class="project-drawer-inner">
                 <div
-                  class="prose prose-invert max-w-none text-sm sm:text-base text-zinc-200 theme-color readable-text"
+                  class="prose prose-invert max-w-none text-sm sm:text-base text-[color:var(--time-ink)] theme-color readable-text"
                   style={`--project-tag-color: ${dynamicToken}`}
                   set:html={fullDescription}
                 />

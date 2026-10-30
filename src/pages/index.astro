@@ -11,7 +11,7 @@ import { asset } from "../utils/asset";
   {/* Full-screen backdrop for the landing experience. */}
   <div
     id="landing-viewport"
-    class="fixed inset-0 w-full h-screen overflow-y-auto md:overflow-hidden bg-zinc-950"
+    class="fixed inset-0 w-full h-screen overflow-y-auto md:overflow-hidden bg-[var(--time-page)]"
   >
     {/* Background image layer with a soft blur effect. */}
     <div class="fixed inset-0 z-0 pointer-events-none style3d blurred-bg-layer">
@@ -21,9 +21,6 @@ import { asset } from "../utils/asset";
         alt=""
       />
     </div>
-
-    {/* Dark overlay to improve text contrast. */}
-    <div class="fixed inset-0 z-10 pointer-events-none"></div>
 
     {/* Split layout for the hero and supporting content. */}
     <div
@@ -38,7 +35,7 @@ import { asset } from "../utils/asset";
         /* HEADER SECTION: Max height limits keep it from drowning out the splits */
       }
       <div
-        class="w-full md:max-h-[75vh] md:min-h-[50vh] flex items-center justify-center overflow-hidden p-2"
+        class="w-full md:max-h-[75vh] md:min-h-[50vh] flex items-center justify-center overflow-hidden p-2 pt-16 md:pt-2"
       >
         <HeaderInfo
           name="Joaquin Herrera"

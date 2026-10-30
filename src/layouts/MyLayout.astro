@@ -3,6 +3,7 @@ import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import { toThemeName, toThemeToken } from "../config/uiDictionary";
 import { asset } from "../utils/asset";
+import ModeToggle from "../components/shared/ModeToggle.astro";
 
 const { title = "JoacoDev", theme } = Astro.props;
 
@@ -37,6 +38,24 @@ const PIXEL_STEPS = [4, 6, 9, 13, 19, 27, 40];
     />
     <title>{title}</title>
 
+    {/* Apply the day / night choice before first paint so the page never
+        flashes the other mode. A stored choice wins; a first visit follows the
+        OS colour-scheme preference. Kept in sync with scripts/modeToggle.js
+        (resolveMode). */}
+    <script is:inline>
+      try {
+        var storedMode = localStorage.getItem("time-mode");
+        document.documentElement.dataset.mode =
+          storedMode === "night" || storedMode === "day"
+            ? storedMode
+            : window.matchMedia?.("(prefers-color-scheme: dark)").matches
+              ? "night"
+              : "day";
+      } catch {
+        document.documentElement.dataset.mode = "day";
+      }
+    </script>
+
     {/* Favicons live in public/ and are prefixed with BASE_URL so they resolve
         under the configured base path (see astro.config.mjs). */}
     <link rel="icon" type="image/svg+xml" href={asset("favicon.svg")} />
@@ -48,10 +67,12 @@ const PIXEL_STEPS = [4, 6, 9, 13, 19, 27, 40];
   </head>
 
   <body
-    class="bg-zinc-950 text-zinc-100 antialiased selection:bg-amber-500/30 selection:text-white"
+    class="bg-[var(--time-page)] text-[color:var(--time-ink)] antialiased selection:bg-amber-500/30 selection:text-white"
   >
+    <ModeToggle />
+
     <div
-      class="fixed inset-0 bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"
+      class="fixed inset-0 bg-[linear-gradient(to_right,var(--time-border-soft)_1px,transparent_1px),linear-gradient(to_bottom,var(--time-border-soft)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"
     >
     </div>
 
@@ -132,6 +153,7 @@ const PIXEL_STEPS = [4, 6, 9, 13, 19, 27, 40];
     }
     <script>
       import "../scripts/socialsHook.js";
+      import "../scripts/modeToggle.js";
     </script>
   </body>
 </html>

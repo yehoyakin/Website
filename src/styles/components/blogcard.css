@@ -22,7 +22,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--time-border-soft);
   text-decoration: none;
   color: inherit;
   position: relative;
@@ -39,17 +39,17 @@
 .blog-card:hover {
   transform: translateY(-6px);
   border-color: var(--project-tag-color, rgba(255, 255, 255, 0.2));
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 40px var(--time-shadow);
 }
 
 .blog-card-bar {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--time-surface);
   padding: 0.75rem 1.25rem;
   transition: background-color var(--duration-base) var(--ease-soft);
 }
 
 .blog-card:hover .blog-card-bar {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: color-mix(in srgb, var(--time-surface) 80%, transparent);
 }
 
 .blog-card-info-bar {
@@ -65,7 +65,7 @@
   min-height: clamp(4rem, 24vw, 18rem);
   overflow: hidden;
   position: relative;
-  background: rgb(0, 0, 0);
+  background: var(--time-page);
 }
 
 .blog-card-bg {

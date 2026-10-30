@@ -20,7 +20,7 @@
 
   cursor: pointer;
 
-  background: #09090b;
+  background: var(--time-surface);
 
   text-decoration: none;
 
@@ -86,10 +86,12 @@
 
   z-index: 1;
 
+  /* Keeps a dark stop at the right edge so the portrait behind the card never
+     washes out the copy; the end stop follows the mode like every panel. */
   background: linear-gradient(
     90deg,
-    rgba(9, 9, 11, 0.85),
-    rgba(9, 9, 11, 0.35)
+    var(--time-panel),
+    color-mix(in srgb, var(--time-panel) 55%, transparent)
   );
 
   transition: opacity 320ms var(--ease-soft);
@@ -170,9 +172,9 @@
 
   padding: 0.75rem 1.5rem;
 
-  background: white;
+  background: var(--time-highlight);
 
-  color: black;
+  color: var(--time-black);
 
   font-family: var(--retro-font);
 
@@ -187,9 +189,9 @@
 }
 
 .split-card:hover .split-card-action {
-  background: black;
+  background: var(--time-surface);
 
-  color: white;
+  color: var(--time-ink);
 }
 
 /* =========================================================

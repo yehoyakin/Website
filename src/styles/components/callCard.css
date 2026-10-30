@@ -219,7 +219,7 @@
 .card-description {
   max-width: 38rem;
 
-  color: #a1a1aa;
+  color: var(--time-ink-muted, #a1a1aa);
 
   font-size: 0.9rem;
 
@@ -257,7 +257,7 @@
 
   text-transform: uppercase;
 
-  color: white;
+  color: var(--time-ink, white);
 
   opacity: 0.7;
 }
@@ -378,8 +378,9 @@
 .project-drawer-inner {
   padding: 1rem;
 
-  /* semi-opaque black background to ensure text remains readable over blurred image */
-  background: rgba(0, 0, 0, 0.58);
+  /* Dark fill that keeps the prose readable over the blurred image; denser at
+     night, like every other panel (see base/timeColors.css). */
+  background: var(--time-panel, rgba(0, 0, 0, 0.58));
   backdrop-filter: blur(6px) saturate(0.95);
 }
 
@@ -413,8 +414,8 @@
   display: inline-block;
   padding: 0.22rem 0.5rem;
   border-radius: 0;
-  background: rgba(255, 255, 255, 0.03);
-  color: #e6e6e6;
+  background: var(--time-wash, rgba(255, 255, 255, 0.03));
+  color: var(--time-ink, #e6e6e6);
   font-size: var(--contribution-badge-font-size, 0.78rem);
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -429,7 +430,7 @@
   border-left: 2px solid rgba(255, 255, 255, 0.02);
   border-radius: 0;
   line-height: 1.48;
-  color: #cfcfd6;
+  color: var(--time-ink, #cfcfd6);
   font-weight: 400;
   font-size: var(--contribution-font-size, 1rem);
   opacity: 0.95;
@@ -443,7 +444,7 @@
   letter-spacing: 0.03em;
   text-transform: none;
   font-weight: 500;
-  color: #d6d6db;
+  color: var(--time-ink, #d6d6db);
 }
 
 .retro-contribution ul {
@@ -452,7 +453,7 @@
 
 .retro-contribution li {
   margin-bottom: 0.45rem;
-  color: #d0d0d6;
+  color: var(--time-ink-muted, #d0d0d6);
   font-size: var(--contribution-font-size, 1rem);
 }
 

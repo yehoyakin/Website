@@ -12,7 +12,7 @@ const { src, alt = "Portrait", size = "md" } = Astro.props;
 
 /* Corners are square across the site, so the frame is always squared off. */
 const baseClasses =
-  "relative overflow-hidden bg-zinc-950 isolate box-border rounded-none";
+  "relative overflow-hidden bg-[var(--time-page)] isolate box-border rounded-none";
 
 const sizeMap = {
   sm: "w-32 h-32 md:w-40 md:h-40",

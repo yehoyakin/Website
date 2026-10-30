@@ -13,14 +13,19 @@ interface Props {
 
 const { href, text = "", external, class: extraClass = "", icon } = Astro.props;
 
+// Buttons with an icon pin it to the left edge so icons line up in a stack,
+// even when the labels are different lengths. Text-only buttons stay centred.
+const alignment = icon ? "justify-start" : "justify-center";
+
 const classes = [
-  "retro-link group relative overflow-hidden flex items-center justify-center gap-2",
-  "rounded-none px-4 py-2 text-xs uppercase tracking-[0.25em] text-white",
-  "bg-zinc-950 border-2 border-white/70",
+  "retro-link group relative overflow-hidden flex items-center gap-2",
+  alignment,
+  "rounded-none px-4 py-2 text-xs uppercase tracking-[0.25em] text-[color:var(--time-ink)]",
+  "bg-[var(--time-surface)] border-2 border-[color:var(--time-border)]",
   "transition-all duration-100 ease-[steps(2)]",
-  "hover:bg-white hover:text-zinc-950 hover:border-white",
+  "hover:bg-[var(--time-highlight)] hover:text-[color:var(--time-black)] hover:border-[color:var(--time-highlight)]",
   "hover:translate-x-[-0.125rem] hover:translate-y-[-0.125rem]",
-  "hover:shadow-[0.25rem_0.25rem_0px_0px_white]",
+  "hover:shadow-[0.25rem_0.25rem_0px_0px_var(--time-highlight)]",
   extraClass,
 ]
   .filter(Boolean)
@@ -33,7 +38,7 @@ const classes = [
   rel={external ? "noopener noreferrer" : undefined}
   class={classes}
 >
-  {icon && <Icon name={icon} class="relative z-10 h-8 w-8" />}
+  {icon && <Icon name={icon} class="relative z-10 h-8 w-8 shrink-0" />}
   <span class="relative z-10">{text}</span>
   <span class="pixel-highlight"></span>
 </a>

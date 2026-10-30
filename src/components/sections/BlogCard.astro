@@ -32,7 +32,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     <Icon name="Calendar" class="h-8 w-8" />
     <Body
       theme={themeName}
-      class="blog-card-date text-xs sm:text-sm text-zinc-400 group-hover:text-[color:var(--project-tag-color)] readable-text"
+      class="blog-card-date text-xs sm:text-sm text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--project-tag-color)] readable-text"
     >
       {date.toDateString()}
     </Body>
@@ -66,7 +66,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
     <Body
       theme={themeName}
-      class="blog-card-desc mt-2 text-sm sm:text-base text-zinc-400 group-hover:text-zinc-300 readable-text"
+      class="blog-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
     >
       {post.data.description}
     </Body>
