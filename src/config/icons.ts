@@ -273,7 +273,7 @@ export const netIconRegistry: Record<string, string> = {
 
 export type NetIconBrand = keyof typeof netIconRegistry;
 
-/** Path inside public/ for a brand glyph, e.g. "github" → …/github112.png. */
+/** Path inside public/ for a brand glyph, e.g. "github" → …/github112.webp. */
 export const netIconPath = (brand?: string): string | undefined => {
   if (!brand?.trim()) return undefined;
 
@@ -281,7 +281,7 @@ export const netIconPath = (brand?: string): string | undefined => {
 
   if (!file) return undefined;
 
-  return `${NET_ICON_DIRECTORY}/${matchFile(NET_ICON_DIRECTORY, `${file}.png`)}`;
+  return `${NET_ICON_DIRECTORY}/${matchFile(NET_ICON_DIRECTORY, `${file}.webp`)}`;
 };
 
 /** Host fragments → brand key, longest-first so sub-domains still match. */

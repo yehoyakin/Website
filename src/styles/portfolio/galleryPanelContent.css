@@ -28,14 +28,19 @@
 
    It is a `pattern-plate` (the blog masthead's recipe: tinted near-black fill,
    accent gradient, scrolling texture), so the only thing this rule owns is
-   geometry. `inset-inline: 0` makes it exactly as wide as the page box — no
-   `100vw`, nothing to clip — and `bottom: 0` takes it to the page's bottom
-   edge; the gallery script writes `top` for the open project. */
+   geometry. The page box sits inside the layout's horizontal gutter, so
+   `inset-inline: 0` would stop short of both edges; the band is instead
+   centred on the page box at `100vw` and pulled back by half its own width,
+   which puts it under the gutter and out to the viewport edges (`main` clips
+   the overflow). `bottom: 0` takes it to the page's bottom edge; the gallery
+   script writes `top` for the open project. */
 .project-band {
   position: absolute;
-  inset-inline: 0;
   top: 0;
   bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
   z-index: 1;
   display: none;
   pointer-events: none;

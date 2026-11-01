@@ -93,9 +93,10 @@
 }
 
 /* Role chip: the project's own accent, like every other mark on the panel.
-   The plate is the near-black carrying a wash of that accent, the label is
-   white lifted with the same colour, and the border is the accent itself.
-   Plain values come first as the fallback, then the mixed ones. */
+   The plate is white carrying a wash of that accent and the label is the
+   near-black carrying the same accent, so the chip reads light on the dark
+   panel; the border is the accent itself. Plain values come first as the
+   fallback, then the mixed ones. */
 .project-role {
   --role-accent: var(--project-tag-color, var(--icon-accent));
   padding: 0.45rem 0.85rem;
@@ -114,8 +115,8 @@
 }
 
 .project-role {
-  color: color-mix(in srgb, var(--time-white) 62%, var(--role-accent));
-  background: color-mix(in srgb, var(--role-accent) 24%, var(--time-black));
+  color: color-mix(in srgb, var(--role-accent) 24%, var(--time-black));
+  background: color-mix(in srgb, var(--time-white) 62%, var(--role-accent));
   border-color: color-mix(in srgb, var(--role-accent) 70%, transparent);
 }
 
