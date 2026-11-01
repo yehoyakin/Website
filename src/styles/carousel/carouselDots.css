@@ -46,10 +46,11 @@
   image-rendering: pixelated;
 }
 
+/* The grow is the shared button hover (pixelChrome/controlHover.css); only the
+   resting dim lifts here, so the dot does not scale twice. */
 .card-carousel-dot:hover .card-carousel-dot-icon,
 .card-carousel-dot:focus-visible .card-carousel-dot-icon {
   opacity: 0.75;
-  transform: scale(1.15);
 }
 
 /* The current slide keeps the full colour and a step of size. */

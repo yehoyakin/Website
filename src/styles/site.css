@@ -23,3 +23,7 @@
 @import "site/landingFit.css";
 /* Same idea for the listings: a short window gives the masthead less room. */
 @import "site/listingMasthead.css";
+/* The one button hover, LAST: it has to outrank the per-button hover rules
+   above (idle shake, tinted plates, carousel arrows) for `transform` and
+   `filter`, and every button on the site shares it. */
+@import "chrome/pixelChrome/controlHover.css";

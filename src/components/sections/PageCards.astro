@@ -78,17 +78,15 @@ const { pages = [], credits = [] } = Astro.props as Props;
     </ul>
 
     {
-      /* CREDITS BAR — site chrome, not a page card.
-         It wears the MODE base colour (`--icon-accent`) and the day base motif,
-         the same recipe the contact rail uses, so it follows day / night instead
-         of a theme. `shrink-0` keeps it on screen while the cards take the rest. */
+      /* CREDITS BAR — site chrome, not a page card, and deliberately SURFACELESS:
+         no plate, no pattern, no border, no blur. The credit buttons stand on
+         the page itself, so the bar reads as a line of links rather than as one
+         more panel under the cards. `shrink-0` keeps it on screen while the
+         cards take the rest. */
     }
     {
       credits.length > 0 && (
-        <div
-          class="pattern-plate pattern-plate--small relative shrink-0 border-t border-[color:var(--time-border-soft)] px-3 py-2 backdrop-blur-md sm:px-8 sm:py-3"
-          style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
-        >
+        <div class="relative shrink-0 px-3 py-2 sm:px-8 sm:py-3">
           <div class="credits-row">
             {
               credits.map((credit, index) => (

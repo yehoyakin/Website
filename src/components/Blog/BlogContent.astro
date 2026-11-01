@@ -63,8 +63,13 @@ const getSceneSizeClass = (size?: string) => {
       return "max-w-[90vw]";
     case "full":
       return "max-w-[95vw]";
+    /* Default is the READING COLUMN, not a viewport fraction: 60vw made a
+       picture 768px wide beside 976px of text on a desktop, and only 234px
+       wide beside 278px of text on a phone — an image narrower than the
+       paragraph it belongs to, at every size. The column is the measure the
+       figure is part of, so that is the width it takes. */
     default:
-      return "max-w-[60vw]";
+      return "max-w-full";
   }
 };
 

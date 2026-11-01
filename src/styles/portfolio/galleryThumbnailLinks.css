@@ -19,7 +19,8 @@
   letter-spacing: 0.1em !important;
 }
 
+/* The hover glow is the shared button hover; this row only drops the plate's
+   drop shadow, which would smear into the neighbouring buttons. */
 .thumb-links .retro-link:hover {
-  transform: none !important;
   box-shadow: none !important;
 }

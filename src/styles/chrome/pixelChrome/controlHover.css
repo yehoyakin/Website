@@ -1,0 +1,109 @@
+/* ONE HOVER FOR EVERY BUTTON — a small grow and a shine.
+
+   The day / night switch had this and nothing else did: its glyph took
+   `.icon-button:hover > img` (scale 1.12, brightness 1.3, saturate 1.2), while
+   link buttons only repainted, the carousel arrows only brightened, and the
+   desktop-view toggle had no hover at all — its glyph is wrapped in
+   `.icon-mode`, so an `> img` rule never matched it.
+
+   The effect lives on the CONTROL now, so it lands on plate buttons and bare
+   icon buttons alike and no wrapper can hide it. Same numbers everywhere:
+   scale 1.06, brightness 1.3, saturate 1.2. Hover colour still belongs to each
+   button (tinted plates deepen, panels brighten) — this only adds the motion
+   and the light. */
+
+/* `.retro-link.pixel-frame` / `.split-card-action` are listed with their full
+   class chain so this transition outranks the one in buttons.css: without it the
+   button kept only its colour transition and the grow snapped into place. The
+   colour properties come along so those hovers stay smooth. */
+.retro-link,
+.retro-link.pixel-frame,
+.back-link,
+.split-card-action,
+.icon-button,
+.mode-toggle,
+.view-toggle,
+.panel-toggle,
+.card-carousel-arrow,
+.card-carousel-dot {
+  transform-origin: center center;
+  transition:
+    transform var(--duration-fast) var(--ease-settle),
+    filter var(--duration-fast) var(--ease-soft),
+    background-color var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft),
+    color var(--duration-fast) var(--ease-soft),
+    box-shadow var(--duration-fast) var(--ease-soft);
+}
+
+.retro-link:hover,
+.retro-link:focus-visible,
+.back-link:hover,
+.back-link:focus-visible,
+.split-card-action:hover,
+.split-card-action:focus-visible,
+.icon-button:hover,
+.icon-button:focus-visible,
+.mode-toggle:hover,
+.mode-toggle:focus-visible,
+.view-toggle:hover,
+.view-toggle:focus-visible,
+.panel-toggle:hover,
+.panel-toggle:focus-visible,
+.card-carousel-arrow:hover,
+.card-carousel-arrow:focus-visible,
+.card-carousel-dot:hover,
+.card-carousel-dot:focus-visible {
+  /* The idle shake yields to the hover instead of fighting it for `transform`. */
+  animation: none;
+  transform: scale(1.06);
+  filter: brightness(1.3) saturate(1.2);
+}
+
+/* The collapse handle is centred with a translate, so its hover has to keep
+   that offset and grow around it. */
+.collapse-btn:hover,
+.collapse-btn:focus-visible {
+  transform: translateX(-50%) scale(1.06);
+  filter: brightness(1.3) saturate(1.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-link,
+  .back-link,
+  .split-card-action,
+  .icon-button,
+  .mode-toggle,
+  .view-toggle,
+  .panel-toggle,
+  .card-carousel-arrow,
+  .card-carousel-dot {
+    transition: none;
+  }
+  .retro-link:hover,
+  .retro-link:focus-visible,
+  .back-link:hover,
+  .back-link:focus-visible,
+  .split-card-action:hover,
+  .split-card-action:focus-visible,
+  .icon-button:hover,
+  .icon-button:focus-visible,
+  .mode-toggle:hover,
+  .mode-toggle:focus-visible,
+  .view-toggle:hover,
+  .view-toggle:focus-visible,
+  .panel-toggle:hover,
+  .panel-toggle:focus-visible,
+  .card-carousel-arrow:hover,
+  .card-carousel-arrow:focus-visible,
+  .card-carousel-dot:hover,
+  .card-carousel-dot:focus-visible,
+  .collapse-btn:hover,
+  .collapse-btn:focus-visible {
+    transform: none;
+  }
+  .collapse-btn:hover,
+  .collapse-btn:focus-visible {
+    transform: translateX(-50%);
+  }
+}

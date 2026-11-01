@@ -13,8 +13,4 @@
     background-color: hsl(from var(--outline-color) h s min(calc(l + 14), 84));
     border-color: hsl(from var(--outline-color) h s min(calc(l + 20), 88));
   }
-  .icon-button:hover > img,
-  .icon-button:focus-visible > img {
-    filter: brightness(1.3) saturate(1.2);
-  }
 }

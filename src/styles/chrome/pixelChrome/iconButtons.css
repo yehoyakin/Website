@@ -29,15 +29,7 @@
   height: var(--icon-button-glyph, 1.75rem);
 }
 
-/* Hover lift for the glyph inside any bare icon control. */
-.icon-button > img {
-  transition:
-    transform var(--duration-fast) var(--ease-settle),
-    filter var(--duration-fast) var(--ease-soft);
-}
-
-.icon-button:hover > img,
-.icon-button:focus-visible > img {
-  filter: brightness(1.3) saturate(1.2);
-  transform: scale(1.12);
-}
+/* The hover lives on the CONTROL, not on a glyph: one shared lift for every
+   button is in pixelChrome/controlHover.css. Keeping it off `> img` is what
+   makes it reach the controls whose glyph is wrapped (the day / night switch
+   and the desktop-view toggle render `.icon-mode` spans). */

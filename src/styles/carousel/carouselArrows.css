@@ -38,9 +38,6 @@
   image-rendering: pixelated;
 }
 
-/* The arrows wrap, so they are never disabled; hover is the only state, and
-   with no plate to light up it brightens the glyph instead. */
-.card-carousel-arrow:hover,
-.card-carousel-arrow:focus-visible {
-  filter: brightness(1.3) saturate(1.15);
-}
+/* The arrows wrap, so they are never disabled; hover is the only state, and it
+   is the site-wide button hover (pixelChrome/controlHover.css) — the same grow
+   and shine every other control uses. */
