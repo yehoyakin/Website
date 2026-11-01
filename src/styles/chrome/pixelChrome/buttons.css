@@ -1,0 +1,73 @@
+/* A lit tile: radial bloom under the top edge over a sinking fill. */
+.retro-link.pixel-frame,
+.split-card-action {
+  --outline-color: var(--project-tag-color, var(--time-border));
+  --outline-color-hover: var(--outline-color);
+  --tile-light: color-mix(in srgb, var(--outline-color) 65%, white);
+  --tile-dark: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
+  /* The accent at full strength; contrast comes from the label. */
+  --tile-fill: var(--outline-color);
+  /* Lighter than a panel: same tile recipe, control-sized frame and bevel. */
+  --tile-bevel: var(--control-bevel);
+  position: relative;
+  border: var(--control-outline-width) solid var(--tile-dark);
+  background-color: var(--tile-fill);
+  /* Lit from above: the shared top-lit band, plus a tight bloom under the top
+     edge so the plate reads as a raised, glowing key. */
+  background-image:
+    var(--button-lighting),
+    radial-gradient(
+      120% 85% at 50% -22%,
+      color-mix(in srgb, var(--tile-light) 90%, transparent) 0%,
+      transparent 74%
+    );
+  /* Hard bevel: bright along the top and left, dark along the bottom and right. */
+  box-shadow:
+    inset 0 var(--control-bevel) 0 0
+      color-mix(in srgb, var(--tile-light) 90%, transparent),
+    inset var(--control-bevel) 0 0 0
+      color-mix(in srgb, var(--tile-light) 45%, transparent),
+    inset calc(var(--control-bevel) * -1) 0 0 0
+      color-mix(in srgb, var(--tile-dark) 45%, transparent),
+    inset 0 calc(var(--control-bevel) * -1) 0 0
+      color-mix(in srgb, var(--tile-dark) 75%, transparent);
+  transition:
+    background-color var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft);
+}
+
+.split-card-action,
+.retro-link.pixel-frame {
+  /* Ten of twelve accents take black type; the two dark ones take white. */
+  color: var(--time-black);
+}
+
+@supports (color: contrast-color(red)) {
+  .split-card-action,
+  .retro-link.pixel-frame {
+    color: contrast-color(var(--outline-color));
+  }
+}
+
+/* Hover: the same tile, mixed further toward white. */
+.retro-link.pixel-frame:hover,
+.split-card-action:hover {
+  background-color: color-mix(in srgb, var(--outline-color) 85%, white);
+  border-color: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
+  color: var(--time-black);
+}
+
+/* Glyphs inside a tile need their own edge for the hover flip. */
+.retro-link.pixel-frame > img,
+.split-card-action > img {
+  transition: filter var(--duration-fast) var(--ease-soft);
+}
+
+.retro-link.pixel-frame:hover > img,
+.retro-link.pixel-frame:focus-visible > img {
+  filter:
+    drop-shadow(1px 0 0 var(--time-black))
+    drop-shadow(-1px 0 0 var(--time-black))
+    drop-shadow(0 1px 0 var(--time-black))
+    drop-shadow(0 -1px 0 var(--time-black));
+}

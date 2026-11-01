@@ -1,0 +1,21 @@
+/* Touch screens: no sticky :hover, no idle shake. */
+
+@media (hover: none) {
+  .retro-link,
+  .blog-card,
+  .gallery-thumb,
+  .split-card-action {
+    animation: none;
+  }
+  .blog-card:hover,
+  .gallery-thumb:hover,
+  .split-card:hover {
+    transform: none;
+  }
+  .blog-card:hover .blog-card-bg,
+  .gallery-thumb:hover .thumb-carousel-img.active,
+  .gallery-thumb:hover .blog-card-bar,
+  .split-card:hover .split-card-content {
+    transform: none;
+  }
+}

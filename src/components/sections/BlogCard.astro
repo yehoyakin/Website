@@ -1,5 +1,7 @@
 ---
+// Purpose: Component - src/components/sections/BlogCard.astro (Card for blog posts and projects)
 import type { BlogPost } from "../../types/blog";
+import type { ProjectEntry } from "../../types/project";
 import Title from "../UI/Title.astro";
 import Body from "../UI/Body.astro";
 import Icon from "../shared/Icon.astro";
@@ -7,53 +9,90 @@ import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 import { patternForTheme } from "../../config/patterns";
 import { asset } from "../../utils/asset";
 
+/* ONE CARD, TWO COLLECTIONS
+   -------------------------
+   A post and a project carry the same things a card needs: a title, a
+   one-line description, an image and a theme. The portfolio therefore reuses
+   this component instead of keeping a card of its own, so both listings are
+   literally the same markup and cannot drift apart again.
+
+   The two differences live in the meta line and the destination:
+
+     blog post  date + calendar glyph, links to the article
+     project    its engine / tool tag, links to its first store page
+*/
 type Props = {
-  post: BlogPost;
+  post?: BlogPost;
+  project?: ProjectEntry;
 };
 
-const { post } = Astro.props;
+const { post, project } = Astro.props as Props;
 
-const date = new Date(post.data.date);
+if (!post && !project) {
+  throw new Error("BlogCard needs a `post` or a `project`.");
+}
 
-const themeName = toThemeName(post.data.theme);
+const isExternal = (url: string) => /^https?:\/\//i.test(url);
+
+const themeName = toThemeName((post ?? project)!.data.theme);
 const dynamicToken = resolveThemeToken(themeName);
-
-/* The card's scrolling texture, in the post's own theme colour. Declared on
-   the anchor so both bars inherit it; the drawing lives in
-   styles/components/pixelFrame.css under `.pattern-plate`. */
-const cardStyle = [
-  `--project-tag-color: ${dynamicToken}`,
-  `--plate-pattern: url('${patternForTheme(themeName)}')`,
-].join("; ");
 
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
+
+const href = post
+  ? `${baseUrl}blog/${post.id}/`
+  : project!.data.links?.[0]?.href;
+
+const metaText = post
+  ? new Date(post.data.date).toDateString()
+  : project!.data.tag;
+const metaIcon = post ? "Calendar" : undefined;
+
+const image = post ? post.data.cardBackground : project!.data.cardBackground;
+const title = post ? post.data.title : project!.data.title;
+const description = post ? post.data.description : project!.data.description;
+
+/* Without a destination (a project with no links) the card renders as a plain
+   block: nothing that is not clickable should wear the link hover. */
+const Tag = (href ? "a" : "div") as any;
+const external = href ? isExternal(href) : false;
+
+/* The card's scrolling texture, in the entry's own theme colour. Declared on
+   the root so both bars inherit it; the drawing lives in
+   styles/chrome/pixelChrome.css under `.pattern-plate`. */
+const cardStyle = [
+  `--project-tag-color: ${dynamicToken}`,
+  `--plate-pattern: url('${patternForTheme(themeName)}')`,
+].join("; ");
 ---
 
-<a
-  href={`${baseUrl}blog/${post.id}/`}
+<Tag
+  href={href}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
   class="blog-card pixel-frame group"
   style={cardStyle}
 >
-  {/* TOP BAR - Date */}
+  {/* TOP BAR - date, or the project's engine / tool tag */}
   <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
-    <Icon name="Calendar" theme={themeName} class="h-8 w-8" />
+    {metaIcon && <Icon name={metaIcon} theme={themeName} class="h-8 w-8" />}
     <Body
       theme={themeName}
-      class="blog-card-date text-xs sm:text-sm text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--project-tag-color)] readable-text"
+      class="blog-card-date text-xs sm:text-sm"
     >
-      {date.toDateString()}
+      {metaText}
     </Body>
   </div>
 
   {/* IMAGE */}
   {
-    post.data.cardBackground && (
+    image && (
       <div class="blog-card-image-wrap">
         <img
           class="blog-card-bg"
-          src={asset(post.data.cardBackground)}
+          src={asset(image)}
           alt=""
           loading="lazy"
           decoding="async"
@@ -68,16 +107,16 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     <Title
       level={3}
       theme={themeName}
-      class="blog-card-title group-hover:text-[color:var(--project-tag-color)] readable-text"
+      class="blog-card-title"
     >
-      {post.data.title}
+      {title}
     </Title>
 
     <Body
       theme={themeName}
       class="blog-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
     >
-      {post.data.description}
+      {description}
     </Body>
   </div>
-</a>
+</Tag>

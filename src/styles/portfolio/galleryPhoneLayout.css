@@ -1,0 +1,85 @@
+/* Gallery phone layout: slide widths and controls. */
+
+@media (max-width: 768px) {
+  .gallery-thumbnails {
+    gap: 1rem;
+    padding: 0 0.75rem;
+  }
+  .gallery-thumb {
+    width: 70vw !important;
+  }
+  .thumb-links {
+    max-width: 70vw;
+  }
+  .gallery-thumb-title {
+    font-size: 1.05rem;
+  }
+  .gallery-thumb-desc {
+    font-size: 0.85rem;
+  }
+  .thumb-tag {
+    font-size: 0.75rem;
+  }
+  /* Body and screenshots stack, tighter gap. */
+  .project-panel-layout {
+    gap: 0.75rem;
+  }
+  .collapse-btn {
+    width: 3rem;
+    height: 3rem;
+  }
+  .collapse-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-thumb {
+    width: 85vw !important;
+  }
+  .thumb-links {
+    max-width: 85vw;
+  }
+  .gallery-thumb-title {
+    font-size: 1rem;
+  }
+  .gallery-thumb-desc {
+    font-size: 0.8rem;
+  }
+  .thumb-tag {
+    font-size: 0.7rem;
+  }
+  .collapse-btn {
+    width: 3.25rem;
+    height: 3.25rem;
+    top: -1.25rem;
+  }
+  .collapse-btn svg {
+    width: 1.625rem;
+    height: 1.625rem;
+  }
+  .thumb-links {
+    gap: 0.3rem;
+  }
+  .thumb-links .retro-link {
+    font-size: 0.8rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+}
+
+/* Respect reduced motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  .thumb-carousel-media {
+    transition: none !important;
+  }
+  .gallery-thumb {
+    transition: none !important;
+  }
+  .gallery-project-item {
+    transition: none !important;
+  }
+  .gallery-card-panel.panel-hover-preview {
+    transition: none !important;
+  }
+}

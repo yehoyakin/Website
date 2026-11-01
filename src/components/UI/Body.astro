@@ -11,14 +11,20 @@ interface Props {
   class?: string;
   /** Theme name — controls font, color and transition. Any string works. */
   theme?: string;
-  /** Add subtle text shadow for readability against blurred backgrounds. */
+  /**
+   * Readability shadow. ON by default: body copy sits over artwork as often as
+   * over a flat tile, and the two-layer shadow in
+   * styles/foundation/pixelTypeHierarchy.css keeps white text legible on the
+   * bright patches without ringing the letters. Pass `shadow={false}` on a dark
+   * plate where it is not wanted.
+   */
   shadow?: boolean;
 }
 
 const {
   class: customClass = "",
   theme: rawTheme,
-  shadow = false,
+  shadow = true,
 } = Astro.props;
 const themeName = toThemeName(rawTheme);
 const config = getThemeConfig(themeName);

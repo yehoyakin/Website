@@ -1,0 +1,59 @@
+/* Day / night switch. */
+
+.mode-toggle {
+  position: fixed;
+  top: var(--chrome-gutter);
+  right: var(--chrome-gutter);
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--time-ink);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    transform var(--duration-press) var(--ease-press),
+    background-color var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft),
+    color var(--duration-fast) var(--ease-soft),
+    box-shadow var(--duration-fast) var(--ease-soft);
+}
+
+.mode-toggle:hover {
+  background: transparent;
+  color: var(--time-ink);
+  box-shadow: none;
+}
+
+.mode-toggle:focus-visible {
+  outline: 2px solid var(--project-tag-color, var(--theme-orange));
+  outline-offset: 3px;
+}
+
+/* One icon at a time: the cloud means day, the moon means night. Its size is
+   the shared chrome glyph size (pixelChrome/iconButtons.css). */
+.mode-toggle-icon {
+  display: none;
+}
+
+:root[data-mode="night"] .mode-toggle-icon--weather {
+  display: block;
+}
+
+:root:not([data-mode="night"]) .mode-toggle-icon--cloud {
+  display: block;
+}
+
+/* No phone block needed: the chrome tokens step down for phones. */
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-toggle {
+    transition: none;
+  }
+  .mode-toggle:hover {
+    transform: none;
+  }
+}

@@ -22,21 +22,29 @@ const projects = await Promise.all(
 const bgDay = asset("images/pageBackgrounds/PortfolioDay.gif");
 const bgNight = asset("images/pageBackgrounds/PortfolioNight.gif");
 
-const cardPreviews = projects
-  .map((p) => asset(p.data.images[0]))
-  .filter(Boolean);
+const cardPreviews = projects.map((p) => asset(p.data.cardBackground)).filter(Boolean);
 
 const imagesToPreload = [bgDay, bgNight, ...cardPreviews];
 ---
 
 <MyLayout title="Portfolio | JoacoDev" preloadImages={imagesToPreload}>
+  {/* `relative` (not `absolute inset-0`): the page box has to grow with the
+      content so the project band below can run to its real bottom edge. */}
   <div
-    class="absolute inset-0 w-full min-h-screen overflow-x-hidden bg-[var(--time-page)]"
+    class="relative w-full min-h-screen overflow-x-hidden bg-[var(--time-page)]"
   >
     <PageBackdrop
       day="images/pageBackgrounds/PortfolioDay.gif"
       night="images/pageBackgrounds/PortfolioNight.gif"
     />
+
+    {/* Full-bleed project band. It lives at page level, not inside a panel, so
+        its width is the page's width and its `bottom` is the page's bottom;
+        the gallery script moves it to the open project and tints it. */}
+    <span
+      id="project-band"
+      class="project-band pattern-plate pattern-plate--medium"
+      aria-hidden="true"></span>
 
     <div class="absolute inset-0 z-10 pointer-events-none"></div>
 

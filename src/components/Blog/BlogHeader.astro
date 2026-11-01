@@ -14,35 +14,41 @@ interface Props {
 
 const { title, description, date, theme = "orange" } = Astro.props as Props;
 
-/* The title panel wears the post's pattern, the same scrolling tile the
-   project and blog cards use (styles/components/pixelFrame.css). */
+/* The masthead wears the post's pattern at MID size: a card-sized tile behind
+   a title would compete with the letters, and the reading column below
+   already carries the huge one. The accent strip keeps its own small tile. */
 const panelStyle = `--plate-pattern: url('${patternForTheme(theme)}')`;
 ---
 
 <header
-  class="pixel-frame pattern-plate pattern-plate--big space-y-6 rounded-none border border-[color:var(--time-border-soft)] bg-[var(--time-panel)] p-8 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[inset_0_0_80px_var(--time-shadow)] text-center relative overflow-hidden"
+  class="blog-masthead pixel-frame pattern-plate pattern-plate--medium"
   style={panelStyle}
 >
-  <Title
-    level={1}
-    theme={theme}
-    class="text-4xl sm:text-5xl md:text-6xl mx-auto tracking-tight font-bold readable-text"
+  <span
+    class="blog-masthead-strip pattern-plate pattern-plate--small"
+    aria-hidden="true"></span
   >
+
+  {/* Eyebrow: what this is, then when it was written. */}
+  <div class="blog-masthead-meta">
+    <span class="blog-masthead-kicker">Article</span>
+    <span class="blog-masthead-rule" aria-hidden="true"></span>
+
+    <time datetime={date.toISOString()}>
+      <Icon name="Calendar" theme={theme} class="h-5 w-5" />
+      {date.toLocaleDateString()}
+    </time>
+  </div>
+
+  <Title level={1} theme={theme} class="blog-masthead-title">
     {title}
   </Title>
 
-  <Body
-    theme={theme}
-    class="mx-auto max-w-3xl text-[color:var(--time-ink-muted)] text-center text-sm sm:text-base readable-text"
-  >
-    {description}
-  </Body>
-
-  <time
-    class="flex items-center justify-center gap-2 tracking-wider"
-    datetime={date.toISOString()}
-  >
-    <Icon name="Calendar" theme={theme} class="h-10 w-10" />
-    {date.toLocaleDateString()}
-  </time>
+  {
+    description && (
+      <Body theme={theme} class="blog-masthead-desc">
+        {description}
+      </Body>
+    )
+  }
 </header>

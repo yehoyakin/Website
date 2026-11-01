@@ -37,7 +37,7 @@ const imgClasses =
   "absolute inset-0 !w-full !h-full !max-w-none !max-h-none block !object-cover select-none pointer-events-none";
 
 /* Day / night pair: both images are rendered and exactly one is visible, driven
-   by `data-mode` on <html> (rules in styles/base/layout.css). Only applied when
+   by `data-mode` on <html> (rules in styles/foundation/layoutPrimitives.css). Only applied when
    a night source is supplied, so plain images keep a single element. */
 const modeClasses = (which: "day" | "night") =>
   srcNight ? `mode-img mode-img--${which}` : "";

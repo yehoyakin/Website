@@ -21,6 +21,8 @@ import { asset, isRemoteUrl } from "../../utils/asset";
 
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 
+import { patternForTheme } from "../../config/patterns";
+
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
 
@@ -162,7 +164,10 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
   <section
     id="blog-article-section"
     class="relative py-12 md:py-16 px-4 max-w-4xl mx-auto w-full"
-    style={`--project-tag-color: ${postDynamicToken}`}
+    /* The post's pattern tile is set here so the reading column inside can
+       inherit it: the texture belongs to the post's theme, and this section is
+       the element that already carries that theme's colour. */
+    style={`--project-tag-color: ${postDynamicToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
   >
     <!-- Background rendering layer -->
 
@@ -209,7 +214,7 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
 
   <div
     id="sidebar-container"
-    class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-2.75rem)] [&.sidebar-open]:translate-x-0"
+    class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-var(--icon-button-size))] [&.sidebar-open]:translate-x-0"
     /* The tab and its panel belong to THIS post: without the token the
        panel's frame fell back to the root accent (--theme-orange) and every
        post's sidebar looked like the first one. */
@@ -221,18 +226,25 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       aria-label="Toggle Sidebar"
       type="button"
     >
-      <!-- Posts list icon: this tab opens the blog sidebar. -->
-      <Icon name="document" theme={themeName} class="h-7 w-7" />
+      <!-- Posts list icon: this tab opens the blog sidebar. Same glyph size as
+           every other chrome control (chrome/pixelChrome/iconButtons.css). -->
+      <Icon name="document" theme={themeName} class="chrome-icon" />
     </button>
 
     <!-- Sidebar content -->
 
-    <div id="sidebar-panel" class="pixel-frame w-80 max-h-[70vh] overflow-y-auto">
+    {/* The links panel wears the post's own texture, like the article surfaces:
+        `--project-tag-color` above tints it, this supplies the tile. */}
+    <div
+      id="sidebar-panel"
+      class="pixel-frame pattern-plate pattern-plate--small relative w-80 max-h-[70vh] overflow-y-auto"
+      style={`--plate-pattern: url('${patternForTheme(themeName)}')`}
+    >
       <BlogSidebar cards={cards} theme={themeName} />
     </div>
   </div>
 
-  <!-- The overlay's styles live in styles/components/thatsAll.css -->
+  <!-- The overlay's styles live in styles/overlays/articleEndOverlay.css -->
 
   <!-- -----------------------------------------------------
        BLOG PAGE CONTROLLERS

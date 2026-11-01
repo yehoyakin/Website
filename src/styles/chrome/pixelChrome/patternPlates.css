@@ -1,0 +1,99 @@
+/* Scrolling pattern plates and their size steps. */
+
+.pattern-plate {
+  /* Deliberately NO `position` here: the host owns that. */
+  isolation: isolate;
+  /* Every plate sits on the same near-black surface, tinted with the HOST's own
+     accent when it has one (a card, an article, a project panel), and with the
+     general day / night tint only when the host is unthemed. Black first, so the
+     generated fallback for browsers without `color-mix()` stays black. The first
+     mix colour is a literal: a `var()` there makes the minifier collapse the
+     whole declaration to its fallback and drop the tint. */
+  background-color: var(--plate-fill-dark, rgb(0 0 0 / 0.92));
+  background-color: color-mix(
+    in srgb,
+    rgb(0 0 0 / 0.92) 90%,
+    var(--project-tag-color, var(--plate-tint))
+  );
+  /* Tint gradient over that fill — the host's accent strongest at the leading
+     edge, gone on the trailing one. Every plate carries it, so cards, the
+     masthead, the article surface and the project panel band all grade the
+     same way; the pattern scales are still the only difference between them. */
+  background-image: linear-gradient(
+    90deg,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 30%,
+        transparent
+      )
+      0%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 10%,
+        transparent
+      )
+      55%,
+    transparent 85%
+  );
+  --plate-pattern-size: var(--pattern-size-normal, 96px);
+  --plate-pattern-opacity: 0.16;
+  /* One loop scrolls exactly one tile, so the SPEED is tile ÷ duration. */
+  --plate-pattern-duration: 18s;
+  /* Travel direction: -1 drifts up-left (day), 1 drifts down-right (night). */
+  --plate-pattern-shift: -1;
+}
+
+/* Mid-size surfaces: a panel or a masthead, slower and calmer than a card. */
+.pattern-plate--medium {
+  --plate-pattern-size: var(--pattern-size-medium, 512px);
+  --plate-pattern-duration: 60s;
+  --plate-pattern-opacity: 0.12;
+}
+
+/* Behind long copy: a 4× tile, so only a few shapes ever cross the column.
+   The surface under it is near-opaque black, so the plate can carry a little
+   more of the shape than the card tiles do. */
+.pattern-plate--huge {
+  --plate-pattern-size: var(--pattern-size-huge, 1024px);
+  --plate-pattern-duration: 120s;
+  --plate-pattern-opacity: 0.1;
+}
+
+.pattern-plate--small {
+  --plate-pattern-size: var(--pattern-size-small, 48px);
+  --plate-pattern-opacity: 0.2;
+}
+
+.pattern-plate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  --pattern-tile: var(--plate-pattern-size, 96px);
+  background-image: var(--plate-pattern, none);
+  background-size: var(--pattern-tile) var(--pattern-tile);
+  background-repeat: repeat;
+  animation: plate-pattern-scroll var(--plate-pattern-duration, 18s) linear
+    infinite;
+  image-rendering: pixelated;
+  mix-blend-mode: screen;
+  opacity: var(--plate-pattern-opacity, 0.16);
+  pointer-events: none;
+}
+
+/* Night dims the texture: the neon accents already carry the panel — and the
+   drift reverses, so the night surface settles downward instead of rising. */
+:root[data-mode="night"] .pattern-plate {
+  --plate-pattern-opacity: 0.1;
+  --plate-pattern-shift: 1;
+}
+
+:root[data-mode="night"] .pattern-plate--huge {
+  --plate-pattern-opacity: 0.07;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pattern-plate::before {
+    animation: none;
+  }
+}

@@ -1,6 +1,9 @@
 ---
 // Purpose: Component - src/components/Blog/BlogContent.astro (Render post body and scene images)
 
+import CompactBody from "../UI/CompactBody.astro";
+import { videoEmbedUrl } from "../../utils/video";
+
 interface SceneItem {
   image: string;
   align?: "left" | "right" | "center";
@@ -187,41 +190,7 @@ const getVideoAspectClass = (size: VideoItem["size"]) => {
   }
 };
 
-const VIDEO_FILE_RE = /\.(?:mp4|webm|ogg|ogv|mov|m4v)(?:[?#].*)?$/i;
 
-const YOUTUBE_RE =
-  /(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/i;
-
-const VIMEO_RE = /vimeo\.com\/(?:video\/)?(\d+)/i;
-
-/**
- * Turn a video link into an embed URL.
- * Returns null when the source should be played as a <video> file instead.
- */
-const getVideoEmbedUrl = (src: string, type?: VideoItem["type"]) => {
-  const url = src.trim();
-  if (type === "file") return null;
-
-  const youtube = url.match(YOUTUBE_RE);
-  if (youtube) {
-    return `https://www.youtube-nocookie.com/embed/${youtube[1]}?rel=0`;
-  }
-
-  const vimeo = url.match(VIMEO_RE);
-  if (vimeo) {
-    return `https://player.vimeo.com/video/${vimeo[1]}`;
-  }
-
-  if (type === "embed") return url;
-
-  /* Local paths and direct file links play natively. */
-  if (VIDEO_FILE_RE.test(url) || !/^[a-z][a-z0-9+.-]*:\/\//i.test(url)) {
-    return null;
-  }
-
-  /* Any other external page is assumed to be embeddable. */
-  return url;
-};
 
 const renderVideo = (
   videoIndex: number,
@@ -234,7 +203,7 @@ const renderVideo = (
   const align = (video.align ?? "center").toLowerCase();
   /* `||` (not `??`): an empty marker caption falls back to `caption:`. */
   const captionText = cleanCaption(captionOverride || video.caption || "");
-  const embedUrl = getVideoEmbedUrl(video.src, video.type);
+  const embedUrl = videoEmbedUrl(video.src, video.type);
   const aspectClass = getVideoAspectClass(video.size);
   const title = video.title || `Video ${videoIndex}`;
 
@@ -403,17 +372,43 @@ const sceneHtml =
         return `<div class="${groupClass}">${groupedScenes}</div>${groupCaptionMarkup}`;
       })
     : videoHtml;
+/*
+ * Every post opens with a [background[x]] marker on its own line, which markdown
+ * wraps in a <p>. Two reasons to unwrap those:
+ *
+ *   - the wrapper added a full paragraph gap for an invisible anchor;
+ *   - it made the marker the article's first <p>, so the lede treatment
+ *     (and the drop cap on it) landed on an empty paragraph instead of the
+ *     opening sentence.
+ *
+ * The span itself stays: scripts in pages/blog/[slug].astro measure its
+ * position to drive the background crossfade.
+ */
+const articleHtml = sceneHtml
+  .replace(/<p>\s*(<span class="bg-marker"[^>]*><\/span>)\s*<\/p>/g, "$1")
+  .replace(/<p>/, '<p class="blog-lede">');
 ---
 
-{/* Article content container. */}
+{/* Reading surface. The frame, plate and padding live in
+       styles/article/blogArticle.css (`#blog-content`), which is also where
+       the prose typography is: one file owns how an article reads.
+
+       `pattern-plate--huge` carries the post's texture across the column: the
+       biggest tile on the site, scrolling at about half the card speed and at a
+       seventh of their opacity, so it registers as a surface and never as
+       movement behind the words. The tile URL comes from the page, which owns
+       the post's theme. */}
 <div
-  class="prose prose-invert max-w-none rounded-none
-         border border-[color:var(--time-border-soft)] bg-[var(--time-panel)]
-         p-4 sm:p-6 md:p-8 backdrop-blur-2xl
-         shadow-[inset_0_0_80px_var(--time-shadow)]"
+  class="blog-article-body pattern-plate pattern-plate--huge"
   id="blog-content"
 >
-  <div set:html={sceneHtml} />
+  {/* Long-form body: Body.astro is sized for short copy and drops under the
+      16px the pixel face needs, so the article's text is rendered through
+      CompactBody instead. No theme prop — the section already carries the
+      post's accent and the body must inherit it. */}
+  <CompactBody>
+    <div set:html={articleHtml} />
+  </CompactBody>
 </div>
 
 <script is:inline>

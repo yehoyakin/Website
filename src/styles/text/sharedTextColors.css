@@ -1,0 +1,18 @@
+/* Shared component baseline styles. */
+
+.text-ui-base {
+  color: var(--ui-base);
+}
+
+.text-ui-muted {
+  color: var(--ui-muted);
+}
+
+.text-ui-invert {
+  color: var(--ui-invert);
+}
+
+/* Project tag utility: use the `--project-tag-color` set on the element. */
+.text-project-tag {
+  color: var(--project-tag-color);
+}

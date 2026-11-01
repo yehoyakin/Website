@@ -1,0 +1,48 @@
+/* Pixel panels: the tile plate. */
+
+.pixel-frame {
+  --outline-color: var(--project-tag-color, var(--time-border));
+  --outline-color-hover: var(--outline-color);
+  --tile-light: color-mix(in srgb, var(--outline-color) 65%, white);
+  --tile-dark: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
+  --tile-fill: color-mix(in srgb, var(--outline-color) 22%, var(--time-panel));
+  position: relative;
+  border: var(--outline-width) solid var(--tile-dark);
+  background-color: var(--tile-fill);
+  /* Shaded plate: a light bloom and a dark base instead of a flat fill. */
+  background-image:
+    radial-gradient(
+      140% 90% at 50% -25%,
+      color-mix(in srgb, var(--tile-light) 45%, transparent) 0%,
+      transparent 72%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 48%,
+      color-mix(in srgb, var(--tile-dark) 55%, transparent) 100%
+    );
+  transition:
+    border-color var(--duration-fast) var(--ease-soft),
+    background-color var(--duration-fast) var(--ease-soft);
+}
+
+/* Only colour changes on hover: the tile gets brighter, nothing moves. */
+.pixel-frame:hover,
+.pixel-frame:focus-visible {
+  border-color: var(--outline-color-hover);
+  background-color: color-mix(
+    in srgb,
+    var(--outline-color) 26%,
+    var(--time-panel)
+  );
+}
+
+/* Gallery thumbnails carry a per-project colour in thumb-theme-color. */
+.gallery-thumb.pixel-frame {
+  --outline-color: var(
+    --thumb-theme-color,
+    var(--project-tag-color, var(--time-border))
+  );
+  --outline-color-hover: var(--outline-color);
+  --tile-fill: color-mix(in srgb, var(--outline-color) 14%, var(--time-black));
+}

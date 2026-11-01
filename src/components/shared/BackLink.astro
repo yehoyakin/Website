@@ -19,19 +19,24 @@ const resolvedHref = href || baseUrl;
 
 /* Site chrome, not page content: the control follows the mode base colours
    the same way the day / night switch does. The plate comes from
-   --time-button-fill / --time-button-ink (styles/base/responsive.css), and the
-   arrow is left unthemed so Icon.astro renders its day / night pair. */
+   --time-button-fill / --time-button-ink, and the arrow is left unthemed so
+   Icon.astro renders its day / night pair.
+
+   Position is NOT a utility here: `.back-link` fixes itself to the shared
+   chrome gutter, stacked under the day / night switch (base/responsive.css),
+   so this control, that switch and the contact rail all sit on one column. */
 const classes = [
-  "back-link fixed top-6 left-6 z-50 text-base uppercase tracking-wider",
+  "back-link text-base uppercase tracking-wider",
   "transition-all duration-75 ease-[var(--ease-press)]",
   "hover:scale-[1.03] hover:brightness-110",
 ].join(" ");
 ---
 
 <a href={resolvedHref} class={classes}>
-  {/* The arrow is artwork now, so the label is text only. */}
+  {/* The arrow is the set's framed Triangle artwork; the label is text. Its
+      size is the shared chrome glyph size (chrome/pixelChrome/iconButtons.css). */}
   <span class="flex items-center gap-2">
-    <Icon name="arrow-left" class="h-5 w-5" />
+    <Icon name="arrow-left" class="chrome-icon" />
     <span>{text}</span>
   </span>
 </a>

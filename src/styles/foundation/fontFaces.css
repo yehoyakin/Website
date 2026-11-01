@@ -1,0 +1,91 @@
+/* Pixel Operator — the canonical pixel font. */
+@font-face {
+  font-family: "Pixel Operator";
+  src: url("../../fonts/PixelOperator.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator";
+  src: url("../../fonts/PixelOperator-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Pixel Operator Mono. */
+@font-face {
+  font-family: "Pixel Operator Mono";
+  src: url("../../fonts/PixelOperatorMono.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator Mono";
+  src: url("../../fonts/PixelOperatorMono-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Pixel Operator HB (half-bold) small caps. */
+@font-face {
+  font-family: "Pixel Operator HB";
+  src: url("../../fonts/PixelOperatorHB.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator HB SC";
+  src: url("../../fonts/PixelOperatorHBSC.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* Pixeloid Sans. */
+@font-face {
+  font-family: "Pixeloid Sans";
+  src: url("../../fonts/PixeloidSans.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixeloid Sans";
+  src: url("../../fonts/PixeloidSans-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Bold Pixels — the page's default typeface. */
+
+@font-face {
+  font-family: "Bold Pixels";
+  src:
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.woff2") format("woff2"),
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.woff") format("woff"),
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bold Pixels";
+  src:
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.woff2") format("woff2"),
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.woff") format("woff"),
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}

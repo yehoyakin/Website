@@ -1,0 +1,58 @@
+/* PANELS CONTAINER Full width, breaks out of scroll. */
+
+.gallery-panels-container {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+/* COLLAPSE BUTTON Forest theme arrow up. */
+
+.gallery-card-panel {
+  /* Panels start closed; the gallery script toggles this inline. */
+  display: none;
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.collapse-btn {
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  color: var(--theme-green, rgb(34, 197, 94));
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 200ms var(--ease-soft),
+    border-color 200ms var(--ease-soft),
+    color 200ms var(--ease-soft),
+    transform 200ms var(--ease-settle),
+    box-shadow 200ms var(--ease-soft);
+  backdrop-filter: none;
+}
+
+.collapse-btn:hover {
+  background: transparent;
+  color: white;
+  transform: translateX(-50%);
+  box-shadow: none;
+}
+
+.collapse-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4.5px rgba(34, 197, 94, 0.3);
+}
+
+.collapse-btn svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}

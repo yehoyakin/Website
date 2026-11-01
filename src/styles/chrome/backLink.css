@@ -1,0 +1,48 @@
+/* Back link: mode plate, chrome-rail position, phone sizing. */
+
+.back-link {
+  /* Chrome rail: top-left corner, on the same gutter as the right-hand
+     switch and contact rail. */
+  position: fixed;
+  top: var(--chrome-gutter);
+  left: var(--chrome-gutter);
+  z-index: 50;
+  /* Site chrome, not page content: it follows the mode base colours. */
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border: var(--control-outline-width) solid var(--time-button-ink);
+  background-color: var(--time-button-fill);
+  /* Same lit-from-above plate as every other button. */
+  background-image: var(--button-lighting);
+  color: var(--time-button-ink);
+}
+
+/* The contact rail is a right-edge panel, inset onto the same gutter. */
+#socials-container {
+  right: var(--chrome-gutter);
+}
+
+/* PHONES — back link. */
+
+@media (max-width: 767px) {
+  /* The chrome steps down with the page: 1rem gutter, 2.5rem control. */
+  :root {
+    --chrome-gutter: max(1rem, env(safe-area-inset-right));
+    --chrome-control: 2.5rem;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    max-width: calc(100vw - 5.5rem);
+    padding: 0.45rem 0.85rem;
+    border: var(--outline-width) solid var(--time-button-ink);
+    border-radius: 0;
+    background-color: var(--time-button-fill);
+    background-image: var(--button-lighting);
+    backdrop-filter: none;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+}

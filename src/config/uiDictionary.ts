@@ -9,7 +9,7 @@
  *
  * A theme drives two things: colour (tokens.css) and fonts (fonts.css). A
  * theme without a font set in fonts.css falls back to the :root fonts. The
- * page transition is the same everywhere — see styles/base/viewTransitions.css.
+ * page transition is the same everywhere — see styles/foundation/pageDissolveTransition.css.
  */
 
 export type ThemeConfig = {

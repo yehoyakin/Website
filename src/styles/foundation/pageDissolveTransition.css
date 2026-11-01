@@ -1,0 +1,49 @@
+/* Backdrop behind both snapshots: the site's near-black, so no white flash. */
+::view-transition {
+  background: #09090b;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Shared plumbing: the snapshots never move and keep the default blend. */
+  :root::view-transition-group(root) {
+    animation: none;
+  }
+  :root::view-transition-old(root),
+  :root::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+  /* Random pattern dissolve: the old page breaks up inside a pixel tile. */
+  @keyframes patternDissolveOut {
+    from {
+      opacity: 1;
+      mask-size: 2rem 2rem;
+      mask-position: 0 0;
+    }
+    to {
+      opacity: 0;
+      mask-size: var(--dissolve-mask-grow, 14rem) var(--dissolve-mask-grow, 14rem);
+      mask-position: var(--dissolve-mask-grow, 14rem)
+        var(--dissolve-mask-grow, 14rem);
+    }
+  }
+  @keyframes pageDissolveIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  :root::view-transition-old(root) {
+    /* `--transition-pattern` is an ALPHA mask from public/patterns/masks/. */
+    mask-image: var(--transition-pattern, none);
+    mask-repeat: repeat;
+    mask-size: 2rem 2rem;
+    animation: patternDissolveOut var(--dissolve-duration, 450ms)
+      var(--dissolve-ease, ease-in-out) both;
+  }
+  :root::view-transition-new(root) {
+    animation: pageDissolveIn var(--dissolve-duration, 450ms)
+      var(--dissolve-ease, ease-in-out) both;
+  }
+}

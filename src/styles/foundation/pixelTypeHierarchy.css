@@ -1,0 +1,86 @@
+/* Shadow for readability against blurred / bright backgrounds.
+
+   Two layers, because one cannot do both jobs: a tight contact shadow gives the
+   glyph edges definition against a white patch, and a wide, faint halo lifts the
+   whole word off a bright photo without drawing a visible line around it. A
+   stroke/outline is deliberately not used here — at body sizes a ring closes up
+   the counters of the pixel face and reads as a dirty outline. */
+.readable-text:not(:is(h1, h2, h3)) {
+  text-shadow:
+    0 2px 3px var(--time-shadow, rgb(0 0 0 / 0.75)),
+    0 0 14px rgb(0 0 0 / 0.55);
+}
+
+/* PIXEL TYPE — bold and outline cuts drawn on the font's own grid. */
+
+:root {
+  /* One design pixel of the BoldPixels grid. */
+  --pixel-step: calc(1em / 16);
+}
+
+/* Outline cut. */
+
+:is(h1, h2, h3),
+.outline-2,
+.outline-3 {
+  /* Ring thickness; .outline-3 overrides it a few rules below. */
+  --pixel-ring: var(--pixel-step);
+  --pixel-outline-color: currentColor;
+  -webkit-text-fill-color: var(--pixel-outline-fill, var(--time-page));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  text-shadow:
+    var(--pixel-ring) 0 0 var(--pixel-outline-color),
+    calc(var(--pixel-ring) * -1) 0 0 var(--pixel-outline-color),
+    0 var(--pixel-ring) 0 var(--pixel-outline-color),
+    0 calc(var(--pixel-ring) * -1) 0 var(--pixel-outline-color),
+    var(--pixel-ring) var(--pixel-ring) 0 var(--pixel-outline-color),
+    calc(var(--pixel-ring) * -1) var(--pixel-ring) 0 var(--pixel-outline-color),
+    var(--pixel-ring) calc(var(--pixel-ring) * -1) 0 var(--pixel-outline-color),
+    calc(var(--pixel-ring) * -1) calc(var(--pixel-ring) * -1) 0
+      var(--pixel-outline-color);
+}
+
+/* H1 keeps its heavier ring, now stepped on the grid. */
+.outline-3 {
+  --pixel-ring: calc(var(--pixel-step) * 2);
+}
+
+/* Relative colour syntax: invert each RGB channel, so 255 (white) becomes 0. */
+@supports (color: rgb(from red calc(255 - r) calc(255 - g) calc(255 - b))) {
+  :is(h1, h2, h3),
+  .outline-2,
+  .outline-3 {
+    --pixel-outline-fill: rgb(
+      from var(--pixel-outline-color) calc(255 - r) calc(255 - g)
+        calc(255 - b)
+    );
+  }
+}
+
+/* Card titles: the outline cut is turned inside out on card headings. */
+
+:where(.blog-card, .project-panel-body, .split-card) :is(h1, h2, h3) {
+  -webkit-text-fill-color: currentColor;
+  --pixel-outline-color: rgb(
+    from currentColor calc(255 - r) calc(255 - g) calc(255 - b)
+  );
+}
+
+/* Bold cut. */
+
+button,
+.retro-link,
+.split-card-action {
+  text-shadow: none;
+}
+
+.split-card-action > span,
+button > span:not(.pixel-highlight) {
+  text-shadow:
+    var(--pixel-step) 0 0 currentColor,
+    0 var(--pixel-step) 0 currentColor,
+    var(--pixel-step) var(--pixel-step) 0 currentColor;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}

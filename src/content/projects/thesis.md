@@ -3,7 +3,7 @@ title: "Thesis Project"
 
 tag: "UNREAL ENGINE - AI SYSTEM"
 
-shortDescription: >
+description: >
   A strategy RPG exploring emergent enemy decision making.
 
 roles:
@@ -13,10 +13,12 @@ roles:
   - ui
   - tools
 
-theme: white
+theme: pink
 
-images:
-  - "images/projects/playfield.webp"
+cardBackground: "images/projects/thesis/playfield.webp"
+
+scenes:
+  - image: "images/projects/thesis/playfield.webp"
 
 order: 3
 

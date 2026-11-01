@@ -1,9 +1,11 @@
 ---
-import CallCard from "./CallCard.astro";
+import CompactBody from "../UI/CompactBody.astro";
 import SocialLink from "../shared/Link.astro";
 import Icon from "../shared/Icon.astro";
 import { asset } from "../../utils/asset";
+import { isExternalUrl, videoEmbedUrl } from "../../utils/video";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import type { ProjectRole } from "../../config/uiDictionary";
 import { patternForTheme } from "../../config/patterns";
 
 interface Props {
@@ -14,21 +16,55 @@ interface Props {
 }
 
 const { projects } = Astro.props;
+
+/* ONE ROTATION PER PROJECT: its screenshots, then its clips.
+
+   A clip is rendered by kind, using the same detection a blog body uses
+   (utils/video.ts): a direct file plays in a <video>, a YouTube / Vimeo link
+   becomes an embed. */
+type PanelMedia =
+  | { kind: "image"; src: string }
+  | { kind: "file"; src: string; poster?: string; title?: string }
+  | { kind: "embed"; src: string; title?: string };
+
+const mediaFor = (project: any): PanelMedia[] => [
+  ...(project.data.scenes ?? []).map((scene: { image: string }) => ({
+    kind: "image" as const,
+    src: scene.image,
+  })),
+  ...(project.data.videos ?? []).map((video: any) => {
+    const embed = videoEmbedUrl(video.src, video.type);
+
+    if (embed) {
+      return { kind: "embed" as const, src: embed, title: video.title };
+    }
+
+    return {
+      kind: "file" as const,
+      src: isExternalUrl(video.src) ? video.src : asset(video.src),
+      poster: video.poster ? asset(video.poster) : undefined,
+      title: video.title,
+    };
+  }),
+];
+
+/* Roles are stored as the schema's enum keys; the panel shows their labels. */
+const roleLabels: Record<ProjectRole, string> = {
+  lead_programmer: "Lead Programmer",
+  ui: "UI",
+  game_design: "Game Design",
+  art: "Art",
+  audio: "Audio",
+  tech_art: "Tech Art",
+  systems: "Systems",
+  tools: "Tools",
+  developer: "Developer",
+};
 ---
 
 <div id="project-gallery" class="project-gallery">
-  <div id="gallery-bg" class="gallery-bg" aria-hidden="true">
-    <img
-      id="gallery-bg-img"
-      class="gallery-bg-img"
-      src={projects[0] ? asset(projects[0].data.images[0]) : ""}
-      alt=""
-    />
-    <div class="gallery-bg-overlay"></div>
-  </div>
-
   <!-- Scrollable thumbnail grid. On phones this becomes a one-card-at-a-time
-       carousel (see styles/base/responsive.css + scripts/cardCarousel.js). -->
+       carousel (see styles/responsive/responsive.css + scripts/cardCarousel.js). -->
   <div
     class="gallery-thumbnails-wrapper"
     data-carousel
@@ -40,36 +76,65 @@ const { projects } = Astro.props;
         projects.map((project, index) => {
           const themeName = toThemeName(project.data.theme);
           const themeToken = resolveThemeToken(themeName);
+
+          /* The card opens on its cover and then rotates the screenshots —
+             the cover is dropped from the rotation when it is also a scene. */
+          const previews = [
+            project.data.cardBackground,
+            ...(project.data.scenes ?? [])
+              .map((scene: { image: string }) => scene.image)
+              .filter((image: string) => image !== project.data.cardBackground),
+          ];
+
+          /* Media is exactly what the project ships: screenshots, then clips.
+             Nothing is invented, so a clip-only project shows one slide. */
+
           return (
             <div class="gallery-project-item">
-              {/* Thumbnail button */}
+              {/* The same card anatomy the blog listing uses (BlogCard): a meta
+                  bar, the artwork, then the copy bar. The <button> wrapper is
+                  the one difference — a click expands the panel here instead of
+                  navigating to an article. */}
               <button
-                class="gallery-thumb pixel-frame"
+                class="gallery-thumb blog-card pixel-frame"
                 aria-label={`Expand project ${project.data.title ?? index + 1}`}
                 title={project.data.title}
                 data-thumb-index={index}
-                style={`--thumb-theme-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+                style={`--thumb-theme-color: ${themeToken}; --project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
               >
-                {/* Image carousel */}
-                <div class="thumb-carousel">
-                  {project.data.images.map((img: string, imgIndex: number) => (
-                    <img
-                      src={asset(img)}
-                      alt={`${project.data.title ?? `Project ${index + 1}`} - Image ${imgIndex + 1}`}
-                      class={`thumb-carousel-img ${imgIndex === 0 ? "active" : ""}`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ))}
-                </div>
-                <div class="thumb-overlay" />
-
-                {/* Bottom info bar: title + tag. A small overlay on the card,
-                    so it takes the small pattern tile. */}
-                <div class="thumb-info-bar pattern-plate pattern-plate--small">
-                  <span class="thumb-title">{project.data.title}</span>
+                {/* TOP BAR - the project's engine / tool tag, where a post puts
+                    its date. */}
+                <div class="blog-card-bar pattern-plate pattern-plate--small">
                   <span class="thumb-tag" style={`color: ${themeToken}`}>
                     {project.data.tag}
+                  </span>
+                </div>
+
+                {/* IMAGE - the project's screenshots, swapping on a timer. */}
+                <div class="blog-card-image-wrap">
+                  <div class="thumb-carousel">
+                    {previews.map(
+                      (img: string, imgIndex: number) => (
+                        <img
+                          src={asset(img)}
+                          alt={`${project.data.title ?? `Project ${index + 1}`} - Image ${imgIndex + 1}`}
+                          class={`thumb-carousel-img ${imgIndex === 0 ? "active" : ""}`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ),
+                    )}
+                  </div>
+                  <div class="thumb-overlay" />
+                </div>
+
+                {/* BOTTOM BAR - title + description. */}
+                <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+                  <span class="gallery-thumb-title">
+                    {project.data.title}
+                  </span>
+                  <span class="gallery-thumb-desc">
+                    {project.data.description}
                   </span>
                 </div>
               </button>
@@ -93,30 +158,171 @@ const { projects } = Astro.props;
     </div>
   </div>
 
-  <!-- CallCard Panels - positioned outside the scroll container for full width -->
+  <!-- Expandable panels - outside the scroll container so they can use the
+       full page width. Each one holds the same card the blog listing uses
+       (BlogCard), the project's role chips, and its write-up. -->
   <div class="gallery-panels-container">
     {
-      projects.map((project, index) => (
-        <div class="gallery-card-panel" data-panel={index}>
-          <button
-            class="collapse-btn icon-button"
-            aria-label="Collapse project"
-            data-collapse={index}
+      projects.map((project, index) => {
+        const roles: ProjectRole[] = project.data.roles ?? [];
+        const themeName = toThemeName(project.data.theme);
+        const themeToken = resolveThemeToken(themeName);
+        const media = mediaFor(project);
+
+        return (
+          <div
+            class="gallery-card-panel"
+            data-panel={index}
+            style={`--project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
           >
-            {/* Collapsing pushes the card back up, hence the up arrow. */}
-            <Icon name="arrow-up" theme={project.data.theme} class="h-9 w-9" />
-          </button>
-          <CallCard
-            tag={project.data.tag}
-            title={project.data.title}
-            shortDescription={project.data.shortDescription}
-            fullDescription={project.rendered}
-            roles={project.data.roles}
-            theme={project.data.theme}
-            backgroundImage={asset(project.data.images[0])}
-          />
-        </div>
-      ))
+            <button
+              class="collapse-btn icon-button"
+              aria-label="Collapse project"
+              data-collapse={index}
+            >
+              {/* Collapsing pushes the card back up, hence the up arrow. */}
+              <Icon
+                name="arrow-up"
+                theme={project.data.theme}
+                class="h-9 w-9"
+              />
+            </button>
+
+
+            {
+              roles.length > 0 && (
+                <div class="project-panel-meta">
+                  {roles.map((role) => (
+                    <span class="project-role">{roleLabels[role]}</span>
+                  ))}
+                </div>
+              )
+            }
+
+            {/* Write-up on the left, screenshots on the right.
+
+                `.thumb-carousel` inside the media frame is the SAME auto-rotator
+                the cards use, so this component's initGallery cycles these
+                panels too: one picture at a time, however many images the
+                project ships, no extra script. */}
+            {/* One column when there is no media: a project with nothing but a
+                write-up should not sit in the left half of an empty grid. */}
+            <div
+              class:list={[
+                "project-panel-layout",
+                media.length === 0 && "project-panel-layout--solo",
+              ]}
+            >
+              <CompactBody
+                theme={project.data.theme}
+                class="project-panel-body pattern-plate pattern-plate--huge"
+              >
+                <div set:html={project.rendered} />
+              </CompactBody>
+
+              {
+                media.length > 0 && (
+                  <div class="project-panel-media" data-project-rotator>
+                    <div class="project-panel-frame">
+                      <div class="thumb-carousel">
+                        {media.map((item, mediaIndex) => {
+                          const slideClass = `thumb-carousel-media ${mediaIndex === 0 ? "active" : ""}`;
+
+                          if (item.kind === "image") {
+                            return (
+                              <img
+                                src={asset(item.src)}
+                                alt={`${project.data.title ?? `Project ${index + 1}`} — image ${mediaIndex + 1}`}
+                                class={`${slideClass} thumb-carousel-img`}
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            );
+                          }
+
+                          if (item.kind === "embed") {
+                            return (
+                              <iframe
+                                src={item.src}
+                                title={item.title ?? `${project.data.title ?? `Project ${index + 1}`} — video`}
+                                class={`${slideClass} thumb-carousel-frame`}
+                                loading="lazy"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen
+                              />
+                            );
+                          }
+
+                          return (
+                            <video
+                              src={item.src}
+                              poster={item.poster}
+                              class={`${slideClass} thumb-carousel-video`}
+                              controls
+                              muted
+                              playsinline
+                              preload="metadata"
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* The strip's own carousel controls, reused as-is: same
+                        classes, same artwork, same tap sizes. Only the tint
+                        differs — this one follows the project's accent
+                        (see portfolio/galleryPanelContent.css). */}
+                    {
+                      media.length > 1 && (
+                        <div class="card-carousel-controls project-panel-controls">
+                          <button
+                            type="button"
+                            class="card-carousel-arrow icon-button"
+                            aria-label="Previous screenshot"
+                            data-rotator-prev
+                          >
+                            <Icon
+                              name="arrow-left"
+                              theme={project.data.theme}
+                              class="card-carousel-arrow-icon"
+                            />
+                          </button>
+
+                          <div class="card-carousel-dots">
+                            {media.map((_item, mediaIndex) => (
+                              <button
+                                type="button"
+                                class="card-carousel-dot"
+                                aria-label={`Go to slide ${mediaIndex + 1}`}
+                                aria-current={mediaIndex === 0 ? "true" : "false"}
+                                data-rotator-dot={mediaIndex}
+                              />
+                            ))}
+                          </div>
+
+                          <button
+                            type="button"
+                            class="card-carousel-arrow icon-button"
+                            aria-label="Next screenshot"
+                            data-rotator-next
+                          >
+                            <Icon
+                              name="arrow-right"
+                              theme={project.data.theme}
+                              class="card-carousel-arrow-icon"
+                            />
+                          </button>
+                        </div>
+                      )
+                    }
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        );
+      })
     }
   </div>
 </div>
@@ -134,7 +340,7 @@ const { projects } = Astro.props;
     if (gallery._carouselTimers) {
       gallery._carouselTimers.forEach((t) => clearInterval(t));
     }
-    gallery._carouselTimers = [];
+    gallery._carouselTimers = new Set();
 
     const thumbs = [...gallery.querySelectorAll("[data-thumb-index]")];
     const panels = [...gallery.querySelectorAll("[data-panel]")];
@@ -152,36 +358,55 @@ const { projects } = Astro.props;
       ? window.matchMedia("(hover: hover) and (pointer: fine)").matches
       : false;
 
+    /* THE BAND is a page-level layer (rendered by pages/portfolio.astro), not
+       a child of the panel: it starts at the open project's top edge and runs
+       to the bottom of the page box, edge to edge. Placing it here means
+       neither the panel's own box nor the page's bottom padding can cut it
+       short, which is what a band sized inside the panel always did. */
+    const pageBand = document.getElementById("project-band");
+
+    function showBand(panel) {
+      if (!pageBand || !panel) return;
+
+      const page = pageBand.parentElement;
+      const pageTop = page.getBoundingClientRect().top;
+      const panelTop = panel.getBoundingClientRect().top;
+
+      pageBand.style.top = `${Math.round(panelTop - pageTop)}px`;
+
+      /* The band wears the project too: the panel carries both tokens inline. */
+      pageBand.style.setProperty(
+        "--project-tag-color",
+        panel.style.getPropertyValue("--project-tag-color"),
+      );
+      pageBand.style.setProperty(
+        "--plate-pattern",
+        panel.style.getPropertyValue("--plate-pattern"),
+      );
+
+      pageBand.style.display = "block";
+    }
+
+    function hideBand() {
+      if (pageBand) pageBand.style.display = "none";
+    }
+
     function expandProject(index) {
       // Hide all panels and deactivate all cards
       panels.forEach((p) => {
         p.style.display = "none";
         p.classList.remove("panel-hover-preview");
         p.classList.remove("panel-hover-fadeout");
-        const card = p.querySelector(".retro-expandable-card");
-        if (card) card.setAttribute("data-active", "false");
       });
 
       const panel = panels.find((p) => p.dataset.panel === String(index));
       if (panel) {
         panel.style.display = "block";
         activeProject = index;
-
-        const card = panel.querySelector(".retro-expandable-card");
-        if (card) card.setAttribute("data-active", "true");
-
-        // Update background
-        const bgImg = document.getElementById("gallery-bg-img");
-        const thumb = thumbs[index];
-        if (bgImg && thumb) {
-          const firstImg = thumb.querySelector(".thumb-carousel-img");
-          if (firstImg) {
-            bgImg.src = firstImg.src;
-            bgImg.style.opacity = "1";
-          }
-        }
+        showBand(panel);
 
         // Scroll thumbnail into view within the horizontal scroller
+        const thumb = thumbs[index];
         const projectItem = thumb?.closest(".gallery-project-item");
         if (projectItem) {
           projectItem.scrollIntoView({
@@ -201,21 +426,15 @@ const { projects } = Astro.props;
         p.style.display = "none";
         p.classList.remove("panel-hover-preview");
         p.classList.remove("panel-hover-fadeout");
-        const card = p.querySelector(".retro-expandable-card");
-        if (card) card.setAttribute("data-active", "false");
       });
       activeProject = null;
-
-      const bgImg = document.getElementById("gallery-bg-img");
-      if (bgImg) {
-        bgImg.style.opacity = "0";
-      }
+      hideBand();
     }
 
     thumbs.forEach((thumb) => {
       const index = Number(thumb.dataset.thumbIndex);
 
-      // Hover preview: show CallCard semi-visible on thumbnail hover
+      // Hover preview: show the panel semi-visible on thumbnail hover
       if (canHover) {
         thumb.addEventListener("mouseenter", () => {
           // Don't show hover preview if a panel is already expanded
@@ -227,6 +446,7 @@ const { projects } = Astro.props;
             panel.classList.remove("panel-hover-fadeout");
             panel.style.display = "block";
             panel.classList.add("panel-hover-preview");
+            showBand(panel);
           }
         });
 
@@ -239,6 +459,7 @@ const { projects } = Astro.props;
             panel.classList.remove("panel-hover-preview");
             panel.classList.remove("panel-hover-fadeout");
             panel.style.display = "none";
+            hideBand();
           }
         });
       }
@@ -261,9 +482,31 @@ const { projects } = Astro.props;
       });
     });
 
-    // Initialize carousels for all thumbnails
-    function initCarousels() {
-      const carousels = gallery.querySelectorAll(".thumb-carousel");
+    /* A band measured for one viewport is wrong after a resize or rotation,
+       so it is re-measured for whichever project is open. The listener is kept
+       on `window` and replaced on re-init, so client-side navigations do not
+       stack copies of it. */
+    if (window._galleryBandResize) {
+      window.removeEventListener("resize", window._galleryBandResize);
+    }
+
+    window._galleryBandResize = () => {
+      if (activeProject === null) return;
+
+      cancelAnimationFrame(gallery._bandFrame);
+      gallery._bandFrame = requestAnimationFrame(() => {
+        const panel = panels.find(
+          (p) => p.dataset.panel === String(activeProject),
+        );
+        if (panel) showBand(panel);
+      });
+    };
+
+    window.addEventListener("resize", window._galleryBandResize);
+
+    /* Thumbnail cards: auto-cycling only, no controls. */
+    function initCardPreviews() {
+      const carousels = gallery.querySelectorAll(".gallery-thumb .thumb-carousel");
       carousels.forEach((carousel) => {
         const images = carousel.querySelectorAll(".thumb-carousel-img");
         if (images.length <= 1) return;
@@ -275,11 +518,58 @@ const { projects } = Astro.props;
           images[imageIndex].classList.add("active");
         }, CAROUSEL_INTERVAL);
 
-        gallery._carouselTimers.push(timer);
+        gallery._carouselTimers.add(timer);
       });
     }
 
-    initCarousels();
+    /* Panel gallery: the same `.card-carousel-*` controls the strips use,
+       wiring the cross-fade instead of a scroll.
+
+       Nothing rotates on its own here: a screenshot — or a clip — stays on
+       screen until the reader picks another one, so a video is never cut off
+       mid-play and no picture is missed. */
+    function initPanelRotators() {
+      const rotators = gallery.querySelectorAll("[data-project-rotator]");
+
+      rotators.forEach((rotator) => {
+        const media = [...rotator.querySelectorAll(".thumb-carousel-media")];
+        if (media.length <= 1) return;
+
+        const dots = [...rotator.querySelectorAll("[data-rotator-dot]")];
+        const prev = rotator.querySelector("[data-rotator-prev]");
+        const next = rotator.querySelector("[data-rotator-next]");
+
+        let mediaIndex = 0;
+
+        function syncDots() {
+          dots.forEach((dot, dotIndex) => {
+            dot.setAttribute(
+              "aria-current",
+              dotIndex === mediaIndex ? "true" : "false",
+            );
+          });
+        }
+
+        function show(index) {
+          media[mediaIndex].classList.remove("active");
+          mediaIndex = ((index % media.length) + media.length) % media.length;
+          media[mediaIndex].classList.add("active");
+          syncDots();
+        }
+
+        prev?.addEventListener("click", () => show(mediaIndex - 1));
+        next?.addEventListener("click", () => show(mediaIndex + 1));
+
+        dots.forEach((dot, dotIndex) => {
+          dot.addEventListener("click", () => show(dotIndex));
+        });
+
+        syncDots();
+      });
+    }
+
+    initCardPreviews();
+    initPanelRotators();
   }
 
   function destroyGallery() {
@@ -288,7 +578,7 @@ const { projects } = Astro.props;
     gallery.dataset.galleryInitialized = "false";
     if (gallery._carouselTimers) {
       gallery._carouselTimers.forEach((t) => clearInterval(t));
-      gallery._carouselTimers = [];
+      gallery._carouselTimers = new Set();
     }
   }
 

@@ -1,0 +1,71 @@
+/* Contribution font sizing — one :root rule of its own, next to the tokens. */
+:root {
+  --contribution-font-size: 1em;
+  --contribution-heading-size: 1em;
+  --contribution-badge-font-size: 0.78rem;
+}
+
+/* Day theme colours — one per pixel-icon colour in public/images/Icons/. */
+:root {
+  /* The general tint: the mode base colours every unthemed accent, glyph and
+     button mixes from. Currently the red theme — change these two values to
+     reskin the chrome, and nothing else needs touching. */
+  --theme-main-day: var(--theme-white);
+  --theme-main-night: var(--theme-black);
+
+  /* One value per pixel-icon colour in public/images/Icons/. */
+  --theme-orange: #ff9c00; /* Orange — tile orange. */
+  --theme-purple: #d366e7; /* Purple — lilac. */
+  --theme-yellow: #ffce41; /* Yellow — butter. */
+  --theme-green: #51c229; /* Green — green. */
+  --theme-pink: #ffa4b1; /* Pink — mauve rose. */
+  --theme-blue: #0278d8; /* Blue — cornflower. */
+  --theme-lightgreen: #87e42e; /* Lightgreen — pistachio. */
+  --theme-red: #ff5a0b; /* Red — coral. */
+  --theme-gray: #7c99ad; /* Gray — taupe. */
+  --theme-lightblue: #28a8ea; /* Lightblue — sky. */
+  --theme-white: #eaeef4; /* White — cream. */
+  --theme-black: #304666; /* Black — plum shadow. */
+}
+
+/* Screen chrome rail. */
+:root {
+  --chrome-gutter: max(1.5rem, env(safe-area-inset-right));
+  --chrome-control: 2.75rem;
+  --chrome-stack-gap: 0.75rem;
+}
+
+/* Mode base colours: the neutrals every theme starts from. */
+:root {
+  --ui-base: rgb(228 228 231);
+  --ui-muted: rgb(161 161 170);
+  --ui-invert: rgb(255 255 255);
+
+  /* Project tag / accent colour system. A themed host (card, article, panel)
+     sets its own --project-tag-color and keeps it; with no theme this is the
+     general day / night tint, so unthemed chrome follows the mode. */
+  --project-tag-color: var(--plate-tint);
+  --accent-bold: var(--project-tag-color);
+  --accent-italic: var(--project-tag-color);
+}
+
+/* Where color-mix() exists, the accents soften to a readable tint. */
+@supports (color: color-mix(in srgb, red 10%, white)) {
+  :root {
+    --accent-bold: var(--project-tag-color, white);
+    --accent-italic: var(--project-tag-color, white);
+  }
+}
+
+/* Motion values. */
+:root {
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-press: 120ms;
+  --ease-soft: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-press: cubic-bezier(0.3, 0, 0.2, 1);
+  /* Page dissolve: 450ms, half the original 900ms. */
+  --dissolve-duration: 450ms;
+  --dissolve-ease: cubic-bezier(0.45, 0, 0.55, 1);
+}

@@ -3,7 +3,7 @@ title: "Borrowed Wings"
 
 tag: "UNREAL ENGINE - GAME"
 
-shortDescription: >
+description: >
   3D platformer about exploring islands and making deliveries.
 
 roles:
@@ -14,8 +14,10 @@ roles:
 
 theme: red
 
-images:
-  - "images/projects/bw.webp"
+cardBackground: "images/projects/bw/bw.webp"
+
+videos:
+  - src: "https://www.youtube.com/watch?v=ZAhuBuNjiVo"
 
 order: 2
 

@@ -1,21 +1,24 @@
 ---
 // Purpose: Component - src/components/shared/ModeToggle.astro (Day / night switch)
 //
-// Pinned to the top-right corner of every page by MyLayout.astro. The sun is
-// shown in night mode (click it to go back to day), the moon in day mode.
-// Behaviour lives in scripts/modeToggle.js; colours in
-// styles/components/modeToggle.css + styles/base/timeColors.css.
+// Pinned to the top-right corner of every page by MyLayout.astro, on the same
+// gutter as the back link and the contact rail (--chrome-gutter, tokens.css).
 //
-// The sun / moon are pixel icons from the shared registry (config/icons.ts),
-// not inline SVGs, so they match the artwork used across the site.
+// Like every other control it shows the mode it would switch TO: in day mode it
+// shows the overcast sky, at night the brighter weather glyph.
+//
+// The artwork is the shared pixel set (config/icons.ts). That set has no sun or
+// moon — the generated one-off glyphs that used to stand in for them were
+// deleted — so the switch borrows the two SKY icons it does ship: `weather` for
+// day, `cloud` for night. Behaviour lives in scripts/modeToggle.js; colours in
+// styles/chrome/modeToggleSwitch.css + styles/foundation/dayNightPalette.css.
 import Icon from "./Icon.astro";
 import { defaultIconColor, defaultIconColorNight } from "../../config/icons";
 
 // The switch does NOT follow a page theme: it is the control that changes the
 // mode, so it wears that mode's base colour. Both base colours are assigned in
-// styles/base/tokens.css (--theme-main-day / --theme-main-night). The moon is
-// only visible by day and the sun only at night (see modeToggle.css), so each
-// draws in the colour of the mode it belongs to and is never the wrong shade.
+// styles/foundation/designTokens.css (--theme-main-day / --theme-main-night). Each glyph is
+// drawn in the colour of the mode it belongs to, so it is never the wrong shade.
 ---
 
 <button
@@ -27,14 +30,14 @@ import { defaultIconColor, defaultIconColorNight } from "../../config/icons";
   title="Switch to night mode"
 >
   <Icon
-    name="sun"
-    color={defaultIconColorNight}
-    class="mode-toggle-icon mode-toggle-icon--sun"
+    name="weather"
+    color={defaultIconColor}
+    class="mode-toggle-icon mode-toggle-icon--weather"
   />
 
   <Icon
-    name="moon"
-    color={defaultIconColor}
-    class="mode-toggle-icon mode-toggle-icon--moon"
+    name="cloud"
+    color={defaultIconColorNight}
+    class="mode-toggle-icon mode-toggle-icon--cloud"
   />
 </button>

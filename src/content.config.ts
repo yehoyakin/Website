@@ -75,7 +75,7 @@ const blog = defineCollection({
                 z.object({
                   href: z.string(),
                   text: z.string().optional(),
-                  // Icon name from public/images/genIcons, e.g. "Handbag".
+                  // Icon name from the registry in config/icons.ts, e.g. "Handbag".
                   icon: z
                     .string()
                     .optional()
@@ -113,7 +113,9 @@ const projects = defineCollection({
     title: z.string(),
     tag: z.string(),
 
-    shortDescription: z.string(),
+    /* A project is shaped like a post: one cover for the card, one optional
+       backdrop, and its screenshots grouped as `scenes`. */
+    description: z.string(),
 
     roles: z.array(
       z.enum([
@@ -131,7 +133,29 @@ const projects = defineCollection({
 
     theme: z.string().default("orange"),
 
-    images: z.array(z.string()).min(1),
+    /** The listing's cover — card artwork, and the preloaded preview. */
+    cardBackground: z.string(),
+
+    /** Backdrop behind the gallery. Falls back to the cover when omitted. */
+    background: z.string().optional(),
+
+    /** Screenshots, in gallery order. A project can be clip-only. */
+    scenes: z.array(z.object({ image: z.string() })).nullish(),
+
+    // Optional gallery clips. Same source rules as a blog's `videos`: a path
+    // inside public/, a direct video file, a YouTube / Vimeo link, or any
+    // embeddable page. They join the screenshots in the panel's rotation,
+    // after the images.
+    videos: z
+      .array(
+        z.object({
+          src: z.string(),
+          poster: z.string().optional(),
+          title: z.string().optional(),
+          type: z.enum(["auto", "file", "embed"]).optional(),
+        }),
+      )
+      .nullish(),
 
     order: z.number(),
 

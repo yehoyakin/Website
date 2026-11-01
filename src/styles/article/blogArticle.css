@@ -1,0 +1,76 @@
+/* Blog article: masthead, surface, prose, figures. */
+
+@import "articleMasthead.css";
+@import "articleReadingSurface.css";
+@import "articleProse.css";
+@import "articleFigures.css";
+@import "sceneReveal.css";
+
+/* ARTICLE COLOUR PASS — nothing inside a post reads grey.
+
+   Muted ink is tinted globally now (see foundation/dayNightPalette.css); what is
+   scoped here are the article's frames: hairlines and washes are white carrying
+   a heavy wash of the post's own accent. */
+:is(.blog-masthead, #blog-content) {
+  --time-border: color-mix(
+    in srgb,
+    var(--time-white) 40%,
+    var(--project-tag-color, var(--theme-orange))
+  );
+  --time-border-soft: color-mix(
+    in srgb,
+    var(--time-white) 18%,
+    var(--project-tag-color, var(--theme-orange))
+  );
+  --time-wash: color-mix(
+    in srgb,
+    var(--time-white) 8%,
+    var(--project-tag-color, var(--theme-orange))
+  );
+  /* 2px growth: the tinted frame is a statement, not a hairline. */
+  border-width: calc(var(--outline-width) + 2px);
+}
+
+/* BLOG HEADERS — the Title.astro outline cut, driven by two knobs.
+
+   `--heading-fill` paints the glyph, `--heading-ring` draws its hard edge: the
+   ring is eight text-shadows one pixel step apart, so the outline sits on the
+   same grid as the type instead of blurring. The first header (the masthead
+   title) is filled with the post's accent and ringed in white; every heading
+   under it is the inverse — white letters, accent ring. */
+:is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6),
+.blog-masthead-title {
+  --heading-step: max(1px, calc(1em / 16));
+  --heading-fill: var(--time-white);
+  --heading-ring: var(--project-tag-color, var(--theme-orange));
+  color: var(--heading-fill);
+  -webkit-text-fill-color: var(--heading-fill);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  text-shadow:
+    var(--heading-step) 0 0 var(--heading-ring),
+    calc(var(--heading-step) * -1) 0 0 var(--heading-ring),
+    0 var(--heading-step) 0 var(--heading-ring),
+    0 calc(var(--heading-step) * -1) 0 var(--heading-ring),
+    var(--heading-step) var(--heading-step) 0 var(--heading-ring),
+    calc(var(--heading-step) * -1) var(--heading-step) 0 var(--heading-ring),
+    var(--heading-step) calc(var(--heading-step) * -1) 0 var(--heading-ring),
+    calc(var(--heading-step) * -1) calc(var(--heading-step) * -1) 0
+      var(--heading-ring);
+}
+
+/* First header: accent fill, white ring. */
+:is(#blog-content, .project-panel-body) h1,
+.blog-masthead-title {
+  --heading-fill: var(--project-tag-color, var(--theme-orange));
+  --heading-ring: var(--time-white);
+}
+
+/* Night inverts the whole cut: every blog header is filled with the post's
+   accent and ringed in the night colour, so the type lights up on the dark
+   plate instead of carrying a pale edge. */
+:root[data-mode="night"] :is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6),
+:root[data-mode="night"] .blog-masthead-title {
+  --heading-fill: var(--project-tag-color, var(--theme-orange));
+  --heading-ring: var(--time-black);
+}

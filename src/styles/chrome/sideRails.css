@@ -1,0 +1,37 @@
+/* Fixed side rails: socials panel and blog sidebar. */
+
+@media (max-width: 767px) {
+  #socials-panel,
+  #sidebar-panel {
+    width: min(82vw, 19rem);
+    max-height: 62vh;
+    max-height: 62dvh;
+    overscroll-behavior: contain;
+  }
+  #socials-panel {
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+  }
+  #sidebar-panel {
+    padding-right: env(safe-area-inset-right);
+  }
+  /* Handles use the shared icon-button box: 44px, the minimum tap target. */
+  #socials-toggle,
+  #sidebar-toggle {
+    touch-action: manipulation;
+  }
+  /* Nudge down so the handle clears the fixed back link at the top. */
+  #socials-container,
+  #sidebar-container {
+    top: 32%;
+  }
+  #socials-panel .retro-link,
+  #sidebar-panel .retro-link {
+    min-height: 2.75rem;
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+  }
+  /* The blog article sits under that handle, so reserve the room. */
+  #blog-article-section {
+    padding-inline-end: 3.25rem;
+  }
+}

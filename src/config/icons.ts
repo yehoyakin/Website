@@ -56,7 +56,7 @@ export const themeIconColors: Record<string, IconColor> = {
 };
 
 /**
- * The MODE BASE COLOURS are assigned in styles/base/tokens.css:
+ * The MODE BASE COLOURS are assigned in styles/foundation/designTokens.css:
  *
  *   --theme-main-day:   var(--theme-lightblue);
  *   --theme-main-night: var(--theme-blue);
@@ -64,12 +64,12 @@ export const themeIconColors: Record<string, IconColor> = {
  * Both must be one of the --theme-* colours. They are the site's day and
  * night main colours, and they drive the default (unthemed) icon colour for
  * each mode — so a single line there restyles every unthemed glyph, which is
- * what the sun / moon switch, the contact glyph and other chrome use.
+ * what the day / night switch, the contact glyph and other chrome use.
  *
  * Read from the stylesheet at build time (this module only ever runs during
  * the build), so the tokens page stays the one place to change them.
  */
-const TOKENS_FILE = path.join(process.cwd(), "src/styles/base/tokens.css");
+const TOKENS_FILE = path.join(process.cwd(), "src/styles/foundation/designTokens.css");
 
 const tokensSource = (() => {
   try {
@@ -129,15 +129,22 @@ export const iconRegistry = {
 
   // Site chrome — the day / night switch, social links and carousel arrows,
   // so components ask for these by meaning instead of by artwork file.
-  sun: "Sun",
-  moon: "Moon",
+  //
+  // The switch borrows the set's two SKY icons: the artwork has no sun or moon,
+  // and the generated one-off glyphs that used to fill that gap were deleted.
+  // `weather` is the brighter of the two, so it marks day; `cloud` marks night.
+  weather: "Weather",
+  cloud: "Cloud",
   contacts: "Contacts",
   email: "Email",
   internet: "Internet",
-  "arrow-left": "Arrow Left",
-  "arrow-right": "Arrow Right",
-  "arrow-up": "Arrow Up",
-  "arrow-down": "Arrow Down",
+  // Directional glyphs. The names stay "arrow-*" because that is what the
+  // components ask for; the artwork is the set's framed Triangle, the original
+  // arrows. The generated `Arrow *` files were deleted.
+  "arrow-left": "Triangle Left",
+  "arrow-right": "Triangle Right",
+  "arrow-up": "Triangle Up",
+  "arrow-down": "Triangle Down",
 } as const;
 
 export type IconName = keyof typeof iconRegistry;
@@ -160,10 +167,11 @@ export const isIconColor = (value?: string): value is IconColor =>
   !!value && (iconColors as readonly string[]).includes(value);
 
 /* Folder listings, read once per build. The artwork is saved with mixed
-   capitalisation (Sun_blue.png sits next to Arrow Left_Blue.png), so names are
-   matched case-insensitively instead of being concatenated blindly: a
-   mismatched capital used to resolve on Windows and 404 on any case-sensitive
-   host, which is why some icons "disappeared" only after deploying. */
+   capitalisation (a colour suffix is sometimes lowercase, and some names carry
+   a space), so names are matched case-insensitively instead of being
+   concatenated blindly: a mismatched capital used to resolve on Windows and
+   404 on any case-sensitive host, which is why some icons "disappeared" only
+   after deploying. */
 const listingCache = new Map<string, string[]>();
 
 const matchFile = (dir: string, wanted: string): string => {

@@ -1,0 +1,46 @@
+/* HOVER PREVIEW the project panel appears semi-visible on hover. */
+
+.gallery-card-panel.panel-hover-preview {
+  opacity: 1;
+  transform: translateY(8px);
+  transition:
+    opacity 360ms var(--ease-soft),
+    transform 360ms var(--ease-settle);
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.75) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.75) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.gallery-card-panel.panel-hover-preview .collapse-btn {
+  opacity: 0;
+  transition: opacity 220ms var(--ease-soft);
+}
+
+/* Fade-out state: keeps panel visible but transitions opacity to 0. */
+.gallery-card-panel.panel-hover-fadeout {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.75) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.75) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}

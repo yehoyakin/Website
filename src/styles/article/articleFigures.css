@@ -1,0 +1,34 @@
+/* Figure captions — italic, tracked, body font, painted in the post's accent.
+
+   Same recipe as the rest of the secondary copy: white carrying a heavy wash of
+   the theme. The mix is written out here instead of using `--time-ink-muted`
+   because that token is a var() chain resolved once on `:root`, so it arrives
+   with the general tint rather than with the post's own colour. */
+.blog-figcaption {
+  margin-top: 0.5rem;
+  padding-left: 0.25rem;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  letter-spacing: 0.02em;
+  color: color-mix(
+    in srgb,
+    var(--time-white) 55%,
+    var(--project-tag-color, var(--plate-tint))
+  );
+  text-align: center;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Alignment overrides for video captions. */
+.blog-figcaption.text-left {
+  text-align: left;
+}
+
+.blog-figcaption.text-right {
+  text-align: right;
+}
+
+.blog-figcaption.text-center {
+  text-align: center;
+}
