@@ -57,6 +57,18 @@
   right: var(--chrome-gutter);
 }
 
+/* The glyph names the layout the click GIVES you, like the day / night switch:
+   a laptop means "go desktop", a phone means "go back to mobile". One at a
+   time — both are in the markup, `data-view` picks the pair. */
+.view-toggle-icon {
+  display: none;
+}
+
+:root[data-view="desktop"] .view-toggle-icon--phone,
+:root:not([data-view="desktop"]) .view-toggle-icon--laptop {
+  display: inline-grid;
+}
+
 /* Desktop view is a live state, so the control stays visible to undo it and
    reads as engaged while it is on. */
 :root[data-view="desktop"] .view-toggle {

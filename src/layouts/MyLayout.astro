@@ -112,7 +112,11 @@ const themeAttribute =
       aria-pressed="false"
       title="Switch to desktop view"
     >
-      <Icon name="laptop" class="chrome-icon" />
+      {/* One glyph per direction, both in the markup and swapped by
+          `data-view` (styles/chrome/modeToggleSwitch.css): a laptop means
+          "go desktop", a phone means "go back to mobile". */}
+      <Icon name="laptop" class="chrome-icon view-toggle-icon view-toggle-icon--laptop" />
+      <Icon name="phone" class="chrome-icon view-toggle-icon view-toggle-icon--phone" />
     </button>
 
     <div

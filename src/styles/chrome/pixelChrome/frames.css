@@ -16,17 +16,40 @@
    `.icon-button`, `.mode-toggle`, `.back-link` or the carousel arrows is left
    alone here. */
 
-:root {
-  /* Two extra tones per accent: the lit edge and the shaded one. Both are
-     derived, so a themed card frames itself in its own colour. */
+/* THE ACCENT, RESOLVED PER FRAME — not at `:root`.
+
+   A custom property that mentions `var(--project-tag-color)` is substituted
+   where it is DECLARED, and the result is what inherits. Declared at `:root`,
+   `--project-tag-color` is the general day / night tint, so every themed card
+   inherited that tint and framed itself in the mode colour instead of its own
+   accent. These are declared on the frame itself, where the host's inline
+   `--project-tag-color` (BlogCard, ProjectGallery, the article masthead, …) is
+   already in scope — a themed surface frames itself in its theme, and an
+   unthemed one still falls back to the day / night tint. */
+.pixel-frame:not(.retro-link):not(.split-card-action),
+.blog-card,
+.portrait-frame,
+.rail-panel,
+.project-panel-frame,
+.project-panel-body,
+.blog-article-body,
+.article-reading-surface,
+.thumb-carousel-media,
+#blog-content :is(figure img, video, iframe),
+.project-panel-body :is(figure img, video, iframe) {
+  --frame-accent: var(--project-tag-color, var(--time-border));
+  /* Also the plain `border:` colour of every surface: it was frozen to the
+     mode tint for the same reason. */
+  --outline-color: var(--frame-accent);
+  /* Two extra tones per accent: the lit edge and the shaded one. */
   --frame-edge-light: color-mix(
     in srgb,
-    var(--outline-color, var(--time-border)) 46%,
+    var(--frame-accent) 46%,
     var(--time-white)
   );
   --frame-edge-dark: color-mix(
     in srgb,
-    var(--outline-color, var(--time-border)) 28%,
+    var(--frame-accent) 28%,
     var(--time-black)
   );
   /* The frame, as a border image: one gradient, four edges, no per-side rules. */
@@ -34,8 +57,8 @@
     135deg,
     var(--frame-edge-light) 0%,
     var(--frame-edge-light) 10%,
-    var(--outline-color, var(--time-border)) 34%,
-    var(--outline-color, var(--time-border)) 62%,
+    var(--frame-accent) 34%,
+    var(--frame-accent) 62%,
     var(--frame-edge-dark) 92%,
     var(--frame-edge-dark) 100%
   );

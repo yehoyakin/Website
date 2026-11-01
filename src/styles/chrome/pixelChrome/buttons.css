@@ -12,15 +12,10 @@
   position: relative;
   border: var(--control-outline-width) solid var(--tile-dark);
   background-color: var(--tile-fill);
-  /* Lit from above: the shared top-lit band, plus a tight bloom under the top
-     edge so the plate reads as a raised, glowing key. */
-  background-image:
-    var(--button-lighting),
-    radial-gradient(
-      120% 85% at 50% -22%,
-      color-mix(in srgb, var(--tile-light) 90%, transparent) 0%,
-      transparent 74%
-    );
+  /* Lit from above — the shared banded shading and nothing else. The old bloom
+     under the top edge was laid over it and blurred the bands into a smooth
+     glow; buttons now shade the way the icon artwork does. */
+  background-image: var(--button-lighting);
   /* Hard bevel: bright along the top and left, dark along the bottom and right. */
   box-shadow:
     inset 0 var(--control-bevel) 0 0
@@ -55,6 +50,35 @@
   background-color: color-mix(in srgb, var(--outline-color) 85%, white);
   border-color: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
   color: var(--time-black);
+}
+
+/* CUT PIXEL CORNERS. The icon artwork rounds its corners by removing pixels —
+   a stair at each corner, never an anti-aliased curve. A button that keeps
+   square corners next to it reads as a plain rectangle, so every button plate
+   is cut the same way: one stepped notch per corner, drawn with `clip-path` at
+   the bevel's own size (so the cut is exactly one pixel-art step at the
+   control's scale). The frame is clipped with the fill, which is what a
+   pixel-art corner looks like: the outline simply stops at the step. */
+.retro-link.pixel-frame,
+.split-card-action,
+.back-link {
+  /* One step and a half of the bevel: at the control size the icon set's own
+     corner step, and still legible on a 20px phone button. */
+  --pixel-corner: 3px;
+  clip-path: polygon(
+    var(--pixel-corner) 0,
+    calc(100% - var(--pixel-corner)) 0,
+    calc(100% - var(--pixel-corner)) var(--pixel-corner),
+    100% var(--pixel-corner),
+    100% calc(100% - var(--pixel-corner)),
+    calc(100% - var(--pixel-corner)) calc(100% - var(--pixel-corner)),
+    calc(100% - var(--pixel-corner)) 100%,
+    var(--pixel-corner) 100%,
+    var(--pixel-corner) calc(100% - var(--pixel-corner)),
+    0 calc(100% - var(--pixel-corner)),
+    0 var(--pixel-corner),
+    var(--pixel-corner) var(--pixel-corner)
+  );
 }
 
 /* Glyphs inside a tile need their own edge for the hover flip. */

@@ -15,23 +15,29 @@
   --icon-button-glyph: 1.75rem;
   /* The plate fill: near-black, tinted with the host's own accent. */
   --plate-fill-dark: rgb(0 0 0 / 0.92);
-  /* Lit-from-above plate: a bright band across the top edge that falls away to a
-     dark base. Every button wears it (links, card actions, carousel arrows, the
-     back link); cards and panels keep their own tile fill. `--tile-light` /
-     `--tile-dark` are set by the themed plates, so a themed button lights in
-     its own accent and an unthemed one lights in white / black. */
+  /* Lit-from-above plate, shaded like the icon artwork does it: a strong
+     overlight across the top edge that steps down through a few discrete tones
+     to a dark base. Hard stops, not a smooth fade — the icon set is banded, so
+     a softly-fading button reads as a different material beside it.
+
+     Every button wears it (links, card actions, the back link); cards and
+     panels keep their own tile fill. `--tile-light` / `--tile-dark` are set by
+     the themed plates, so a themed button lights in its own accent and an
+     unthemed one lights in white / black. */
   --button-lighting: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 100%, transparent)
-      0%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 78%, transparent) 9%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 46%, transparent)
-      22%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 18%, transparent)
-      38%,
-    transparent 52%,
-    color-mix(in srgb, var(--tile-dark, var(--time-black)) 32%, transparent) 72%,
-    color-mix(in srgb, var(--tile-dark, var(--time-black)) 80%, transparent) 100%
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 96%, transparent)
+      0 13%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 66%, transparent)
+      13% 30%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 38%, transparent)
+      30% 47%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 16%, transparent)
+      47% 63%,
+    color-mix(in srgb, var(--tile-dark, var(--time-black)) 22%, transparent)
+      63% 82%,
+    color-mix(in srgb, var(--tile-dark, var(--time-black)) 58%, transparent)
+      82% 100%
   );
   /* Pattern tile sizes — one per plate step. */
   --pattern-size-huge: 1024px;

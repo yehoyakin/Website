@@ -126,6 +126,7 @@ export const iconRegistry = {
   document: "Document",
   handbag: "Handbag",
   laptop: "Laptop",
+  phone: "Phone",
   radio: "Radio",
 
   // Site chrome — the day / night switch, social links and carousel arrows,
