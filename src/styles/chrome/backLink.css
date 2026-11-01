@@ -21,13 +21,8 @@
   color: var(--time-button-ink);
 }
 
-/* Both rail panels (contacts, blog links) are right-edge panels, inset onto
-   the same gutter as the day / night and view toggles, so their handles line up
-   with the chrome rail instead of hanging off the viewport edge. */
-#socials-container,
-#sidebar-container {
-  right: var(--chrome-gutter);
-}
+/* The rail panels (contacts, blog links) are positioned in
+   styles/chrome/sideRails.css, on the same gutter as this control. */
 
 /* PHONES — back link. */
 

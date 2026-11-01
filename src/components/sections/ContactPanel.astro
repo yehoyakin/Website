@@ -1,7 +1,11 @@
 ---
 // Purpose: Section - src/components/sections/ContactPanel.astro (Top-right contact quicklinks)
+//
+// A rail panel (shared/RailPanel.astro) filled with the site's contact links.
+// It is the same control a blog post uses for its links: one component, one
+// behaviour (scripts/railPanel.js), one stylesheet (chrome/sideRails.css).
 import SocialLink from "../shared/Link.astro";
-import Icon from "../shared/Icon.astro";
+import RailPanel from "../shared/RailPanel.astro";
 import { netIconPath } from "../../config/icons";
 import { patternForTheme } from "../../config/patterns";
 
@@ -19,39 +23,25 @@ const links = [
 ];
 ---
 
-{/* Hover / tap floating tab. Behaviour lives in scripts/socialsHook.js. */}
-<div
-  id="socials-container"
-  class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-var(--icon-button-size))] [&.socials-open]:translate-x-0"
+<RailPanel
+  id="contacts"
+  label="Toggle contact links"
+  icon="contacts"
   /* Same texture recipe as the landing credits bar: the white motif, tinted by
      the mode base colour, so the panel follows day / night rather than a theme. */
   style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
+  panelClass="bg-[var(--time-panel)] backdrop-blur-md p-6 border border-[color:var(--time-border-soft)] shadow-2xl w-64"
 >
-  {/* The clickable/hoverable contacts tab handle */}
-  <button
-    id="socials-toggle"
-    class="icon-button panel-toggle bg-transparent text-[color:var(--time-ink)] rounded-none cursor-pointer select-none border-0 group-[.socials-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
-    aria-label="Toggle Social Links"
-    type="button"
-  >
-    <Icon name="contacts" class="chrome-icon" />
-  </button>
-
-  <div
-    id="socials-panel"
-    class="pixel-frame pattern-plate pattern-plate--small relative bg-[var(--time-panel)] backdrop-blur-md p-6 rounded-none border border-[color:var(--time-border-soft)] shadow-2xl w-64 max-h-[70vh] overflow-y-auto"
-  >
-    <div class="space-y-3">
-      {
-        links.map((link) => (
-          <SocialLink
-            href={link.href}
-            text={link.text}
-            external={link.external}
-            icon={link.icon}
-          />
-        ))
-      }
-    </div>
+  <div class="space-y-3">
+    {
+      links.map((link) => (
+        <SocialLink
+          href={link.href}
+          text={link.text}
+          external={link.external}
+          icon={link.icon}
+        />
+      ))
+    }
   </div>
-</div>
+</RailPanel>

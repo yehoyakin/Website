@@ -1,0 +1,50 @@
+---
+// Purpose: Component - src/components/shared/RailPanel.astro (The one right-edge rail panel)
+//
+// The landing's contacts tab and a blog post's links tab are the same control,
+// so they are the same component: a handle pinned to the chrome gutter and a
+// panel that waits off-canvas. Behaviour lives in scripts/railPanel.js, styles
+// in chrome/sideRails.css, and the two callers only supply what differs — the
+// glyph, the box width/padding and the accent.
+import Icon from "./Icon.astro";
+
+interface Props {
+  /** Unique per page: the panel is `${id}-panel` (aria-controls points at it). */
+  id: string;
+  /** Accessible name of the handle. */
+  label: string;
+  /** Glyph name from the shared registry. */
+  icon: string;
+  /** Theme for the glyph only; the panel keeps whatever accent `style` sets. */
+  theme?: string;
+  /** Panel box classes (width, padding, backdrop) — the parts that differ. */
+  panelClass?: string;
+  /** Accent token and plate pattern; custom properties inherit into the panel. */
+  style?: string;
+}
+
+const { id, label, icon, theme, panelClass = "", style } = Astro.props as Props;
+---
+
+<div class="rail" data-rail style={style}>
+  <button
+    class="rail-handle icon-button panel-toggle bg-transparent text-[color:var(--time-ink)] rounded-none cursor-pointer select-none border-0 flex items-center justify-center focus:outline-none"
+    type="button"
+    aria-label={label}
+    aria-expanded="false"
+    aria-controls={`${id}-panel`}
+    data-rail-handle
+  >
+    <Icon name={icon} theme={theme} class="chrome-icon" />
+  </button>
+
+  <div
+    id={`${id}-panel`}
+    class:list={[
+      "rail-panel pixel-frame pattern-plate pattern-plate--small relative rounded-none",
+      panelClass,
+    ]}
+  >
+    <slot />
+  </div>
+</div>
