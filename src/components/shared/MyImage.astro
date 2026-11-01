@@ -4,10 +4,10 @@ import { Image } from "astro:assets";
 
 interface Props {
   src: any;
-  /** Optional night-time artwork. When given, the two cross-fade by mode. */
+  /** Optional night-time artwork. When given, the two swap by mode. */
   srcNight?: string;
   alt?: string;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "hero";
   /** Wrap the image in the pixel-tile chrome used by the icon buttons. */
   frame?: boolean;
 }
@@ -29,6 +29,13 @@ const sizeMap = {
   md: "w-56 h-56 md:w-72 md:h-72",
   lg: "w-72 h-72 md:w-96 md:h-96",
   xl: "w-full h-full absolute inset-0",
+  /* The landing portrait. Every other size here is a fixed rem box, which on a
+     short window is a block the page cannot get back — and on the home page
+     that block was what pushed the cards and the credits off screen.
+     20dvh keeps it proportional to the space that actually exists: ~144px on a
+     720px-tall window, ~216px on 1080px, floored at 6.5rem so it never
+     vanishes. */
+  hero: `w-[clamp(6.5rem,20dvh,15rem)] h-[clamp(6.5rem,20dvh,15rem)]`,
 };
 
 /* Critical: forces width/height over the image and resets the inline
@@ -36,11 +43,18 @@ const sizeMap = {
 const imgClasses =
   "absolute inset-0 !w-full !h-full !max-w-none !max-h-none block !object-cover select-none pointer-events-none";
 
-/* Day / night pair: both images are rendered and exactly one is visible, driven
-   by `data-mode` on <html> (rules in styles/foundation/layoutPrimitives.css). Only applied when
-   a night source is supplied, so plain images keep a single element. */
-const modeClasses = (which: "day" | "night") =>
-  srcNight ? `mode-img mode-img--${which}` : "";
+/* DAY / NIGHT PAIR — one layer, one download.
+
+   The pair is a single `.mode-art` element carrying both URLs as custom
+   properties, and the stylesheet paints the one that matches `data-mode` on
+   <html> (styles/foundation/layoutPrimitives.css). That is what keeps the
+   artwork for the other mode from being fetched: an `<img>` is downloaded
+   whether or not it is visible, a background image behind a rule that does
+   not apply is not. The artwork is decorative either way — both the old
+   hidden <img> and this layer are aria-hidden / alt-text only. */
+const artStyle = srcNight
+  ? `--art-day: url('${src}'); --art-night: url('${srcNight}')`
+  : undefined;
 ---
 
 <div
@@ -51,25 +65,18 @@ const modeClasses = (which: "day" | "night") =>
   ]}
 >
   {
-    typeof src === "string" ? (
-      <img src={src} alt={alt} class={`${imgClasses} ${modeClasses("day")}`} />
+    srcNight ? (
+      <div
+        class="mode-art"
+        style={artStyle}
+        role="img"
+        aria-label={alt || undefined}
+        aria-hidden={alt ? undefined : "true"}
+      />
+    ) : typeof src === "string" ? (
+      <img src={src} alt={alt} class={imgClasses} />
     ) : (
-      <Image
-        src={src}
-        alt={alt}
-        class={`${imgClasses} ${modeClasses("day")}`}
-      />
-    )
-  }
-
-  {
-    srcNight && (
-      <img
-        src={srcNight}
-        alt=""
-        aria-hidden="true"
-        class={`${imgClasses} ${modeClasses("night")}`}
-      />
+      <Image src={src} alt={alt} class={imgClasses} />
     )
   }
 </div>

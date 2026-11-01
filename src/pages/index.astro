@@ -1,89 +1,96 @@
 ---
 // Purpose: Page - src/pages/index.astro (Home / landing)
 import MyLayout from "../layouts/MyLayout.astro";
-import SplitLanding from "../components/sections/SplitLanding.astro";
+import PageCards from "../components/sections/PageCards.astro";
 import ContactPanel from "../components/sections/ContactPanel.astro";
 import HeaderInfo from "../components/sections/InfoHeader.astro";
 import PageBackdrop from "../components/shared/PageBackdrop.astro";
 import { asset } from "../utils/asset";
+import type { PageCard, PageCredit } from "../types/page";
+
+/* THE SITE'S PAGES — ONE ENTRY EACH.
+
+   This list is the whole landing. Each object becomes a card (PageCards), and
+   the grid fits as many cards per row as the screen allows, so publishing a new
+   section means adding one object here: no markup, no new component, no second
+   layout to keep in sync. Order is the order the cards are read in.
+
+   `theme` is a name from styles/foundation/designTokens.css — it colours the
+   card's frame, its button, its tag and its pattern plate. */
+const pages: PageCard[] = [
+  {
+    href: `${import.meta.env.BASE_URL}portfolio/`,
+    tag: "My projects",
+    title: "Portfolio",
+    description: "Take a look at my Unity and Unreal Engine projects.",
+    actionText: "View projects",
+    theme: "orange",
+    imageSrc: asset("images/pageBackgrounds/PortfolioDay.webp"),
+    imageSrcNight: asset("images/pageBackgrounds/PortfolioNight.webp"),
+  },
+  {
+    href: `${import.meta.env.BASE_URL}blog/`,
+    tag: "My thoughts",
+    title: "Blog",
+    description:
+      "Just my thoughts on videogames, game development and movies.",
+    actionText: "Read articles",
+    theme: "lightgreen",
+    imageSrc: asset("images/pageBackgrounds/BlogDay.webp"),
+    imageSrcNight: asset("images/pageBackgrounds/BlogNight.webp"),
+  },
+];
+
+/** Outbound credits shown in the bar under the cards. */
+const credits: PageCredit[] = [
+  { href: "https://www.deviantart.com/kirokaze/gallery", text: "Pixel-art by Kirokaze" },
+  { href: "https://yukipixels.itch.io", text: "Font by Yukipixels" },
+  { href: "https://kenney-assets.itch.io", text: "Patterns by Kenney" },
+];
 ---
 
 <MyLayout title="Home">
-  {/* Full-screen backdrop for the landing experience. */}
+  {/* SCROLLS AT EVERY SIZE. The landing aims to fit one screen, but a short or
+      very wide viewport falls back to scrolling rather than hiding the cards or
+      the credits, so nothing on this page can become unreachable. */}
   <div
     id="landing-viewport"
-    class="fixed inset-0 w-full h-screen overflow-y-auto md:overflow-hidden bg-[var(--time-page)]"
+    class="fixed inset-0 w-full overflow-y-auto bg-[var(--time-page)]"
   >
-    {/* Background image layer with a soft blur effect. */}
+    {/* Full-screen backdrop for the landing experience. */}
     <PageBackdrop
-      day="images/pageBackgrounds/MainDay.gif"
-      night="images/pageBackgrounds/MainNight.jpg"
+      day="images/pageBackgrounds/MainDay.webp"
+      night="images/pageBackgrounds/MainNight.webp"
     />
 
-    {/* Split layout for the hero and supporting content. */}
+    {/* A column that grows with its content (`min-h-full`, no fixed height and
+        no clipping): the hero keeps its natural size and the card grid takes
+        whatever height is left. */}
     <div
       id="landing-content"
-      class="relative z-20 flex flex-col h-auto md:h-screen md:max-h-screen w-full overflow-hidden min-h-screen pb-20 md:pb-0"
+      class="relative z-20 flex min-h-full w-full flex-col pb-6 md:pb-0"
     >
-      <header class="absolute top-0 right-0 px-8 py-6 z-50">
+      <header class="absolute top-0 right-0 z-50 px-8 py-6">
         <ContactPanel />
       </header>
 
-      {
-        /* HEADER SECTION: Max height limits keep it from drowning out the splits */
-      }
+      {/* HERO — never squeezed, never clipped. */}
       <div
-        class="w-full md:max-h-[75vh] md:min-h-[50vh] flex items-center justify-center overflow-hidden p-2 pt-16 md:pt-2"
+        class="flex w-full shrink-0 items-center justify-center px-2 pb-2 pt-16 md:pt-2"
       >
         <HeaderInfo
           name="Joaquin Herrera"
-          description="
-           Game Dev: Unreal Engine C++ & Unity"
+          description="Game Dev: Unreal Engine C++ & Unity"
           portraitSrc={asset("images/frontPage/mypixelart.webp")}
           theme="purple"
         />
       </div>
 
-      {
-        /* SPLIT CONTENT: Takes up the entire remaining vertical viewport portion */
-      }
+      {/* CARD GRID — one card per entry in `pages` above. */}
       <div
-        class="w-full flex-1 md:flex-1 flex items-center justify-center overflow-hidden px-2 pb-2 md:p-2"
+        class="flex w-full min-h-0 flex-1 items-stretch justify-center px-2 pb-2 md:p-2"
       >
-        <SplitLanding
-          left={{
-            href: `${import.meta.env.BASE_URL}portfolio/`,
-            tag: "My projects",
-            title: "Portfolio",
-            description: "Take a look at my Unity and Unreal Engine projects.",
-            actionText: "View projects",
-            theme: "orange",
-            imageSrc: asset("images/pageBackgrounds/PortfolioDay.gif"),
-            imageSrcNight: asset("images/pageBackgrounds/PortfolioNight.gif"),
-          }}
-          right={{
-            href: `${import.meta.env.BASE_URL}blog/`,
-            tag: "My thoughts",
-            title: "Blog",
-            description:
-              "Just my thoughts on videogames, game development and movies.",
-            actionText: "Read articles",
-            theme: "lightgreen",
-            imageSrc: asset("images/pageBackgrounds/BlogDay.gif"),
-            imageSrcNight: asset("images/pageBackgrounds/BlogNight.gif"),
-          }}
-          credits={[
-            {
-              href: "https://www.deviantart.com/kirokaze/gallery",
-              text: "Pixel-art by Kirokaze",
-            },
-            { href: "https://yukipixels.itch.io", text: "Font by Yukipixels" },
-            {
-              href: "https://kenney-assets.itch.io",
-              text: "Patterns by Kenney",
-            },
-          ]}
-        />
+        <PageCards pages={pages} credits={credits} />
       </div>
     </div>
   </div>

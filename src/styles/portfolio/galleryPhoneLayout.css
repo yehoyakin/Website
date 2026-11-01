@@ -20,9 +20,19 @@
   .thumb-tag {
     font-size: 0.75rem;
   }
-  /* Body and screenshots stack, tighter gap. */
-  .project-panel-layout {
+  /* Body and screenshots STACK. `.project-panel-layout` is a two-column grid
+     on desktop (write-up + media); at phone width two columns leave about
+     150px each, which is not a reading measure for 16px pixel type. One
+     column keeps the write-up full width, with the screenshots under it. */
+  .project-panel-layout,
+  .project-panel-layout--solo {
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
+  }
+  /* The media frame keeps a landscape ratio, but 16:10 is needlessly tall on a
+     phone where the column is only ~350px wide. */
+  .project-panel-frame {
+    aspect-ratio: 16 / 9;
   }
   .collapse-btn {
     width: 3rem;
@@ -46,6 +56,11 @@
   }
   .gallery-thumb-desc {
     font-size: 0.8rem;
+  }
+  /* A full-width 16:9 frame is only ~180px tall on the smallest phones; the
+     screenshot is still the biggest thing in the panel, so let it breathe. */
+  .project-panel-frame {
+    aspect-ratio: 4 / 3;
   }
   .thumb-tag {
     font-size: 0.7rem;

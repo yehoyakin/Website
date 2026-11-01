@@ -141,6 +141,8 @@ const renderScene = (
         src="${scene.image}"
         alt="Scene ${sceneIndex}"
         class="${imgClass}"
+        loading="lazy"
+        decoding="async"
       />
     </figure>
     ${caption}
@@ -352,6 +354,8 @@ const sceneHtml =
                   src="${scene.image}"
                   alt="Scene ${sceneIndex}"
                   class="${imgClass}"
+                  loading="lazy"
+                  decoding="async"
                 />
               </figure>
             `;

@@ -1,0 +1,98 @@
+---
+// Purpose: Component - src/components/sections/PageCards.astro (The site's pages as cards)
+//
+// The landing used to be a hard-coded split: a left half and a right half, with
+// the markup of index.astro deciding which page went where. Adding a page meant
+// editing that markup and the component's props.
+//
+// It is a LIST now. The page passes its destinations (types/page.ts) and this
+// component renders them as the same card anatomy, one per entry, in a grid
+// that fits as many per row as the width allows — so a third (or fifth) page is
+// one more object in that array, and nothing here changes.
+import Portrait from "../shared/MyImage.astro";
+import Card from "./Card.astro";
+import Link from "../shared/Link.astro";
+import { patternForTheme } from "../../config/patterns";
+import type { PageCard, PageCredit } from "../../types/page";
+
+interface Props {
+  pages: PageCard[];
+  /** Outbound credits, one button each, in the bar under the cards. */
+  credits?: PageCredit[];
+}
+
+const { pages = [], credits = [] } = Astro.props as Props;
+---
+
+{/* Allow the section to grow as cards wrap onto further rows. */}
+<section class="relative flex w-full flex-col">
+  <div class="relative z-10 flex min-h-0 flex-1 flex-col justify-between">
+    {/* `auto-fit` + `minmax` is what makes adding a page free: the tracks are
+        created from the available width, so two entries split the row in half,
+        three thirds, and a narrow screen collapses to one column without a
+        breakpoint of its own. */}
+    <ul
+      class="m-0 grid w-full min-h-0 flex-1 list-none grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-0 p-0"
+    >
+      {
+        pages.map((page) => (
+          <li class="min-h-[10rem] md:min-h-[min(16rem,30dvh)]">
+            <Card
+              href={page.href}
+              tag={page.tag}
+              title={page.title}
+              description={page.description}
+              actionText={page.actionText}
+              theme={page.theme ?? "orange"}
+              class="h-full w-full border-b-[var(--outline-width)] border-[color:var(--time-border-soft)] md:border-r-[var(--outline-width)]"
+            >
+              <Portrait
+                slot="background"
+                src={page.imageSrc}
+                srcNight={page.imageSrcNight}
+                size="xl"
+              />
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      /* CREDITS BAR — site chrome, not a page card.
+         It wears the MODE base colour (`--icon-accent`) and the day base motif,
+         the same recipe the contact rail uses, so it follows day / night instead
+         of a theme. `shrink-0` keeps it on screen while the card grid takes the
+         remaining height. */
+    }
+    {
+      credits.length > 0 && (
+        <div
+          class="pattern-plate pattern-plate--small relative shrink-0 border-t border-[color:var(--time-border-soft)] px-3 py-2 backdrop-blur-md sm:px-8 sm:py-3"
+          style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
+        >
+          <div class="credits-row">
+            {
+              credits.map((credit, index) => (
+                <>
+                  {index > 0 && (
+                    <span
+                      class="text-sm text-[color:var(--time-ink-muted)]"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <Link
+                    href={credit.href}
+                    text={credit.text}
+                    external
+                    class="whitespace-nowrap"
+                  />
+                </>
+              ))
+            }
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>

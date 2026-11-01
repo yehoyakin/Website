@@ -26,14 +26,21 @@ const themeAttribute =
 >
   <head>
     <meta charset="UTF-8" />
-    {/* ONE LAYOUT, EVERY SCREEN.
+    {/* ONE LAYOUT, EVERY SCREEN — laid out at the device's real width.
 
-        A fixed layout width means a phone lays the page out at the desktop
-        width and scales the whole thing down to fit, instead of switching to
-        the phone rules — so the computer layout and sizes are what you get on
-        mobile too (and the max-width media queries never fire). `shrink-to-fit`
-        is what makes Safari scale it rather than showing a 1280px slice. */}
-    <meta name="viewport" content="width=1280, shrink-to-fit=yes" />
+        This used to be `width=1280, shrink-to-fit=yes`, which laid every page
+        out at desktop width on a phone and scaled the whole thing down. That
+        made the site unreadable on mobile AND disabled the phone rules the
+        stylesheets are full of: a fixed layout width means `max-width`
+        queries never match, so styles/responsive/, the 768px gallery and card
+        widths and the split-card block at 900px were all dead code.
+
+        `viewport-fit=cover` is what makes the env(safe-area-inset-*) values
+        used by the chrome rails and panels resolve on iOS. */}
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <title>{title}</title>
 
     {/* Apply the day / night choice before first paint so the page never

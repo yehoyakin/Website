@@ -29,36 +29,39 @@
   opacity: 1;
 }
 
-/* Day / night artwork pairs. */
+/* Day / night artwork pairs.
 
-.mode-img {
-  transition: opacity var(--dissolve-duration, 450ms)
-    var(--dissolve-ease, ease-in-out);
-  will-change: opacity;
+   ONE LAYER, ONE DOWNLOAD. Which mode is in use is only known at runtime
+   (a stored choice, else the OS preference), so the markup cannot know which
+   artwork to request — but the STYLESHEET can, because `data-mode` is already
+   on <html> before first paint (MyLayout's inline script).
+
+   So a pair is one element carrying both URLs as custom properties, and only
+   the matching rule paints one. A custom property is not a resource: a URL
+   that no applying declaration uses is never fetched, so a day visitor
+   downloads just the day artwork. Two stacked <img> elements — the previous
+   approach — always downloaded both, because an `<img src>` is fetched however
+   transparent it is, which is how every page shipped the invisible half of
+   each pair.
+
+   The swap is instant instead of a cross-fade, deliberately: a fade has to
+   have both pictures loaded at once, which is the double download this
+   avoids. */
+.mode-art {
+  position: absolute;
+  inset: 0;
+  background-image: var(--art-day);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.mode-img--night,
-:root[data-mode="night"] .mode-img--day {
-  opacity: 0;
-}
-
-:root[data-mode="night"] .mode-img--night {
-  opacity: 1;
-}
-
-/* Reduced motion: swap the artwork outright, no fade. */
-@media (prefers-reduced-motion: reduce) {
-  .mode-img,
-  .bg-layer {
-    transition: none;
-  }
+:root[data-mode="night"] .mode-art {
+  background-image: var(--art-night);
 }
 
 /* Geometry for the full-page backdrop layer. */
-.page-backdrop-img {
-  position: absolute;
-  inset: 0;
+.page-backdrop-art {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }

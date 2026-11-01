@@ -1,39 +1,34 @@
 ---
 // Purpose: Component - src/components/shared/PageBackdrop.astro (Day / night page backdrop)
 //
-// Each listing page owns a daytime and a night-time artwork. Both are rendered
-// and CSS shows exactly one, keyed off `data-mode` on <html> — which the inline
-// script in MyLayout.astro sets before first paint — so switching modes swaps
-// the artwork without a flash of the wrong one and without per-page JavaScript.
+// Each listing page owns a daytime and a night-time artwork. The layer below
+// carries both URLs and CSS paints whichever one matches `data-mode` on <html>
+// — which the inline script in MyLayout.astro sets before first paint — so a
+// page never flashes the wrong artwork and needs no JavaScript of its own.
 //
-// The blur stays on this wrapper (styles/foundation/layoutPrimitives.css), so both images share
-// it and only their opacity changes — the `.mode-img` pair used by card artwork
-// too, so a mode switch behaves the same wherever there are two versions.
+// ONE LAYER, ONE DOWNLOAD: only the artwork for the current mode is requested.
+// This used to be two stacked <img> elements, one per mode, and an `<img src>`
+// is fetched however transparent it is — so every visitor downloaded the
+// invisible half of the pair. See `styles/foundation/layoutPrimitives.css`.
+//
+// The blur stays on this wrapper, so it applies to the artwork without the
+// image itself being pre-blurred.
 import { asset } from "../../utils/asset";
 
 interface Props {
-  /** Path inside public/, e.g. "images/pageBackgrounds/BlogDay.gif". */
+  /** Path inside public/, e.g. "images/pageBackgrounds/BlogDay.webp". */
   day: string;
   night: string;
 }
 
 const { day, night } = Astro.props as Props;
+
+const artStyle = `--art-day: url('${asset(day)}'); --art-night: url('${asset(night)}')`;
 ---
 
 <div
   class="fixed inset-0 z-0 pointer-events-none style3d blurred-bg-layer page-backdrop"
   aria-hidden="true"
 >
-  <img
-    class="page-backdrop-img mode-img mode-img--day"
-    src={asset(day)}
-    alt=""
-    role="presentation"
-  />
-  <img
-    class="page-backdrop-img mode-img mode-img--night"
-    src={asset(night)}
-    alt=""
-    role="presentation"
-  />
+  <div class="mode-art page-backdrop-art" style={artStyle} />
 </div>

@@ -34,21 +34,21 @@
   opacity: 0.22;
 }
 
-/* CREDITS ROW — one line, always.
+/* CREDITS ROW — one line when it fits, two when it does not.
 
-   The buttons never wrap: they shrink with the viewport (the label size is
-   clamped, so a phone still fits all three) and the row can scroll sideways as
-   a last resort instead of stacking into ragged rows. */
+   It used to be `nowrap` with `overflow-x: auto` as the escape hatch, and that
+   does not work for a CENTRED flex row: when the content is wider than the box
+   it spills past BOTH edges, and the left overflow cannot be scrolled to — so
+   the first and last credit came out cut in half on any window narrower than
+   the three buttons. Wrapping keeps every credit whole instead. */
 .credits-row {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0.35rem 0.25rem;
   width: 100%;
   max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
 
 .credits-row::-webkit-scrollbar {
@@ -162,19 +162,22 @@
   transform: scale(1.04);
 }
 
+/* Landing cards share the screen with the hero and the credits bar, so their
+   copy is sized to leave room for both: a 4rem title made a card taller than
+   the space the page has, which is what pushed the credits off the bottom. */
 .split-card-title {
   margin-top: 0.5rem;
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-size: clamp(1.75rem, 4vw, 3rem);
 }
 
 .split-card-description {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   line-height: 1.6;
 }
 
 .split-card-action {
   display: inline-flex;
-  margin-top: 2rem;
+  margin-top: 1.25rem;
   padding: 0.75rem 1.5rem;
   font-family: var(--retro-font);
   text-transform: uppercase;
@@ -202,6 +205,7 @@
     font-size: clamp(1.1rem, 4.5vw, 1.75rem);
     line-height: 1.1;
   }
+
   .split-card-description {
     margin-top: 0.5rem;
     font-size: clamp(0.9rem, 3vw, 1rem);

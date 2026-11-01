@@ -1,7 +1,8 @@
 // Purpose: Config - src/config/icons.ts (Shared pixel icon registry + colours)
 //
 // The artwork is the ReffPixels "Pixelart Generic Icons" set, shipped once per
-// colour in public/images/Icons/<Colour>/<Name>_<Colour>.png (120x120 PNGs).
+// colour in public/images/Icons/<Colour>/<Name>_<Colour>.webp (120x120 pixel
+// art, lossless WebP — see scripts/optimize-icons.mjs).
 //
 // Content refers to an icon by name ("Handbag", "Calendar", ...) and a THEME
 // picks the colour: a blog post or project with `theme: "green"` gets the
@@ -111,7 +112,7 @@ export function iconColorForTheme(theme?: string): IconColor {
 
 /**
  * Canonical file name for every icon, WITHOUT its colour suffix: "Calendar"
- * resolves to public/images/Icons/Green/Calendar_Green.png for the Green
+ * resolves to public/images/Icons/Green/Calendar_Green.webp for the Green
  * colour.
  */
 export const iconRegistry = {
@@ -223,7 +224,7 @@ export const iconPath = (
   const folder = isIconColor(color) ? color : defaultIconColor;
   const dir = `${ICON_DIRECTORY}/${folder}`;
 
-  return `${dir}/${matchFile(dir, `${file}_${folder}.png`)}`;
+  return `${dir}/${matchFile(dir, `${file}_${folder}.webp`)}`;
 };
 
 // ── Link icons (PixelNetIcons) ────────────────────────────────────────────

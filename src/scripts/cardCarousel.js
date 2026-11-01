@@ -98,7 +98,7 @@ function initStrip(scroller) {
       const folder = ICON_FOLDER[mode];
       const icon = document.createElement("img");
       icon.src = encodeURI(
-        `${import.meta.env.BASE_URL}images/Icons/${folder}/${ARROW_FILE[direction]}_${folder}.png`,
+        `${import.meta.env.BASE_URL}images/Icons/${folder}/${ARROW_FILE[direction]}_${folder}.webp`,
       );
       icon.alt = "";
       icon.setAttribute("aria-hidden", "true");
