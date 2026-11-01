@@ -70,3 +70,59 @@
 .thumb-links {
   max-width: 100%;
 }
+
+/* CARD HEIGHT — half the screen.
+
+   A listing card is an entry in a strip, not a poster. Left to its own content
+   it was 500px tall on a laptop, which put the second half of the card and the
+   strip's controls under the fold. `50dvh` is half the window at every size
+   (360px at 720, 450 at 900, 540 at 1080) and the copy below is packed to fit
+   inside it — the PICTURE is what gives when the card is short. */
+.blog-card-item .blog-card,
+.gallery-project-item .blog-card {
+  height: 50dvh;
+  max-height: 50dvh;
+}
+
+.blog-card-item .blog-card-image-wrap,
+.gallery-project-item .blog-card-image-wrap {
+  flex: 1 1 auto;
+  /* The shared card floors the artwork at 4-14rem; in a capped card that floor
+     would push the copy out of the bottom. */
+  min-height: 0;
+}
+
+.blog-card-item .blog-card-bar,
+.gallery-project-item .blog-card-bar {
+  padding: 0.3rem 0.9rem;
+}
+
+.blog-card-item .blog-card-info-bar,
+.gallery-project-item .blog-card-info-bar {
+  padding: 0.45rem 0.9rem 0.6rem;
+}
+
+.blog-card-item .blog-card-title,
+.gallery-project-item .gallery-thumb-title {
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+
+/* A card-level description: two lines at most, and no paragraph margins.
+   Extra lines come out of the picture, not out of the card. */
+.blog-card-item .blog-card-desc,
+.gallery-project-item .gallery-thumb-desc {
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* The meta line: 1.6 body leading is half the bar at card scale. */
+.blog-card-item .blog-card-date,
+.gallery-project-item .thumb-tag {
+  line-height: 1.25;
+}
