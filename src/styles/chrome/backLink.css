@@ -10,15 +10,23 @@
   /* Site chrome, not page content: it follows the mode base colours. */
   display: inline-flex;
   align-items: center;
-  /* Same control scale as the shared link button: label two pixels down,
-     padding rather than leading. */
-  padding: 0.22rem 0.6rem;
-  font-size: calc(var(--font-size-base) - 2px);
+  /* Same control scale as the shared link button: the height of an icon
+     button, and a label one step down inside it. */
+  height: var(--icon-button-size, 2.75rem);
+  padding: 0 0.6rem;
+  line-height: 1;
   border: var(--control-outline-width) solid var(--time-button-ink);
   background-color: var(--time-button-fill);
   /* Same lit-from-above plate as every other button. */
   background-image: var(--button-lighting);
   color: var(--time-button-ink);
+}
+
+/* The label is the control's, not a paragraph's: `a.back-link` has to outrank
+   the `.text-base` type role, which is declared later in the cascade and set
+   this label one whole step larger than the buttons beside it. */
+a.back-link {
+  font-size: calc(var(--font-size-base) - 4px);
 }
 
 /* The rail panels (contacts, blog links) are positioned in
@@ -32,12 +40,12 @@
     --chrome-gutter: max(1rem, env(safe-area-inset-right));
     --chrome-control: 2.5rem;
   }
-  .back-link {
+  a.back-link {
     display: inline-flex;
     align-items: center;
-    min-height: 2.5rem;
+    height: var(--icon-button-size, 2.5rem);
     max-width: calc(100vw - 5.5rem);
-    padding: 0.45rem 0.85rem;
+    padding: 0 0.7rem;
     border: var(--outline-width) solid var(--time-button-ink);
     border-radius: 0;
     background-color: var(--time-button-fill);

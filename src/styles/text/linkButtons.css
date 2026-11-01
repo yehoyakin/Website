@@ -3,13 +3,15 @@
 .retro-link {
   position: relative;
   font-family: var(--retro-font);
-  /* A link button is a control, not a paragraph: it sits at the scale of the
-     chrome's icon buttons (a 2.5-2.75rem square), so its label is the shared
-     `text-xs` step minus 2px and its box is padding, not leading. The Tailwind
-     utilities on the component set the box; this is the type scale for it. */
-  font-size: calc(var(--font-size-xs) - 2px);
-  line-height: 1.2;
-  min-height: 0;
+  /* A link button IS an icon button with a label: exactly the same height as
+     the chrome controls (`--icon-button-size`: 2.75rem, 2.5rem on phones), and
+     the label a further step down inside it. Height, not padding, sets the box,
+     so a one-word button and a two-line one are the same size. */
+  height: var(--icon-button-size, 2.75rem);
+  min-height: var(--icon-button-size, 2.75rem);
+  padding-block: 0;
+  font-size: calc(var(--font-size-xs) - 4px);
+  line-height: 1;
 }
 
 /* The idle shake for these buttons lives in text/linkIdleShake.css. */
