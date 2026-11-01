@@ -1,0 +1,158 @@
+/* Landing page cards: the blog card, one step wider.
+
+   These wore the old split-landing tile (`.split-card`), a half-screen panel
+   with its copy laid over its artwork. They are normal cards now — the same
+   anatomy as the blog and portfolio listings (meta bar, artwork, copy bar) —
+   only wider, because a landing card is a destination rather than an item in a
+   strip.
+
+   Two layouts, one markup:
+
+     PHONE     the card is the screen. Artwork at a fixed 16:10, copy under it,
+               page scrolls naturally — the way a phone site behaves.
+     TABLET+   the card fills the height the landing page has left, so the art
+               absorbs the slack instead of the cards overflowing the screen. */
+
+.page-cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin: 0;
+  /* Full-bleed on a phone: half a rem of gutter, not a framed column. */
+  padding: 0.5rem;
+  list-style: none;
+  min-height: 0;
+}
+
+@media (min-width: 40rem) {
+  .page-cards {
+    /* One row per pair, each row exactly as tall as the room it is given. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 1.25rem;
+    padding: 1rem;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+}
+
+/* Three or more pages: let the grid fit as many tracks as the width allows
+   instead of forcing pairs. Nothing has to change in the markup to add one. */
+@media (min-width: 64rem) {
+  .page-cards {
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.page-card {
+  width: 100%;
+  max-width: 36rem;
+  height: 100%;
+  min-height: 0;
+}
+
+/* ARTWORK. On a phone it is a picture with a shape of its own; from tablet up
+   it is the part that gives: the copy bar sizes to its text, the picture takes
+   whatever height is left. That is what keeps the cards inside one screen. */
+.page-card .blog-card-image-wrap {
+  flex: 0 0 auto;
+  min-height: 0;
+  aspect-ratio: 16 / 10;
+}
+
+@media (min-width: 40rem) {
+  .page-card .blog-card-image-wrap {
+    flex: 1 1 0;
+    aspect-ratio: auto;
+    /* Below this the picture stops being worth having, and the landing is
+       allowed to scroll instead. */
+    min-height: 5rem;
+  }
+}
+
+/* COPY BAR — sized for a whole page title, not an article excerpt. */
+.page-card .blog-card-bar {
+  padding: 0.6rem 1rem;
+}
+
+.page-card .blog-card-info-bar {
+  padding: 0.85rem 1rem 1rem;
+}
+
+.page-card .blog-card-title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+}
+
+/* A landing card's description is a sentence, so it gets no paragraph margins
+   and no more than two lines: extra lines come out of the picture. */
+.page-card .blog-card-desc {
+  margin: 0.35rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* The card's call to action sits on the copy bar as the site's lit tile. */
+.page-card .page-card-action {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  padding: 0.5rem 0.9rem;
+}
+
+/* Hovering the card lights the action too, so the tile reads as the target. */
+.page-card:hover .page-card-action {
+  background-color: color-mix(in srgb, var(--outline-color) 85%, white);
+  border-color: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
+  color: var(--time-black);
+}
+
+/* THE ACTION TILE — the site's shared pixel button (`.split-card-action`),
+   whose base cut used to live with the retired split tile. Declared here, ahead
+   of the pixel-chrome files that light it, so the cascade order is unchanged. */
+.split-card-action {
+  display: inline-flex;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--retro-font);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition:
+    background 0.15s var(--ease-soft),
+    color 0.15s var(--ease-soft),
+    transform var(--duration-press) var(--ease-press);
+}
+
+/* CREDITS ROW — one line when it fits, more when it does not.
+
+   It used to be `nowrap` with `overflow-x: auto` as the escape hatch, and that
+   does not work for a CENTRED flex row: when the content is wider than the box
+   it spills past BOTH edges, and the left overflow cannot be scrolled to — so
+   the first and last credit came out cut in half on any window narrower than
+   the three buttons. Wrapping keeps every credit whole instead. */
+.credits-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 0.25rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.credits-row .retro-link {
+  flex: 0 0 auto;
+  padding-inline: 0.5rem;
+  font-size: clamp(0.56rem, 2.1vw, 0.75rem);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}

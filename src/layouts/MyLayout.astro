@@ -4,6 +4,7 @@ import { ClientRouter } from "astro:transitions";
 import { toThemeName, toThemeToken } from "../config/uiDictionary";
 import { asset } from "../utils/asset";
 import ModeToggle from "../components/shared/ModeToggle.astro";
+import Icon from "../components/shared/Icon.astro";
 import { defaultIconColor, defaultIconColorNight } from "../config/icons";
 
 const { title = "JoacoDev", theme, page } = Astro.props;
@@ -56,6 +57,30 @@ const themeAttribute =
             : window.matchMedia?.("(prefers-color-scheme: dark)").matches
               ? "night"
               : "day";
+
+        /* THE DESKTOP-VIEW REQUEST is applied here too, before first paint.
+           The site lays out for the device by default; swapping the viewport
+           meta is what makes a phone lay it out at 1280px and scale it, so a
+           visitor who asked for the desktop layout never sees the mobile one
+           first. Kept in sync with scripts/viewMode.js. */
+        var desktopView = false;
+        try {
+          desktopView = localStorage.getItem("site-view") === "desktop";
+        } catch {}
+
+        document.documentElement.dataset.view = desktopView
+          ? "desktop"
+          : "mobile";
+
+        if (desktopView) {
+          var viewportMeta = document.querySelector('meta[name="viewport"]');
+          if (viewportMeta) {
+            viewportMeta.setAttribute(
+              "content",
+              "width=1280, shrink-to-fit=yes",
+            );
+          }
+        }
       } catch {
         document.documentElement.dataset.mode = "day";
       }
@@ -75,6 +100,20 @@ const themeAttribute =
     class="bg-[var(--time-page)] text-[color:var(--time-ink)] antialiased selection:bg-amber-500/30 selection:text-white"
   >
     <ModeToggle />
+
+    {/* DESKTOP-VIEW REQUEST — the site adapts to the screen by default; this is
+        the explicit opt-in to the old fixed-width desktop layout, one control
+        down the same chrome rail as the day / night switch. */}
+    <button
+      id="view-toggle"
+      class="mode-toggle view-toggle icon-button"
+      type="button"
+      aria-label="Switch to desktop view"
+      aria-pressed="false"
+      title="Switch to desktop view"
+    >
+      <Icon name="laptop" class="chrome-icon" />
+    </button>
 
     <div
       class="fixed inset-0 bg-[linear-gradient(to_right,var(--time-border-soft)_1px,transparent_1px),linear-gradient(to_bottom,var(--time-border-soft)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"
@@ -96,6 +135,7 @@ const themeAttribute =
     <script>
       import "../scripts/socialsHook.js";
       import "../scripts/modeToggle.js";
+      import "../scripts/viewMode.js";
       import "../scripts/patternTransition.js";
     </script>
   </body>

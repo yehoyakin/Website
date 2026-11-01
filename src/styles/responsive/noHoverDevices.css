@@ -8,14 +8,12 @@
     animation: none;
   }
   .blog-card:hover,
-  .gallery-thumb:hover,
-  .split-card:hover {
+  .gallery-thumb:hover {
     transform: none;
   }
   .blog-card:hover .blog-card-bg,
   .gallery-thumb:hover .thumb-carousel-img.active,
-  .gallery-thumb:hover .blog-card-bar,
-  .split-card:hover .split-card-content {
+  .gallery-thumb:hover .blog-card-bar {
     transform: none;
   }
 }

@@ -1,50 +1,144 @@
-/* Landing fit: the home page has to show the hero, the page cards and the
+/* Landing fit: the home page aims to show the hero, the page cards and the
    credits bar at once.
- 
+
    Width breakpoints cannot express this: a 1280x720 laptop window and a
    1280x1400 portrait tablet are the same width but have wildly different space
    to fill. So this file keys off HEIGHT, and only inside the landing page
    (`#landing-content`), where the three blocks compete for one screen.
- 
+
    The sizes here are the same type roles, one step down: nothing is hidden and
    nothing changes shape, it just takes less room when there is less room. */
-/* Phones: the hero gives its vertical padding and one step of portrait size
-   back, which pays for the second line the credits row needs down here. */
+
+/* PHONES — a compact hero, so the cards start near the top of the screen
+   instead of below a stack that fills it. Same pieces, fewer gaps. */
 @media (max-width: 767px) {
   .landing-hero {
-    padding-block: 0.25rem;
+    padding-inline: 0.75rem;
+    padding-block: 0.5rem;
   }
+  .landing-hero h1 {
+    font-size: 1.35rem;
+    line-height: 1.15;
+  }
+  .landing-hero > div {
+    margin-top: 0.5rem;
+  }
+  /* The portrait is a signature here, not the subject: the cards are. */
   .landing-hero .portrait-frame {
-    width: clamp(6rem, 14dvh, 9rem);
-    height: clamp(6rem, 14dvh, 9rem);
+    width: clamp(4.5rem, 13dvh, 6rem);
+    height: clamp(4.5rem, 13dvh, 6rem);
+  }
+  .landing-hero p {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
   }
 }
 
-@media (min-width: 768px) and (max-height: 840px) {
-  /* Hero: the title drops a step and the block's vertical padding halves. */
+/* THE COLUMN NEEDS A DEFINITE HEIGHT.
+
+   `flex-1` on the cards and `1fr` on their rows can only divide space they can
+   see. With `min-h-full` the column is as tall as its content, so the cards
+   sized themselves from their own content and then pushed the credits under
+   the window instead of filling the room beneath the hero. `100dvh` is exactly
+   one screen — the window on a phone, and the scaled layout viewport in the
+   desktop-view request — so there is a height for the three blocks to share.
+
+   Content that still cannot fit (a very short window) overflows and the
+   landing scrolls, rather than being clipped. */
+@media (min-width: 768px) {
+  #landing-content {
+    height: 100vh;
+    min-height: 0;
+  }
+}
+
+@supports (height: 100dvh) {
+  @media (min-width: 768px) {
+    #landing-content {
+      height: 100dvh;
+    }
+  }
+}
+
+/* DESKTOP — the portrait follows the window height the way the phone one does.
+
+   A fixed-size hero above a screen-height grid spends the cards' room on the
+   portrait: at 1440x900 the picture of the card collapsed to its floor while a
+   180px portrait sat above it. 15dvh keeps the hero proportional to the screen
+   it shares with the cards. */
+@media (min-width: 768px) {
   .landing-hero {
-    padding-block: 0.25rem;
+    padding-block: 0.5rem;
   }
   .landing-hero h1 {
     font-size: var(--font-size-2xl);
   }
+  .landing-hero .portrait-frame {
+    width: clamp(5rem, 15dvh, 11rem);
+    height: clamp(5rem, 15dvh, 11rem);
+  }
+  .landing-hero > div {
+    margin-top: 0.75rem;
+  }
+  .landing-hero p {
+    margin-top: 0.5rem;
+  }
+}
+
+/* DESKTOP-VIEW REQUEST — the cards keep their own proportion.
+
+   `width=1280` on a phone lays the page out 1280px wide and scales it to the
+   device, so the layout viewport is as tall as the whole scaled screen (~2771px
+   on a 390x844 phone). Filling that height was right for a landscape desktop
+   window and wrong here: each card stretched into a 2000px poster. In this
+   view the cards stay the size a card is, the column still fills the screen,
+   and the credits stay pinned at the bottom as they were. */
+:root[data-view="desktop"] .page-cards {
+  flex: 0 0 auto;
+  grid-auto-rows: auto;
+}
+
+:root[data-view="desktop"] .page-card {
+  height: auto;
+}
+
+:root[data-view="desktop"] .page-card .blog-card-image-wrap {
+  flex: 0 0 auto;
+  aspect-ratio: 16 / 10;
+  min-height: 0;
+}
+
+@media (min-width: 768px) and (max-height: 840px) {
+  /* Hero: the title drops a step and the block's padding goes. */
+  .landing-hero {
+    padding-block: 0;
+  }
+  .landing-hero h1 {
+    font-size: var(--font-size-xl);
+  }
+  .landing-hero > div {
+    margin-top: 0.5rem;
+  }
+  .landing-hero p {
+    margin-top: 0.25rem;
+  }
   /* The portrait is the biggest block left on a short window: one more step
      down keeps the cards and the credits their room. */
   .landing-hero .portrait-frame {
-    width: clamp(5.5rem, 16dvh, 11rem);
-    height: clamp(5.5rem, 16dvh, 11rem);
+    width: clamp(4.5rem, 13dvh, 9rem);
+    height: clamp(4.5rem, 13dvh, 9rem);
   }
 
   /* Cards: title and the gaps around the button tighten, which is what keeps
      the card from being taller than the space left under the hero. */
-  #landing-content .split-card-title {
-    font-size: clamp(1.4rem, 2.8vw, 2rem);
+  #landing-content .page-card .blog-card-title {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
   }
-  #landing-content .split-card-description {
-    margin-top: 0.5rem;
+  #landing-content .page-card .blog-card-desc {
+    margin-top: 0.25rem;
   }
-  #landing-content .split-card-action {
-    margin-top: 0.75rem;
-    padding: 0.5rem 1rem;
+  #landing-content .page-card-action {
+    margin-top: 0.6rem;
+    padding: 0.4rem 0.8rem;
   }
 }

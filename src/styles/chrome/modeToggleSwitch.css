@@ -47,6 +47,22 @@
   display: block;
 }
 
+/* DESKTOP-VIEW REQUEST — the same rail as the day / night switch, one control
+   down. The site lays out for the device by default, so this is the explicit
+   opt-in to the old fixed-width layout (scripts/viewMode.js). */
+.view-toggle {
+  top: calc(
+    var(--chrome-gutter) + var(--chrome-control) + var(--chrome-stack-gap)
+  );
+  right: var(--chrome-gutter);
+}
+
+/* Desktop view is a live state, so the control stays visible to undo it and
+   reads as engaged while it is on. */
+:root[data-view="desktop"] .view-toggle {
+  opacity: 0.7;
+}
+
 /* No phone block needed: the chrome tokens step down for phones. */
 
 @media (prefers-reduced-motion: reduce) {
