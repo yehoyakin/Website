@@ -23,10 +23,11 @@
   .landing-hero > div {
     margin-top: 0.5rem;
   }
-  /* The portrait is a signature here, not the subject: the cards are. */
+  /* A real picture of you, not a thumbnail: 6rem floor so it reads as a
+     portrait, and it grows with the phone's height. */
   .landing-hero .portrait-frame {
-    width: clamp(4.5rem, 13dvh, 6rem);
-    height: clamp(4.5rem, 13dvh, 6rem);
+    width: clamp(6rem, 22dvh, 9.5rem);
+    height: clamp(6rem, 22dvh, 9.5rem);
   }
   .landing-hero p {
     margin-top: 0.5rem;
@@ -74,8 +75,8 @@
     font-size: var(--font-size-2xl);
   }
   .landing-hero .portrait-frame {
-    width: clamp(5rem, 15dvh, 11rem);
-    height: clamp(5rem, 15dvh, 11rem);
+    width: clamp(9rem, 24dvh, 15rem);
+    height: clamp(9rem, 24dvh, 15rem);
   }
   .landing-hero > div {
     margin-top: 0.75rem;
@@ -95,11 +96,13 @@
    and the credits stay pinned at the bottom as they were. */
 :root[data-view="desktop"] .page-cards {
   flex: 0 0 auto;
-  grid-auto-rows: auto;
 }
 
 :root[data-view="desktop"] .page-card {
   height: auto;
+  /* The layout viewport here is the whole scaled screen, so the card cap that
+     keeps cards short on a desktop window does not apply. */
+  max-height: none;
 }
 
 :root[data-view="desktop"] .page-card .blog-card-image-wrap {
@@ -122,11 +125,11 @@
   .landing-hero p {
     margin-top: 0.25rem;
   }
-  /* The portrait is the biggest block left on a short window: one more step
-     down keeps the cards and the credits their room. */
+  /* The portrait is the biggest block left on a short window: one step down,
+     but still a portrait rather than a stamp. */
   .landing-hero .portrait-frame {
-    width: clamp(4.5rem, 13dvh, 9rem);
-    height: clamp(4.5rem, 13dvh, 9rem);
+    width: clamp(8rem, 24dvh, 12rem);
+    height: clamp(8rem, 24dvh, 12rem);
   }
 
   /* Cards: title and the gaps around the button tighten, which is what keeps
