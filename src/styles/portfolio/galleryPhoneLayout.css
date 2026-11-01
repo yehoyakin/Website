@@ -78,7 +78,7 @@
     gap: 0.3rem;
   }
   .thumb-links .retro-link {
-    font-size: max(0.6rem, calc(var(--font-size-xs) - 10px)) !important;
+    font-size: max(7px, calc(var(--font-size-xs) - 12px)) !important;
     padding: 0 0.4rem !important;
   }
 }
