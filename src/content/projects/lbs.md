@@ -12,7 +12,7 @@ roles:
   - ui
   - tools
 
-theme: blue
+theme: lightblue
 
 cardBackground: "images/projects/lbs/lbs-1.webp"
 

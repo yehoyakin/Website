@@ -2,8 +2,8 @@
 
 :root {
   /* The two time colours. */
-  --time-white: rgb(255 255 255);
-  --time-black: rgb(9 9 11);
+  --time-white: rgb(255, 255, 255);
+  --time-black: rgb(0, 0, 0);
   /* Day — the original look: bright whites, translucent darks. */
   --time-page: var(--time-black);
   --time-surface: rgb(9 9 11 / 0.75);
@@ -119,12 +119,12 @@ body {
 /* NIGHT BACKDROPS — page backdrops 33% darker. */
 
 :root[data-mode="night"] .blurred-bg-layer:not(.page-backdrop) img {
-  filter: brightness(0.8);
+  filter: brightness(0.9);
 }
 
 /* Post backgrounds dim through a token rather than an `!important` filter. */
 :root[data-mode="night"] {
-  --layer-dim: 0.8;
+  --layer-dim: 0.9;
 }
 
 /* Night accents keep saturation: only the lightness channel moves. */

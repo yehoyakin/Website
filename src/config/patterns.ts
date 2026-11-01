@@ -26,18 +26,18 @@ import { asset } from "../utils/asset";
 
 /** One tile per theme colour, in theme order. */
 const THEME_PATTERNS: Record<string, string> = {
-  orange: "patterns/256/pattern_0004.webp",
-  purple: "patterns/256/pattern_0020.webp",
-  yellow: "patterns/256/pattern_0004.webp",
-  green: "patterns/256/pattern_0012.webp",
-  pink: "patterns/256/pattern_0015.webp",
-  blue: "patterns/256/pattern_0005.webp",
-  lightgreen: "patterns/256/pattern_0017.webp",
-  red: "patterns/256/pattern_0023.webp",
-  gray: "patterns/256/pattern_0008.webp",
-  lightblue: "patterns/256/pattern_0009.webp",
-  white: "patterns/256/pattern_0010.webp",
-  black: "patterns/256/pattern_0011.webp",
+  orange: "patterns/256/pattern_06.webp",
+  purple: "patterns/256/pattern_48.webp",
+  yellow: "patterns/256/pattern_32.webp",
+  green: "patterns/256/pattern_40.webp",
+  pink: "patterns/256/pattern_48.webp",
+  blue: "patterns/256/pattern_32.webp",
+  lightgreen: "patterns/256/pattern_28.webp",
+  red: "patterns/256/pattern_51.webp",
+  gray: "patterns/256/pattern_08.webp",
+  lightblue: "patterns/256/pattern_55.webp",
+  white: "patterns/256/pattern_25.webp",
+  black: "patterns/256/pattern_11.webp",
 };
 
 /** Any theme without an entry — and any unthemed card — gets this one. */
