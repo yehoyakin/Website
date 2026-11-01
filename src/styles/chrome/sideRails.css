@@ -68,11 +68,6 @@
     max-height: 62dvh;
     padding-right: env(safe-area-inset-right);
   }
-  .rail-panel .retro-link {
-    min-height: 2.75rem;
-    padding-top: 0.55rem;
-    padding-bottom: 0.55rem;
-  }
   /* The blog article sits under that handle, so reserve a little room for it:
      the handle's own width, not its whole panel. The old 3.25rem cost the
      reading column ~9% of a phone screen for a control that is mostly
