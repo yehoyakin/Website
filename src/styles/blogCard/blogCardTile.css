@@ -45,11 +45,15 @@
   padding: 1rem 1.25rem 1.25rem;
 }
 
-/* Fixed-size image area: every card renders the same height. */
+/* Fixed-size image area: every card renders the same height.
+
+   `24vw`/`18rem` made a desktop listing card a 750x570 slab: the artwork alone
+   was 307px tall whatever the card's width was. 18vw/14rem keeps the picture in
+   proportion to the window and lets the whole card come down with it. */
 .blog-card-image-wrap {
   flex: 1 1 auto;
   width: 100%;
-  min-height: clamp(4rem, 24vw, 18rem);
+  min-height: clamp(4rem, 18vw, 14rem);
   overflow: hidden;
   position: relative;
   background: var(--time-page);

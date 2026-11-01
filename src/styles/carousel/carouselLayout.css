@@ -27,14 +27,19 @@
   justify-content: flex-start;
 }
 
-/* Slide width: the strip minus the peek, capped on wide screens. */
+/* Slide width: the strip minus the peek, capped on wide screens.
+
+   The cap is 24rem (about 500px at the desktop type scale), not 36rem: at the
+   old cap a listing card was 750px wide on a laptop, which is a card that fills
+   the window instead of a card in a strip. At 24rem two and a half of them sit
+   in a laptop width, so the strip reads as a listing. */
 .blog-cards-scroll {
-  --carousel-slide: min(100% - 3rem, 36rem);
+  --carousel-slide: min(100% - 3rem, 24rem);
 }
 
 /* Same slide width as the blog strip, so both carousels read alike. */
 .gallery-thumbnails {
-  --carousel-slide: min(100% - 3rem, 36rem);
+  --carousel-slide: min(100% - 3rem, 24rem);
 }
 
 /* Spacers let the first and last slide centre like the middle ones. */

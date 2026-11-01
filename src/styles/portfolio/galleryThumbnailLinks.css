@@ -9,8 +9,8 @@
 }
 
 .thumb-links .retro-link {
-  font-size: 0.9rem !important;
-  padding: 0.3rem 0.6rem !important;
+  font-size: 0.8rem !important;
+  padding: 0.22rem 0.5rem !important;
   border-radius: 0 !important;
   white-space: nowrap;
   border-width: var(--outline-width) !important;

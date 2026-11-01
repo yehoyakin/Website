@@ -10,14 +10,14 @@
 
      PHONE     the card is the screen. Artwork at a fixed 16:10, copy under it,
                page scrolls naturally — the way a phone site behaves.
-     TABLET+   the card fills the height the landing page has left, so the art
-               absorbs the slack instead of the cards overflowing the screen. */
+     TABLET+   the card keeps the size a card has (its width sets its height);
+               it is only squeezed when the room left under the hero is
+               smaller than the card, so the credits stay on screen. */
 
 .page-cards {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  justify-items: center;
-  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 0.75rem;
   margin: 0;
   /* Full-bleed on a phone: half a rem of gutter, not a framed column. */
@@ -26,51 +26,64 @@
   min-height: 0;
 }
 
+.page-cards > li {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
 @media (min-width: 40rem) {
   .page-cards {
-    /* One row per pair, each row exactly as tall as the room it is given. */
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: minmax(0, 1fr);
+    /* A ROW OF CARDS, NOT A FILLED PANEL.
+
+       This was a grid whose rows were `minmax(0, 1fr)`: one row, exactly as
+       tall as the room, so every card was stretched over the whole screen and
+       a card became a 800px poster on a tall window. Flex rows keep each card
+       at its natural size — width sets the artwork, the artwork sets the
+       height — and the row is centred in whatever room is left under the hero.
+
+       `max-height: 100%` is the safety net for a short window: the row can only
+       be as tall as the space the landing page actually has, so the copy bar
+       keeps its height and the artwork gives. The credits never get pushed off.
+       A third page needs nothing here: the row wraps. */
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    /* `safe` keeps the cards under the hero if a future row ever does not fit,
+       instead of centring the overflow up over the hero. */
+    align-content: center;
+    align-content: safe center;
+    justify-content: center;
     gap: 1.25rem;
     padding: 1rem;
     flex: 1 1 auto;
     min-height: 0;
   }
-}
-
-/* Three or more pages: let the grid fit as many tracks as the width allows
-   instead of forcing pairs. Nothing has to change in the markup to add one. */
-@media (min-width: 64rem) {
-  .page-cards {
-    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-    gap: 1.5rem;
+  .page-cards > li {
+    /* A basis narrow enough that a pair (or a third card) shares one row on a
+       laptop; the card then grows to its 36rem frame and no further. */
+    flex: 1 1 16rem;
+    max-width: 36rem;
+    max-height: 100%;
   }
 }
 
 .page-card {
   width: 100%;
   max-width: 36rem;
-  height: 100%;
+  height: auto;
   min-height: 0;
 }
 
-/* ARTWORK. On a phone it is a picture with a shape of its own; from tablet up
-   it is the part that gives: the copy bar sizes to its text, the picture takes
-   whatever height is left. That is what keeps the cards inside one screen. */
+/* ARTWORK. On a phone it is a picture with a shape of its own; on a row it is
+   the part that gives when the window is too short for the card. */
 .page-card .blog-card-image-wrap {
-  flex: 0 0 auto;
-  min-height: 0;
+  /* 16:10 is the picture's own shape; it may still give a little when the card
+     hits its height cap, and it stops giving at 5rem. */
+  flex: 1 1 auto;
+  min-height: 5rem;
   aspect-ratio: 16 / 10;
-}
-
-@media (min-width: 40rem) {
-  .page-card .blog-card-image-wrap {
-    flex: 1 1 0;
-    aspect-ratio: auto;
-    /* Below this the picture stops being worth having, and the landing is
-       allowed to scroll instead. */
-    min-height: 5rem;
-  }
 }
 
 /* COPY BAR — sized for a whole page title, not an article excerpt. */
