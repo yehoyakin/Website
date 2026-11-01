@@ -18,18 +18,24 @@
   height: var(--link-button-height);
   min-height: var(--link-button-height);
   padding-block: 0;
+  /* The box is small now, so the slack around the glyph has to be small too:
+     inline padding and the icon/label gap are cut to match. */
+  padding-inline: 0.45rem;
+  gap: 0.3rem;
   /* Four pixels below the previous step, with a 7px floor: below that the pixel
      face stops resolving letters, whatever the box allows. */
   font-size: max(7px, calc(var(--font-size-xs) - 12px));
   line-height: 1;
 }
 
-/* The glyph follows the box, at 60% of its height, instead of a fixed rem size. */
+/* The glyph follows the box instead of a fixed rem size, and fills it: at 80%
+   of the button's height the icon reads at the button's own scale rather than
+   floating in padding. */
 .retro-link > img,
 .retro-link > .icon-mode,
 .retro-link > svg {
-  height: calc(var(--link-button-height) * 0.6);
-  width: calc(var(--link-button-height) * 0.6);
+  height: calc(var(--link-button-height) * 0.8);
+  width: calc(var(--link-button-height) * 0.8);
 }
 
 /* The idle shake for these buttons lives in text/linkIdleShake.css. */
