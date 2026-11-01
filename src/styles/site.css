@@ -4,8 +4,9 @@
 
 @import "foundation/foundation.css";
 @import "text/textStyles.css";
-@import "cards/splitCard.css";
 @import "blogCard/blogCard.css";
+/* After the blog card: a landing card is built out of it and sizes its parts. */
+@import "cards/pageCards.css";
 @import "overlays/articleEndOverlay.css";
 @import "scrollbars/pixelScrollbar.css";
 @import "portfolio/portfolioGallery.css";
@@ -14,3 +15,5 @@
 @import "article/blogArticle.css";
 @import "responsive/responsive.css";
 @import "site/fluidTypeScale.css";
+/* Height-driven landing rules: last, so they win over the width-based sizes. */
+@import "site/landingFit.css";

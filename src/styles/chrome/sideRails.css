@@ -19,10 +19,20 @@
   #sidebar-toggle {
     touch-action: manipulation;
   }
-  /* Nudge down so the handle clears the fixed back link at the top. */
-  #socials-container,
+  /* The blog sidebar handle clears the fixed back link, clear of the top. */
   #sidebar-container {
     top: 32%;
+  }
+
+  /* The contacts handle joins the top-right chrome stack instead of floating
+     at mid-height. A phone card is full-bleed, so a handle at 32% sits on the
+     card's artwork; here it stacks under the day / night and view controls, on
+     the page backdrop, above where the content starts. */
+  #socials-container {
+    top: calc(
+      var(--chrome-gutter) + (var(--chrome-control) + var(--chrome-stack-gap)) *
+        2
+    );
   }
   #socials-panel .retro-link,
   #sidebar-panel .retro-link {
@@ -30,8 +40,11 @@
     padding-top: 0.55rem;
     padding-bottom: 0.55rem;
   }
-  /* The blog article sits under that handle, so reserve the room. */
+  /* The blog article sits under that handle, so reserve a little room for it:
+     the handle's own width, not its whole panel. The old 3.25rem cost the
+     reading column ~9% of a phone screen for a control that is mostly
+     off-canvas, which is the wrong trade on the screen with the least room. */
   #blog-article-section {
-    padding-inline-end: 3.25rem;
+    padding-inline-end: 0.75rem;
   }
 }

@@ -13,10 +13,3 @@
       calc(var(--pattern-tile, 96px) * var(--plate-pattern-shift, -1));
   }
 }
-
-/* Reduced motion. */
-@media (prefers-reduced-motion: reduce) {
-  .split-card-background {
-    animation: none;
-  }
-}

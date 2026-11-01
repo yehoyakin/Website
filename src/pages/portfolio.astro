@@ -19,8 +19,8 @@ const projects = await Promise.all(
   })),
 );
 
-const bgDay = asset("images/pageBackgrounds/PortfolioDay.gif");
-const bgNight = asset("images/pageBackgrounds/PortfolioNight.gif");
+const bgDay = asset("images/pageBackgrounds/PortfolioDay.webp");
+const bgNight = asset("images/pageBackgrounds/PortfolioNight.webp");
 
 const cardPreviews = projects.map((p) => asset(p.data.cardBackground)).filter(Boolean);
 
@@ -37,8 +37,8 @@ const imagesToPreload = [bgDay, bgNight, ...cardPreviews];
     class="relative w-full min-h-screen bg-[var(--time-page)]"
   >
     <PageBackdrop
-      day="images/pageBackgrounds/PortfolioDay.gif"
-      night="images/pageBackgrounds/PortfolioNight.gif"
+      day="images/pageBackgrounds/PortfolioDay.webp"
+      night="images/pageBackgrounds/PortfolioNight.webp"
     />
 
     {/* Full-bleed project band. It lives at page level, not inside a panel, so

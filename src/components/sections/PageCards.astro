@@ -1,0 +1,116 @@
+---
+// Purpose: Component - src/components/sections/PageCards.astro (The site's pages as cards)
+//
+// The landing used to be a hard-coded split: a left half and a right half, and
+// adding a page meant editing that markup and the component's props. It is a
+// LIST now — the page passes its destinations (types/page.ts) and this renders
+// one card per entry, so a third (or fifth) page is one more object there.
+//
+// The cards are ordinary site cards: the blog / portfolio anatomy (meta bar,
+// artwork, copy bar) in the entry's own theme colour, just wider than a listing
+// card because a landing card is a destination rather than a strip item.
+import Link from "../shared/Link.astro";
+import { patternForTheme } from "../../config/patterns";
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import type { PageCard, PageCredit } from "../../types/page";
+
+interface Props {
+  pages: PageCard[];
+  /** Outbound credits, one button each, in the bar under the cards. */
+  credits?: PageCredit[];
+}
+
+const { pages = [], credits = [] } = Astro.props as Props;
+---
+
+{/* Allow the section to grow as cards wrap onto further rows, and to give the
+    grid the height it has left once the hero and the credits have theirs. */}
+<section class="relative flex min-h-0 w-full flex-1 flex-col">
+  <div class="relative z-10 flex min-h-0 flex-1 flex-col justify-between">
+    <ul class="page-cards">
+      {
+        pages.map((page) => {
+          const themeName = toThemeName(page.theme);
+          const themeToken = resolveThemeToken(themeName);
+
+          /* The artwork is a day / night pair painted by CSS, so only the
+             mode in use is ever fetched (styles/foundation/layoutPrimitives.css). */
+          const artStyle = `--art-day: url('${page.imageSrc}'); --art-night: url('${page.imageSrcNight ?? page.imageSrc}')`;
+
+          return (
+            <li>
+              <a
+                href={page.href}
+                class="page-card blog-card pixel-frame"
+                style={`--project-tag-color: ${themeToken}; --thumb-theme-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+              >
+                {/* META BAR — the card's own label, where a post shows its date. */}
+                <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
+                  <span class="thumb-tag" style={`color: ${themeToken}`}>
+                    {page.tag}
+                  </span>
+                </div>
+
+                {/* ARTWORK */}
+                <div class="blog-card-image-wrap">
+                  <div
+                    class="mode-art"
+                    style={artStyle}
+                    role="img"
+                    aria-label={page.title}
+                  />
+                  <div class="blog-card-overlay" />
+                </div>
+
+                {/* COPY BAR — title, description, call to action. */}
+                <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+                  <h2 class="blog-card-title">{page.title}</h2>
+                  <p class="blog-card-desc">{page.description}</p>
+                  <span class="split-card-action page-card-action">
+                    <span>{page.actionText}</span>
+                  </span>
+                </div>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    {
+      /* CREDITS BAR — site chrome, not a page card.
+         It wears the MODE base colour (`--icon-accent`) and the day base motif,
+         the same recipe the contact rail uses, so it follows day / night instead
+         of a theme. `shrink-0` keeps it on screen while the cards take the rest. */
+    }
+    {
+      credits.length > 0 && (
+        <div
+          class="pattern-plate pattern-plate--small relative shrink-0 border-t border-[color:var(--time-border-soft)] px-3 py-2 backdrop-blur-md sm:px-8 sm:py-3"
+          style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
+        >
+          <div class="credits-row">
+            {
+              credits.map((credit, index) => (
+                <>
+                  {index > 0 && (
+                    <span
+                      class="text-sm text-[color:var(--time-ink-muted)]"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <Link
+                    href={credit.href}
+                    text={credit.text}
+                    external
+                    class="whitespace-nowrap"
+                  />
+                </>
+              ))
+            }
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>

@@ -84,8 +84,7 @@
   .theme-color,
   .blog-masthead,
   #blog-content,
-  .project-panel-body,
-  .split-card
+  .project-panel-body
 ) {
   --time-ink-muted: color-mix(
     in srgb,
