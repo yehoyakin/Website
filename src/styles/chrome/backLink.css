@@ -10,7 +10,10 @@
   /* Site chrome, not page content: it follows the mode base colours. */
   display: inline-flex;
   align-items: center;
-  padding: 0.3rem 0.7rem;
+  /* Same control scale as the shared link button: label two pixels down,
+     padding rather than leading. */
+  padding: 0.22rem 0.6rem;
+  font-size: calc(var(--font-size-base) - 2px);
   border: var(--control-outline-width) solid var(--time-button-ink);
   background-color: var(--time-button-fill);
   /* Same lit-from-above plate as every other button. */
@@ -18,8 +21,11 @@
   color: var(--time-button-ink);
 }
 
-/* The contact rail is a right-edge panel, inset onto the same gutter. */
-#socials-container {
+/* Both rail panels (contacts, blog links) are right-edge panels, inset onto
+   the same gutter as the day / night and view toggles, so their handles line up
+   with the chrome rail instead of hanging off the viewport edge. */
+#socials-container,
+#sidebar-container {
   right: var(--chrome-gutter);
 }
 
