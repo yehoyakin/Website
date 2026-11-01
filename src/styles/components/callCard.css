@@ -7,6 +7,11 @@
 .retro-expandable-card {
   position: relative;
 
+  /* Theme-coloured outline around the panel. Declared here rather than left to
+     a utility class so the panel always has a visible edge, even inside a
+     transparent card over a blurred backdrop. */
+  border: 5px solid var(--project-tag-color, var(--time-border));
+
   margin: 1rem auto;
   max-width: 75vw;
 
@@ -199,7 +204,7 @@
 }
 
 .card-tag {
-  font-size: 0.7rem;
+  font-size: 0.85rem;
 
   letter-spacing: 0.35em;
 
@@ -221,7 +226,7 @@
 
   color: var(--time-ink-muted, #a1a1aa);
 
-  font-size: 0.9rem;
+  font-size: 1rem;
 
   line-height: 1.5;
 
@@ -251,7 +256,7 @@
 }
 
 .project-description-hint {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
 
   letter-spacing: 0.35em;
 
@@ -361,8 +366,8 @@
   overflow: hidden;
 
   transition:
-    opacity 150ms steps(4),
-    transform 150ms steps(4);
+    opacity 150ms var(--ease-soft),
+    transform 150ms var(--ease-soft);
 }
 
 .retro-expandable-card[data-active="true"] .project-drawer {
@@ -488,7 +493,7 @@
   }
 
   .card-description {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     line-height: 1.45;
   }
 

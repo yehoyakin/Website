@@ -40,7 +40,7 @@
 }
 
 .mode-toggle:focus-visible {
-  outline: 2px solid var(--project-tag-color, var(--theme-primary));
+  outline: 2px solid var(--project-tag-color, var(--theme-orange));
   outline-offset: 3px;
 }
 

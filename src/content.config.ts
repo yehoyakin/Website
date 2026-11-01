@@ -129,7 +129,7 @@ const projects = defineCollection({
       ]),
     ),
 
-    theme: z.string().default("primary"),
+    theme: z.string().default("orange"),
 
     images: z.array(z.string()).min(1),
 

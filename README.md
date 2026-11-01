@@ -44,7 +44,7 @@ listing page and the article page:
 ```yaml
 ---
 title: "My post"
-theme: "terminal"          # any theme name, see Themes below
+theme: "yellow"          # any theme name, see Themes below
 description: "Short summary shown on the card"
 date: 08/21/2026
 cardBackground: "images/blog/my-post/cover.webp"  # optional card image
@@ -104,7 +104,7 @@ title: "Project name"
 tag: "UNITY ENGINE - TOOL"
 shortDescription: "One-line summary."
 roles: [developer, systems, ui, tools]
-theme: secondary
+theme: purple
 images:
   - "images/projects/project.webp"
 order: 1
@@ -128,8 +128,8 @@ Markdown and small HTML blocks as blog posts (for example a
 Themes are a single idea used everywhere: **one name controls both colour and
 typography**. A theme name such as `terminal` maps to two CSS pieces:
 
-- `--theme-terminal` in `src/styles/base/tokens.css` — the theme's colour.
-- `[data-theme="--theme-terminal"]` in `src/styles/base/fonts.css` — the
+- `--theme-yellow` in `src/styles/base/tokens.css` — the theme's colour.
+- `[data-theme="--theme-yellow"]` in `src/styles/base/fonts.css` — the
   theme's font set (`--font-title`, `--font-ui`, `--font-body`,
   `--font-terminal`).
 
@@ -152,10 +152,10 @@ the default fonts until a font set is added for it.
 ### Adding or changing a theme
 
 1. Add a colour token in `src/styles/base/tokens.css`:
-   `--theme-forest: rgb(34, 197, 94);`
-2. Optionally add a `[data-theme="--theme-forest"]` block in
+   `--theme-green: rgb(34, 197, 94);`
+2. Optionally add a `[data-theme="--theme-green"]` block in
    `src/styles/base/fonts.css` to give it its own fonts.
-3. Use `theme: "forest"` in a Markdown file, or `theme="forest"` in a
+3. Use `theme: "green"` in a Markdown file, or `theme="green"` in a
    component.
 
 No TypeScript changes are needed.

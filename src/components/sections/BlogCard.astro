@@ -29,7 +29,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 >
   {/* TOP BAR - Date */}
   <div class="blog-card-bar flex items-center gap-2">
-    <Icon name="Calendar" class="h-8 w-8" />
+    <Icon name="Calendar" theme={themeName} class="h-8 w-8" />
     <Body
       theme={themeName}
       class="blog-card-date text-xs sm:text-sm text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--project-tag-color)] readable-text"

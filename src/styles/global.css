@@ -1,11 +1,10 @@
 /* Purpose: Styles - src/styles/global.css (Global site styles and resets) */
 
-/* Web fonts — exactly the families the theme blocks in base/fonts.css ask for,
-   and nothing else. A family referenced by a theme but missing here falls back
-   to a generic family, and any family loaded but unused is dead download
-   weight. The pixel families ("Pixel Operator", "Pixeloid Sans") are local
-   files declared in base/font-faces.css, so they are not requested here. */
-@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&family=Manrope:wght@400;600;700&family=Roboto+Mono:wght@400;600;700&display=swap");
+/* No web-font request: the whole site uses the local pixel families declared
+   with @font-face in base/font-faces.css ("Bold Pixels" for everything, plus
+   the Pixel Operator / Pixeloid Sans alternatives). Every --font-* token in
+   base/fonts.css points at one of those, so pulling Google Fonts would only
+   add download weight. */
 
 @import "tailwindcss";
 
@@ -40,16 +39,22 @@
 /* =========================================================
    FLUID TYPOGRAPHY MATRIX
    Scales from 320px to 1440px+ screens
+
+   Sized for BoldPixels, the site font: pixel faces have a small x-height and
+   thin counters, so a size that reads fine in a normal sans looks cramped in
+   it. The whole scale therefore runs roughly 15% larger than a typical
+   sans-based one. The root size below matters as much as the tokens — every
+   Tailwind `text-sm` / `text-xs` and every rem padding is relative to it.
    ========================================================= */
 :root {
-  --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --font-size-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
-  --font-size-base: clamp(1rem, 0.95rem + 0.45vw, 1.125rem);
-  --font-size-lg: clamp(1.125rem, 1.05rem + 0.6vw, 1.35rem);
-  --font-size-xl: clamp(1.35rem, 1.2rem + 0.85vw, 1.75rem);
-  --font-size-2xl: clamp(1.75rem, 1.5rem + 1.25vw, 2.25rem);
-  --font-size-3xl: clamp(2.25rem, 1.95rem + 1.75vw, 3.5rem);
-  --font-size-4xl: clamp(3.25rem, 2.75rem + 2.5vw, 5.5rem);
+  --font-size-xs: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
+  --font-size-sm: clamp(1rem, 0.9rem + 0.4vw, 1.15rem);
+  --font-size-base: clamp(1.15rem, 1.05rem + 0.5vw, 1.3rem);
+  --font-size-lg: clamp(1.3rem, 1.15rem + 0.7vw, 1.55rem);
+  --font-size-xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --font-size-2xl: clamp(2rem, 1.7rem + 1.4vw, 2.6rem);
+  --font-size-3xl: clamp(2.6rem, 2.2rem + 2vw, 4rem);
+  --font-size-4xl: clamp(3.75rem, 3.1rem + 2.9vw, 6.25rem);
 }
 
 html,

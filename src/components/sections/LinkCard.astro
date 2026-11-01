@@ -7,12 +7,14 @@ import Link from "../shared/Link.astro";
 interface LinkItem {
   href: string;
   text?: string;
-  /** Icon name from public/images/genIcons, e.g. "Handbag". */
+  /** Icon name from the shared registry, e.g. "Handbag". */
   icon?: string;
 }
 
 interface Props {
   href?: string;
+  /** Theme name — picks the icon colour that matches the page. */
+  theme?: string;
   links?: LinkItem[];
   tag?: string;
   title: string;
@@ -25,6 +27,7 @@ interface Props {
 const {
   href,
   links = [],
+  theme,
   tag = "",
   title,
   description = "",
@@ -80,6 +83,7 @@ const isExternal = (url?: string) =>
               href={resolve(l.href)}
               text={l.text ?? "Open"}
               icon={l.icon}
+              theme={theme}
               external={isExternal(l.href)}
             />
           ))}

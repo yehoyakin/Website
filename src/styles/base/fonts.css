@@ -3,20 +3,27 @@
    declared in tokens.css (`--theme-{name}`).
 
    The token is the value that goes into `data-theme`:
-     <html data-theme="--theme-terminal">   ← a page-wide theme
-     <h1 data-theme="--theme-terminal">     ← a single component
+     <html data-theme="--theme-yellow">   ← a page-wide theme
+     <h1 data-theme="--theme-yellow">     ← a single component
 
-   Assigning `theme="terminal"` to Title/Body, or `theme="terminal"`
+   Assigning `theme="yellow"` to Title/Body, or `theme="yellow"`
    to MyLayout, is all it takes — the matching set below is used.
    Elements with no theme token keep the page / `:root` fonts.
    ================================================================ */
 
-/* DEFAULT (fallback when no theme is assigned) */
+/* "Bold Pixels" (local file, declared in base/font-faces.css) is the font for
+   the WHOLE site: the :root defaults below apply it page-wide, and every
+   theme block further down points at it too, so themed components don't swap
+   in a different family. Theme blocks still exist — they now only change
+   colours.
+
+   To give a theme (or the page) its own typeface again, just replace the
+   family in the relevant token set below. */
 :root {
-  --font-title: "Manrope", sans-serif;
-  --font-ui: "Barlow Condensed", sans-serif;
-  --font-body: "Manrope", sans-serif;
-  --font-terminal: "JetBrains Mono", monospace;
+  --font-title: "Bold Pixels", sans-serif;
+  --font-ui: "Bold Pixels", sans-serif;
+  --font-body: "Bold Pixels", sans-serif;
+  --font-terminal: "Bold Pixels", sans-serif;
 }
 
 /* Retro components (cards, link buttons, contributions) ask for --retro-font.
@@ -29,11 +36,11 @@
 }
 
 /* EASY READ */
-[data-theme="--theme-forest"] {
-  --font-title: " ", sans-serif;
-  --font-ui: "Barlow Condensed", sans-serif;
-  --font-body: "Inter", sans-serif;
-  --font-terminal: "JetBrains Mono", monospace;
+[data-theme="--theme-green"] {
+  --font-title: "Bold Pixels", sans-serif;
+  --font-ui: "Bold Pixels", sans-serif;
+  --font-body: "Bold Pixels", sans-serif;
+  --font-terminal: "Bold Pixels", sans-serif;
 }
 /* GBA / PIXEL RPG — local pixel fonts.
    The @font-face declarations live in base/font-faces.css (imported just
@@ -43,37 +50,38 @@
      "Pixel Operator HB"  — 400
      "Pixel Operator HB SC" — 400 (small caps)
      "Pixeloid Sans"      — regular 400 + bold 700
+     "Bold Pixels"        — 400 + 700 (same file; the page default)
    Swap any --font-* value below for another family name to restyle. */
 
-[data-theme="--theme-terminal"] {
-  --font-title: "Bebas Neue", sans-serif;
-  --font-ui: "Barlow Condensed", sans-serif;
-  --font-body: "Manrope", sans-serif;
-  --font-terminal: "Roboto Mono", monospace;
+[data-theme="--theme-yellow"] {
+  --font-title: "Bold Pixels", sans-serif;
+  --font-ui: "Bold Pixels", sans-serif;
+  --font-body: "Bold Pixels", sans-serif;
+  --font-terminal: "Bold Pixels", sans-serif;
 }
 
 /* RETRO-FUTURISTIC */
-[data-theme="--theme-secondary"] {
-  --font-title: "Manrope", sans-serif;
-  --font-ui: "Barlow Condensed", sans-serif;
-  --font-body: "DM Sans", sans-serif;
-  --font-terminal: "Roboto Mono", monospace;
+[data-theme="--theme-purple"] {
+  --font-title: "Bold Pixels", sans-serif;
+  --font-ui: "Bold Pixels", sans-serif;
+  --font-body: "Bold Pixels", sans-serif;
+  --font-terminal: "Bold Pixels", sans-serif;
 }
 
 /* UNREAL RETRO */
-[data-theme="--theme-primary"] {
-  --font-title: "Manrope", sans-serif;
-  --font-ui: "Barlow Condensed", sans-serif;
-  --font-body: "DM Sans", sans-serif;
-  --font-terminal: "Roboto Mono", monospace;
+[data-theme="--theme-orange"] {
+  --font-title: "Bold Pixels", sans-serif;
+  --font-ui: "Bold Pixels", sans-serif;
+  --font-body: "Bold Pixels", sans-serif;
+  --font-terminal: "Bold Pixels", sans-serif;
 }
 
 /* CINEMATIC */
-[data-theme="--theme-sunset"] {
-  --font-title: "Bebas Neue", sans-serif;
-  --font-ui: "Barlow Condensed", sans-serif;
-  --font-body: "Manrope", sans-serif;
-  --font-terminal: "Roboto Mono", monospace;
+[data-theme="--theme-pink"] {
+  --font-title: "Bold Pixels", sans-serif;
+  --font-ui: "Bold Pixels", sans-serif;
+  --font-body: "Bold Pixels", sans-serif;
+  --font-terminal: "Bold Pixels", sans-serif;
 }
 
 /* ================================================================

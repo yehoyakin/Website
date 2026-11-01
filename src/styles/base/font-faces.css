@@ -79,3 +79,23 @@
   font-weight: 700;
   font-display: swap;
 }
+
+/* ── Bold Pixels — the page's default typeface ─────────────────────── */
+/* The file is already a bold-weight display face, so both 400 and 700 map
+   to it: that stops the browser from synthesising a smeared faux bold for
+   headings, which reads badly at pixel sizes. */
+@font-face {
+  font-family: "Bold Pixels";
+  src: url("../../fonts/BoldPixels.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bold Pixels";
+  src: url("../../fonts/BoldPixels.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}

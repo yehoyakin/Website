@@ -11,7 +11,7 @@ interface Props {
   theme?: string;
 }
 
-const { title, description, date, theme = "primary" } = Astro.props as Props;
+const { title, description, date, theme = "orange" } = Astro.props as Props;
 ---
 
 <header
@@ -36,7 +36,7 @@ const { title, description, date, theme = "primary" } = Astro.props as Props;
     class="flex items-center justify-center gap-2 tracking-wider"
     datetime={date.toISOString()}
   >
-    <Icon name="Calendar" class="h-10 w-10" />
+    <Icon name="Calendar" theme={theme} class="h-10 w-10" />
     {date.toLocaleDateString()}
   </time>
 </header>

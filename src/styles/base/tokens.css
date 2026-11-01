@@ -1,3 +1,35 @@
+/* Motion tokens + the icon blue, in their own :root rule for the same reason
+   as the theme colours above: inside the shared block the minifier dropped
+   them, which silently killed every transition that reads --ease-* . */
+:root {
+  --icon-blue: #0278d8;
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-press: cubic-bezier(0.3, 0, 0.2, 1);
+  --duration-press: 120ms;
+  --duration-fast: 180ms;
+  --duration-base: 240ms;
+  --duration-slow: 360ms;
+}
+
+/* Day theme colours — one per pixel-icon colour in public/images/Icons/.
+   Kept in a standalone :root rule: inside the shared token block these were
+   being dropped by the minifier, which left day mode with no accent colours. */
+:root {
+  --theme-orange: #ff9c00; /* Orange */
+  --theme-purple: #d366e7; /* Purple */
+  --theme-yellow: #ffce41; /* Yellow */
+  --theme-green: #51c229; /* Green */
+  --theme-pink: #ffa4b1; /* Pink */
+  --theme-blue: #0278d8; /* Blue */
+  --theme-lightgreen: #87e42e; /* Lightgreen */
+  --theme-red: #ff5a0b; /* Red */
+  --theme-gray: #7c99ad; /* Gray */
+  --theme-lightblue: #28a8ea; /* Lightblue */
+  --theme-white: #eaeef4; /* White */
+  --theme-black: #304666; /* Black */
+}
+
 /* Purpose: Styles - src/styles/base/tokens.css (Design tokens: colors, spacing, sizes)
    
    THEME SYSTEM:
@@ -6,25 +38,25 @@
    No other files need to change.
 
    Examples:
-     --theme-primary: rgb(236, 251, 32);
-     --theme-forest: rgb(34, 197, 94);
-     --theme-sunset: rgb(251, 146, 60);
+     --theme-orange: #ff9c00; /* Orange */
+     --theme-green: #51c229; /* Green */
+     --theme-pink: #ffa4b1; /* Pink */
 */
 
 :root {
-  /* ── Theme colors — add new themes here ── */
-  --theme-primary: rgb(255, 155, 105);
-  --theme-secondary: rgb(163, 101, 255);
-  --theme-terminal: rgb(255, 227, 117);
-  --theme-forest: rgb(215, 255, 96);
-  --theme-sunset: rgb(248, 98, 190);
-  --theme-ocean: rgb(0, 123, 255);
-  --theme-forest2: rgb(69, 254, 143);
+  /* ── Theme colors — one per pixel-icon colour ──
+     Every value is sampled from the matching folder in
+     public/images/Icons/<Colour>/, so a theme paints its text, borders AND
+     icons the same colour (see config/icons.ts, themeIconColors). */
 
   /* Night mode repaints these brighter and fully saturated so the neon pops
      on black. A new theme needs its night value in base/timeColors.css too. */
 
   
+  /* The blue of the pixel icon artwork (sampled from the PNGs), so UI details
+     that belong with the icons — the active carousel dot — use the same blue
+     instead of a theme accent. */
+
   /* UI neutrals */
   --ui-base: rgb(228 228 231);
   --ui-muted: rgb(161 161 170);
@@ -35,7 +67,7 @@
      - --accent-bold: tag color mixed with 10% white (90% tag + 10% white)
      - --accent-italic: tag color mixed with 15% white (85% tag + 15% white)
   */
-  --project-tag-color: var(--theme-primary);
+  --project-tag-color: var(--theme-orange);
   /* Provide safe fallbacks for browsers without `color-mix()` support: default to the raw tag color. */
   --accent-bold: var(--project-tag-color);
   --accent-italic: var(--project-tag-color);
@@ -73,14 +105,7 @@
        --ease-soft    symmetrical in-out: fades, colour and background changes
        --ease-press   snappy in, for tap / press feedback
 
-     Stepped easings (`steps(4)`) are intentional in this project — the pixel
-     themes use them for retro colour flips. Leave those alone. */
-  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-press: cubic-bezier(0.3, 0, 0.2, 1);
+     Everything interpolates: no `steps()` easing is used anywhere, so every
+     hover, flip and reveal lerps between states instead of snapping. */
 
-  --duration-press: 120ms;
-  --duration-fast: 180ms;
-  --duration-base: 240ms;
-  --duration-slow: 360ms;
 }

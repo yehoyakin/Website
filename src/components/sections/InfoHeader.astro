@@ -12,7 +12,7 @@ interface Props {
   theme?: string;
 }
 
-const { name, description, portraitSrc, theme = "primary" } = Astro.props;
+const { name, description, portraitSrc, theme = "orange" } = Astro.props;
 
 const dynamicStyle = `--project-tag-color: ${resolveThemeToken(theme)};`;
 ---

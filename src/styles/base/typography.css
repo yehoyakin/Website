@@ -31,6 +31,66 @@
     -2px 2px 0 var(--time-black);
 }
 
+/* ══════════════════════════════════════════════════════════════
+   BOLD PIXELS — bold and outline cuts
+
+   BoldPixels ships as a single file here (see base/font-faces.css), so the
+   bold and outline variants are drawn by the browser instead of loaded as
+   separate faces:
+
+     outline  titles (h1–h3): a stroke in the element's own colour
+              (currentColor, so theme colours and hover transitions keep
+              working) with the inside filled in the INVERTED colour —
+              white outline gets a black fill, black outline a white one,
+              and any other colour gets its per-channel inverse.
+              Browsers without relative colour syntax (`rgb(from …)`) fall
+              back to the page colour, so the letters still read.
+     bold     button labels: the same glyphs with a stroke added on top of
+              the fill, which thickens them into the bold cut
+
+   Both are em-based, so the stroke scales with the fluid type instead of
+   looking fat on small text and hairline on an h1. If you later add the
+   real BoldPixels-Bold / BoldPixels-Outline files, declare them in
+   base/font-faces.css and these rules can be deleted.
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  --pixel-outline-width: 0.055em;
+  --pixel-bold-width: 0.075em;
+}
+
+.pixel-outline,
+:is(h1, h2, h3) {
+  --pixel-outline-color: currentColor;
+  -webkit-text-stroke: var(--pixel-outline-width) var(--pixel-outline-color);
+  /* Opposite of the outline colour — see the @supports block below, which
+     overrides this with the hue-rotated value where it is supported. */
+  -webkit-text-fill-color: var(--pixel-outline-fill, var(--time-page));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* Relative colour syntax: invert each RGB channel, so 255 (white) becomes 0
+   (black) and 0 becomes 255 — the opposite of the outline colour. */
+@supports (color: rgb(from red calc(255 - r) calc(255 - g) calc(255 - b))) {
+  .pixel-outline,
+  :is(h1, h2, h3) {
+    --pixel-outline-fill: rgb(
+      from var(--pixel-outline-color) calc(255 - r) calc(255 - g)
+        calc(255 - b)
+    );
+  }
+}
+
+.pixel-bold,
+button,
+.retro-link,
+.split-card-action {
+  -webkit-text-stroke: var(--pixel-bold-width) currentColor;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
 /* 3px outline — thick, for h1 */
 .outline-3 {
   text-shadow:
@@ -46,7 +106,7 @@
 
 #blog-content {
   color: var(--ui-base);
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   line-height: 1.9;
   text-align: justify;
 }
@@ -82,7 +142,7 @@
 
 /* links */
 #blog-content a {
-  color: var(--theme-primary);
+  color: var(--theme-orange);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
@@ -99,7 +159,7 @@
 
 /* blockquotes */
 #blog-content blockquote {
-  border-left: 4px solid var(--theme-primary);
+  border-left: 4px solid var(--theme-orange);
   background: var(--time-wash);
   padding: 1rem 1.5rem;
 }

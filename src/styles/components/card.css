@@ -183,8 +183,8 @@
   letter-spacing: 0.15em;
 
   transition:
-    background 0.15s steps(4),
-    color 0.15s steps(4),
+    background 0.15s var(--ease-soft),
+    color 0.15s var(--ease-soft),
     transform var(--duration-press) var(--ease-press);
 }
 
@@ -219,14 +219,14 @@
 
   .split-card-description {
     margin-top: 0.5rem;
-    font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+    font-size: clamp(0.9rem, 3vw, 1rem);
     line-height: 1.4;
   }
 
   .split-card-action {
     margin-top: 0.75rem;
     padding: 0.5rem 0.85rem;
-    font-size: 0.7rem;
+    font-size: 0.85rem;
   }
 
   .split-card-background {

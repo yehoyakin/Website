@@ -82,8 +82,8 @@
   box-shadow: 0.1875rem 0.1875rem 0 var(--time-black, #09090b);
 
   transition:
-    transform 0.12s steps(3),
-    box-shadow 0.12s steps(3);
+    transform 0.12s var(--ease-press),
+    box-shadow 0.12s var(--ease-press);
 }
 
 .project-role:hover {

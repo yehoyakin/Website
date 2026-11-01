@@ -39,7 +39,7 @@ const {
   shortDescription,
   fullDescription = "",
   roles = [],
-  theme: rawTheme = "primary",
+  theme: rawTheme = "orange",
   class: extraClass = "",
   backgroundImage,
 } = Astro.props;
@@ -63,10 +63,10 @@ const cardVars = [
   .join("; ");
 
 const baseText =
-  "transition-colors duration-150 ease-[steps(200)] drop-shadow-[0_0.125rem_0.25rem_rgba(0,0,0,1)] readable-text";
+  "transition-colors duration-150 ease-[var(--ease-soft)] drop-shadow-[0_0.125rem_0.25rem_rgba(0,0,0,1)] readable-text";
 
 const cardClasses = [
-  "group retro-expandable-card relative rounded-none border",
+  "group retro-expandable-card relative rounded-none border-[3px]",
   "w-full overflow-hidden select-none",
   extraClass,
 ].join(" ");

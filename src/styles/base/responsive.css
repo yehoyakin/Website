@@ -77,7 +77,7 @@
   }
 
   #blog-content {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     line-height: 1.75;
   }
 
@@ -108,7 +108,7 @@
   }
 
   .blog-figcaption {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -176,8 +176,10 @@
   --carousel-slide: min(100% - 3rem, 36rem);
 }
 
+/* Same slide width as the blog strip: gallery thumbnails and blog cards are
+   the same size, so the two carousels feel like one component. */
 .gallery-thumbnails {
-  --carousel-slide: min(100% - 3rem, 44rem);
+  --carousel-slide: min(100% - 3rem, 36rem);
 }
 
 /* Spacers let the first and last slide centre like the middle ones (a scroller
@@ -237,7 +239,7 @@
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 3px solid rgba(255, 255, 255, 0.45);
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
   line-height: 1;
@@ -248,10 +250,13 @@
     border-color 0.15s ease;
 }
 
-.card-carousel-arrow svg {
+/* Arrow artwork injected by scripts/cardCarousel.js. */
+.card-carousel-arrow img {
   display: block;
   width: 1.15rem;
   height: 1.15rem;
+  object-fit: contain;
+  image-rendering: pixelated;
 }
 
 /* The arrows wrap, so they are never disabled — hover is the only state that
@@ -284,18 +289,20 @@
 
 .card-carousel-dot::before {
   content: "";
-  width: 0.6rem;
-  height: 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 3px solid rgba(255, 255, 255, 0.75);
   background: transparent;
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease;
 }
 
+/* The active dot matches the blue of the pixel icons rather than a theme
+   accent, so it reads as part of the same icon set. */
 .card-carousel-dot[aria-current="true"]::before {
-  background: var(--theme-primary, #fff);
-  border-color: var(--theme-primary, #fff);
+  background: var(--icon-blue, #0278d8);
+  border-color: var(--icon-blue, #0278d8);
 }
 
 /* ============================================================

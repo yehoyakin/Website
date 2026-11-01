@@ -20,7 +20,7 @@ const {
   title,
   description,
   actionText,
-  theme = "primary",
+  theme = "orange",
   backgroundImage,
   class: extraClass = "",
 } = Astro.props;
@@ -56,7 +56,7 @@ const cardClasses = ["split-card", extraClass].filter(Boolean).join(" ");
   <div class="split-card-content">
     <Body
       theme={theme}
-      class="text-[0.6875rem] sm:text-sm uppercase tracking-[0.25em]"
+      class="text-xs sm:text-base uppercase tracking-[0.25em]"
     >
       {tag}
     </Body>

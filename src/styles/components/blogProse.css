@@ -76,7 +76,7 @@
 }
 
 #blog-content li::marker {
-  color: var(--project-tag-color, var(--theme-primary));
+  color: var(--project-tag-color, var(--theme-orange));
   font-weight: 700;
 }
 

@@ -1,12 +1,13 @@
 ---
 // Purpose: Section - src/components/sections/ContactPanel.astro (Top-right contact quicklinks)
 import SocialLink from "../shared/Link.astro";
+import Icon from "../shared/Icon.astro";
 
 const links = [
-  { href: "mailto:joaquinignacio.herrerabriones@email.com", text: "Email", external: false },
-  { href: "https://github.com/yehoyakin", text: "GitHub", external: true },
-  { href: "https://gitlab.com/yehoyakin", text: "GitLab", external: true },
-  { href: "https://www.linkedin.com/in/joaquín-herrera-366b2a175", text: "LinkedIn", external: true}
+  { href: "mailto:joaquinignacio.herrerabriones@email.com", text: "Email", external: false, icon: "email" },
+  { href: "https://github.com/yehoyakin", text: "GitHub", external: true, icon: "internet" },
+  { href: "https://gitlab.com/yehoyakin", text: "GitLab", external: true, icon: "internet" },
+  { href: "https://www.linkedin.com/in/joaquín-herrera-366b2a175", text: "LinkedIn", external: true, icon: "internet" }
 ];
 ---
 
@@ -15,27 +16,14 @@ const links = [
   id="socials-container"
   class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-2.75rem)] [&.socials-open]:translate-x-0"
 >
-  {/* The clickable/hoverable chainlink tab handle */}
+  {/* The clickable/hoverable contacts tab handle */}
   <button
     id="socials-toggle"
     class="bg-[var(--time-surface)] text-[color:var(--time-ink)] p-3 rounded-none shadow-lg cursor-pointer select-none border border-r-0 border-[color:var(--time-border-soft)] group-[.socials-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
     aria-label="Toggle Social Links"
     type="button"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="w-6 h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 11-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
-      ></path>
-    </svg>
+    <Icon name="contacts" class="h-6 w-6" />
   </button>
 
   <div
@@ -49,6 +37,7 @@ const links = [
             href={link.href}
             text={link.text}
             external={link.external}
+            icon={link.icon}
           />
         ))
       }

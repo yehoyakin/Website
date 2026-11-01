@@ -7,11 +7,20 @@ interface Props {
   text?: string;
   external?: boolean;
   class?: string;
-  /** Icon name from public/images/genIcons, e.g. "Handbag". */
+  /** Icon name from the shared registry, e.g. "Handbag". */
   icon?: string;
+  /** Theme name — picks the icon colour that matches the card/page. */
+  theme?: string;
 }
 
-const { href, text = "", external, class: extraClass = "", icon } = Astro.props;
+const {
+  href,
+  text = "",
+  external,
+  class: extraClass = "",
+  icon,
+  theme,
+} = Astro.props;
 
 // Buttons with an icon pin it to the left edge so icons line up in a stack,
 // even when the labels are different lengths. Text-only buttons stay centred.
@@ -20,12 +29,12 @@ const alignment = icon ? "justify-start" : "justify-center";
 const classes = [
   "retro-link group relative overflow-hidden flex items-center gap-2",
   alignment,
-  "rounded-none px-4 py-2 text-xs uppercase tracking-[0.25em] text-[color:var(--time-ink)]",
-  "bg-[var(--time-surface)] border-2 border-[color:var(--time-border)]",
-  "transition-all duration-100 ease-[steps(2)]",
+  "rounded-none px-4 py-2 text-sm uppercase tracking-[0.25em] text-[color:var(--time-ink)]",
+  "bg-[var(--time-surface)] border-[5px] border-[color:var(--time-border)]",
+  "transition-all duration-100 ease-[var(--ease-press)]",
   "hover:bg-[var(--time-highlight)] hover:text-[color:var(--time-black)] hover:border-[color:var(--time-highlight)]",
   "hover:translate-x-[-0.125rem] hover:translate-y-[-0.125rem]",
-  "hover:shadow-[0.25rem_0.25rem_0px_0px_var(--time-highlight)]",
+  "hover:shadow-[0.375rem_0.375rem_0px_0px_var(--time-highlight)]",
   extraClass,
 ]
   .filter(Boolean)
@@ -38,7 +47,7 @@ const classes = [
   rel={external ? "noopener noreferrer" : undefined}
   class={classes}
 >
-  {icon && <Icon name={icon} class="relative z-10 h-8 w-8 shrink-0" />}
+  {icon && <Icon name={icon} theme={theme} class="relative z-10 h-8 w-8 shrink-0" />}
   <span class="relative z-10">{text}</span>
   <span class="pixel-highlight"></span>
 </a>

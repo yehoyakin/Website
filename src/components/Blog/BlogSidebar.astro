@@ -12,16 +12,18 @@ interface CardItem {
   links?: {
     href: string;
     text?: string;
-    /** Icon name from public/images/genIcons, e.g. "Handbag". */
+    /** Icon name from the shared registry, e.g. "Handbag". */
     icon?: string;
   }[];
 }
 
 interface Props {
   cards: CardItem[];
+  /** Theme name — picks the icon colour that matches the post. */
+  theme?: string;
 }
 
-const { cards = [] } = Astro.props as Props;
+const { cards = [], theme } = Astro.props as Props;
 ---
 
 <aside
@@ -36,6 +38,7 @@ const { cards = [] } = Astro.props as Props;
         <LinkCard
           href={card.href}
           links={card.links}
+          theme={theme}
           tag={card.tag}
           title={card.title}
           description={card.description}

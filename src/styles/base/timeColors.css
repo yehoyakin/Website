@@ -73,13 +73,18 @@
   /* Night accents: the same hues as tokens.css, lifted to full saturation and
      ~8 points brighter so they read as glowing neon on pure black. Day keeps
      the original values. When adding a theme, add its night value here too. */
-  --theme-primary: rgb(255 182 146);
-  --theme-secondary: rgb(187 142 255);
-  --theme-terminal: rgb(255 233 148);
-  --theme-forest: rgb(225 255 137);
-  --theme-sunset: rgb(255 132 207);
-  --theme-ocean: rgb(41 144 255);
-  --theme-forest2: rgb(109 255 167);
+  --theme-orange: color-mix(in srgb, #ff9c00 72%, white 28%);
+  --theme-purple: color-mix(in srgb, #d366e7 72%, white 28%);
+  --theme-yellow: color-mix(in srgb, #ffce41 72%, white 28%);
+  --theme-green: color-mix(in srgb, #51c229 72%, white 28%);
+  --theme-pink: color-mix(in srgb, #ffa4b1 72%, white 28%);
+  --theme-blue: color-mix(in srgb, #0278d8 72%, white 28%);
+  --theme-lightgreen: color-mix(in srgb, #87e42e 72%, white 28%);
+  --theme-red: color-mix(in srgb, #ff5a0b 72%, white 28%);
+  --theme-gray: color-mix(in srgb, #7c99ad 72%, white 28%);
+  --theme-lightblue: color-mix(in srgb, #28a8ea 72%, white 28%);
+  --theme-white: color-mix(in srgb, #eaeef4 72%, white 28%);
+  --theme-black: color-mix(in srgb, #304666 72%, white 28%);
 }
 
 /* ── UI text aliases ──

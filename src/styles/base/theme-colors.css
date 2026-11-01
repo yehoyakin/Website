@@ -5,13 +5,13 @@
    Any container that sets `--project-tag-color` AND carries the `.theme-color`
    class will automatically colour its descendant <strong>/<b> and <em>/<i>:
    
-     <div class="theme-color" style="--project-tag-color: var(--theme-secondary)">
+     <div class="theme-color" style="--project-tag-color: var(--theme-purple)">
        This is <strong>bold</strong> and <em>italic</em>.
      </div>
 
    Body.astro and Title.astro accept a `theme` prop that does this for you:
-     <Body theme="secondary"> ... </Body>
-     <Title theme="terminal"> ... </Title>
+     <Body theme="purple"> ... </Body>
+     <Title theme="yellow"> ... </Title>
 
    To add a new theme:
    1. Add --theme-{name} in tokens.css
@@ -26,12 +26,12 @@
 .theme-color {
   --accent-bold: color-mix(
     in srgb,
-    var(--project-tag-color, var(--theme-primary)) 90%,
+    var(--project-tag-color, var(--theme-orange)) 90%,
     white 10%
   );
   --accent-italic: color-mix(
     in srgb,
-    var(--project-tag-color, var(--theme-primary)) 85%,
+    var(--project-tag-color, var(--theme-orange)) 85%,
     white 15%
   );
 }
@@ -53,12 +53,12 @@
 #blog-content {
   --accent-bold: color-mix(
     in srgb,
-    var(--project-tag-color, var(--theme-primary)) 90%,
+    var(--project-tag-color, var(--theme-orange)) 90%,
     white 10%
   );
   --accent-italic: color-mix(
     in srgb,
-    var(--project-tag-color, var(--theme-primary)) 85%,
+    var(--project-tag-color, var(--theme-orange)) 85%,
     white 15%
   );
 }

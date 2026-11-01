@@ -1,6 +1,7 @@
 ---
 import CallCard from "./CallCard.astro";
 import SocialLink from "../shared/Link.astro";
+import Icon from "../shared/Icon.astro";
 import { asset } from "../../utils/asset";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 
@@ -78,6 +79,7 @@ const { projects } = Astro.props;
                       href={link.href}
                       text={link.text}
                       external={true}
+                      theme={project.data.theme}
                     />
                   ),
                 )}
@@ -99,18 +101,8 @@ const { projects } = Astro.props;
             aria-label="Collapse project"
             data-collapse={index}
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="18 15 12 9 6 15" />
-            </svg>
+            {/* Collapsing pushes the card back up, hence the up arrow. */}
+            <Icon name="arrow-up" theme={project.data.theme} class="h-6 w-6" />
           </button>
           <CallCard
             tag={project.data.tag}

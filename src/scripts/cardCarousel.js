@@ -65,25 +65,29 @@ function initStrip(scroller) {
     scroller.dataset.carouselLabel || "Carousel navigation",
   );
 
-  // Crisp SVG chevrons rather than text glyphs. Text arrows render with
-  // whatever font ends up applied, which the pixel themes turn into odd or
-  // missing shapes; the SVG is the same on every platform. Square caps keep
-  // the corners sharp, matching the site's no-border-radius look.
-  const ARROW_PATHS = {
-    prev: "M15 6 9 12 15 18",
-    next: "M9 6 15 12 9 18",
+  // Pixel-art arrow icons from the shared set rather than text glyphs. Text
+  // arrows render with whatever font ends up applied, which the pixel themes
+  // turn into odd or missing shapes; the artwork is the same everywhere.
+  // Resolved against BASE_URL because these files live in public/.
+  const ARROW_SRC = {
+    prev: "Arrow Left_Blue.png",
+    next: "Arrow Right_Blue.png",
   };
+  const ICON_DIR = `${import.meta.env.BASE_URL}images/Icons/Blue`;
 
   const makeArrow = (label, direction) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "card-carousel-arrow";
     button.setAttribute("aria-label", label);
-    button.innerHTML =
-      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ` +
-      `stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" ` +
-      `aria-hidden="true" focusable="false">` +
-      `<path d="${ARROW_PATHS[direction]}" /></svg>`;
+
+    const icon = document.createElement("img");
+    icon.src = encodeURI(`${ICON_DIR}/${ARROW_SRC[direction]}`);
+    icon.alt = "";
+    icon.setAttribute("aria-hidden", "true");
+    icon.decoding = "async";
+    button.appendChild(icon);
+
     return button;
   };
 

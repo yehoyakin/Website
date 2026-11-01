@@ -1,20 +1,42 @@
 ---
 // Purpose: Component - src/components/shared/Icon.astro (Pixel icon by name)
 //
-// Usage: <Icon name="Handbag" /> resolves public/images/genIcons/Handbag.png.
-// Unknown names render nothing instead of a broken image.
-import { iconPath } from "../../config/icons";
+// Usage: <Icon name="Handbag" theme="green" />
+// Resolves public/images/Icons/Green/Handbag_Green.png — the colour follows the
+// theme name, so an icon always matches the accents of the page or card it sits
+// in. Without a theme (site chrome) it uses `defaultIconColor` (Blue), and
+// `color` overrides both.
+import {
+  defaultIconColor,
+  iconColorForTheme,
+  iconPath,
+  isIconColor,
+  type IconColor,
+} from "../../config/icons";
 import { asset } from "../../utils/asset";
 
 interface Props {
   name: string;
   class?: string;
   alt?: string;
+  /** Theme name ("green", "orange", …) — picks the matching icon colour. */
+  theme?: string;
+  /** Explicit icon colour; wins over `theme`. */
+  color?: IconColor;
 }
 
-const { name, class: extraClass = "h-5 w-5", alt = "" } = Astro.props as Props;
+const {
+  name,
+  class: extraClass = "h-5 w-5",
+  alt = "",
+  theme,
+  color,
+} = Astro.props as Props;
 
-const src = iconPath(name);
+const iconColor: IconColor =
+  color && isIconColor(color) ? color : iconColorForTheme(theme);
+
+const src = iconPath(name, iconColor);
 
 const classes = [
   "inline-block shrink-0 object-contain [image-rendering:pixelated]",
@@ -34,6 +56,7 @@ const classes = [
       height="120"
       loading="lazy"
       decoding="async"
+      data-icon-color={iconColor ?? defaultIconColor}
       class={classes}
     />
   )
