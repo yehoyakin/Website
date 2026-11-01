@@ -72,7 +72,13 @@ import { asset } from "../utils/asset";
             imageSrc: asset("images/pageBackgrounds/BlogDay.gif"),
             imageSrcNight: asset("images/pageBackgrounds/BlogNight.gif"),
           }}
-          footerText="Pixel art by Kirokaze!"
+          credits={[
+            {
+              href: "https://www.deviantart.com/kirokaze/gallery",
+              text: "Pixel art by Kirokaze!",
+            },
+            { href: "https://yukipixels.itch.io", text: "Font by yukipixels" },
+          ]}
         />
       </div>
     </div>
