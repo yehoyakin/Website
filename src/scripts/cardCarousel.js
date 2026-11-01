@@ -76,6 +76,10 @@ function initStrip(scroller) {
   // Resolved against BASE_URL because these files live in public/.
   const ARROW_FILE = { prev: "Triangle Left", next: "Triangle Right" };
 
+  // The index's circles, from the same set: one filled circle per slide, dimmed
+  // unless it is the current one (styles/carousel/carouselDots.css).
+  const DOT_FILE = "Circle Base";
+
   /* The two base colours come from the page (MyLayout renders them from
      config/icons.ts, which reads tokens.css), so the glyphs are drawn in the
      day and night main colours instead of a fixed folder. Both are rendered
@@ -122,11 +126,34 @@ function initStrip(scroller) {
   // instead of early-returning as if nothing had changed.
   let current = -1;
 
+  /* One circle per slide, as a day / night pair like every other icon: the
+     stylesheet picks the mode, so only one file per dot is ever fetched. */
+  const makeDotIcon = () => {
+    const pair = document.createElement("span");
+    pair.className = "card-carousel-dot-icon icon-mode";
+
+    ["day", "night"].forEach((mode) => {
+      const folder = ICON_FOLDER[mode];
+      const icon = document.createElement("img");
+      icon.src = encodeURI(
+        `${import.meta.env.BASE_URL}images/Icons/${folder}/${DOT_FILE}_${folder}.webp`,
+      );
+      icon.alt = "";
+      icon.setAttribute("aria-hidden", "true");
+      icon.decoding = "async";
+      icon.className = `icon-mode-img icon-mode-img--${mode}`;
+      pair.appendChild(icon);
+    });
+
+    return pair;
+  };
+
   const dots = items.map((_item, index) => {
     const dot = document.createElement("button");
     dot.type = "button";
     dot.className = "card-carousel-dot";
     dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+    dot.appendChild(makeDotIcon());
     dot.addEventListener("click", () => goTo(index));
     dotsWrap.appendChild(dot);
     return dot;

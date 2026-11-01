@@ -16,6 +16,8 @@
   --control-outline-width: 2px;
   /* The phone block below draws its frame from `--outline-width`. */
   --outline-width: 2px;
+  /* Fixed: the label is `nowrap`, so it can never need a second line and this
+     rule needs no growth. */
   height: var(--back-link-height);
   padding: 0 0.5rem;
   /* Not `1`: the pixel face draws outside its em box, and a line box that is
@@ -32,7 +34,7 @@
    the `.text-base` type role, which is declared later in the cascade and set
    this label one whole step larger than the buttons beside it. */
 a.back-link {
-  font-size: max(7px, calc(var(--font-size-base) - 18px));
+  font-size: max(6px, calc(var(--font-size-base) - 20px));
 }
 
 /* The glyph shrinks with the box: at the chrome glyph size it would sit on the
@@ -69,7 +71,7 @@ a.back-link span {
     background-color: var(--time-button-fill);
     background-image: var(--button-lighting);
     backdrop-filter: none;
-    font-size: 7px;
+    font-size: 6px;
     white-space: nowrap;
   }
 }

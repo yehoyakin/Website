@@ -1,23 +1,25 @@
-/* Carousel dots: the index row, its tile recipe and the active state. */
+/* Carousel index: the row of circles under a strip.
+
+   These used to be squares drawn in CSS (`::before` with a border, a fill and
+   four bevel shadows) — a hand-built imitation of the icon set sitting next to
+   icons that come from the set itself. The index is icon artwork now: one
+   day / night pair per dot, injected by scripts/cardCarousel.js, dimmed when it
+   is not the current slide. */
 
 .card-carousel-dots {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
-/* 2rem square button, a real tap target; the tile itself is the ::before. */
+/* A real tap target around a small glyph. */
 .card-carousel-dot {
-  --dot-accent: var(--icon-accent);
-  --dot-outline: color-mix(in srgb, var(--dot-accent) 42%, var(--time-black));
-  --dot-fill: color-mix(in srgb, var(--dot-accent) 20%, var(--time-black));
-  --dot-light: color-mix(in srgb, var(--dot-accent) 58%, white);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.65rem;
+  height: 1.65rem;
   padding: 0;
   border: 0;
   background: none;
@@ -25,43 +27,33 @@
   touch-action: manipulation;
 }
 
-/* The icon set's tile recipe at dot scale. */
-.card-carousel-dot::before {
-  content: "";
-  width: 1rem;
-  height: 1rem;
-  border: var(--control-outline-width) solid var(--dot-outline);
-  background-color: var(--dot-fill);
-  box-shadow:
-    inset 0 var(--control-bevel) 0 0 var(--dot-light),
-    inset var(--control-bevel) 0 0 0 var(--dot-light),
-    inset 0 calc(var(--control-bevel) * -1) 0 0 var(--dot-outline),
-    inset calc(var(--control-bevel) * -1) 0 0 var(--dot-outline);
+/* `.icon-mode` supplies the stacking grid for the day / night pair; this only
+   sets the size and the resting state. */
+.card-carousel-dot-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  opacity: 0.4;
+  transform: scale(1);
   transition:
-    background-color var(--duration-fast) var(--ease-soft),
-    border-color var(--duration-fast) var(--ease-soft),
+    opacity var(--duration-fast) var(--ease-soft),
     transform var(--duration-fast) var(--ease-settle);
 }
 
-.card-carousel-dot:hover::before,
-.card-carousel-dot:focus-visible::before {
-  background-color: color-mix(in srgb, var(--dot-accent) 45%, var(--time-black));
-  transform: scale(1.1);
+.card-carousel-dot-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
 }
 
-/* The active index takes the same opaque mode plate as every other control. */
-.card-carousel-dot[aria-current="true"] {
-  --dot-outline: var(--time-button-ink);
-  --dot-fill: var(--time-button-fill);
-  --dot-light: color-mix(
-    in srgb,
-    var(--time-button-fill) 55%,
-    var(--time-white)
-  );
+.card-carousel-dot:hover .card-carousel-dot-icon,
+.card-carousel-dot:focus-visible .card-carousel-dot-icon {
+  opacity: 0.75;
+  transform: scale(1.15);
 }
 
-.card-carousel-dot[aria-current="true"]::before {
-  background-color: var(--time-button-fill);
-  border-color: var(--time-button-ink);
-  transform: scale(1.18);
+/* The current slide keeps the full colour and a step of size. */
+.card-carousel-dot[aria-current="true"] .card-carousel-dot-icon {
+  opacity: 1;
+  transform: scale(1.35);
 }
