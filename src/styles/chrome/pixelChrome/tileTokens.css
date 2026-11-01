@@ -22,13 +22,16 @@
      its own accent and an unthemed one lights in white / black. */
   --button-lighting: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 85%, transparent)
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 100%, transparent)
       0%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 42%, transparent)
-      16%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 8%, transparent) 34%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 78%, transparent) 9%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 46%, transparent)
+      22%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 18%, transparent)
+      38%,
     transparent 52%,
-    color-mix(in srgb, var(--tile-dark, var(--time-black)) 55%, transparent) 100%
+    color-mix(in srgb, var(--tile-dark, var(--time-black)) 32%, transparent) 72%,
+    color-mix(in srgb, var(--tile-dark, var(--time-black)) 80%, transparent) 100%
   );
   /* Pattern tile sizes — one per plate step. */
   --pattern-size-huge: 1024px;

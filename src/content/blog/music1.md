@@ -141,7 +141,7 @@ videos:
 Some of my best memories and experience in videogames are tightly related to videogame music, not only there are beautiful tracks all over in most games I've played, but they are used at poigniant moments, by admission of many developers (via written interviews or behind the scene videos on game development) *music should take a backseat and let the player focus on gameplay*, while this makes sense, I hard disagree with it, mess with the player, even if you make them loose concentration for a few seconds (that could or might cause death), to me the memory is more important, the impact of the moment. This might read as nonsense and it very well could be, so to illustrate my point here are moments in videogames where to me a track is used perfectly:
 
 
-## Snake Eater
+# Snake Eater
 
 [background[1]]
 
@@ -161,7 +161,7 @@ I find that *Hideo Kojima*'s background and interest in filmmaking is definitely
 [video[0]]
 
 
-## The morning sun, come to vanish this horrible night!
+# The morning sun, come to vanish this horrible night!
 
 [background[2]]
 
@@ -180,7 +180,7 @@ The game's story is one of trust, protection and sacrifice, to believe in those 
 
 [video[1]]
 
-## You've met a terrible fate...
+# You've met a terrible fate...
 
 [background[3]]
 
@@ -206,7 +206,7 @@ I mean you can put 2 and 2 together. Anyways the presentation of the song itself
 
 [video[3]]
 
-## I Killed the big thing! why do I feel bad about it?
+# I Killed the big thing! why do I feel bad about it?
 
 [background[4]]
 

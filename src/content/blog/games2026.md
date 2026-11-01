@@ -154,7 +154,7 @@ I constantly find myself having a harder time enjoying most popular video games,
 
 [background[0]]
 
-## .45 PARABELLUM BLOODHOUND - Cyberpunk Active Time Action
+# .45 PARABELLUM BLOODHOUND - Cyberpunk Active Time Action
 
 Based on the trailer alone, there is a lot that I appreciate from the game:
 
@@ -176,7 +176,7 @@ Hopefully this **active time action JRPG** comes out next year!
 [scene[1], "Tactical combat. A sphere is activated around the player to target enemies and make use of actions."]
 [scene[2], "Once again great use of colors and blocking."]
 
-## The Big Catch
+# The Big Catch
 
 [background[1]]
 
@@ -188,7 +188,7 @@ it’s been a while since I played a **3D exploration platformer / collectathon*
 [scene[4], "Beautiful sunsets and a far away structures in the distance to set the mood. Our skinny character really pops."]
 [scene[5], "Kind of character design me loves, strong use of colors, unique silhouette, lots of presence and therefore charm."]
 
-## Sword Hero
+# Sword Hero
 
 [background[2]]
 
@@ -222,7 +222,7 @@ This will surely be a monumental love letter to **old-school role-playing games*
 [scene[7], "Class system, typical melee, ranged and mage."]
 [scene[8], "Colorful scenery for a dark fantasy game is a welcome change, I'm also a fan of the game's lightning and kind of greasy camera lens shader."]
 
-## ROGUE FLIGHT
+# ROGUE FLIGHT
 
 [background[3]]
 
@@ -234,7 +234,7 @@ Just look at the trailer or screenshots from the game, it gets straight to the p
 [scene[10], "The colors… so good…"]
 [scene[11], "This kind of scenery is what was in my mind on that asteroid level in StarFox 64."]
 
-## Grindset T.V.
+# Grindset T.V.
 
 [background[4]]
 
@@ -244,7 +244,7 @@ While I haven’t tried LSD yet, this game might be a close or similar experienc
 [scene[13], "Creepy imagery, yes please."]
 [scene[14], "More creepiness."]
 
-## Carcass Clad
+# Carcass Clad
 
 [background[5]]
 
@@ -258,7 +258,7 @@ A unique experience that I need injected directly into my front cortex a.s.a.p.
 [scene[16], "War torn city ruins, grey skies, depression, right up my alley."]
 [scene[17], "Just a cool shot from the Steam page!"]
 
-## Deep Dish Dungeon
+# Deep Dish Dungeon
 
 [background[6]]
 
@@ -268,7 +268,7 @@ As I mentioned previously, *I don’t like most popular games(uhhh I'm so differ
 [scene[19], "Spooky skeletons are a must in a dungeon."]
 [scene[20], "Light sources have always been a reliable beacon to guide players."]
 
-## Airframe Ultra
+# Airframe Ultra
 
 [background[7]]
 
@@ -282,7 +282,7 @@ It’s a **retro racing game**, with no story (sadly), but gameplay looks great,
 [scene[22], "Customization is always appreciated in multiplayer games."]
 [scene[23], "Towering buildings, industry factories and pollution on a sunset backdrop, fits the game's aesthetic perfectly. Also lets give some appreciation to that charming old-school user interface."]
 
-## G String
+# G String
 
 [background[8]]
 
@@ -294,7 +294,7 @@ By the time this blog is being written, the game has come out, to some recent mi
 [scene[25], "Cool narrative sequences, looks like a dream sequence which is a storytelling device I love and wish more games used."]
 [scene[26], "Once again a massive sci-fi city, pollution, and neon nights. It's so pretty!"]
 
-## V.A Proxy
+# V.A Proxy
 
 [background[9]]
 

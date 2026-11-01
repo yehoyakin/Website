@@ -13,6 +13,10 @@
 @import "chrome/pixelChrome.css";
 @import "chrome/modeToggleSwitch.css";
 @import "article/blogArticle.css";
+/* Frames LAST of the surface styles: the article and panel borders above are
+   declared as `border:` shorthands, which reset `border-image`, so the frame
+   recipe has to come after them to hold. Buttons are untouched either way. */
+@import "chrome/pixelChrome/frames.css";
 @import "responsive/responsive.css";
 @import "site/fluidTypeScale.css";
 /* Height-driven landing rules: last, so they win over the width-based sizes. */

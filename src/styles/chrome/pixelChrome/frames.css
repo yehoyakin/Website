@@ -1,0 +1,81 @@
+/* FRAMES — every surface that is not a button.
+
+   A flat 4px outline was doing all the framing in the site: cards, panels,
+   article figures, screenshots and video all sat in the same plain colour, so
+   nothing looked like it was built out of pixels — only the buttons did, because
+   they have the lit plate.
+
+   A frame now carries the same light direction in its BORDER: bright along the
+   top and left, stepping down through the surface colour to a shadow along the
+   bottom and right. It reads as a raised plate in both modes and needs no plate
+   fill of its own.
+
+   BUTTONS ARE EXEMPT. They keep chrome/pixelChrome/buttons.css — the lit
+   gradient with the bloom across the top edge — which is what tells a control
+   apart from a surface. Anything with `.retro-link`, `.split-card-action`,
+   `.icon-button`, `.mode-toggle`, `.back-link` or the carousel arrows is left
+   alone here. */
+
+:root {
+  /* Two extra tones per accent: the lit edge and the shaded one. Both are
+     derived, so a themed card frames itself in its own colour. */
+  --frame-edge-light: color-mix(
+    in srgb,
+    var(--outline-color, var(--time-border)) 46%,
+    var(--time-white)
+  );
+  --frame-edge-dark: color-mix(
+    in srgb,
+    var(--outline-color, var(--time-border)) 28%,
+    var(--time-black)
+  );
+  /* The frame, as a border image: one gradient, four edges, no per-side rules. */
+  --frame-bevel: linear-gradient(
+    135deg,
+    var(--frame-edge-light) 0%,
+    var(--frame-edge-light) 10%,
+    var(--outline-color, var(--time-border)) 34%,
+    var(--outline-color, var(--time-border)) 62%,
+    var(--frame-edge-dark) 92%,
+    var(--frame-edge-dark) 100%
+  );
+}
+
+/* THE RECIPE. `.pixel-frame` is the site's surface class (panels, plates,
+   cards, the portrait, the rail panel); `.blog-card` is a card that is not
+   always a plate. */
+.pixel-frame:not(.retro-link):not(.split-card-action),
+.blog-card,
+.portrait-frame,
+.rail-panel,
+.project-panel-frame,
+.project-panel-body,
+.blog-article-body,
+.article-reading-surface {
+  border-image: var(--frame-bevel) 1;
+  /* The hard inner edge the border image cannot give: one pixel of light along
+     the top and left, one of shadow along the bottom and right. */
+  box-shadow:
+    inset 1px 1px 0 0 color-mix(in srgb, var(--frame-edge-light) 75%, transparent),
+    inset -1px -1px 0 0 color-mix(in srgb, var(--frame-edge-dark) 75%, transparent);
+}
+
+/* Hover lifts the frame instead of recolouring the border: with a border image
+   the border colour is no longer part of the picture. */
+.pixel-frame:not(.retro-link):not(.split-card-action):hover,
+.blog-card:hover,
+.portrait-frame:hover {
+  filter: brightness(1.04);
+}
+
+/* IMAGES, VIDEO, EMBEDS — the same bevel at control weight, so a screenshot in
+   an article is framed like the panel it sits in rather than by a flat line. */
+.thumb-carousel-media,
+#blog-content :is(figure img, video, iframe),
+.project-panel-body :is(figure img, video, iframe) {
+  border: var(--control-outline-width) solid transparent;
+  border-image: var(--frame-bevel) 1;
+  box-shadow:
+    inset 1px 1px 0 0 color-mix(in srgb, var(--frame-edge-light) 75%, transparent),
+    inset -1px -1px 0 0 color-mix(in srgb, var(--frame-edge-dark) 75%, transparent);
+}
