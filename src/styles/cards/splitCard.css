@@ -34,6 +34,35 @@
   opacity: 0.22;
 }
 
+/* CREDITS ROW — one line, always.
+
+   The buttons never wrap: they shrink with the viewport (the label size is
+   clamped, so a phone still fits all three) and the row can scroll sideways as
+   a last resort instead of stacking into ragged rows. */
+.credits-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.credits-row::-webkit-scrollbar {
+  display: none;
+}
+
+.credits-row .retro-link {
+  flex: 0 0 auto;
+  padding-inline: 0.5rem;
+  font-size: clamp(0.56rem, 2.1vw, 0.75rem);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
 @keyframes textureScroll {
   from {
     background-position: 0 0;

@@ -233,7 +233,13 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
 
     <!-- Sidebar content -->
 
-    <div id="sidebar-panel" class="pixel-frame w-80 max-h-[70vh] overflow-y-auto">
+    {/* The links panel wears the post's own texture, like the article surfaces:
+        `--project-tag-color` above tints it, this supplies the tile. */}
+    <div
+      id="sidebar-panel"
+      class="pixel-frame pattern-plate pattern-plate--small relative w-80 max-h-[70vh] overflow-y-auto"
+      style={`--plate-pattern: url('${patternForTheme(themeName)}')`}
+    >
       <BlogSidebar cards={cards} theme={themeName} />
     </div>
   </div>

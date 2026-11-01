@@ -175,12 +175,6 @@ const roleLabels: Record<ProjectRole, string> = {
             data-panel={index}
             style={`--project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
           >
-            {/* Full-bleed band: the shared pattern plate behind the whole
-                panel, carrying the project's texture and accent. */}
-            <span
-              class="project-panel-backdrop pattern-plate pattern-plate--medium"
-              aria-hidden="true"></span>
-
             <button
               class="collapse-btn icon-button"
               aria-label="Collapse project"
@@ -364,6 +358,39 @@ const roleLabels: Record<ProjectRole, string> = {
       ? window.matchMedia("(hover: hover) and (pointer: fine)").matches
       : false;
 
+    /* THE BAND is a page-level layer (rendered by pages/portfolio.astro), not
+       a child of the panel: it starts at the open project's top edge and runs
+       to the bottom of the page box, edge to edge. Placing it here means
+       neither the panel's own box nor the page's bottom padding can cut it
+       short, which is what a band sized inside the panel always did. */
+    const pageBand = document.getElementById("project-band");
+
+    function showBand(panel) {
+      if (!pageBand || !panel) return;
+
+      const page = pageBand.parentElement;
+      const pageTop = page.getBoundingClientRect().top;
+      const panelTop = panel.getBoundingClientRect().top;
+
+      pageBand.style.top = `${Math.round(panelTop - pageTop)}px`;
+
+      /* The band wears the project too: the panel carries both tokens inline. */
+      pageBand.style.setProperty(
+        "--project-tag-color",
+        panel.style.getPropertyValue("--project-tag-color"),
+      );
+      pageBand.style.setProperty(
+        "--plate-pattern",
+        panel.style.getPropertyValue("--plate-pattern"),
+      );
+
+      pageBand.style.display = "block";
+    }
+
+    function hideBand() {
+      if (pageBand) pageBand.style.display = "none";
+    }
+
     function expandProject(index) {
       // Hide all panels and deactivate all cards
       panels.forEach((p) => {
@@ -376,6 +403,7 @@ const roleLabels: Record<ProjectRole, string> = {
       if (panel) {
         panel.style.display = "block";
         activeProject = index;
+        showBand(panel);
 
         // Scroll thumbnail into view within the horizontal scroller
         const thumb = thumbs[index];
@@ -400,6 +428,7 @@ const roleLabels: Record<ProjectRole, string> = {
         p.classList.remove("panel-hover-fadeout");
       });
       activeProject = null;
+      hideBand();
     }
 
     thumbs.forEach((thumb) => {
@@ -417,6 +446,7 @@ const roleLabels: Record<ProjectRole, string> = {
             panel.classList.remove("panel-hover-fadeout");
             panel.style.display = "block";
             panel.classList.add("panel-hover-preview");
+            showBand(panel);
           }
         });
 
@@ -429,6 +459,7 @@ const roleLabels: Record<ProjectRole, string> = {
             panel.classList.remove("panel-hover-preview");
             panel.classList.remove("panel-hover-fadeout");
             panel.style.display = "none";
+            hideBand();
           }
         });
       }
@@ -450,6 +481,28 @@ const roleLabels: Record<ProjectRole, string> = {
         collapseProject();
       });
     });
+
+    /* A band measured for one viewport is wrong after a resize or rotation,
+       so it is re-measured for whichever project is open. The listener is kept
+       on `window` and replaced on re-init, so client-side navigations do not
+       stack copies of it. */
+    if (window._galleryBandResize) {
+      window.removeEventListener("resize", window._galleryBandResize);
+    }
+
+    window._galleryBandResize = () => {
+      if (activeProject === null) return;
+
+      cancelAnimationFrame(gallery._bandFrame);
+      gallery._bandFrame = requestAnimationFrame(() => {
+        const panel = panels.find(
+          (p) => p.dataset.panel === String(activeProject),
+        );
+        if (panel) showBand(panel);
+      });
+    };
+
+    window.addEventListener("resize", window._galleryBandResize);
 
     /* Thumbnail cards: auto-cycling only, no controls. */
     function initCardPreviews() {

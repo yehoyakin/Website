@@ -24,16 +24,20 @@
   padding-block: 0.9rem;
 }
 
-/* The band itself: the shared pattern plate — the same recipe the blog
-   masthead wears — so the panel gets the project's texture, its near-black
-   tinted fill, the accent gradient and the scroll speed from one class. This
-   rule only stretches that plate into a full-bleed band. */
-.project-panel-backdrop {
+/* THE BAND — page level, behind the content.
+
+   It is a `pattern-plate` (the blog masthead's recipe: tinted near-black fill,
+   accent gradient, scrolling texture), so the only thing this rule owns is
+   geometry. `inset-inline: 0` makes it exactly as wide as the page box — no
+   `100vw`, nothing to clip — and `bottom: 0` takes it to the page's bottom
+   edge; the gallery script writes `top` for the open project. */
+.project-band {
   position: absolute;
-  inset: 0 50%;
-  width: 100vw;
-  transform: translateX(-50%);
-  z-index: -1;
+  inset-inline: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: none;
   pointer-events: none;
 }
 
@@ -98,13 +102,26 @@
 }
 
 /* 16:10 rather than 4:3 — a landscape video fills this frame instead of
-   sitting in wide black bars, and the screenshots crop only slightly. */
+   sitting in wide black bars, and the screenshots crop only slightly.
+
+   The frame wears the project's accent like everything else on the panel: one
+   step darker than the band it sits on, so the media reads as a defined
+   window rather than floating on the texture. */
 .project-panel-frame {
   position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  border: var(--outline-width) solid var(--outline-color);
+  border: var(--outline-width) solid
+    var(--project-tag-color, var(--icon-accent));
   background: var(--time-black);
+}
+
+.project-panel-frame {
+  border-color: color-mix(
+    in srgb,
+    var(--project-tag-color, var(--icon-accent)) 60%,
+    var(--time-black)
+  );
 }
 
 /* The panel reuses the strips' `.card-carousel-*` controls unchanged; only the
