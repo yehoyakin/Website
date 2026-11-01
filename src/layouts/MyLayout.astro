@@ -4,8 +4,9 @@ import { ClientRouter } from "astro:transitions";
 import { toThemeName, toThemeToken } from "../config/uiDictionary";
 import { asset } from "../utils/asset";
 import ModeToggle from "../components/shared/ModeToggle.astro";
+import { defaultIconColor, defaultIconColorNight } from "../config/icons";
 
-const { title = "JoacoDev", theme } = Astro.props;
+const { title = "JoacoDev", theme, page } = Astro.props;
 
 // A page that assigns a theme carries the tokens.css token in `data-theme`,
 // which is what fonts.css keys the page's font set off.
@@ -14,22 +15,15 @@ const themeAttribute =
     ? toThemeToken(toThemeName(theme))
     : undefined;
 
-/* Pixel-dissolve page transition (see styles/base/viewTransitions.css).
- *
- * The transition itself is pure View Transition API: the client router swaps
- * the DOM and the browser hands us the two page snapshots, so the page never
- * reloads and no screenshot library is involved. The "pixel" part is an SVG
- * filter applied to those snapshots — one filter per step, where the value is
- * the pixel block size in CSS pixels.
- *
- * PIXEL_STEPS order is the animation order: the outgoing page walks the list
- * first → last (blocks growing), the incoming page walks it last → first
- * (blocks shrinking). Keep it in sync with the keyframes in viewTransitions.css.
- */
-const PIXEL_STEPS = [4, 6, 9, 13, 19, 27, 40];
 ---
 
-<html lang="en" data-theme={themeAttribute}>
+<html
+  lang="en"
+  data-theme={themeAttribute}
+  data-page={page}
+  data-icon-day={defaultIconColor}
+  data-icon-night={defaultIconColorNight}
+>
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -69,75 +63,12 @@ const PIXEL_STEPS = [4, 6, 9, 13, 19, 27, 40];
   <body
     class="bg-[var(--time-page)] text-[color:var(--time-ink)] antialiased selection:bg-amber-500/30 selection:text-white"
   >
-    <ModeToggle theme={theme} />
+    <ModeToggle />
 
     <div
       class="fixed inset-0 bg-[linear-gradient(to_right,var(--time-border-soft)_1px,transparent_1px),linear-gradient(to_bottom,var(--time-border-soft)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"
     >
     </div>
-
-    <!-- Pixelation grids for the page transition. Zero-sized, so they never
-         affect layout; only the CSS `filter: url(#pixel-N)` rules use them.
-
-         How each grid works:
-           1. `feGaussianBlur` softens the snapshot so a sampled pixel carries
-              the average tone of its cell — without it, text-heavy pages
-              dissolve into single sampled dots instead of readable blocks.
-           2. `feFlood` + `feComposite` build one square cell holding a 2x2 dot
-              at its centre; `feTile` repeats that cell over the whole
-              snapshot. The tile origin is the element's top-left, so the old
-              and new snapshots share one pixel grid and the block edges line
-              up across the swap.
-           3. `feComposite operator="in"` keeps the snapshot only where the
-              dots are, and `feMorphology dilate` grows each dot into a full
-              `size` block. -->
-    <svg
-      class="pixel-filters"
-      width="0"
-      height="0"
-      aria-hidden="true"
-      focusable="false"
-    >
-      {
-        PIXEL_STEPS.map((size) => (
-          <filter
-            id={`pixel-${size}`}
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            color-interpolation-filters="sRGB"
-          >
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation={size / 2.5}
-              result="soft"
-            />
-            <feFlood
-              x={size / 2 - 1}
-              y={size / 2 - 1}
-              width="2"
-              height="2"
-              result="dot"
-            />
-            <feComposite
-              in="dot"
-              in2="dot"
-              width={size}
-              height={size}
-              result="cell"
-            />
-            <feTile in="cell" result="grid" />
-            <feComposite in="soft" in2="grid" operator="in" result="samples" />
-            <feMorphology
-              in="samples"
-              operator="dilate"
-              radius={(size - 2) / 2}
-            />
-          </filter>
-        ))
-      }
-    </svg>
 
     <main
       class="relative z-10 min-h-screen w-full flex flex-col overflow-x-hidden"
@@ -154,6 +85,7 @@ const PIXEL_STEPS = [4, 6, 9, 13, 19, 27, 40];
     <script>
       import "../scripts/socialsHook.js";
       import "../scripts/modeToggle.js";
+      import "../scripts/patternTransition.js";
     </script>
   </body>
 </html>

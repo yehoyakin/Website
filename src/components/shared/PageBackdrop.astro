@@ -1,0 +1,39 @@
+---
+// Purpose: Component - src/components/shared/PageBackdrop.astro (Day / night page backdrop)
+//
+// Each listing page owns a daytime and a night-time artwork. Both are rendered
+// and CSS shows exactly one, keyed off `data-mode` on <html> — which the inline
+// script in MyLayout.astro sets before first paint — so switching modes swaps
+// the artwork without a flash of the wrong one and without per-page JavaScript.
+//
+// The blur stays on this wrapper (styles/base/layout.css), so both images share
+// it and only their opacity changes — the `.mode-img` pair used by card artwork
+// too, so a mode switch behaves the same wherever there are two versions.
+import { asset } from "../../utils/asset";
+
+interface Props {
+  /** Path inside public/, e.g. "images/pageBackgrounds/BlogDay.gif". */
+  day: string;
+  night: string;
+}
+
+const { day, night } = Astro.props as Props;
+---
+
+<div
+  class="fixed inset-0 z-0 pointer-events-none style3d blurred-bg-layer page-backdrop"
+  aria-hidden="true"
+>
+  <img
+    class="page-backdrop-img mode-img mode-img--day"
+    src={asset(day)}
+    alt=""
+    role="presentation"
+  />
+  <img
+    class="page-backdrop-img mode-img mode-img--night"
+    src={asset(night)}
+    alt=""
+    role="presentation"
+  />
+</div>

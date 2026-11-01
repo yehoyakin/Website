@@ -25,7 +25,7 @@
   height: 0%;
   object-fit: contain;
   transform: scale(1.45);
-  filter: blur(36px) saturate(0.8) contrast(0.9);
+  filter: blur(36px) saturate(1) contrast(0.9);
   opacity: 0;
   transition:
     opacity 600ms var(--ease-soft),
@@ -100,7 +100,7 @@
   width: clamp(260px, 40vw, 480px) !important;
   aspect-ratio: 16 / 10;
   padding: 0;
-  border: 5px solid rgba(255, 255, 255, 0.1);
+  border: var(--outline-width) solid var(--outline-color);
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
@@ -118,12 +118,11 @@
 }
 
 .gallery-thumb:hover {
-  border-color: var(--thumb-theme-color, rgba(255, 255, 255, 0.3));
+  border-color: var(--outline-color-hover);
   box-shadow:
     0 16px 40px rgba(0, 0, 0, 0.5),
     0 0 30px
       color-mix(in srgb, var(--thumb-theme-color, white) 15%, transparent);
-  transform: translateY(-6px);
 }
 
 .gallery-thumb:focus {
@@ -163,9 +162,10 @@
   opacity: 1;
 }
 
-/* Image scales up on hover */
+/* Image zooms and brightens on hover */
 .gallery-thumb:hover .thumb-carousel-img.active {
   transform: scale(1.05);
+  filter: brightness(1.1);
 }
 
 /* Dark overlay like split card */
@@ -246,7 +246,7 @@
   padding: 0.3rem 0.6rem !important;
   border-radius: 0 !important;
   white-space: nowrap;
-  border-width: 3px !important;
+  border-width: var(--outline-width) !important;
   letter-spacing: 0.1em !important;
 }
 
@@ -285,8 +285,8 @@
   width: 3rem;
   height: 3rem;
   border-radius: 0;
-  border: 5px solid var(--theme-green, rgb(34, 197, 94));
-  background: rgba(0, 0, 0, 0.8);
+  border: 0;
+  background: transparent;
   color: var(--theme-green, rgb(34, 197, 94));
   cursor: pointer;
   display: flex;
@@ -294,17 +294,18 @@
   justify-content: center;
   transition:
     background-color 200ms var(--ease-soft),
+    border-color 200ms var(--ease-soft),
     color 200ms var(--ease-soft),
     transform 200ms var(--ease-settle),
     box-shadow 200ms var(--ease-soft);
-  backdrop-filter: blur(4px);
+  backdrop-filter: none;
 }
 
 .collapse-btn:hover {
-  background: var(--theme-green, rgb(34, 197, 94));
+  background: transparent;
   color: white;
-  transform: translateX(-50%) translateY(-2px);
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+  transform: translateX(-50%);
+  box-shadow: none;
 }
 
 .collapse-btn:focus {

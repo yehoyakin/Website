@@ -2,10 +2,17 @@
 // Purpose: Section - src/components/sections/ContactPanel.astro (Top-right contact quicklinks)
 import SocialLink from "../shared/Link.astro";
 import Icon from "../shared/Icon.astro";
+import { netIconPath } from "../../config/icons";
+
+/* This panel is site chrome, not content, so it wears the MODE base colour
+   rather than a theme: `--icon-accent` is the day base colour by day and the
+   night one at night (base/timeColors.css), the same token the unthemed icons
+   are drawn in. A fixed theme here painted the links purple in both modes and
+   on every page it floated over. */
 
 const links = [
   { href: "mailto:joaquinignacio.herrerabriones@email.com", text: "Email", external: false, icon: "email" },
-  { href: "https://github.com/yehoyakin", text: "GitHub", external: true, icon: "internet" },
+  { href: "https://github.com/yehoyakin", text: "GitHub", external: true, icon: netIconPath("github") },
   { href: "https://gitlab.com/yehoyakin", text: "GitLab", external: true, icon: "internet" },
   { href: "https://www.linkedin.com/in/joaquín-herrera-366b2a175", text: "LinkedIn", external: true, icon: "internet" }
 ];
@@ -15,20 +22,21 @@ const links = [
 <div
   id="socials-container"
   class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-2.75rem)] [&.socials-open]:translate-x-0"
+  style="--project-tag-color: var(--icon-accent)"
 >
   {/* The clickable/hoverable contacts tab handle */}
   <button
     id="socials-toggle"
-    class="bg-[var(--time-surface)] text-[color:var(--time-ink)] p-3 rounded-none shadow-lg cursor-pointer select-none border border-r-0 border-[color:var(--time-border-soft)] group-[.socials-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
+    class="icon-button panel-toggle bg-transparent text-[color:var(--time-ink)] rounded-none cursor-pointer select-none border-0 group-[.socials-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
     aria-label="Toggle Social Links"
     type="button"
   >
-    <Icon name="contacts" class="h-6 w-6" />
+    <Icon name="contacts" class="h-16 w-16" />
   </button>
 
   <div
     id="socials-panel"
-    class="bg-[var(--time-panel)] backdrop-blur-md p-6 rounded-none border border-[color:var(--time-border-soft)] shadow-2xl w-64 max-h-[70vh] overflow-y-auto"
+    class="pixel-frame bg-[var(--time-panel)] backdrop-blur-md p-6 rounded-none border border-[color:var(--time-border-soft)] shadow-2xl w-64 max-h-[70vh] overflow-y-auto"
   >
     <div class="space-y-3">
       {

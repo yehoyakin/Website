@@ -144,6 +144,7 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
 <MyLayout
   title={post.data.title}
   theme={themeName}
+  page="blog"
   preloadImages={imagesToPreload}
 >
   <!-- -----------------------------------------------------
@@ -151,7 +152,7 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
        ----------------------------------------------------- -->
 
   <div class="relative z-30">
-    <BackLink href={`${baseUrl}blog/`} text="Back to blog" theme={themeName} />
+    <BackLink href={`${baseUrl}blog/`} text="Back to blog" />
   </div>
 
   <!-- -----------------------------------------------------
@@ -209,20 +210,24 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
   <div
     id="sidebar-container"
     class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-2.75rem)] [&.sidebar-open]:translate-x-0"
+    /* The tab and its panel belong to THIS post: without the token the
+       panel's frame fell back to the root accent (--theme-orange) and every
+       post's sidebar looked like the first one. */
+    style={`--project-tag-color: ${postDynamicToken}`}
   >
     <button
       id="sidebar-toggle"
-      class="bg-[var(--time-surface)] text-[color:var(--time-ink)] p-3 rounded-none shadow-lg cursor-pointer select-none border border-r-0 border-[color:var(--time-border-soft)] group-[.sidebar-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
+      class="icon-button panel-toggle bg-transparent text-[color:var(--time-ink)] rounded-none cursor-pointer select-none border-0 group-[.sidebar-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
       aria-label="Toggle Sidebar"
       type="button"
     >
       <!-- Posts list icon: this tab opens the blog sidebar. -->
-      <Icon name="document" theme={themeName} class="h-6 w-6" />
+      <Icon name="document" theme={themeName} class="h-7 w-7" />
     </button>
 
     <!-- Sidebar content -->
 
-    <div id="sidebar-panel" class="w-80 max-h-[70vh] overflow-y-auto">
+    <div id="sidebar-panel" class="pixel-frame w-80 max-h-[70vh] overflow-y-auto">
       <BlogSidebar cards={cards} theme={themeName} />
     </div>
   </div>
@@ -479,7 +484,10 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
          * belongs to the current page's background data.
          */
         backgroundElement.style.backgroundImage = `url("${background.image}")`;
-        backgroundElement.style.filter = `blur(${bgBlur * 24}px)`;
+        /* Blur travels as a custom property, not as an inline `filter`: the
+           block dissolve in base/layout.css animates `filter`, and the
+           animation's final keyframe would otherwise erase an inline value. */
+        backgroundElement.style.setProperty("--bg-blur", `${bgBlur * 24}px`);
         backgroundElement.style.transform = `translate3d(0, ${offsetForLayer(index)}px, 0)`;
         const isActive = index === activeIndex;
         backgroundElement.style.opacity = isActive ? String(bgOpacity) : "0";

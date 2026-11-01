@@ -1,6 +1,6 @@
 ---
 title: "Right track at the right time"
-theme: "lightgreen"
+theme: "green"
 description: "Music | Mood | Videogame"
 date: 10/18/2026
 cardBackground: "images/blog/music1/image (7).webp"

@@ -1,80 +1,87 @@
 /* Purpose: Styles - src/styles/base/typography.css (Typography tokens and font rules) */
 
 /* Shadow for readability against blurred backgrounds. Light mode needs a
-   light halo around dark type, night mode a dark one — see timeColors.css. */
-.readable-text {
+   light halo around dark type, night mode a dark one — see timeColors.css.
+
+   Headings are excluded: a class selector outranks the `h1`/`h2`/`h3` element
+   rule that draws the pixel ring, so `readable-text` on a title silently
+   replaced the ring with a blurred halo and left the inverted fill showing as
+   plain black type. Titles below get the ring instead, which does the same
+   job with a hard edge. */
+.readable-text:not(:is(h1, h2, h3)) {
   text-shadow: 0 1px 3px var(--time-shadow, rgba(0, 0, 0, 0.5));
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   TITLE OUTLINES — even black border around text
-   Title.astro picks .outline-2, or .outline-3 for a level-1 heading.
+   PIXEL TYPE — bold and outline cuts drawn on the font's own grid
+
+   BoldPixels is drawn on a 16 x 16 pixel em (1024 units per em, 64 units
+   per design pixel), so 1/16em is EXACTLY one of the font's own pixels at
+   any size and any offset in that unit lands on the grid the glyphs are
+   built from.
+
+   That is why the cuts are hard-edged copies (text-shadow, zero blur)
+   instead of -webkit-text-stroke. A stroke follows the glyph outline as a
+   smooth curve and anti-aliases into a grey halo, which is exactly what
+   makes faux pixel type look off; copies displaced by whole grid cells
+   step in staircases the way the artwork does, and because the step is
+   em-based they scale with the fluid type.
+
+     outline  titles (h1–h3, .outline-2 / .outline-3): a one-pixel ring
+              around each glyph in the element's own colour, with the
+              inside filled in the INVERTED colour — white ring, black
+              fill; black ring, white fill; anything else inverts per
+              channel. Browsers without relative colour syntax
+              (`rgb(from …)`) fall back to the page colour, so type still
+              reads. .outline-3 (h1) draws the ring two pixels wide.
+     bold     button labels: glyph plus copies one pixel east, south and
+              south-east, thickening strokes by one pixel — the weight of
+              a real bold cut at this grid, without closing the 1px
+              counters a ring on all four sides would.
    ═══════════════════════════════════════════════════════════════ */
 
-/* Font outline base — ensures crisp rendering */
-.outline-2,
-.outline-3 {
-  text-rendering: geometricPrecision;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* 2px outline — standard */
-.outline-2 {
-  text-shadow:
-    0 2px 0 var(--time-black),
-    0 -2px 0 var(--time-black),
-    2px 0 0 var(--time-black),
-    -2px 0 0 var(--time-black),
-    2px 2px 0 var(--time-black),
-    -2px -2px 0 var(--time-black),
-    2px -2px 0 var(--time-black),
-    -2px 2px 0 var(--time-black);
-}
-
-/* ══════════════════════════════════════════════════════════════
-   BOLD PIXELS — bold and outline cuts
-
-   BoldPixels ships as a single file here (see base/font-faces.css), so the
-   bold and outline variants are drawn by the browser instead of loaded as
-   separate faces:
-
-     outline  titles (h1–h3): a stroke in the element's own colour
-              (currentColor, so theme colours and hover transitions keep
-              working) with the inside filled in the INVERTED colour —
-              white outline gets a black fill, black outline a white one,
-              and any other colour gets its per-channel inverse.
-              Browsers without relative colour syntax (`rgb(from …)`) fall
-              back to the page colour, so the letters still read.
-     bold     button labels: the same glyphs with a stroke added on top of
-              the fill, which thickens them into the bold cut
-
-   Both are em-based, so the stroke scales with the fluid type instead of
-   looking fat on small text and hairline on an h1. If you later add the
-   real BoldPixels-Bold / BoldPixels-Outline files, declare them in
-   base/font-faces.css and these rules can be deleted.
-   ══════════════════════════════════════════════════════════════ */
-
 :root {
-  --pixel-outline-width: 0.055em;
-  --pixel-bold-width: 0.075em;
+  /* One design pixel of the BoldPixels grid. */
+  --pixel-step: calc(1em / 16);
 }
+
+/* ── Outline cut ─────────────────────────────────────────────────── */
 
 .pixel-outline,
-:is(h1, h2, h3) {
+:is(h1, h2, h3),
+.outline-2,
+.outline-3 {
+  /* Ring thickness; .outline-3 overrides it a few rules below. */
+  --pixel-ring: var(--pixel-step);
   --pixel-outline-color: currentColor;
-  -webkit-text-stroke: var(--pixel-outline-width) var(--pixel-outline-color);
-  /* Opposite of the outline colour — see the @supports block below, which
-     overrides this with the hue-rotated value where it is supported. */
+
   -webkit-text-fill-color: var(--pixel-outline-fill, var(--time-page));
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
+  text-shadow:
+    var(--pixel-ring) 0 0 var(--pixel-outline-color),
+    calc(var(--pixel-ring) * -1) 0 0 var(--pixel-outline-color),
+    0 var(--pixel-ring) 0 var(--pixel-outline-color),
+    0 calc(var(--pixel-ring) * -1) 0 var(--pixel-outline-color),
+    var(--pixel-ring) var(--pixel-ring) 0 var(--pixel-outline-color),
+    calc(var(--pixel-ring) * -1) var(--pixel-ring) 0 var(--pixel-outline-color),
+    var(--pixel-ring) calc(var(--pixel-ring) * -1) 0 var(--pixel-outline-color),
+    calc(var(--pixel-ring) * -1) calc(var(--pixel-ring) * -1) 0
+      var(--pixel-outline-color);
+}
+
+/* h1 keeps its heavier ring, now stepped on the grid. */
+.outline-3 {
+  --pixel-ring: calc(var(--pixel-step) * 2);
 }
 
 /* Relative colour syntax: invert each RGB channel, so 255 (white) becomes 0
    (black) and 0 becomes 255 — the opposite of the outline colour. */
 @supports (color: rgb(from red calc(255 - r) calc(255 - g) calc(255 - b))) {
   .pixel-outline,
-  :is(h1, h2, h3) {
+  :is(h1, h2, h3),
+  .outline-2,
+  .outline-3 {
     --pixel-outline-fill: rgb(
       from var(--pixel-outline-color) calc(255 - r) calc(255 - g)
         calc(255 - b)
@@ -82,26 +89,49 @@
   }
 }
 
+/* ── Card titles ────────────────────────────────────────────────────
+
+   Type inside a card sits on that card's own bar, not on the page, so the
+   hollow treatment the page headings use reads as black soup on a dark bar
+   and as a white-out on a light one. There the fill keeps the text colour
+   and the RING takes the inverted tone: solid letters with a pixel rim,
+   readable in both modes.
+
+   A structural selector, so every card is covered without adding a class to
+   each title. Browsers without relative colour syntax drop the ring colour,
+   which leaves the letters plain rather than hollow. */
+
+:where(.blog-card, .card-title-area, .retro-expandable-card, .split-card)
+  :is(h1, h2, h3) {
+  -webkit-text-fill-color: currentColor;
+  --pixel-outline-color: rgb(
+    from currentColor calc(255 - r) calc(255 - g) calc(255 - b)
+  );
+}
+
+/* ── Bold cut ──────────────────────────────────────────────────────
+
+   A container never paints the cut itself. text-shadow inherits, and the
+   gallery thumbnails are <button>s whose title and tag live inside them, so
+   a rule on `button` thickened every line of card text into mush. The cut
+   goes on the label element instead. */
+
 .pixel-bold,
 button,
 .retro-link,
 .split-card-action {
-  -webkit-text-stroke: var(--pixel-bold-width) currentColor;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: geometricPrecision;
+  text-shadow: none;
 }
 
-/* 3px outline — thick, for h1 */
-.outline-3 {
+.pixel-bold,
+.split-card-action > span,
+button > span:not(.pixel-highlight) {
   text-shadow:
-    0 3px 0 var(--time-black),
-    0 -3px 0 var(--time-black),
-    3px 0 0 var(--time-black),
-    -3px 0 0 var(--time-black),
-    3px 3px 0 var(--time-black),
-    -3px -3px 0 var(--time-black),
-    3px -3px 0 var(--time-black),
-    -3px 3px 0 var(--time-black);
+    var(--pixel-step) 0 0 currentColor,
+    0 var(--pixel-step) 0 currentColor,
+    var(--pixel-step) var(--pixel-step) 0 currentColor;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 #blog-content {
@@ -117,11 +147,12 @@ button,
   text-shadow: 0 1px 4px var(--time-shadow, rgba(0, 0, 0, 0.6));
 }
 
+/* No soft halo here: a blurry text-shadow would repaint over the pixel ring
+   the headings inherit from the outline cut above. */
 #blog-content h1,
 #blog-content h2,
 #blog-content h3 {
   color: var(--time-ink);
-  text-shadow: 0 2px 6px var(--time-shadow, rgba(0, 0, 0, 0.8));
   margin-top: 2.5rem;
   margin-bottom: 1rem;
 }

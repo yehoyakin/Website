@@ -239,9 +239,21 @@
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
-  border: 3px solid rgba(255, 255, 255, 0.45);
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  /* Opaque plate, one value per mode (see base/timeColors.css). No alpha: the
+     arrows float over card artwork, and a see-through button let the image
+     fight the glyph. */
+  border: var(--control-outline-width) solid var(--time-button-ink);
+  background: var(--time-button-fill);
+  color: var(--time-button-ink);
+  box-shadow:
+    inset 0 var(--control-bevel) 0 0
+      color-mix(in srgb, var(--time-button-fill) 55%, var(--time-white)),
+    inset var(--control-bevel) 0 0 0
+      color-mix(in srgb, var(--time-button-fill) 55%, var(--time-white)),
+    inset 0 calc(var(--control-bevel) * -1) 0 0
+      color-mix(in srgb, var(--time-button-fill) 70%, var(--time-black)),
+    inset calc(var(--control-bevel) * -1) 0 0 0
+      color-mix(in srgb, var(--time-button-fill) 70%, var(--time-black));
   line-height: 1;
   cursor: pointer;
   touch-action: manipulation;
@@ -253,17 +265,30 @@
 /* Arrow artwork injected by scripts/cardCarousel.js. */
 .card-carousel-arrow img {
   display: block;
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.6rem;
+  height: 1.6rem;
   object-fit: contain;
   image-rendering: pixelated;
 }
 
+/* The button holds a day / night pair (the script renders both from the two
+   base colours), so the glyph follows the mode exactly like the mode-toggle
+   icon; the grid wrapper keeps the pair in one 1.6rem box. */
+.card-carousel-arrow-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
 /* The arrows wrap, so they are never disabled — hover is the only state that
-   needs styling. */
-.card-carousel-arrow:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.5);
+   needs styling. The plate moves toward the ink colour: slightly darker by
+   day, slightly lighter at night. */
+.card-carousel-arrow:hover,
+.card-carousel-arrow:focus-visible {
+  background: color-mix(
+    in srgb,
+    var(--time-button-fill) 85%,
+    var(--time-button-ink)
+  );
 }
 
 .card-carousel-dots {
@@ -273,8 +298,16 @@
   gap: 0.25rem;
 }
 
-/* 2rem square button = a real tap target; the dot itself is the ::before. */
+/* 2rem square button = a real tap target; the tile itself is the ::before.
+   Every shade is derived from the mode's main colour (--icon-accent, set in
+   base/timeColors.css), so the index follows the same day / night rule as the
+   mode-toggle icon instead of a fixed blue. */
 .card-carousel-dot {
+  --dot-accent: var(--icon-accent);
+  --dot-outline: color-mix(in srgb, var(--dot-accent) 42%, var(--time-black));
+  --dot-fill: color-mix(in srgb, var(--dot-accent) 20%, var(--time-black));
+  --dot-light: color-mix(in srgb, var(--dot-accent) 58%, white);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -287,22 +320,49 @@
   touch-action: manipulation;
 }
 
+/* The icon set's tile recipe at dot scale: hard outline, filled body, a light
+   bevel on top/left and the outline colour repeated on bottom/right. */
 .card-carousel-dot::before {
   content: "";
-  width: 0.8rem;
-  height: 0.8rem;
-  border: 3px solid rgba(255, 255, 255, 0.75);
-  background: transparent;
+  width: 1rem;
+  height: 1rem;
+  border: var(--control-outline-width) solid var(--dot-outline);
+  background-color: var(--dot-fill);
+  box-shadow:
+    inset 0 var(--control-bevel) 0 0 var(--dot-light),
+    inset var(--control-bevel) 0 0 0 var(--dot-light),
+    inset 0 calc(var(--control-bevel) * -1) 0 0 var(--dot-outline),
+    inset calc(var(--control-bevel) * -1) 0 0 var(--dot-outline);
   transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+    background-color var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft),
+    transform var(--duration-fast) var(--ease-settle);
 }
 
-/* The active dot matches the blue of the pixel icons rather than a theme
-   accent, so it reads as part of the same icon set. */
+.card-carousel-dot:hover::before,
+.card-carousel-dot:focus-visible::before {
+  background-color: color-mix(in srgb, var(--dot-accent) 45%, var(--time-black));
+  transform: scale(1.1);
+}
+
+/* The active index takes the same opaque mode plate as every other control:
+   off-white by day, off-black at night, with the ink as its outline and
+   bevel. Declared after the hover rule so the current slide keeps the plate
+   while hovered, and still a size step up so it stays the lit tile. */
+.card-carousel-dot[aria-current="true"] {
+  --dot-outline: var(--time-button-ink);
+  --dot-fill: var(--time-button-fill);
+  --dot-light: color-mix(
+    in srgb,
+    var(--time-button-fill) 55%,
+    var(--time-white)
+  );
+}
+
 .card-carousel-dot[aria-current="true"]::before {
-  background: var(--icon-blue, #0278d8);
-  border-color: var(--icon-blue, #0278d8);
+  background-color: var(--time-button-fill);
+  border-color: var(--time-button-ink);
+  transform: scale(1.18);
 }
 
 /* ============================================================
@@ -329,10 +389,11 @@
     padding-right: env(safe-area-inset-right);
   }
 
+  /* The handles inherit the shared --icon-button-size box (44px, the minimum
+     tap target) from components/pixelFrame.css; no per-breakpoint override, so
+     the peek width the containers translate by stays correct. */
   #socials-toggle,
   #sidebar-toggle {
-    min-width: 3rem;
-    min-height: 3rem;
     touch-action: manipulation;
   }
 
@@ -358,6 +419,28 @@
 }
 
 /* ============================================================
+   BACK LINK — opaque mode plate
+   ============================================================
+   Same solid pair as the role chips (see base/timeColors.css): off-white
+   with dark type by day, off-black with light type at night, no alpha at all.
+   The control is fixed over page artwork while scrolling, so a translucent
+   background let the image fight the label. */
+
+.back-link {
+  /* Site chrome, not page content: this control returns to another page, so it
+     wears the same opaque day / night pair as the mode switch and the role
+     chips (--time-button-fill / --time-button-ink in base/timeColors.css)
+     instead of a page tint. Both tokens are derived from the mode base
+     colours, so day and night each get their own value automatically. */
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border: var(--control-outline-width) solid var(--time-button-ink);
+  background: var(--time-button-fill);
+  color: var(--time-button-ink);
+}
+
+/* ============================================================
    PHONES — back link
    ============================================================
    It is fixed above article text while scrolling, so give it its own chip
@@ -371,10 +454,10 @@
     max-width: calc(100vw - 5.5rem);
     padding: 0.45rem 0.85rem;
     margin: -0.45rem -0.85rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: var(--outline-width) solid var(--time-button-ink);
     border-radius: 0;
-    background: rgba(0, 0, 0, 0.62);
-    backdrop-filter: blur(6px);
+    background: var(--time-button-fill);
+    backdrop-filter: none;
     font-size: 0.75rem;
     white-space: nowrap;
   }

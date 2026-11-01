@@ -1,47 +1,48 @@
-/* Motion tokens + the icon blue, in their own :root rule for the same reason
-   as the theme colours above: inside the shared block the minifier dropped
-   them, which silently killed every transition that reads --ease-* . */
+
+/* Contribution font sizing — in its own :root rule for the same reason as the
+   motion tokens above: inside the shared block the minifier drops them, which
+   left every contribution rule on its fallback (the oversized 1.5rem one).
+   `em` keeps the block at NORMAL body size, i.e. whatever the surrounding
+   project-drawer prose is set to, instead of a fixed size of its own. */
 :root {
-  --icon-blue: #0278d8;
-  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-press: cubic-bezier(0.3, 0, 0.2, 1);
-  --duration-press: 120ms;
-  --duration-fast: 180ms;
-  --duration-base: 240ms;
-  --duration-slow: 360ms;
+  --contribution-font-size: 1em;
+  --contribution-heading-size: 1em;
+  --contribution-badge-font-size: 0.78rem;
 }
 
 /* Day theme colours — one per pixel-icon colour in public/images/Icons/.
    Kept in a standalone :root rule: inside the shared token block these were
    being dropped by the minifier, which left day mode with no accent colours. */
 :root {
-  --theme-orange: #ff9c00; /* Orange */
-  --theme-purple: #d366e7; /* Purple */
-  --theme-yellow: #ffce41; /* Yellow */
-  --theme-green: #51c229; /* Green */
-  --theme-pink: #ffa4b1; /* Pink */
-  --theme-blue: #0278d8; /* Blue */
-  --theme-lightgreen: #87e42e; /* Lightgreen */
-  --theme-red: #ff5a0b; /* Red */
-  --theme-gray: #7c99ad; /* Gray */
-  --theme-lightblue: #28a8ea; /* Lightblue */
-  --theme-white: #eaeef4; /* White */
-  --theme-black: #304666; /* Black */
+  /* One value per pixel-icon colour in public/images/Icons/: the saturated
+     colours the artwork itself is drawn in, so a theme's text, borders and
+     icons are all the same hard colour. Night mode lifts them in
+     base/timeColors.css. */
+  --theme-orange: #ff9c00; /* Orange — tile orange */
+  --theme-purple: #d366e7; /* Purple — lilac */
+  --theme-yellow: #ffce41; /* Yellow — butter */
+  --theme-green: #51c229; /* Green — green */
+  --theme-pink: #ffa4b1; /* Pink — mauve rose */
+  --theme-blue: #0278d8; /* Blue — cornflower */
+  --theme-lightgreen: #87e42e; /* Lightgreen — pistachio */
+  --theme-red: #ff5a0b; /* Red — coral */
+  --theme-gray: #7c99ad; /* Gray — taupe */
+  --theme-lightblue: #28a8ea; /* Lightblue — sky */
+  --theme-white: #eaeef4; /* White — cream */
+  --theme-black: #304666; /* Black — plum shadow */
+
 }
 
-/* Purpose: Styles - src/styles/base/tokens.css (Design tokens: colors, spacing, sizes)
-   
-   THEME SYSTEM:
-   Add any new theme here with the --theme-{name} convention.
-   Then reference it in any .md file with theme: "{name}".
-   No other files need to change.
-
-   Examples:
-     --theme-orange: #ff9c00; /* Orange */
-     --theme-green: #51c229; /* Green */
-     --theme-pink: #ffa4b1; /* Pink */
-*/
+/* ── Mode base colours ──
+   ONE OF THE --theme-* COLOURS for each mode: the site's day and night main
+   colours. They drive the default (unthemed) pixel icons — the sun / moon
+   switch, the contact glyph and the rest of the chrome — so changing the name
+   after `--theme-` here recolours that whole set. config/icons.ts reads these
+   two lines at build time and resolves the matching icon folder. */
+:root {
+  --theme-main-day: var(--theme-white);
+  --theme-main-night: var(--theme-black);
+}
 
 :root {
   /* ── Theme colors — one per pixel-icon colour ──
@@ -53,10 +54,6 @@
      on black. A new theme needs its night value in base/timeColors.css too. */
 
   
-  /* The blue of the pixel icon artwork (sampled from the PNGs), so UI details
-     that belong with the icons — the active carousel dot — use the same blue
-     instead of a theme accent. */
-
   /* UI neutrals */
   --ui-base: rgb(228 228 231);
   --ui-muted: rgb(161 161 170);
@@ -75,23 +72,10 @@
   /* If the user agent supports `color-mix()`, override the accents with softer mixes. */
   @supports (color: color-mix(in srgb, red 10%, white)) {
     :root {
-      --accent-bold: color-mix(
-        in srgb,
-        var(--project-tag-color, white) 90%,
-        white 10%
-      );
-      --accent-italic: color-mix(
-        in srgb,
-        var(--project-tag-color, white) 85%,
-        white 15%
-      );
+      --accent-bold: var(--project-tag-color, white);
+      --accent-italic: var(--project-tag-color, white);
     }
   }
-  /* Contribution font sizing (centralized) */
-  --contribution-font-size: 1rem;
-  --contribution-heading-size: 0.95rem;
-  --contribution-badge-font-size: 0.78rem;
-
   /* ── Motion ──
      One set of curves and durations for every hover / reveal transition, so
      things move at the same tempo site-wide.
@@ -108,4 +92,34 @@
      Everything interpolates: no `steps()` easing is used anywhere, so every
      hover, flip and reveal lerps between states instead of snapping. */
 
+}
+
+/* ── Motion values ──
+   The block above only describes the curves; the declarations themselves live
+   here, in their own `:root` rule. Inside the shared token block the minifier
+   dropped them, so every `transition: … var(--ease-soft)` in the project
+   computed to an INVALID value — and an invalid `transition` falls back to
+   `all 0s`, i.e. no transition at all. That is why blog backgrounds cut
+   between sections and the day / night artwork snapped instead of fading.
+
+     --ease-soft     symmetrical in-out: fades, colour and background changes
+     --ease-settle   movement that arrives and stops: lifts, zooms, reveals
+     --ease-press    snappy in, for tap / press feedback
+
+     --dissolve-*    THE dissolve. One duration and one curve shared by the
+                     page transition (base/viewTransitions.css), the day /
+                     night artwork and the blog background layers
+                     (base/layout.css), so all three fade at the same tempo.
+                     Change it here and the whole site dissolves together. */
+:root {
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-press: 120ms;
+
+  --ease-soft: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-press: cubic-bezier(0.3, 0, 0.2, 1);
+
+  --dissolve-duration: 900ms;
+  --dissolve-ease: cubic-bezier(0.45, 0, 0.55, 1);
 }

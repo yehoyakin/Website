@@ -31,14 +31,21 @@
   touch-action: manipulation;
 }
 
-.split-card:hover {
-  transform: translateY(-6px);
-}
+/* The card itself never moves on hover: the content zooms inside the frame. */
 
 /* =========================================================
    REPEATED TEXTURE BACKGROUND
 ========================================================= */
 
+/* The scrolling texture. The tile is the card's theme pattern
+   (config/patterns.ts, written to --texture by Card.astro): a black-and-white
+   silhouette, so the layer is blended in `screen` — black leaves the plate
+   alone and only the shape lightens it — and kept faint, because it sits under
+   the copy.
+
+   --texture-size is the tile size in CSS pixels, i.e. the pattern's pixel
+   scale. It is also where the scroll loop ends, so the repeat stays seamless:
+   moving exactly one tile returns the pattern to where it started. */
 .split-card-background {
   position: absolute;
 
@@ -46,23 +53,23 @@
 
   z-index: 0;
 
+  --texture-size: var(--pattern-size-normal, 96px);
+
   background-image: var(--texture);
 
   background-repeat: repeat;
 
-  /*
-      IMPORTANT:
-      This controls the texture pixel size.
-      Smaller = denser pattern.
-    */
+  background-size: var(--texture-size) var(--texture-size);
 
-  background-size: 16rem 16rem;
+  image-rendering: pixelated;
+
+  mix-blend-mode: screen;
 
   animation: textureScroll 18s linear infinite;
 
   transform: rotate(-5deg);
 
-  opacity: 0.75;
+  opacity: 0.22;
 }
 
 @keyframes textureScroll {
@@ -71,7 +78,7 @@
   }
 
   to {
-    background-position: 16rem 16rem;
+    background-position: var(--texture-size, 96px) var(--texture-size, 96px);
   }
 }
 
@@ -86,19 +93,20 @@
 
   z-index: 1;
 
-  /* Keeps a dark stop at the right edge so the portrait behind the card never
-     washes out the copy; the end stop follows the mode like every panel. */
+  /* A dark scrim, but not an opaque one: at 92% every texture and every bit of
+     artwork underneath was blacked out, which is why the cards read as flat
+     black panels. The copy stays readable on the type's own shadow. */
   background: linear-gradient(
     90deg,
-    var(--time-panel),
-    color-mix(in srgb, var(--time-panel) 55%, transparent)
+    color-mix(in srgb, var(--time-black) 72%, transparent),
+    color-mix(in srgb, var(--time-black) 32%, transparent)
   );
 
   transition: opacity 320ms var(--ease-soft);
 }
 
 .split-card:hover .split-card-overlay {
-  opacity: 0.45;
+  opacity: 0.7;
 }
 
 /* =========================================================
@@ -112,7 +120,7 @@
 
   z-index: 2;
 
-  opacity: 0.15;
+  opacity: 0.45;
 
   pointer-events: none;
 
@@ -124,7 +132,7 @@
 .split-card:hover .split-card-extra {
   transform: scale(1.05);
 
-  opacity: 0.3;
+  opacity: 0.7;
 }
 
 /* =========================================================
@@ -146,7 +154,7 @@
 }
 
 .split-card:hover .split-card-content {
-  transform: translateY(-8px);
+  transform: scale(1.04);
 }
 
 .split-card-title {
@@ -172,10 +180,6 @@
 
   padding: 0.75rem 1.5rem;
 
-  background: var(--time-highlight);
-
-  color: var(--time-black);
-
   font-family: var(--retro-font);
 
   text-transform: uppercase;
@@ -188,11 +192,8 @@
     transform var(--duration-press) var(--ease-press);
 }
 
-.split-card:hover .split-card-action {
-  background: var(--time-surface);
-
-  color: var(--time-ink);
-}
+/* Hover styling comes from pixelFrame.css: the tile brightens and the label
+   stays legible. A card-level rule here would outrank it and darken the tile. */
 
 /* =========================================================
    MOBILE
@@ -230,7 +231,7 @@
   }
 
   .split-card-background {
-    background-size: 7.5rem 7.5rem;
+    --texture-size: var(--pattern-size-small, 48px);
   }
 
   .split-card:hover .split-card-content {
@@ -243,7 +244,7 @@
 
   .split-card:hover .split-card-extra {
     transform: none;
-    opacity: 0.15;
+    opacity: 0.45;
   }
 
   .split-card:hover {

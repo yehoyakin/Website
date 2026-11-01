@@ -7,10 +7,9 @@ import { getCollection } from "astro:content";
 import type { BlogPost } from "../types/blog";
 import BlogCard from "../components/sections/BlogCard.astro";
 import BackLink from "../components/shared/BackLink.astro";
-import { asset } from "../utils/asset";
+import PageBackdrop from "../components/shared/PageBackdrop.astro";
 
 const posts = (await getCollection("blog")) as BlogPost[];
-const bgGif = asset("images/kbg1.gif");
 
 // Sort posts: newest first (left), oldest last (right)
 const sortedPosts = posts.sort(
@@ -18,20 +17,23 @@ const sortedPosts = posts.sort(
 );
 ---
 
-<MyLayout title="Blog" preloadImages={[bgGif]}>
+<MyLayout
+  title="Blog"
+  page="blog"
+  preloadImages={[
+    "images/pageBackgrounds/BlogDay.gif",
+    "images/pageBackgrounds/BlogNight.gif",
+  ]}
+>
   {/* Layered page background for the blog listing. */}
   <div
-    class="absolute inset-0 w-full min-h-screen overflow-x-hidden bg-[var(--time-page)]"
+    class="absolute inset-0 w-full min-h-screen overflow-x-hidden"
   >
     {/* Background image layer with soft blur. */}
-    <div class="fixed inset-0 z-0 pointer-events-none style3d blurred-bg-layer">
-      <img
-        src={bgGif}
-        class="w-full h-full object-cover opacity-100"
-        alt=""
-        role="presentation"
-      />
-    </div>
+    <PageBackdrop
+      day="images/pageBackgrounds/BlogDay.gif"
+      night="images/pageBackgrounds/BlogNight.gif"
+    />
 
     {/* Overlay to improve contrast over the background image. */}
     <div class="absolute inset-0 z-10 pointer-events-none"></div>

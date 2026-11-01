@@ -12,7 +12,7 @@ roles:
   - ui
   - game_design
 
-theme: orange
+theme: red
 
 images:
   - "images/projects/bw.webp"

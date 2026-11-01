@@ -69,24 +69,40 @@ function initStrip(scroller) {
   // arrows render with whatever font ends up applied, which the pixel themes
   // turn into odd or missing shapes; the artwork is the same everywhere.
   // Resolved against BASE_URL because these files live in public/.
-  const ARROW_SRC = {
-    prev: "Arrow Left_Blue.png",
-    next: "Arrow Right_Blue.png",
+  const ARROW_FILE = { prev: "Arrow Left", next: "Arrow Right" };
+
+  /* The two base colours come from the page (MyLayout renders them from
+     config/icons.ts, which reads tokens.css), so the glyphs are drawn in the
+     day and night main colours instead of a fixed folder. Both are rendered
+     and CSS shows one — the same swap the mode-toggle icon uses. */
+  const ICON_FOLDER = {
+    day: document.documentElement.dataset.iconDay || "Lightblue",
+    night: document.documentElement.dataset.iconNight || "Blue",
   };
-  const ICON_DIR = `${import.meta.env.BASE_URL}images/Icons/Blue`;
 
   const makeArrow = (label, direction) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "card-carousel-arrow";
+    button.className = "card-carousel-arrow icon-button";
     button.setAttribute("aria-label", label);
 
-    const icon = document.createElement("img");
-    icon.src = encodeURI(`${ICON_DIR}/${ARROW_SRC[direction]}`);
-    icon.alt = "";
-    icon.setAttribute("aria-hidden", "true");
-    icon.decoding = "async";
-    button.appendChild(icon);
+    const pair = document.createElement("span");
+    pair.className = "icon-mode card-carousel-arrow-icon";
+
+    ["day", "night"].forEach((mode) => {
+      const folder = ICON_FOLDER[mode];
+      const icon = document.createElement("img");
+      icon.src = encodeURI(
+        `${import.meta.env.BASE_URL}images/Icons/${folder}/${ARROW_FILE[direction]}_${folder}.png`,
+      );
+      icon.alt = "";
+      icon.setAttribute("aria-hidden", "true");
+      icon.decoding = "async";
+      icon.className = `icon-mode-img icon-mode-img--${mode}`;
+      pair.appendChild(icon);
+    });
+
+    button.appendChild(pair);
 
     return button;
   };

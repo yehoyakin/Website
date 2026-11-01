@@ -17,6 +17,22 @@
    The split-card texture scroll is declared in components/card.css.
    ═══════════════════════════════════════════════════════════════ */
 
+/* ── Scrolling pixel pattern ──
+   One drift shared by every patterned panel: the project cards and their
+   drawer (components/callCard.css), the blog cards (components/blogcard.css)
+   and the blog title panel. Each surface sets `--pattern-tile` to the size of
+   one cell, so a loop always travels exactly one tile and the repeat lands
+   back where it started — seamless at any tile size. */
+@keyframes plate-pattern-scroll {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: var(--pattern-tile, 96px) var(--pattern-tile, 96px);
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════
    HOVER GLOW — soft drop shadow on any icon inside a hovered `group`
    ═══════════════════════════════════════════════════════════════ */

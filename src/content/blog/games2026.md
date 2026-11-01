@@ -1,6 +1,6 @@
 ---
 title: "10 Games that caught my eye in 2026"
-theme: "pink"
+theme: "purple"
 description: "Indie | Games | Upcoming"
 date: 09/12/2026
 cardBackground: "images/blog/games2026/games20261.webp"

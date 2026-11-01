@@ -12,6 +12,8 @@ interface CardData {
   actionText: string;
   theme?: string;
   imageSrc: string;
+  /** Artwork shown instead of imageSrc while the page is in night mode. */
+  imageSrcNight?: string;
 }
 
 interface Props {
@@ -48,9 +50,14 @@ const { background, left, right, footerText = "" } = Astro.props as Props;
           description={left.description}
           actionText={left.actionText}
           theme={left.theme ?? "orange"}
-          class="h-full w-full border-b-[3px] border-[color:var(--time-border-soft)] md:border-b-0 md:border-r-[3px]"
+          class="h-full w-full border-b-[var(--outline-width)] border-[color:var(--time-border-soft)] md:border-b-0 md:border-r-[var(--outline-width)]"
         >
-          <Portrait slot="background" src={left.imageSrc} size="xl" />
+          <Portrait
+            slot="background"
+            src={left.imageSrc}
+            srcNight={left.imageSrcNight}
+            size="xl"
+          />
         </Card>
       </div>
 
@@ -65,7 +72,12 @@ const { background, left, right, footerText = "" } = Astro.props as Props;
           theme={right.theme ?? "orange"}
           class="h-full w-full"
         >
-          <Portrait slot="background" src={right.imageSrc} size="xl" />
+          <Portrait
+            slot="background"
+            src={right.imageSrc}
+            srcNight={right.imageSrcNight}
+            size="xl"
+          />
         </Card>
       </div>
     </div>

@@ -12,7 +12,7 @@ roles:
   - ui
   - tools
 
-theme: purple
+theme: blue
 
 images:
   - "images/projects/lbs.background.webp"

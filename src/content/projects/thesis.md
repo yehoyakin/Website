@@ -13,7 +13,7 @@ roles:
   - ui
   - tools
 
-theme: purple
+theme: white
 
 images:
   - "images/projects/playfield.webp"

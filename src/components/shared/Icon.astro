@@ -4,10 +4,12 @@
 // Usage: <Icon name="Handbag" theme="green" />
 // Resolves public/images/Icons/Green/Handbag_Green.png — the colour follows the
 // theme name, so an icon always matches the accents of the page or card it sits
-// in. Without a theme (site chrome) it uses `defaultIconColor` (Blue), and
-// `color` overrides both.
+// in. Without a theme (site chrome) it uses the mode base colours assigned in
+// styles/base/tokens.css: --theme-main-day by day, --theme-main-night at
+// night. `color` overrides both.
 import {
   defaultIconColor,
+  defaultIconColorNight,
   iconColorForTheme,
   iconPath,
   isIconColor,
@@ -33,10 +35,19 @@ const {
   color,
 } = Astro.props as Props;
 
-const iconColor: IconColor =
-  color && isIconColor(color) ? color : iconColorForTheme(theme);
+const explicitColor = color && isIconColor(color) ? color : undefined;
+const hasTheme = typeof theme === "string" && theme.trim() !== "";
+
+/* Unthemed icons are chrome, so they follow the mode: one image per base
+   colour, swapped by the same data-mode attribute as the artwork. Themed icons
+   keep a single file — their colour is the page / card theme. */
+const modeAware = !explicitColor && !hasTheme;
+
+const iconColor: IconColor = explicitColor ?? iconColorForTheme(theme);
+const nightColor: IconColor = explicitColor ?? defaultIconColorNight;
 
 const src = iconPath(name, iconColor);
+const nightSrc = modeAware ? iconPath(name, nightColor) : undefined;
 
 const classes = [
   "inline-block shrink-0 object-contain [image-rendering:pixelated]",
@@ -44,20 +55,50 @@ const classes = [
 ]
   .filter(Boolean)
   .join(" ");
+
+const modeImg =
+  "icon-mode-img block h-full w-full object-contain [image-rendering:pixelated]";
 ---
 
 {
-  src && (
-    <img
-      src={asset(src)}
-      alt={alt}
-      aria-hidden={alt ? undefined : "true"}
-      width="120"
-      height="120"
-      loading="lazy"
-      decoding="async"
-      data-icon-color={iconColor ?? defaultIconColor}
-      class={classes}
-    />
+  src && modeAware && nightSrc ? (
+    <span class={`icon-mode ${extraClass}`}>
+      <img
+        src={asset(src)}
+        alt={alt}
+        aria-hidden={alt ? undefined : "true"}
+        width="120"
+        height="120"
+        loading="lazy"
+        decoding="async"
+        data-icon-color={iconColor}
+        class={`${modeImg} icon-mode-img--day`}
+      />
+      <img
+        src={asset(nightSrc)}
+        alt=""
+        aria-hidden="true"
+        width="120"
+        height="120"
+        loading="lazy"
+        decoding="async"
+        data-icon-color={nightColor}
+        class={`${modeImg} icon-mode-img--night`}
+      />
+    </span>
+  ) : (
+    src && (
+      <img
+        src={asset(src)}
+        alt={alt}
+        aria-hidden={alt ? undefined : "true"}
+        width="120"
+        height="120"
+        loading="lazy"
+        decoding="async"
+        data-icon-color={iconColor ?? defaultIconColor}
+        class={classes}
+      />
+    )
   )
 }

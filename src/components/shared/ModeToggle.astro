@@ -9,25 +9,32 @@
 // The sun / moon are pixel icons from the shared registry (config/icons.ts),
 // not inline SVGs, so they match the artwork used across the site.
 import Icon from "./Icon.astro";
+import { defaultIconColor, defaultIconColorNight } from "../../config/icons";
 
-// Page theme, passed down from MyLayout, so the sun / moon use the same icon
-// colour as the rest of the page. No theme (site pages) keeps the default blue.
-interface Props {
-  theme?: string;
-}
-
-const { theme } = Astro.props as Props;
+// The switch does NOT follow a page theme: it is the control that changes the
+// mode, so it wears that mode's base colour. Both base colours are assigned in
+// styles/base/tokens.css (--theme-main-day / --theme-main-night). The moon is
+// only visible by day and the sun only at night (see modeToggle.css), so each
+// draws in the colour of the mode it belongs to and is never the wrong shade.
 ---
 
 <button
   id="mode-toggle"
-  class="mode-toggle"
+  class="mode-toggle icon-button"
   type="button"
   aria-label="Switch to night mode"
   aria-pressed="false"
   title="Switch to night mode"
 >
-  <Icon name="sun" theme={theme} class="mode-toggle-icon mode-toggle-icon--sun" />
+  <Icon
+    name="sun"
+    color={defaultIconColorNight}
+    class="mode-toggle-icon mode-toggle-icon--sun"
+  />
 
-  <Icon name="moon" theme={theme} class="mode-toggle-icon mode-toggle-icon--moon" />
+  <Icon
+    name="moon"
+    color={defaultIconColor}
+    class="mode-toggle-icon mode-toggle-icon--moon"
+  />
 </button>

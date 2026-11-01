@@ -1,6 +1,8 @@
 ---
 // Purpose: Component - src/components/shared/Link.astro (Retro link button)
 import Icon from "./Icon.astro";
+import { netIconForUrl } from "../../config/icons";
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 
 interface Props {
   href: string;
@@ -24,17 +26,24 @@ const {
 
 // Buttons with an icon pin it to the left edge so icons line up in a stack,
 // even when the labels are different lengths. Text-only buttons stay centred.
-const alignment = icon ? "justify-start" : "justify-center";
+// Outbound links use the brand glyph from the PixelNetIcons set (detected
+// from the host); `icon` stays the fallback for everything else.
+const resolvedIcon = netIconForUrl(href) ?? icon;
+
+const alignment = resolvedIcon ? "justify-start" : "justify-center";
+
+/* The button carries its own theme token. Its plate and frame are both derived
+   from --project-tag-color, so without it every link on a page falls back to
+   the root accent — which is why project links all came out the same colour
+   instead of wearing their project's. No theme keeps the inherited value. */
+const themeToken = theme ? resolveThemeToken(toThemeName(theme)) : undefined;
 
 const classes = [
-  "retro-link group relative overflow-hidden flex items-center gap-2",
+  "retro-link pixel-frame group relative overflow-hidden flex items-center gap-2",
   alignment,
-  "rounded-none px-4 py-2 text-sm uppercase tracking-[0.25em] text-[color:var(--time-ink)]",
-  "bg-[var(--time-surface)] border-[5px] border-[color:var(--time-border)]",
+  "rounded-none px-3 py-1.5 text-xs uppercase tracking-[0.12em] text-[color:var(--time-ink)]",
+  "bg-transparent",
   "transition-all duration-100 ease-[var(--ease-press)]",
-  "hover:bg-[var(--time-highlight)] hover:text-[color:var(--time-black)] hover:border-[color:var(--time-highlight)]",
-  "hover:translate-x-[-0.125rem] hover:translate-y-[-0.125rem]",
-  "hover:shadow-[0.375rem_0.375rem_0px_0px_var(--time-highlight)]",
   extraClass,
 ]
   .filter(Boolean)
@@ -46,8 +55,17 @@ const classes = [
   target={external ? "_blank" : undefined}
   rel={external ? "noopener noreferrer" : undefined}
   class={classes}
+  style={themeToken ? `--project-tag-color: ${themeToken}` : undefined}
 >
-  {icon && <Icon name={icon} theme={theme} class="relative z-10 h-8 w-8 shrink-0" />}
+  {
+    resolvedIcon && (
+      <Icon
+        name={resolvedIcon}
+        theme={theme}
+        class="relative z-10 h-7 w-7 shrink-0"
+      />
+    )
+  }
   <span class="relative z-10">{text}</span>
   <span class="pixel-highlight"></span>
 </a>

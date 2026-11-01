@@ -4,6 +4,7 @@ import SocialLink from "../shared/Link.astro";
 import Icon from "../shared/Icon.astro";
 import { asset } from "../../utils/asset";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import { patternForTheme } from "../../config/patterns";
 
 interface Props {
   projects: {
@@ -43,11 +44,11 @@ const { projects } = Astro.props;
             <div class="gallery-project-item">
               {/* Thumbnail button */}
               <button
-                class="gallery-thumb"
+                class="gallery-thumb pixel-frame"
                 aria-label={`Expand project ${project.data.title ?? index + 1}`}
                 title={project.data.title}
                 data-thumb-index={index}
-                style={`--thumb-theme-color: ${themeToken}`}
+                style={`--thumb-theme-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
               >
                 {/* Image carousel */}
                 <div class="thumb-carousel">
@@ -63,8 +64,9 @@ const { projects } = Astro.props;
                 </div>
                 <div class="thumb-overlay" />
 
-                {/* Bottom info bar: title + tag */}
-                <div class="thumb-info-bar">
+                {/* Bottom info bar: title + tag. A small overlay on the card,
+                    so it takes the small pattern tile. */}
+                <div class="thumb-info-bar pattern-plate pattern-plate--small">
                   <span class="thumb-title">{project.data.title}</span>
                   <span class="thumb-tag" style={`color: ${themeToken}`}>
                     {project.data.tag}
@@ -97,12 +99,12 @@ const { projects } = Astro.props;
       projects.map((project, index) => (
         <div class="gallery-card-panel" data-panel={index}>
           <button
-            class="collapse-btn"
+            class="collapse-btn icon-button"
             aria-label="Collapse project"
             data-collapse={index}
           >
             {/* Collapsing pushes the card back up, hence the up arrow. */}
-            <Icon name="arrow-up" theme={project.data.theme} class="h-6 w-6" />
+            <Icon name="arrow-up" theme={project.data.theme} class="h-9 w-9" />
           </button>
           <CallCard
             tag={project.data.tag}

@@ -1,14 +1,12 @@
 /* Purpose: Styles - src/styles/base/viewTransitions.css
    Page-to-page transition for the Astro <ClientRouter />.
 
-   TWO EFFECTS LIVE HERE — exactly one may be active at a time. They are
-   self-contained blocks at the bottom of the file under
-   "PAGE TRANSITION — pick one"; to switch, block-comment the active block and
-   uncomment the other one. Those two blocks deliberately contain no CSS
-   comments of their own: comments do not nest, so an inner one would end the
-   surrounding block comment early and leave the file broken. Everything that
-   explains them therefore sits just above each block, outside the part you
-   comment out.
+   The transition is a DISSOLVE — the same one the rest of the site uses: the
+   outgoing page fades out while the incoming one fades in over it. Both halves
+   run on `--dissolve-duration` and `--dissolve-ease` (base/tokens.css), the
+   exact pair the day / night artwork and the blog background layers fade on,
+   so a navigation, a mode flip and a background change all dissolve at one
+   tempo. No filters, no blocks, no displacement.
 
    Why view transitions at all: navigation stays client-side and the browser
    animates its own snapshots, so there is no page reload, no screenshot
@@ -17,31 +15,20 @@
    forces `animation: none` on every view-transition pseudo-element under
    `prefers-reduced-motion`, so reduced-motion users get the plain swap.
 
-   Both effects share the same shape:
+   The incoming snapshot paints *over* the outgoing one, so the two fades run
+   at the same time and the hand-off is invisible. */
 
-     1. the outgoing snapshot stays fully opaque while it degrades (pixelates,
-        or defocuses);
-     2. the incoming snapshot then lands in that same degraded state and
-        sharpens back up, so the hand-off is invisible;
-     3. the incoming snapshot paints *over* the outgoing one, so it is held
-        invisible inside its keyframes for the first third. That wait cannot be
-        an `animation-delay`, because a delayed animation with `both` fill
-        still paints its first keyframe — the fully visible page — during the
-        delay, which would hide the whole first half of the effect.
 
-   Both use one duration pair: the outgoing half is short (it is leaving), the
-   incoming half is longer (it is arriving). */
-
-/* Backdrop behind both snapshots: the site's near-black, so an edge or a block
-   boundary never flashes the browser's white. */
+/* Backdrop behind both snapshots: the site's near-black, so an edge never
+   flashes the browser's white. */
 ::view-transition {
   background: #09090b;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Shared plumbing. Nothing moves the snapshots around — the effect lives
-     entirely in the filter — and the opaque frames opt out of the browser's
-     default root cross-fade blend. */
+  /* Shared plumbing: nothing moves the snapshots around, and the opaque frames
+     opt out of the browser's default root cross-fade blend so our own opacity
+     keyframes are the only thing driving the dissolve. */
   :root::view-transition-group(root) {
     animation: none;
   }
@@ -49,102 +36,61 @@
   :root::view-transition-old(root),
   :root::view-transition-new(root) {
     mix-blend-mode: normal;
-  }
-}
+  }   /* ── PAGE DISSOLVE ────────────────────────────────────────────────────
+      Both halves share one duration and one symmetric curve, so the midpoint
+      of the swap is a true 50/50 blend of the two pages rather than a race
+      between a fast fade-out and a slow fade-in. */
+  /* ── Random pattern dissolve ──
+     The outgoing page is masked by one of the pixel tiles in public/patterns/
+     and fades away inside it: mid-transition you only see the old page through
+     the tile's shapes, and those shapes grow as it goes, so the page breaks up
+     into chunks instead of washing out. A different tile is picked for every
+     navigation by scripts/patternTransition.js, which writes
+     `--transition-pattern` on <html> before the snapshots are taken.
 
-/* =====================================================================
-   PAGE TRANSITION — pick one
-   ---------------------------------------------------------------------
-   A. PIXEL DISSOLVE  (active)
-      The page breaks apart into 4px blocks that grow to 40px, then the next
-      page lands at 40px and sharpens back to crisp. Stepped on purpose: a
-      block size is a discrete value, so each keyframe holds its grid and the
-      browser swaps grids instead of interpolating between them. The grids are
-      the `#pixel-*` SVG filters built in MyLayout.astro, numbered by block
-      size; this block must stay in sync with `PIXEL_STEPS` there. If you
-      switch to B you can leave those filters in the layout — they are a few
-      hundred bytes of markup and are simply never referenced.
-
-   B. BLUR DISSOLVE  (commented out)
-      The page defocuses to 24px of blur, then the next page lands out of
-      focus and pulls back to sharp. Pure CSS — no SVG filters, nothing to keep
-      in sync with the layout — and fully continuous, because a blur radius
-      interpolates rather than stepping.
-
-   Same timing skeleton in both: 260-300ms of degrading, then ~600ms of
-   arriving, with the incoming snapshot fading in on top of the outgoing one
-   while both are equally degraded.
-   ===================================================================== */
-
-/* ── A. PIXEL DISSOLVE ─────────────────────────────────────────────────── */
-/*
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes pixelDissolveOut {
-    0%, 14%      { filter: url("#pixel-4"); }
-    14.01%, 28%  { filter: url("#pixel-6"); }
-    28.01%, 42%  { filter: url("#pixel-9"); }
-    42.01%, 57%  { filter: url("#pixel-13"); }
-    57.01%, 71%  { filter: url("#pixel-19"); }
-    71.01%, 85%  { filter: url("#pixel-27"); }
-    85.01%, 100% { filter: url("#pixel-40"); }
-  }
-
-  @keyframes pixelDissolveIn {
-    0%, 38%      { opacity: 0; filter: url("#pixel-40"); }
-    38.01%, 47%  { opacity: 1; filter: url("#pixel-40"); }
-    47.01%, 56%  { opacity: 1; filter: url("#pixel-27"); }
-    56.01%, 65%  { opacity: 1; filter: url("#pixel-19"); }
-    65.01%, 74%  { opacity: 1; filter: url("#pixel-13"); }
-    74.01%, 83%  { opacity: 1; filter: url("#pixel-9"); }
-    83.01%, 92%  { opacity: 1; filter: url("#pixel-6"); }
-    92.01%, 97%  { opacity: 1; filter: url("#pixel-4"); }
-    97.01%, 100% { opacity: 1; filter: none; }
-  }
-
-  :root::view-transition-old(root) {
-    animation: pixelDissolveOut 260ms linear both;
-  }
-
-  :root::view-transition-new(root) {
-    animation: pixelDissolveIn 620ms linear both;
-  }
-}
-*/
-/* ── B. BLUR DISSOLVE ──────────────────────────────────────────────────── */
-/**/
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes blurDissolveOut {
-    0% {
+     The incoming page keeps its plain fade underneath, so nothing has to be
+     un-masked at the end — when the old page reaches opacity 0 the mask stops
+     mattering. No variable set → `mask-image: none` → the plain dissolve. */
+  @keyframes patternDissolveOut {
+    from {
       opacity: 1;
-      filter: blur(0px);
+      mask-size: 2rem 2rem;
+      mask-position: 0 0;
     }
-    100% {
-      opacity: 1;
-      filter: blur(24px);
-    }
-  }
 
-  @keyframes blurDissolveIn {
-    0%,
-    36% {
+    to {
       opacity: 0;
-      filter: blur(24px);
+      mask-size: var(--dissolve-mask-grow, 14rem) var(--dissolve-mask-grow, 14rem);
+      mask-position: var(--dissolve-mask-grow, 14rem)
+        var(--dissolve-mask-grow, 14rem);
     }
-    46% {
-      opacity: 1;
-      filter: blur(24px);
+  }
+
+  @keyframes pageDissolveIn {
+    from {
+      opacity: 0;
     }
-    100% {
+
+    to {
       opacity: 1;
-      filter: blur(0px);
     }
   }
 
   :root::view-transition-old(root) {
-    animation: blurDissolveOut 300ms var(--ease-soft) both;
+    /* `--transition-pattern` points at an ALPHA mask (public/patterns/masks/),
+       so the default mask mode works everywhere — white shapes stay, black
+       holes cut the page away. Using the opaque tile itself was a no-op:
+       every pixel of it is fully opaque, so the mask hid nothing. The tile size
+       and position animate in the keyframes above. */
+    mask-image: var(--transition-pattern, none);
+    mask-repeat: repeat;
+    mask-size: 2rem 2rem;
+    animation: patternDissolveOut var(--dissolve-duration, 900ms)
+      var(--dissolve-ease, ease-in-out) both;
   }
 
   :root::view-transition-new(root) {
-    animation: blurDissolveIn 600ms var(--ease-settle) both;
+    animation: pageDissolveIn var(--dissolve-duration, 900ms)
+      var(--dissolve-ease, ease-in-out) both;
   }
 }

@@ -81,12 +81,20 @@
 }
 
 /* ── Bold Pixels — the page's default typeface ─────────────────────── */
-/* The file is already a bold-weight display face, so both 400 and 700 map
-   to it: that stops the browser from synthesising a smeared faux bold for
-   headings, which reads badly at pixel sizes. */
+/* Loaded from the designer's webfont kit in
+   src/fonts/webfontkit-BoldPixels/ (woff2 first: 4 KB against the 158 KB
+   ttf for the same glyphs, then woff and ttf for older engines).
+
+   The family is a single weight drawn on a 16 x 16 pixel em, so both 400
+   and 700 map to the same file: a browser left to synthesise its own bold
+   smears the pixel grid into grey mush. The bold the site shows is the
+   grid-accurate one built in base/typography.css instead. */
 @font-face {
   font-family: "Bold Pixels";
-  src: url("../../fonts/BoldPixels.ttf") format("truetype");
+  src:
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.woff2") format("woff2"),
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.woff") format("woff"),
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.ttf") format("truetype");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -94,7 +102,10 @@
 
 @font-face {
   font-family: "Bold Pixels";
-  src: url("../../fonts/BoldPixels.ttf") format("truetype");
+  src:
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.woff2") format("woff2"),
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.woff") format("woff"),
+    url("../../fonts/webfontkit-BoldPixels/boldpixels.ttf") format("truetype");
   font-style: normal;
   font-weight: 700;
   font-display: swap;

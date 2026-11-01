@@ -16,10 +16,14 @@
   /* First wobble 2s after load, then once per 6s cycle. */
   animation-delay: 2s;
   transform-origin: center center;
-  will-change: transform;
+  will-change: transform, filter;
 }
 
-/* ── Hover / focus stops the shake and applies the lift ── */
+/* ── Hover / focus stops the shake and zooms in place ──
+   No positional offset: the element stays exactly where it sits and only
+   grows slightly and brightens, so a hover reads as "this tile lit up"
+   instead of "this tile jumped". The new centre is the tile's own, because
+   the rotation origin is already the middle. */
 .retro-link:hover,
 .retro-link:focus,
 .blog-card:hover,
@@ -28,7 +32,8 @@
 .split-card-action:hover,
 .split-card-action:focus {
   animation: none;
-  transform: translateY(-0.375rem);
+  transform: scale(1.03);
+  filter: brightness(1.08);
 }
 
 /* ── Active / pressed ── */

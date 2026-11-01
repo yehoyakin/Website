@@ -3,6 +3,7 @@
 import Title from "../UI/Title.astro";
 import Body from "../UI/Body.astro";
 import Icon from "../shared/Icon.astro";
+import { patternForTheme } from "../../config/patterns";
 
 interface Props {
   title: string;
@@ -12,10 +13,15 @@ interface Props {
 }
 
 const { title, description, date, theme = "orange" } = Astro.props as Props;
+
+/* The title panel wears the post's pattern, the same scrolling tile the
+   project and blog cards use (styles/components/pixelFrame.css). */
+const panelStyle = `--plate-pattern: url('${patternForTheme(theme)}')`;
 ---
 
 <header
-  class="space-y-6 rounded-none border border-[color:var(--time-border-soft)] bg-[var(--time-panel)] p-8 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[inset_0_0_80px_var(--time-shadow)] text-center relative overflow-hidden"
+  class="pixel-frame pattern-plate pattern-plate--big space-y-6 rounded-none border border-[color:var(--time-border-soft)] bg-[var(--time-panel)] p-8 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[inset_0_0_80px_var(--time-shadow)] text-center relative overflow-hidden"
+  style={panelStyle}
 >
   <Title
     level={1}

@@ -1,16 +1,13 @@
 ---
 // Purpose: Component - src/components/shared/BackLink.astro (Top-left back link)
 import Icon from "./Icon.astro";
-import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 
 interface Props {
   href?: string;
   text?: string;
-  /** Theme name — picks the icon colour that matches the page. */
-  theme?: string;
 }
 
-const { href, text = "Back to home", theme } = Astro.props;
+const { href, text = "Back to home" } = Astro.props;
 
 // Resolve the base URL so links work correctly in production builds.
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
@@ -20,26 +17,21 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 // Prefer an explicit link when provided; otherwise fall back to the site root.
 const resolvedHref = href || baseUrl;
 
-/* Stepped hover motion plus a hard drop shadow so the link keeps its edge
-   where it overlaps a busy background. */
-// The link always takes the active page's theme accent (orange when the page
-// has no theme), so it never sits in a colour that clashes with the rest of
-// the page. `theme` is passed by pages that have one, e.g. a blog post.
-const themeToken = resolveThemeToken(toThemeName(theme));
-
+/* Site chrome, not page content: the control follows the mode base colours
+   the same way the day / night switch does. The plate comes from
+   --time-button-fill / --time-button-ink (styles/base/responsive.css), and the
+   arrow is left unthemed so Icon.astro renders its day / night pair. */
 const classes = [
   "back-link fixed top-6 left-6 z-50 text-base uppercase tracking-wider",
-  "text-[color:var(--back-link-color,var(--theme-orange))]",
   "transition-all duration-75 ease-[var(--ease-press)]",
-  "hover:translate-x-[-2px] hover:text-[color:var(--ui-invert)]",
-  "[text-shadow:0.125rem_0.125rem_0px_var(--time-black)]",
+  "hover:scale-[1.03] hover:brightness-110",
 ].join(" ");
 ---
 
-<a href={resolvedHref} class={classes} style={`--back-link-color: ${themeToken}`}>
+<a href={resolvedHref} class={classes}>
   {/* The arrow is artwork now, so the label is text only. */}
   <span class="flex items-center gap-2">
-    <Icon name="arrow-left" theme={theme} class="h-5 w-5" />
+    <Icon name="arrow-left" class="h-5 w-5" />
     <span>{text}</span>
   </span>
 </a>

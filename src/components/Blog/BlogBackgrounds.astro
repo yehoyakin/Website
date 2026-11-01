@@ -35,7 +35,9 @@ const initialOpacity = (index: number, total: number) =>
   index === 0 && total > 0 ? backgroundOpacity : 0;
 ---
 
-<div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+<div
+  class="blog-bg-stack fixed inset-0 -z-10 overflow-hidden pointer-events-none"
+>
   {
     backgrounds.length > 0 ? (
       backgrounds.map((bg, index) => (

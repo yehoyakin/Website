@@ -4,6 +4,7 @@ import Title from "../UI/Title.astro";
 import Body from "../UI/Body.astro";
 import Icon from "../shared/Icon.astro";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import { patternForTheme } from "../../config/patterns";
 import { asset } from "../../utils/asset";
 
 type Props = {
@@ -17,6 +18,14 @@ const date = new Date(post.data.date);
 const themeName = toThemeName(post.data.theme);
 const dynamicToken = resolveThemeToken(themeName);
 
+/* The card's scrolling texture, in the post's own theme colour. Declared on
+   the anchor so both bars inherit it; the drawing lives in
+   styles/components/pixelFrame.css under `.pattern-plate`. */
+const cardStyle = [
+  `--project-tag-color: ${dynamicToken}`,
+  `--plate-pattern: url('${patternForTheme(themeName)}')`,
+].join("; ");
+
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
@@ -24,11 +33,11 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
 <a
   href={`${baseUrl}blog/${post.id}/`}
-  class="blog-card group"
-  style={`--project-tag-color: ${dynamicToken}`}
+  class="blog-card pixel-frame group"
+  style={cardStyle}
 >
   {/* TOP BAR - Date */}
-  <div class="blog-card-bar flex items-center gap-2">
+  <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
     <Icon name="Calendar" theme={themeName} class="h-8 w-8" />
     <Body
       theme={themeName}
@@ -55,7 +64,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   {/* BOTTOM BAR - Title + Description */}
-  <div class="blog-card-bar blog-card-info-bar">
+  <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
     <Title
       level={3}
       theme={themeName}

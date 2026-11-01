@@ -8,6 +8,7 @@ import {
   toThemeToken,
 } from "../../config/uiDictionary";
 import type { ProjectRole } from "../../config/uiDictionary";
+import { patternForTheme } from "../../config/patterns";
 
 interface Props {
   tag: string;
@@ -55,18 +56,18 @@ const themeColorClass = "text-[color:var(--project-tag-color)]";
 
 // Only the values that change per card are written inline; every other
 // custom property the card needs is declared in styles/components/callCard.css.
+// The pattern tile follows the card's theme, so the panel texture is drawn in
+// the same colour family as its border, tag and icons.
 const cardVars = [
   `--project-tag-color: ${dynamicToken}`,
-  backgroundImage ? `--card-bg-url: url('${backgroundImage}')` : "",
-]
-  .filter(Boolean)
-  .join("; ");
+  `--plate-pattern: url('${patternForTheme(themeName)}')`,
+].join("; ");
 
 const baseText =
   "transition-colors duration-150 ease-[var(--ease-soft)] drop-shadow-[0_0.125rem_0.25rem_rgba(0,0,0,1)] readable-text";
 
 const cardClasses = [
-  "group retro-expandable-card relative rounded-none border-[3px]",
+  "group retro-expandable-card pixel-frame pattern-plate relative rounded-none border-[var(--outline-width)]",
   "w-full overflow-hidden select-none",
   extraClass,
 ].join(" ");
@@ -78,27 +79,13 @@ const cardClasses = [
   data-active="false"
   style={cardVars}
 >
-  {
-    backgroundImage && (
-      <div class="callcard-bg" aria-hidden="true">
-        <div class="callcard-bg-inner">
-          <img src={backgroundImage} alt="" class="callcard-bg-img" />
-        </div>
-        <div class="callcard-overlay" />
-      </div>
-    )
-  }
+  <div class="callcard-bg" aria-hidden="true">
+    <div class="callcard-overlay" />
+  </div>
   <div class="card-main-layout">
     <!-- LEFT INFORMATION AREA (text + expanded content) -->
 
     <div class="card-info-panel">
-      {
-        backgroundImage && (
-          <div class="info-panel-bg" aria-hidden="true">
-            <img src={backgroundImage} alt="" class="info-panel-bg-img" />
-          </div>
-        )
-      }
       <div class="card-title-area">
         {
           tag && (

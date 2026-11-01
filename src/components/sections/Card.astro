@@ -2,6 +2,8 @@
 // Purpose: Section - src/components/sections/Card.astro (Generic content card)
 import Title from "../UI/Title.astro";
 import Body from "../UI/Body.astro";
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import { patternForTheme } from "../../config/patterns";
 
 interface Props {
   href: string;
@@ -25,19 +27,27 @@ const {
   class: extraClass = "",
 } = Astro.props;
 
-const cardClasses = ["split-card", extraClass].filter(Boolean).join(" ");
+const cardClasses = ["split-card", "pixel-frame", extraClass]
+  .filter(Boolean)
+  .join(" ");
+
+/* The card carries its own theme token, not just its inner Title/Body: the
+   pixel-frame chrome and the action button both read --project-tag-color, so
+   without it they fell back to the root accent and every card's CTA came out
+   the same colour. Declared on the anchor, it reaches the whole card. */
+const themeToken = resolveThemeToken(toThemeName(theme));
+
+/* The scrolling texture under the copy: the card's own pattern tile by
+   default (config/patterns.ts), or an explicit image when the caller passes
+   one. It is ALWAYS rendered — the layer used to be conditional on
+   `backgroundImage`, which no caller sets, so the animated background never
+   existed in the DOM and the card was just a black plate. */
+const texture = backgroundImage ?? patternForTheme(theme);
 ---
 
-<a href={href} class={cardClasses}>
-  <!-- TEXTURE BACKGROUND -->
-  {
-    backgroundImage && (
-      <div
-        class="split-card-background"
-        style={`--texture:url("${backgroundImage}")`}
-      />
-    )
-  }
+<a href={href} class={cardClasses} style={`--project-tag-color: ${themeToken}`}>
+  <!-- TEXTURE BACKGROUND (scrolling pixel pattern) -->
+  <div class="split-card-background" style={`--texture:url("${texture}")`} />
 
   <!-- DARKENING LAYER -->
   <div class="split-card-overlay"></div>

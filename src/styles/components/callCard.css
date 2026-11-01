@@ -10,7 +10,7 @@
   /* Theme-coloured outline around the panel. Declared here rather than left to
      a utility class so the panel always has a visible edge, even inside a
      transparent card over a blurred backdrop. */
-  border: 5px solid var(--project-tag-color, var(--time-border));
+  border: var(--outline-width) solid var(--outline-color);
 
   margin: 1rem auto;
   max-width: 75vw;
@@ -30,11 +30,11 @@
   /* Accent colors delegate to global accents so mixing percentages are centralized */
   --callcard-accent: var(
     --accent-bold,
-    color-mix(in srgb, var(--project-tag-color, white) 50%, white 50%)
+    color-mix(in srgb, var(--project-tag-color, white) 82%, white 18%)
   );
   --callcard-italic-accent: var(
     --accent-italic,
-    color-mix(in srgb, var(--project-tag-color, white) 50%, white 50%)
+    color-mix(in srgb, var(--project-tag-color, white) 82%, white 18%)
   );
 }
 
@@ -71,8 +71,23 @@
 
 /* Bold / italic colour rules moved to theme-colors.css for project-wide reuse */
 
-/* Use root card CSS variable as a blurred background layer (not part of layout) */
-/* Split-card style background layer (image + overlay) placed as a child, not part of layout */
+/* ── Panel pattern ───────────────────────────────────────────────────────
+   Project panels used to carry a heavily blurred screenshot behind the copy,
+   which read as a smudged photo rather than a game UI. They now carry a tiled
+   pixel pattern instead — the way a Nintendo menu repeats one motif across a
+   panel — drawn at a fixed pixel size so it looks drawn, not rendered.
+
+   The tile is the card's own theme colour (config/patterns.ts); CallCard.astro
+   writes it into `--plate-pattern`. The tiles are opaque black-and-white
+   silhouettes, so the layer is blended in `screen` mode: black leaves the
+   plate alone and only the shape lightens it. */
+.retro-expandable-card {
+  --plate-pattern: none;
+  /* Cards wear the normal tile; the drawer inside sets its own big one. */
+  --plate-pattern-size: var(--pattern-size-normal, 96px);
+  --plate-pattern-opacity: 0.16;
+}
+
 .callcard-bg {
   position: absolute;
   inset: 0;
@@ -81,56 +96,13 @@
   pointer-events: none;
 }
 
-.callcard-bg-inner {
-  position: absolute;
-  inset: -12%;
-  transform: rotate(-2deg);
-}
-
-.callcard-bg-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(var(--callcard-bg-scale, 1.6));
-  filter: blur(var(--callcard-bg-blur, 36px))
-    saturate(var(--callcard-bg-saturate, 0.75))
-    contrast(var(--callcard-bg-contrast, 0.95));
-  opacity: var(--callcard-bg-opacity, 0.14);
-  transition:
-    opacity 360ms var(--ease-soft),
-    transform 600ms var(--ease-settle),
-    filter 600ms var(--ease-soft);
-}
-
-/* Allow switching the blurred background image purely via CSS variable `--card-bg-url`.
-   The variable should include the url(...) wrapper, e.g. `--card-bg-url: url('/images/foo.jpg')`.
-   The pseudo-element is used so the image can be controlled from styles without touching DOM attributes. */
-.callcard-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--card-bg-url, none);
-  background-size: cover;
-  background-position: center center;
-  transform: scale(var(--callcard-bg-scale, 1.6));
-  filter: blur(var(--callcard-bg-blur, 36px))
-    saturate(var(--callcard-bg-saturate, 0.75))
-    contrast(var(--callcard-bg-contrast, 0.95));
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
-  transition:
-    opacity 360ms var(--ease-soft),
-    transform 600ms var(--ease-settle),
-    filter 600ms var(--ease-soft);
-}
-
-.retro-expandable-card[data-active="true"] .callcard-bg::before {
-  opacity: var(--callcard-bg-active-opacity, 0.22);
-  transform: scale(var(--callcard-bg-active-scale, 1.64)) rotate(-2deg);
-}
+/* The texture is NOT drawn here any more. It used to be a `.callcard-bg::after`
+   layer, and that wrapper is its own stacking context — so the tile's `screen`
+   blend had nothing tinted behind it and the shapes came out white instead of
+   taking the card's colour. The card now carries `.pattern-plate`
+   (components/pixelFrame.css), exactly like the blog cards' bars: the tile is a
+   `::before` inside an isolated card, so `screen` mixes it with the card's own
+   tinted plate and the pattern picks up the theme colour. */
 
 .callcard-overlay {
   position: absolute;
@@ -139,11 +111,10 @@
   z-index: 1;
 }
 
-/* Make the full-card blurred background more visible when the card is active */
-.retro-expandable-card[data-active="true"] .callcard-bg-img {
-  opacity: var(--callcard-bg-active-opacity, 0.22);
-  transform: scale(calc(var(--callcard-bg-active-scale, 1.64) * 1.25))
-    rotate(-2deg);
+/* Night keeps the texture but dims it: the neon accents already carry the
+   panel, and a second bright layer would fight them. */
+:root[data-mode="night"] .retro-expandable-card {
+  --plate-pattern-opacity: 0.1;
 }
 
 /* ============================================================
@@ -162,37 +133,9 @@
   position: relative;
 }
 
-/* Blurred, scaled background image inside the info panel */
-.info-panel-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.info-panel-bg-img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 160%;
-  height: 160%;
-  transform: translate(-50%, -50%) scale(1.6);
-  object-fit: cover;
-  filter: blur(26px) saturate(0.8) contrast(0.95);
-  opacity: 0.18;
-  will-change: transform, filter, opacity;
-}
-
 .card-info-panel > * {
   position: relative;
   z-index: 2;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .info-panel-bg-img {
-    transition: none !important;
-  }
 }
 
 .card-title-area {
@@ -383,10 +326,11 @@
 .project-drawer-inner {
   padding: 1rem;
 
-  /* Dark fill that keeps the prose readable over the blurred image; denser at
-     night, like every other panel (see base/timeColors.css). */
-  background: var(--time-panel, rgba(0, 0, 0, 0.58));
-  backdrop-filter: blur(6px) saturate(0.95);
+  /* Plain black at 90%: this is the long-copy panel, so nothing decorative goes
+     behind the prose — no pattern, no blur, no card tile showing through. The
+     10% that is left keeps it from reading as a hole punched in the card while
+     leaving the text on the highest contrast the site has. */
+  background: rgb(0 0 0 / 0.9);
 }
 
 /* Improve readability: more breathing room for paragraphs and sentences */
@@ -419,8 +363,8 @@
   display: inline-block;
   padding: 0.22rem 0.5rem;
   border-radius: 0;
-  background: var(--time-wash, rgba(255, 255, 255, 0.03));
-  color: var(--time-ink, #e6e6e6);
+  background: var(--time-button-fill, rgb(244 244 245));
+  color: var(--time-button-ink, var(--time-black, #09090b));
   font-size: var(--contribution-badge-font-size, 0.78rem);
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -434,10 +378,10 @@
   background: rgba(255, 255, 255, 0.004);
   border-left: 2px solid rgba(255, 255, 255, 0.02);
   border-radius: 0;
-  line-height: 1.48;
+  line-height: 1.4;
   color: var(--time-ink, #cfcfd6);
   font-weight: 400;
-  font-size: var(--contribution-font-size, 1rem);
+  font-size: var(--contribution-font-size, 1em);
   opacity: 0.95;
 }
 
@@ -445,7 +389,7 @@
 .retro-contribution h2 {
   margin-top: 0;
   margin-bottom: 0.35rem;
-  font-size: var(--contribution-heading-size, 0.95rem);
+  font-size: var(--contribution-heading-size, 1em);
   letter-spacing: 0.03em;
   text-transform: none;
   font-weight: 500;
@@ -457,9 +401,9 @@
 }
 
 .retro-contribution li {
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.2rem;
   color: var(--time-ink-muted, #d0d0d6);
-  font-size: var(--contribution-font-size, 1rem);
+  font-size: var(--contribution-font-size, 1em);
 }
 
 /* ============================================================
