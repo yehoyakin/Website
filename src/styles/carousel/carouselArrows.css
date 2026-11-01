@@ -14,31 +14,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* Same box and glyph as every other chrome icon control. */
+  /* The box is still an icon-button tap target, but the plate is gone: no
+     frame, no fill, no bevel. The arrow artwork IS the control, so the strip's
+     navigation does not read as four more buttons under the cards. */
   width: var(--icon-button-size, 2.75rem);
   height: var(--icon-button-size, 2.75rem);
   padding: 0;
-  /* Opaque plate, one value per mode (see foundation/dayNightPalette.css). */
-  border: var(--control-outline-width) solid var(--time-button-ink);
-  background-color: var(--time-button-fill);
-  /* Same lit-from-above plate as every other button. */
-  background-image: var(--button-lighting);
+  border: 0;
+  background: none;
+  box-shadow: none;
   color: var(--time-button-ink);
-  box-shadow:
-    inset 0 var(--control-bevel) 0 0
-      color-mix(in srgb, var(--time-button-fill) 55%, var(--time-white)),
-    inset var(--control-bevel) 0 0 0
-      color-mix(in srgb, var(--time-button-fill) 55%, var(--time-white)),
-    inset 0 calc(var(--control-bevel) * -1) 0 0
-      color-mix(in srgb, var(--time-button-fill) 70%, var(--time-black)),
-    inset calc(var(--control-bevel) * -1) 0 0 0
-      color-mix(in srgb, var(--time-button-fill) 70%, var(--time-black));
   line-height: 1;
   cursor: pointer;
   touch-action: manipulation;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+  transition: filter var(--duration-fast) var(--ease-soft);
 }
 
 /* Arrow artwork injected by scripts/cardCarousel.js, at the shared glyph size
@@ -49,12 +38,9 @@
   image-rendering: pixelated;
 }
 
-/* The arrows wrap, so they are never disabled; hover is the only state. */
+/* The arrows wrap, so they are never disabled; hover is the only state, and
+   with no plate to light up it brightens the glyph instead. */
 .card-carousel-arrow:hover,
 .card-carousel-arrow:focus-visible {
-  background: color-mix(
-    in srgb,
-    var(--time-button-fill) 85%,
-    var(--time-button-ink)
-  );
+  filter: brightness(1.3) saturate(1.15);
 }
