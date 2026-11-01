@@ -11,7 +11,7 @@
 .thumb-links .retro-link {
   /* The shared link-button height sets the box; this only has to keep the
      label inside it at the card's smaller scale. */
-  font-size: max(0.6rem, calc(var(--font-size-xs) - 10px)) !important;
+  font-size: max(7px, calc(var(--font-size-xs) - 12px)) !important;
   padding: 0 0.45rem !important;
   border-radius: 0 !important;
   white-space: nowrap;

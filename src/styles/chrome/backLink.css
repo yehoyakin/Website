@@ -32,7 +32,7 @@
    the `.text-base` type role, which is declared later in the cascade and set
    this label one whole step larger than the buttons beside it. */
 a.back-link {
-  font-size: max(0.6rem, calc(var(--font-size-base) - 14px));
+  font-size: max(7px, calc(var(--font-size-base) - 18px));
 }
 
 /* The glyph shrinks with the box: at the chrome glyph size it would sit on the
@@ -64,7 +64,7 @@ a.back-link .chrome-icon {
     background-color: var(--time-button-fill);
     background-image: var(--button-lighting);
     backdrop-filter: none;
-    font-size: 0.6rem;
+    font-size: 7px;
     white-space: nowrap;
   }
 }

@@ -18,9 +18,9 @@
   height: var(--link-button-height);
   min-height: var(--link-button-height);
   padding-block: 0;
-  /* The type scale does not go small enough for a 20px control on its own, so
-     the label has a floor. */
-  font-size: max(0.6rem, calc(var(--font-size-xs) - 10px));
+  /* Four pixels below the previous step, with a 7px floor: below that the pixel
+     face stops resolving letters, whatever the box allows. */
+  font-size: max(7px, calc(var(--font-size-xs) - 12px));
   line-height: 1;
 }
 
