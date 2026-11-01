@@ -9,8 +9,10 @@
 }
 
 .thumb-links .retro-link {
-  font-size: 0.8rem !important;
-  padding: 0.22rem 0.5rem !important;
+  /* The shared link-button height sets the box; this only has to keep the
+     label inside it at the card's smaller scale. */
+  font-size: max(0.6rem, calc(var(--font-size-xs) - 10px)) !important;
+  padding: 0 0.45rem !important;
   border-radius: 0 !important;
   white-space: nowrap;
   border-width: var(--outline-width) !important;

@@ -1,17 +1,35 @@
 /* Link button component styles. */
 
 .retro-link {
+  /* ONE NUMBER FOR THE BOX. 65% of the chrome's icon-button height, less six
+     pixels — 31px at desktop, 20px on phones — and everything else here is
+     derived from it: the glyph, the label, the frame. Height, not padding, sets
+     the box, so a one-word button and a two-word one are the same size. */
+  --link-button-height: calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px);
+  /* The pixel frame is drawn thick for panels; at this box size it would be
+     most of the button, so link buttons draw it thin. Both names are set: the
+     plate reads `--control-outline-width`, the thumb row's override reads
+     `--outline-width`. */
+  --control-outline-width: 2px;
+  --outline-width: 2px;
+
   position: relative;
   font-family: var(--retro-font);
-  /* A link button IS an icon button with a label: exactly the same height as
-     the chrome controls (`--icon-button-size`: 2.75rem, 2.5rem on phones), and
-     the label a further step down inside it. Height, not padding, sets the box,
-     so a one-word button and a two-line one are the same size. */
-  height: var(--icon-button-size, 2.75rem);
-  min-height: var(--icon-button-size, 2.75rem);
+  height: var(--link-button-height);
+  min-height: var(--link-button-height);
   padding-block: 0;
-  font-size: calc(var(--font-size-xs) - 4px);
+  /* The type scale does not go small enough for a 20px control on its own, so
+     the label has a floor. */
+  font-size: max(0.6rem, calc(var(--font-size-xs) - 10px));
   line-height: 1;
+}
+
+/* The glyph follows the box, at 60% of its height, instead of a fixed rem size. */
+.retro-link > img,
+.retro-link > .icon-mode,
+.retro-link > svg {
+  height: calc(var(--link-button-height) * 0.6);
+  width: calc(var(--link-button-height) * 0.6);
 }
 
 /* The idle shake for these buttons lives in text/linkIdleShake.css. */

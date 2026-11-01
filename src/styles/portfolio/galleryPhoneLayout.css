@@ -78,8 +78,8 @@
     gap: 0.3rem;
   }
   .thumb-links .retro-link {
-    font-size: 0.8rem !important;
-    padding: 0.25rem 0.5rem !important;
+    font-size: max(0.6rem, calc(var(--font-size-xs) - 10px)) !important;
+    padding: 0 0.4rem !important;
   }
 }
 
