@@ -1,6 +1,5 @@
 /* Portfolio gallery: thumbnails and expandable panels. */
 
-@import "galleryBackdrop.css";
 @import "galleryThumbnailStrip.css";
 @import "galleryThumbnailSlide.css";
 @import "galleryThumbnailLinks.css";

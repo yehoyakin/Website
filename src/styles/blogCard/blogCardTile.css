@@ -116,7 +116,6 @@
    `.gallery-thumb` carries `.blog-card`, so the portfolio cards are covered by
    the same two rules. */
 
-.blog-card .blog-card-title,
 .blog-card .blog-card-date,
 .blog-card .blog-card-desc,
 .blog-card .gallery-thumb-title,
@@ -127,10 +126,9 @@
 }
 
 /* Accent fill: the project tag always, and a card title once it turns accent on
-   hover / focus — the same in both card families. */
+   hover / focus — the same in both card families. (A blog card title is accent
+   all the time; see the card-title cut below.) */
 .blog-card .thumb-tag,
-.blog-card:hover .blog-card-title,
-.blog-card:focus-visible .blog-card-title,
 .blog-card:hover .gallery-thumb-title,
 .blog-card:focus-visible .gallery-thumb-title {
   --card-copy-ring: var(--time-black, rgb(9 9 11));
@@ -147,6 +145,50 @@
       var(--card-copy-ring),
     calc(var(--card-copy-step) * -1) calc(var(--card-copy-step) * -1) 0
       var(--card-copy-ring);
+}
+
+/* CARD TITLE — the article title's cut, at card scale.
+
+   The first blog header is painted in the post's accent inside a hard white
+   ring (styles/article/blogArticle.css). A card wears that same pair: the
+   entry's own accent as the fill, the ring as eight shadows one pixel step
+   apart. After dark the masthead rings with the night black instead, and the
+   card follows. */
+.blog-card .blog-card-title {
+  --card-title-step: max(1px, calc(1em / 16));
+  --card-title-fill: var(--project-tag-color, var(--theme-orange));
+  --card-title-ring: var(--time-white);
+  color: var(--card-title-fill);
+  -webkit-text-fill-color: var(--card-title-fill);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  text-shadow:
+    var(--card-title-step) 0 0 var(--card-title-ring),
+    calc(var(--card-title-step) * -1) 0 0 var(--card-title-ring),
+    0 var(--card-title-step) 0 var(--card-title-ring),
+    0 calc(var(--card-title-step) * -1) 0 var(--card-title-ring),
+    var(--card-title-step) var(--card-title-step) 0 var(--card-title-ring),
+    calc(var(--card-title-step) * -1) var(--card-title-step) 0
+      var(--card-title-ring),
+    var(--card-title-step) calc(var(--card-title-step) * -1) 0
+      var(--card-title-ring),
+    calc(var(--card-title-step) * -1) calc(var(--card-title-step) * -1) 0
+      var(--card-title-ring);
+}
+
+:root[data-mode="night"] .blog-card .blog-card-title {
+  --card-title-ring: var(--time-black);
+}
+
+/* The meta label — a post's date, a project's engine tag — carries the card's
+   own accent the way the small description does: white with a heavy wash of
+   the theme. */
+.blog-card .blog-card-date {
+  color: color-mix(
+    in srgb,
+    var(--time-white) 50%,
+    var(--project-tag-color, var(--plate-tint))
+  );
 }
 
 .blog-card-date {

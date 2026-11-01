@@ -55,12 +55,49 @@
   inset: 0;
   z-index: 1;
   /* A dark scrim, but not opaque: texture still reads through at 92%. */
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--time-black) 72%, transparent),
-    color-mix(in srgb, var(--time-black) 32%, transparent)
-  );
+  background: linear-gradient(90deg, var(--time-black), var(--time-black));
+  /* The tint gradient every pattern panel wears, laid OVER the scrim so it
+     reads as colour rather than disappearing under the dark: the card's own
+     accent strongest at the leading edge, gone on the trailing one. */
+  background-image:
+    linear-gradient(
+      90deg,
+      var(--project-tag-color, var(--plate-tint)) 0%,
+      var(--project-tag-color, var(--plate-tint)) 55%,
+      transparent 85%
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--time-black) 72%, transparent),
+      color-mix(in srgb, var(--time-black) 32%, transparent)
+    );
   transition: opacity 320ms var(--ease-soft);
+}
+
+/* The real tint pass: accent at 30% and 10% over the same scrim. */
+.split-card-overlay {
+  background-image:
+    linear-gradient(
+      90deg,
+      color-mix(
+          in srgb,
+          var(--project-tag-color, var(--plate-tint)) 30%,
+          transparent
+        )
+        0%,
+      color-mix(
+          in srgb,
+          var(--project-tag-color, var(--plate-tint)) 10%,
+          transparent
+        )
+        55%,
+      transparent 85%
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--time-black) 72%, transparent),
+      color-mix(in srgb, var(--time-black) 32%, transparent)
+    );
 }
 
 .split-card:hover .split-card-overlay {

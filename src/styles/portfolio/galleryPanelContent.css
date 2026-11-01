@@ -1,11 +1,63 @@
-/* Panel content column: blog card, role chips, write-up. */
+/* Panel content column: role chips and write-up.
 
-.gallery-card-panel > .blog-card,
+   The card in the strip above already shows the tag, the title and the
+   description, so the panel does not repeat them: it opens straight into what a
+   card cannot hold — the roles and the development write-up. Its only identity
+   mark is the project's own accent edge, drawn here rather than in markup so
+   the panel stays a pure container. */
+
 .gallery-card-panel > .project-panel-meta {
   width: 100%;
   max-width: min(92vw, 48rem);
   margin-left: auto;
   margin-right: auto;
+}
+
+/* FULL-BLEED BACKDROP — the panel content is a column, but the panel opens on a
+   band that spans the page. `isolation` keeps that band behind the panel's own
+   content instead of dropping behind the page, and the accent edge is drawn on
+   the same 100vw box, so the divider runs across the whole background rather
+   than stopping where the column does. */
+
+.gallery-card-panel {
+  isolation: isolate;
+  padding-block: 0.9rem;
+}
+
+/* The band itself: the shared pattern plate — the same recipe the blog
+   masthead wears — so the panel gets the project's texture, its near-black
+   tinted fill, the accent gradient and the scroll speed from one class. This
+   rule only stretches that plate into a full-bleed band. */
+.project-panel-backdrop {
+  position: absolute;
+  inset: 0 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.gallery-card-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 3px;
+  transform: translateX(-50%);
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    var(--project-tag-color, var(--theme-orange)) 0%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--theme-orange)) 40%,
+        transparent
+      )
+      45%,
+    transparent 88%
+  );
+  pointer-events: none;
 }
 
 .project-panel-meta {
@@ -15,6 +67,66 @@
   margin-top: 0.85rem;
 }
 
+/* PANEL LAYOUT — write-up left, screenshots right.
+
+   The media frame holds ONE picture at a time: `.thumb-carousel` stacks the
+   images and the component's initGallery swaps `.active` between them on the
+   same timer as the cards, so any number of images cycles in place. */
+/* The media column gets the larger half: screenshots and clips are the thing
+   being looked at, the write-up reads fine a little narrower. */
+.project-panel-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 1.25rem;
+  align-items: start;
+  width: 100%;
+  max-width: min(94vw, 84rem);
+  margin: 0.9rem auto 0;
+}
+
+/* Media column: the one-picture frame with the carousel controls under it. */
+/* Text-only project: the write-up takes the whole width, since there are no
+   screenshots or clips to put beside it. */
+.project-panel-layout--solo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.project-panel-media {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* 16:10 rather than 4:3 — a landscape video fills this frame instead of
+   sitting in wide black bars, and the screenshots crop only slightly. */
+.project-panel-frame {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: var(--outline-width) solid var(--outline-color);
+  background: var(--time-black);
+}
+
+/* The panel reuses the strips' `.card-carousel-*` controls unchanged; only the
+   palette moves to the project's accent, which is where the screenshots follow
+   the theme. The strip above the panel keeps its day / night + general tint. */
+.project-panel-controls {
+  margin: 0;
+  --panel-accent: var(--project-tag-color, var(--icon-accent));
+  --icon-accent: var(--panel-accent);
+  --time-button-fill: color-mix(
+    in srgb,
+    var(--panel-accent) 22%,
+    var(--time-black)
+  );
+  --time-button-ink: color-mix(
+    in srgb,
+    var(--panel-accent) 80%,
+    var(--time-white)
+  );
+}
+
+/* The body already sits in its own column, so it needs no top margin. */
 .project-panel-body {
-  margin-top: 0.75rem;
+  margin-top: 0;
 }

@@ -77,13 +77,15 @@
   overflow: hidden;
 }
 
-.thumb-carousel-img {
+/* One slide of the rotation: an <img>, an embedded <iframe> or a <video>.
+   The frame is shared here; each kind keeps its own fit rule below. */
+.thumb-carousel-media {
   position: absolute;
   inset: 0;
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover;
   display: block;
+  border: 0;
   opacity: 0;
   transform: scale(1);
   transition:
@@ -91,12 +93,21 @@
     transform 480ms var(--ease-settle);
 }
 
-.thumb-carousel-img.active {
+.thumb-carousel-media.active {
   opacity: 1;
 }
 
-/* Image zooms and brightens on hover. */
-.gallery-thumb:hover .thumb-carousel-img.active {
+.thumb-carousel-img,
+.thumb-carousel-video {
+  object-fit: cover;
+}
+
+.thumb-carousel-video {
+  background: var(--time-black);
+}
+
+/* The slide zooms and brightens on hover. */
+.gallery-thumb:hover .thumb-carousel-media.active {
   transform: scale(1.05);
   filter: brightness(1.1);
 }

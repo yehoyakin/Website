@@ -22,9 +22,7 @@ const projects = await Promise.all(
 const bgDay = asset("images/pageBackgrounds/PortfolioDay.gif");
 const bgNight = asset("images/pageBackgrounds/PortfolioNight.gif");
 
-const cardPreviews = projects
-  .map((p) => asset(p.data.images[0]))
-  .filter(Boolean);
+const cardPreviews = projects.map((p) => asset(p.data.cardBackground)).filter(Boolean);
 
 const imagesToPreload = [bgDay, bgNight, ...cardPreviews];
 ---

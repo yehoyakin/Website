@@ -1,9 +1,9 @@
 ---
-import BlogCard from "./BlogCard.astro";
 import CompactBody from "../UI/CompactBody.astro";
 import SocialLink from "../shared/Link.astro";
 import Icon from "../shared/Icon.astro";
 import { asset } from "../../utils/asset";
+import { isExternalUrl, videoEmbedUrl } from "../../utils/video";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 import type { ProjectRole } from "../../config/uiDictionary";
 import { patternForTheme } from "../../config/patterns";
@@ -16,6 +16,37 @@ interface Props {
 }
 
 const { projects } = Astro.props;
+
+/* ONE ROTATION PER PROJECT: its screenshots, then its clips.
+
+   A clip is rendered by kind, using the same detection a blog body uses
+   (utils/video.ts): a direct file plays in a <video>, a YouTube / Vimeo link
+   becomes an embed. */
+type PanelMedia =
+  | { kind: "image"; src: string }
+  | { kind: "file"; src: string; poster?: string; title?: string }
+  | { kind: "embed"; src: string; title?: string };
+
+const mediaFor = (project: any): PanelMedia[] => [
+  ...(project.data.scenes ?? []).map((scene: { image: string }) => ({
+    kind: "image" as const,
+    src: scene.image,
+  })),
+  ...(project.data.videos ?? []).map((video: any) => {
+    const embed = videoEmbedUrl(video.src, video.type);
+
+    if (embed) {
+      return { kind: "embed" as const, src: embed, title: video.title };
+    }
+
+    return {
+      kind: "file" as const,
+      src: isExternalUrl(video.src) ? video.src : asset(video.src),
+      poster: video.poster ? asset(video.poster) : undefined,
+      title: video.title,
+    };
+  }),
+];
 
 /* Roles are stored as the schema's enum keys; the panel shows their labels. */
 const roleLabels: Record<ProjectRole, string> = {
@@ -32,16 +63,6 @@ const roleLabels: Record<ProjectRole, string> = {
 ---
 
 <div id="project-gallery" class="project-gallery">
-  <div id="gallery-bg" class="gallery-bg" aria-hidden="true">
-    <img
-      id="gallery-bg-img"
-      class="gallery-bg-img"
-      src={projects[0] ? asset(projects[0].data.images[0]) : ""}
-      alt=""
-    />
-    <div class="gallery-bg-overlay"></div>
-  </div>
-
   <!-- Scrollable thumbnail grid. On phones this becomes a one-card-at-a-time
        carousel (see styles/responsive/responsive.css + scripts/cardCarousel.js). -->
   <div
@@ -55,6 +76,19 @@ const roleLabels: Record<ProjectRole, string> = {
         projects.map((project, index) => {
           const themeName = toThemeName(project.data.theme);
           const themeToken = resolveThemeToken(themeName);
+
+          /* The card opens on its cover and then rotates the screenshots —
+             the cover is dropped from the rotation when it is also a scene. */
+          const previews = [
+            project.data.cardBackground,
+            ...(project.data.scenes ?? [])
+              .map((scene: { image: string }) => scene.image)
+              .filter((image: string) => image !== project.data.cardBackground),
+          ];
+
+          /* Media is exactly what the project ships: screenshots, then clips.
+             Nothing is invented, so a clip-only project shows one slide. */
+
           return (
             <div class="gallery-project-item">
               {/* The same card anatomy the blog listing uses (BlogCard): a meta
@@ -79,7 +113,7 @@ const roleLabels: Record<ProjectRole, string> = {
                 {/* IMAGE - the project's screenshots, swapping on a timer. */}
                 <div class="blog-card-image-wrap">
                   <div class="thumb-carousel">
-                    {project.data.images.map(
+                    {previews.map(
                       (img: string, imgIndex: number) => (
                         <img
                           src={asset(img)}
@@ -100,7 +134,7 @@ const roleLabels: Record<ProjectRole, string> = {
                     {project.data.title}
                   </span>
                   <span class="gallery-thumb-desc">
-                    {project.data.shortDescription}
+                    {project.data.description}
                   </span>
                 </div>
               </button>
@@ -132,13 +166,21 @@ const roleLabels: Record<ProjectRole, string> = {
       projects.map((project, index) => {
         const roles: ProjectRole[] = project.data.roles ?? [];
         const themeName = toThemeName(project.data.theme);
+        const themeToken = resolveThemeToken(themeName);
+        const media = mediaFor(project);
 
         return (
           <div
             class="gallery-card-panel"
             data-panel={index}
-            style={`--plate-pattern: url('${patternForTheme(themeName)}')`}
+            style={`--project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
           >
+            {/* Full-bleed band: the shared pattern plate behind the whole
+                panel, carrying the project's texture and accent. */}
+            <span
+              class="project-panel-backdrop pattern-plate pattern-plate--medium"
+              aria-hidden="true"></span>
+
             <button
               class="collapse-btn icon-button"
               aria-label="Collapse project"
@@ -152,7 +194,6 @@ const roleLabels: Record<ProjectRole, string> = {
               />
             </button>
 
-            <BlogCard project={project} />
 
             {
               roles.length > 0 && (
@@ -164,14 +205,127 @@ const roleLabels: Record<ProjectRole, string> = {
               )
             }
 
-            {/* The write-up reads on the same plate as the article: the panel
-                carries the project's pattern, the body the huge tile. */}
-            <CompactBody
-              theme={project.data.theme}
-              class="project-panel-body pattern-plate pattern-plate--huge"
+            {/* Write-up on the left, screenshots on the right.
+
+                `.thumb-carousel` inside the media frame is the SAME auto-rotator
+                the cards use, so this component's initGallery cycles these
+                panels too: one picture at a time, however many images the
+                project ships, no extra script. */}
+            {/* One column when there is no media: a project with nothing but a
+                write-up should not sit in the left half of an empty grid. */}
+            <div
+              class:list={[
+                "project-panel-layout",
+                media.length === 0 && "project-panel-layout--solo",
+              ]}
             >
-              <div set:html={project.rendered} />
-            </CompactBody>
+              <CompactBody
+                theme={project.data.theme}
+                class="project-panel-body pattern-plate pattern-plate--huge"
+              >
+                <div set:html={project.rendered} />
+              </CompactBody>
+
+              {
+                media.length > 0 && (
+                  <div class="project-panel-media" data-project-rotator>
+                    <div class="project-panel-frame">
+                      <div class="thumb-carousel">
+                        {media.map((item, mediaIndex) => {
+                          const slideClass = `thumb-carousel-media ${mediaIndex === 0 ? "active" : ""}`;
+
+                          if (item.kind === "image") {
+                            return (
+                              <img
+                                src={asset(item.src)}
+                                alt={`${project.data.title ?? `Project ${index + 1}`} — image ${mediaIndex + 1}`}
+                                class={`${slideClass} thumb-carousel-img`}
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            );
+                          }
+
+                          if (item.kind === "embed") {
+                            return (
+                              <iframe
+                                src={item.src}
+                                title={item.title ?? `${project.data.title ?? `Project ${index + 1}`} — video`}
+                                class={`${slideClass} thumb-carousel-frame`}
+                                loading="lazy"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen
+                              />
+                            );
+                          }
+
+                          return (
+                            <video
+                              src={item.src}
+                              poster={item.poster}
+                              class={`${slideClass} thumb-carousel-video`}
+                              controls
+                              muted
+                              playsinline
+                              preload="metadata"
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* The strip's own carousel controls, reused as-is: same
+                        classes, same artwork, same tap sizes. Only the tint
+                        differs — this one follows the project's accent
+                        (see portfolio/galleryPanelContent.css). */}
+                    {
+                      media.length > 1 && (
+                        <div class="card-carousel-controls project-panel-controls">
+                          <button
+                            type="button"
+                            class="card-carousel-arrow icon-button"
+                            aria-label="Previous screenshot"
+                            data-rotator-prev
+                          >
+                            <Icon
+                              name="arrow-left"
+                              theme={project.data.theme}
+                              class="card-carousel-arrow-icon"
+                            />
+                          </button>
+
+                          <div class="card-carousel-dots">
+                            {media.map((_item, mediaIndex) => (
+                              <button
+                                type="button"
+                                class="card-carousel-dot"
+                                aria-label={`Go to slide ${mediaIndex + 1}`}
+                                aria-current={mediaIndex === 0 ? "true" : "false"}
+                                data-rotator-dot={mediaIndex}
+                              />
+                            ))}
+                          </div>
+
+                          <button
+                            type="button"
+                            class="card-carousel-arrow icon-button"
+                            aria-label="Next screenshot"
+                            data-rotator-next
+                          >
+                            <Icon
+                              name="arrow-right"
+                              theme={project.data.theme}
+                              class="card-carousel-arrow-icon"
+                            />
+                          </button>
+                        </div>
+                      )
+                    }
+                  </div>
+                )
+              }
+            </div>
           </div>
         );
       })
@@ -192,7 +346,7 @@ const roleLabels: Record<ProjectRole, string> = {
     if (gallery._carouselTimers) {
       gallery._carouselTimers.forEach((t) => clearInterval(t));
     }
-    gallery._carouselTimers = [];
+    gallery._carouselTimers = new Set();
 
     const thumbs = [...gallery.querySelectorAll("[data-thumb-index]")];
     const panels = [...gallery.querySelectorAll("[data-panel]")];
@@ -223,18 +377,8 @@ const roleLabels: Record<ProjectRole, string> = {
         panel.style.display = "block";
         activeProject = index;
 
-        // Update background
-        const bgImg = document.getElementById("gallery-bg-img");
-        const thumb = thumbs[index];
-        if (bgImg && thumb) {
-          const firstImg = thumb.querySelector(".thumb-carousel-img");
-          if (firstImg) {
-            bgImg.src = firstImg.src;
-            bgImg.style.opacity = "1";
-          }
-        }
-
         // Scroll thumbnail into view within the horizontal scroller
+        const thumb = thumbs[index];
         const projectItem = thumb?.closest(".gallery-project-item");
         if (projectItem) {
           projectItem.scrollIntoView({
@@ -256,11 +400,6 @@ const roleLabels: Record<ProjectRole, string> = {
         p.classList.remove("panel-hover-fadeout");
       });
       activeProject = null;
-
-      const bgImg = document.getElementById("gallery-bg-img");
-      if (bgImg) {
-        bgImg.style.opacity = "0";
-      }
     }
 
     thumbs.forEach((thumb) => {
@@ -312,9 +451,9 @@ const roleLabels: Record<ProjectRole, string> = {
       });
     });
 
-    // Initialize carousels for all thumbnails
-    function initCarousels() {
-      const carousels = gallery.querySelectorAll(".thumb-carousel");
+    /* Thumbnail cards: auto-cycling only, no controls. */
+    function initCardPreviews() {
+      const carousels = gallery.querySelectorAll(".gallery-thumb .thumb-carousel");
       carousels.forEach((carousel) => {
         const images = carousel.querySelectorAll(".thumb-carousel-img");
         if (images.length <= 1) return;
@@ -326,11 +465,58 @@ const roleLabels: Record<ProjectRole, string> = {
           images[imageIndex].classList.add("active");
         }, CAROUSEL_INTERVAL);
 
-        gallery._carouselTimers.push(timer);
+        gallery._carouselTimers.add(timer);
       });
     }
 
-    initCarousels();
+    /* Panel gallery: the same `.card-carousel-*` controls the strips use,
+       wiring the cross-fade instead of a scroll.
+
+       Nothing rotates on its own here: a screenshot — or a clip — stays on
+       screen until the reader picks another one, so a video is never cut off
+       mid-play and no picture is missed. */
+    function initPanelRotators() {
+      const rotators = gallery.querySelectorAll("[data-project-rotator]");
+
+      rotators.forEach((rotator) => {
+        const media = [...rotator.querySelectorAll(".thumb-carousel-media")];
+        if (media.length <= 1) return;
+
+        const dots = [...rotator.querySelectorAll("[data-rotator-dot]")];
+        const prev = rotator.querySelector("[data-rotator-prev]");
+        const next = rotator.querySelector("[data-rotator-next]");
+
+        let mediaIndex = 0;
+
+        function syncDots() {
+          dots.forEach((dot, dotIndex) => {
+            dot.setAttribute(
+              "aria-current",
+              dotIndex === mediaIndex ? "true" : "false",
+            );
+          });
+        }
+
+        function show(index) {
+          media[mediaIndex].classList.remove("active");
+          mediaIndex = ((index % media.length) + media.length) % media.length;
+          media[mediaIndex].classList.add("active");
+          syncDots();
+        }
+
+        prev?.addEventListener("click", () => show(mediaIndex - 1));
+        next?.addEventListener("click", () => show(mediaIndex + 1));
+
+        dots.forEach((dot, dotIndex) => {
+          dot.addEventListener("click", () => show(dotIndex));
+        });
+
+        syncDots();
+      });
+    }
+
+    initCardPreviews();
+    initPanelRotators();
   }
 
   function destroyGallery() {
@@ -339,7 +525,7 @@ const roleLabels: Record<ProjectRole, string> = {
     gallery.dataset.galleryInitialized = "false";
     if (gallery._carouselTimers) {
       gallery._carouselTimers.forEach((t) => clearInterval(t));
-      gallery._carouselTimers = [];
+      gallery._carouselTimers = new Set();
     }
   }
 

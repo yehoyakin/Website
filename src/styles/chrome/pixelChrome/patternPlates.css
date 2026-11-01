@@ -15,6 +15,26 @@
     rgb(0 0 0 / 0.92) 90%,
     var(--project-tag-color, var(--plate-tint))
   );
+  /* Tint gradient over that fill — the host's accent strongest at the leading
+     edge, gone on the trailing one. Every plate carries it, so cards, the
+     masthead, the article surface and the project panel band all grade the
+     same way; the pattern scales are still the only difference between them. */
+  background-image: linear-gradient(
+    90deg,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 30%,
+        transparent
+      )
+      0%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 10%,
+        transparent
+      )
+      55%,
+    transparent 85%
+  );
   --plate-pattern-size: var(--pattern-size-normal, 96px);
   --plate-pattern-opacity: 0.16;
   /* One loop scrolls exactly one tile, so the SPEED is tile ÷ duration. */

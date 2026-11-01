@@ -119,8 +119,7 @@ body {
 
 /* NIGHT BACKDROPS — page backdrops 33% darker. */
 
-:root[data-mode="night"] .blurred-bg-layer:not(.page-backdrop) img,
-:root[data-mode="night"] .gallery-bg {
+:root[data-mode="night"] .blurred-bg-layer:not(.page-backdrop) img {
   filter: brightness(0.8);
 }
 

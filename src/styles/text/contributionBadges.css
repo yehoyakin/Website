@@ -92,21 +92,31 @@
   background-color: var(--project-tag-color, var(--theme-orange));
 }
 
+/* Role chip: the project's own accent, like every other mark on the panel.
+   The plate is the near-black carrying a wash of that accent, the label is
+   white lifted with the same colour, and the border is the accent itself.
+   Plain values come first as the fallback, then the mixed ones. */
 .project-role {
+  --role-accent: var(--project-tag-color, var(--icon-accent));
   padding: 0.45rem 0.85rem;
   font-family: var(--retro-font);
   font-size: var(--contribution-badge-font-size, 0.78rem);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  /* Opaque plate, one value per mode (see foundation/dayNightPalette.css). */
-  color: var(--time-button-ink, var(--time-black, #09090b));
-  background: var(--time-button-fill, rgb(244 244 245));
-  border: var(--outline-width) solid var(--outline-color);
+  color: var(--time-white, #fff);
+  background: var(--time-black, #09090b);
+  border: var(--outline-width) solid var(--role-accent);
   box-shadow: 0.1875rem 0.1875rem 0 var(--time-black, #09090b);
   transition:
     transform 0.12s var(--ease-press),
     box-shadow 0.12s var(--ease-press);
+}
+
+.project-role {
+  color: color-mix(in srgb, var(--time-white) 62%, var(--role-accent));
+  background: color-mix(in srgb, var(--role-accent) 24%, var(--time-black));
+  border-color: color-mix(in srgb, var(--role-accent) 70%, transparent);
 }
 
 .project-role:hover {

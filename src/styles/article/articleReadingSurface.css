@@ -12,9 +12,10 @@
       var(--project-tag-color, var(--theme-orange)) 28%,
       var(--time-border-soft)
     );
-  /* The near-black, day / night-tinted fill comes from `.pattern-plate`
-     (styles/chrome/pixelChrome/patternPlates.css), like every other plate. */
-  background-image: none;
+  /* Fill and tint gradient both come from `.pattern-plate`
+     (styles/chrome/pixelChrome/patternPlates.css), like every other plate —
+     nothing here may reset `background-image`, or the reading surface would be
+     the one panel left ungraded. */
   box-shadow: none;
   isolation: isolate;
 }

@@ -20,6 +20,10 @@
   .thumb-tag {
     font-size: 0.75rem;
   }
+  /* Body and screenshots stack, tighter gap. */
+  .project-panel-layout {
+    gap: 0.75rem;
+  }
   .collapse-btn {
     width: 3rem;
     height: 3rem;
@@ -66,7 +70,7 @@
 
 /* Respect reduced motion preferences. */
 @media (prefers-reduced-motion: reduce) {
-  .thumb-carousel-img {
+  .thumb-carousel-media {
     transition: none !important;
   }
   .gallery-thumb {

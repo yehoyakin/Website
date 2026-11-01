@@ -3,7 +3,7 @@ title: "Level Building Sidekick"
 
 tag: "UNITY ENGINE - PLUGIN TOOL"
 
-shortDescription: >
+description: >
   Procedural assistance for rapid level creation.
 
 roles:
@@ -14,8 +14,15 @@ roles:
 
 theme: blue
 
-images:
-  - "images/projects/lbs.background.webp"
+cardBackground: "images/projects/lbs/lbs-1.webp"
+
+background: "images/projects/lbs/background.webp"
+
+scenes:
+  - image: "images/projects/lbs/lbs-1.webp"
+  - image: "images/projects/lbs/lbs-2.webp"
+  - image: "images/projects/lbs/lbs-3.webp"
+  - image: "images/projects/lbs/lbs-4.webp"
 
 order: 1
 
