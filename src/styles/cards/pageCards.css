@@ -165,7 +165,7 @@
 .credits-row .retro-link {
   flex: 0 0 auto;
   padding-inline: 0.5rem;
-  font-size: clamp(0.56rem, 2.1vw, 0.75rem);
+  font-size: clamp(0.5rem, 1.5vw, 0.55rem);
   letter-spacing: 0.06em;
   white-space: nowrap;
 }

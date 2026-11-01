@@ -10,11 +10,17 @@
   /* Site chrome, not page content: it follows the mode base colours. */
   display: inline-flex;
   align-items: center;
-  /* Same control scale as the shared link button: the height of an icon
-     button, and a label one step down inside it. */
-  height: var(--icon-button-size, 2.75rem);
-  padding: 0 0.6rem;
-  line-height: 1;
+  /* Same control scale as the shared link button: 65% of an icon button's
+     height less six pixels, a thin frame, and a label one step down. */
+  --back-link-height: calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px);
+  --control-outline-width: 2px;
+  /* The phone block below draws its frame from `--outline-width`. */
+  --outline-width: 2px;
+  height: var(--back-link-height);
+  padding: 0 0.5rem;
+  /* Not `1`: the pixel face draws outside its em box, and a line box that is
+     exactly the font size cuts the glyph. */
+  line-height: 1.4;
   border: var(--control-outline-width) solid var(--time-button-ink);
   background-color: var(--time-button-fill);
   /* Same lit-from-above plate as every other button. */
@@ -26,7 +32,14 @@
    the `.text-base` type role, which is declared later in the cascade and set
    this label one whole step larger than the buttons beside it. */
 a.back-link {
-  font-size: calc(var(--font-size-base) - 4px);
+  font-size: max(0.6rem, calc(var(--font-size-base) - 14px));
+}
+
+/* The glyph shrinks with the box: at the chrome glyph size it would sit on the
+   frame of a button that is no longer icon-height. */
+a.back-link .chrome-icon {
+  width: calc(var(--back-link-height) * 0.6);
+  height: calc(var(--back-link-height) * 0.6);
 }
 
 /* The rail panels (contacts, blog links) are positioned in
@@ -43,7 +56,7 @@ a.back-link {
   a.back-link {
     display: inline-flex;
     align-items: center;
-    height: var(--icon-button-size, 2.5rem);
+    height: calc(var(--icon-button-size, 2.5rem) * 0.65 - 6px);
     max-width: calc(100vw - 5.5rem);
     padding: 0 0.7rem;
     border: var(--outline-width) solid var(--time-button-ink);
@@ -51,7 +64,7 @@ a.back-link {
     background-color: var(--time-button-fill);
     background-image: var(--button-lighting);
     backdrop-filter: none;
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     white-space: nowrap;
   }
 }
