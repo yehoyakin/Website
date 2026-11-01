@@ -26,10 +26,14 @@ const themeAttribute =
 >
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
-    />
+    {/* ONE LAYOUT, EVERY SCREEN.
+
+        A fixed layout width means a phone lays the page out at the desktop
+        width and scales the whole thing down to fit, instead of switching to
+        the phone rules — so the computer layout and sizes are what you get on
+        mobile too (and the max-width media queries never fire). `shrink-to-fit`
+        is what makes Safari scale it rather than showing a 1280px slice. */}
+    <meta name="viewport" content="width=1280, shrink-to-fit=yes" />
     <title>{title}</title>
 
     {/* Apply the day / night choice before first paint so the page never
