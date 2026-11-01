@@ -19,16 +19,14 @@
   #sidebar-toggle {
     touch-action: manipulation;
   }
-  /* The blog sidebar handle clears the fixed back link, clear of the top. */
-  #sidebar-container {
-    top: 32%;
-  }
-
-  /* The contacts handle joins the top-right chrome stack instead of floating
-     at mid-height. A phone card is full-bleed, so a handle at 32% sits on the
+  /* BOTH rail handles join the top-right chrome stack instead of floating at
+     mid-height. A phone card is full-bleed, so a handle at 32% sat on the
      card's artwork; here it stacks under the day / night and view controls, on
-     the page backdrop, above where the content starts. */
-  #socials-container {
+     the same gutter, over the page backdrop and above where content starts.
+     The contacts panel and the blog links panel never share a page, so they
+     share the third slot of the rail. */
+  #socials-container,
+  #sidebar-container {
     top: calc(
       var(--chrome-gutter) + (var(--chrome-control) + var(--chrome-stack-gap)) *
         2
