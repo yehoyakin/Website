@@ -1,39 +1,74 @@
-/* Fixed side rails: socials panel and blog sidebar. */
+/* THE RIGHT-EDGE RAIL — one panel, used by both pages that need one.
 
+   The landing's contacts tab and a blog post's links tab are the same control
+   (components/shared/RailPanel.astro + scripts/railPanel.js). This used to be
+   two sets of id rules — #socials-* and #sidebar-* — for markup that differed
+   only in its width and its accent, which is how the two drifted apart.
+
+   Collapsed, only the handle is in view: the panel waits off-canvas, exactly
+   one handle width inside the window. It slides out while the reader is
+   engaged with it and slides back when they are not. */
+
+.rail {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  top: 25%;
+  right: var(--chrome-gutter);
+  transform: translateX(calc(100% - var(--icon-button-size, 2.75rem)));
+  transition: transform var(--duration-base) var(--ease-settle);
+}
+
+.rail.is-open {
+  transform: translateX(0);
+}
+
+.rail-handle {
+  flex: 0 0 auto;
+  transition: opacity var(--duration-fast) var(--ease-soft);
+}
+
+/* Out of the way the handle is the control; once the panel is out it gives its
+   place to it, so the rail reads as one piece. */
+.rail.is-open .rail-handle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rail-panel {
+  max-height: 70vh;
+  max-height: 70dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail {
+    transition: none;
+  }
+}
+
+/* PHONES — the handle joins the top-right chrome stack, under the day / night
+   and view toggles, rather than floating at mid-height over the page content.
+   Both panels never share a page, so they share the same slot. */
 @media (max-width: 767px) {
-  #socials-panel,
-  #sidebar-panel {
+  .rail {
+    top: calc(
+      var(--chrome-gutter) + (var(--chrome-control) + var(--chrome-stack-gap)) * 2
+    );
+  }
+  .rail-handle {
+    /* The shared icon-button box is the minimum tap target. */
+    touch-action: manipulation;
+  }
+  .rail-panel {
     width: min(82vw, 19rem);
     max-height: 62vh;
     max-height: 62dvh;
-    overscroll-behavior: contain;
-  }
-  #socials-panel {
-    padding-right: max(1.5rem, env(safe-area-inset-right));
-  }
-  #sidebar-panel {
     padding-right: env(safe-area-inset-right);
   }
-  /* Handles use the shared icon-button box: 44px, the minimum tap target. */
-  #socials-toggle,
-  #sidebar-toggle {
-    touch-action: manipulation;
-  }
-  /* BOTH rail handles join the top-right chrome stack instead of floating at
-     mid-height. A phone card is full-bleed, so a handle at 32% sat on the
-     card's artwork; here it stacks under the day / night and view controls, on
-     the same gutter, over the page backdrop and above where content starts.
-     The contacts panel and the blog links panel never share a page, so they
-     share the third slot of the rail. */
-  #socials-container,
-  #sidebar-container {
-    top: calc(
-      var(--chrome-gutter) + (var(--chrome-control) + var(--chrome-stack-gap)) *
-        2
-    );
-  }
-  #socials-panel .retro-link,
-  #sidebar-panel .retro-link {
+  .rail-panel .retro-link {
     min-height: 2.75rem;
     padding-top: 0.55rem;
     padding-bottom: 0.55rem;

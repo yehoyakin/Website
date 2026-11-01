@@ -13,7 +13,7 @@ import BlogContent from "../../components/Blog/BlogContent.astro";
 
 import BlogSidebar from "../../components/Blog/BlogSidebar.astro";
 
-import Icon from "../../components/shared/Icon.astro";
+import RailPanel from "../../components/shared/RailPanel.astro";
 
 import { getCollection } from "astro:content";
 
@@ -212,37 +212,18 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
        FLOATING SIDEBAR
        ----------------------------------------------------- -->
 
-  <div
-    id="sidebar-container"
-    class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-var(--icon-button-size))] [&.sidebar-open]:translate-x-0"
-    /* The tab and its panel belong to THIS post: without the token the
-       panel's frame fell back to the root accent (--theme-orange) and every
-       post's sidebar looked like the first one. */
-    style={`--project-tag-color: ${postDynamicToken}`}
+  {/* The same rail panel the landing uses for its contacts tab: the handle
+      glyph and the panel's accent are the only things this page decides. */}
+  <RailPanel
+    id="links"
+    label="Toggle this post's links"
+    icon="document"
+    theme={themeName}
+    style={`--project-tag-color: ${postDynamicToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+    panelClass="w-80"
   >
-    <button
-      id="sidebar-toggle"
-      class="icon-button panel-toggle bg-transparent text-[color:var(--time-ink)] rounded-none cursor-pointer select-none border-0 group-[.sidebar-open]:opacity-0 transition-opacity duration-200 flex items-center justify-center focus:outline-none"
-      aria-label="Toggle Sidebar"
-      type="button"
-    >
-      <!-- Posts list icon: this tab opens the blog sidebar. Same glyph size as
-           every other chrome control (chrome/pixelChrome/iconButtons.css). -->
-      <Icon name="document" theme={themeName} class="chrome-icon" />
-    </button>
-
-    <!-- Sidebar content -->
-
-    {/* The links panel wears the post's own texture, like the article surfaces:
-        `--project-tag-color` above tints it, this supplies the tile. */}
-    <div
-      id="sidebar-panel"
-      class="pixel-frame pattern-plate pattern-plate--small relative w-80 max-h-[70vh] overflow-y-auto"
-      style={`--plate-pattern: url('${patternForTheme(themeName)}')`}
-    >
-      <BlogSidebar cards={cards} theme={themeName} />
-    </div>
-  </div>
+    <BlogSidebar cards={cards} theme={themeName} />
+  </RailPanel>
 
   <!-- The overlay's styles live in styles/overlays/articleEndOverlay.css -->
 
@@ -634,50 +615,9 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
         });
     }
 
-    /* =====================================================
-       SIDEBAR
-       ===================================================== */
-    const sidebarContainer = document.getElementById("sidebar-container");
-    const sidebarToggle = document.getElementById("sidebar-toggle");
-    const onSidebarToggle = (event) => {
-      event.stopPropagation();
-      if (!sidebarContainer) {
-        return;
-      }
-      sidebarContainer.classList.toggle("sidebar-open");
-    };
-    const onSidebarMouseEnter = () => {
-      sidebarContainer?.classList.add("sidebar-open");
-    };
-    const onSidebarMouseLeave = () => {
-      sidebarContainer?.classList.remove("sidebar-open");
-    };
-    const onDocumentClick = (event) => {
-      if (!sidebarContainer) {
-        return;
-      }
-      const target = event.target;
-      if (target instanceof Node && !sidebarContainer.contains(target)) {
-        sidebarContainer.classList.remove("sidebar-open");
-      }
-    };
-    if (sidebarContainer && sidebarToggle) {
-      sidebarToggle.addEventListener("click", onSidebarToggle);
-
-      /*
-       * Hover-to-open is pointer-only. On touch screens a tap fires
-       * `mouseenter` and then `click`, so the click toggle closed the
-       * panel the hover had just opened — the sidebar needed two taps.
-       */
-      const canHover =
-        window.matchMedia?.("(hover: hover) and (pointer: fine)").matches ??
-        false;
-      if (canHover) {
-        sidebarContainer.addEventListener("mouseenter", onSidebarMouseEnter);
-        sidebarContainer.addEventListener("mouseleave", onSidebarMouseLeave);
-      }
-      document.addEventListener("click", onDocumentClick);
-    }
+    /* The rail panel's own behaviour (hover peek, tap to select, click-away to
+       close) is shared with the landing's contacts tab and lives in
+       scripts/railPanel.js, loaded once by layouts/MyLayout.astro. */
 
     /* =====================================================
        THAT'S ALL MESSAGE
@@ -737,14 +677,6 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
 
       /* Remove ResizeObserver */
       resizeObserver.disconnect();
-
-      /* Remove sidebar listeners */
-      if (sidebarContainer && sidebarToggle) {
-        sidebarToggle.removeEventListener("click", onSidebarToggle);
-        sidebarContainer.removeEventListener("mouseenter", onSidebarMouseEnter);
-        sidebarContainer.removeEventListener("mouseleave", onSidebarMouseLeave);
-        document.removeEventListener("click", onDocumentClick);
-      }
 
       /* Remove "That's all" observer */
       if (thatsAllObserver) {

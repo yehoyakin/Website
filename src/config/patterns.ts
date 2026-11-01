@@ -26,13 +26,13 @@ import { asset } from "../utils/asset";
 
 /** One tile per theme colour, in theme order. */
 const THEME_PATTERNS: Record<string, string> = {
-  orange: "patterns/256/pattern_0000.webp",
+  orange: "patterns/256/pattern_0004.webp",
   purple: "patterns/256/pattern_0020.webp",
   yellow: "patterns/256/pattern_0004.webp",
   green: "patterns/256/pattern_0012.webp",
   pink: "patterns/256/pattern_0015.webp",
   blue: "patterns/256/pattern_0005.webp",
-  lightgreen: "patterns/256/pattern_0006.webp",
+  lightgreen: "patterns/256/pattern_0017.webp",
   red: "patterns/256/pattern_0023.webp",
   gray: "patterns/256/pattern_0008.webp",
   lightblue: "patterns/256/pattern_0009.webp",
