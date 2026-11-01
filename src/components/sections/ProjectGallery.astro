@@ -5,6 +5,10 @@ import Icon from "../shared/Icon.astro";
 import { asset } from "../../utils/asset";
 import { isExternalUrl, videoEmbedUrl } from "../../utils/video";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import {
+  defaultIconColor,
+  defaultIconColorNight,
+} from "../../config/icons";
 import type { ProjectRole } from "../../config/uiDictionary";
 import { patternForTheme } from "../../config/patterns";
 
@@ -289,6 +293,9 @@ const roleLabels: Record<ProjectRole, string> = {
                             />
                           </button>
 
+                          {/* The same index the strips get, drawn with the same
+                              circle icon: without the glyph these buttons were
+                              empty, so the panel had arrows but no index. */}
                           <div class="card-carousel-dots">
                             {media.map((_item, mediaIndex) => (
                               <button
@@ -297,7 +304,27 @@ const roleLabels: Record<ProjectRole, string> = {
                                 aria-label={`Go to slide ${mediaIndex + 1}`}
                                 aria-current={mediaIndex === 0 ? "true" : "false"}
                                 data-rotator-dot={mediaIndex}
-                              />
+                              >
+                                {/* The same circle artwork and the same day /
+                                    night folders the strips' script uses, so
+                                    the two indexes cannot drift apart. */}
+                                <span class="card-carousel-dot-icon icon-mode">
+                                  <img
+                                    src={asset(`images/Icons/${defaultIconColor}/Circle Base_${defaultIconColor}.webp`)}
+                                    alt=""
+                                    aria-hidden="true"
+                                    decoding="async"
+                                    class="icon-mode-img icon-mode-img--day"
+                                  />
+                                  <img
+                                    src={asset(`images/Icons/${defaultIconColorNight}/Circle Base_${defaultIconColorNight}.webp`)}
+                                    alt=""
+                                    aria-hidden="true"
+                                    decoding="async"
+                                    class="icon-mode-img icon-mode-img--night"
+                                  />
+                                </span>
+                              </button>
                             ))}
                           </div>
 
