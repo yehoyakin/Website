@@ -21,7 +21,7 @@ const links = [
 {/* Hover / tap floating tab. Behaviour lives in scripts/socialsHook.js. */}
 <div
   id="socials-container"
-  class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-2.75rem)] [&.socials-open]:translate-x-0"
+  class="group fixed top-1/4 right-0 z-50 flex items-start transition-transform duration-300 translate-x-[calc(100%-var(--icon-button-size))] [&.socials-open]:translate-x-0"
   style="--project-tag-color: var(--icon-accent)"
 >
   {/* The clickable/hoverable contacts tab handle */}
@@ -31,7 +31,7 @@ const links = [
     aria-label="Toggle Social Links"
     type="button"
   >
-    <Icon name="contacts" class="h-16 w-16" />
+    <Icon name="contacts" class="chrome-icon" />
   </button>
 
   <div

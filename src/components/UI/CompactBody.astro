@@ -1,0 +1,63 @@
+---
+// Purpose: Component - src/components/UI/CompactBody.astro (Long-form reading body)
+//
+// Body.astro is for SHORT copy: a card description, a header subtitle, a one-line
+// label. It is sized with `text-sm sm:text-base`, which on a phone resolves to
+// 14.4px — under the 16px grid BoldPixels is drawn on, so whole pixels of the
+// glyphs disappear and a screenshot-sized paragraph turns to mush.
+//
+// This is the body for TEXT YOU READ. It keeps the same theme plumbing as Body
+// (theme → font set + accent colour, `theme-color` so bold / italic follow the
+// piece's accent) and drops the utility sizing: `CompactBody`'s size lives in
+// styles/article/blogArticle.css, on a hard `max(16px, …)` floor. The name is
+// the honest one — below that floor the face cannot be compacted any further.
+//
+// It renders a <div>, not a <p>: it wraps generated block HTML (paragraphs,
+// lists, figures), which a paragraph would be invalid nesting for.
+import {
+  getThemeConfig,
+  resolveThemeToken,
+  toThemeName,
+  toThemeToken,
+} from "../../config/uiDictionary";
+
+interface Props {
+  class?: string;
+  /** Theme name — controls font and colour. Any string works. */
+  theme?: string;
+  /** Add subtle text shadow for readability against blurred backgrounds. */
+  shadow?: boolean;
+}
+
+const {
+  class: customClass = "",
+  theme: rawTheme,
+  shadow = false,
+} = Astro.props;
+
+const themeName = toThemeName(rawTheme);
+const config = getThemeConfig(themeName);
+const themeToken = resolveThemeToken(themeName);
+
+// Only an explicitly assigned theme swaps the typeface. Without one the text
+// keeps inheriting the page's token — important here: the blog article is inside
+// a section that already carries the post's accent, and an unconditional inline
+// token would replace it with the default orange.
+const hasTheme = typeof rawTheme === "string" && rawTheme.trim() !== "";
+const themeAttribute = hasTheme ? toThemeToken(themeName) : undefined;
+---
+
+<div
+  class:list={[
+    "compact-body",
+    config.text.base,
+    config.text.hover,
+    "transition-colors break-words theme-color",
+    shadow && "readable-text",
+    customClass,
+  ]}
+  data-theme={themeAttribute}
+  style={hasTheme ? `--project-tag-color: ${themeToken}` : undefined}
+>
+  <slot />
+</div>

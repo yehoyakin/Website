@@ -97,10 +97,11 @@ const { background, left, right, credits = [] } = Astro.props as Props;
          dark) instead of a theme, exactly like the contact links. The texture
          is the day base motif for the same reason: the tiles are black-and-white
          silhouettes blended in `screen`, so the panel underneath supplies the
-         colour and the motif stays chrome-flavoured. */
+         colour and the motif stays chrome-flavoured. The plate fill is the
+         shared one, so it follows the day / night tint like every pattern. */
     }
     <div
-      class="pattern-plate pattern-plate--small relative shrink-0 border-t border-[color:var(--time-border-soft)] bg-[var(--time-panel)] px-3 py-3 sm:px-8 sm:py-5 backdrop-blur-md"
+      class="pattern-plate pattern-plate--small relative shrink-0 border-t border-[color:var(--time-border-soft)] px-3 py-3 sm:px-8 sm:py-5 backdrop-blur-md"
       style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
     >
       <div class="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center">
@@ -112,7 +113,6 @@ const { background, left, right, credits = [] } = Astro.props as Props;
                   class="text-sm text-[color:var(--time-ink-muted)]"
                   aria-hidden="true"
                 >
-                  |
                 </span>
               )}
               <Link href={credit.href} text={credit.text} external />

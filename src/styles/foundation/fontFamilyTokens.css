@@ -1,0 +1,69 @@
+/* "Bold Pixels", declared in foundation/fontFaces.css, is the site font. */
+:root {
+  --font-title: "Bold Pixels", sans-serif;
+  --font-ui: "Bold Pixels", sans-serif;
+  --font-body: "Bold Pixels", sans-serif;
+  --font-terminal: "Bold Pixels", sans-serif;
+}
+
+/* Retro components ask for --retro-font. */
+:root,
+[data-theme^="--theme-"] {
+  --retro-font: var(--font-ui);
+}
+
+/* One font set per theme; every theme currently resolves to Bold Pixels. */
+
+/* Base application: the document font comes from --font-body. */
+
+html {
+  font-family: var(--font-body) !important;
+}
+
+body {
+  font-family: inherit;
+}
+
+p,
+span,
+a,
+button,
+input,
+textarea,
+li,
+blockquote,
+figure,
+figcaption {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-title);
+}
+
+/* Themed elements resolve their own family from the same tokens. */
+
+[data-theme^="--theme-"] {
+  font-family: var(--font-body);
+}
+
+[data-theme^="--theme-"]:is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-title);
+}
+
+body {
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}

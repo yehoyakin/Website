@@ -1,0 +1,67 @@
+/* Card carousels: one slide per view, snapping, peek, end spacers. */
+
+.blog-cards-wrapper,
+.gallery-thumbnails-wrapper {
+  padding: 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.blog-cards-wrapper::-webkit-scrollbar,
+.gallery-thumbnails-wrapper::-webkit-scrollbar {
+  display: none;
+  height: 0;
+}
+
+/* Set by scripts/cardCarousel.js while an arrow-driven scroll is running. */
+.is-carousel-animating {
+  scroll-snap-type: none;
+}
+
+.blog-cards-scroll,
+.gallery-thumbnails {
+  min-width: 0;
+  gap: 0.5rem;
+  padding: 0;
+  justify-content: flex-start;
+}
+
+/* Slide width: the strip minus the peek, capped on wide screens. */
+.blog-cards-scroll {
+  --carousel-slide: min(100% - 3rem, 36rem);
+}
+
+/* Same slide width as the blog strip, so both carousels read alike. */
+.gallery-thumbnails {
+  --carousel-slide: min(100% - 3rem, 36rem);
+}
+
+/* Spacers let the first and last slide centre like the middle ones. */
+.blog-cards-scroll::before,
+.blog-cards-scroll::after,
+.gallery-thumbnails::before,
+.gallery-thumbnails::after {
+  content: "";
+  flex: 0 0 calc((100% - var(--carousel-slide)) / 2 - 0.5rem);
+  align-self: stretch;
+  min-height: 1px;
+}
+
+.blog-card-item,
+.gallery-project-item {
+  flex: 0 0 var(--carousel-slide);
+  width: var(--carousel-slide);
+  max-width: none;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+/* The gallery thumbnail sets its own vw width, so this one needs !important. */
+.gallery-thumb {
+  width: 100% !important;
+}
+
+.thumb-links {
+  max-width: 100%;
+}

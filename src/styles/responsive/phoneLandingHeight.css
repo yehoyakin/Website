@@ -1,0 +1,12 @@
+/* Phone landing height: dvh instead of the largest viewport. */
+
+@supports (height: 100dvh) {
+  @media (max-width: 767px) {
+    #landing-viewport {
+      height: 100dvh;
+    }
+    #landing-content {
+      min-height: 100dvh;
+    }
+  }
+}

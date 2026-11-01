@@ -128,8 +128,8 @@ Markdown and small HTML blocks as blog posts (for example a
 Themes are a single idea used everywhere: **one name controls both colour and
 typography**. A theme name such as `terminal` maps to two CSS pieces:
 
-- `--theme-yellow` in `src/styles/base/tokens.css` — the theme's colour.
-- `[data-theme="--theme-yellow"]` in `src/styles/base/fonts.css` — the
+- `--theme-yellow` in `src/styles/foundation/designTokens.css` — the theme's colour.
+- `[data-theme="--theme-yellow"]` in `src/styles/foundation/fontFamilyTokens.css` — the
   theme's font set (`--font-title`, `--font-ui`, `--font-body`,
   `--font-terminal`).
 
@@ -151,10 +151,10 @@ the default fonts until a font set is added for it.
 
 ### Adding or changing a theme
 
-1. Add a colour token in `src/styles/base/tokens.css`:
+1. Add a colour token in `src/styles/foundation/designTokens.css`:
    `--theme-green: rgb(34, 197, 94);`
 2. Optionally add a `[data-theme="--theme-green"]` block in
-   `src/styles/base/fonts.css` to give it its own fonts.
+   `src/styles/foundation/fontFamilyTokens.css` to give it its own fonts.
 3. Use `theme: "green"` in a Markdown file, or `theme="green"` in a
    component.
 
@@ -162,16 +162,16 @@ No TypeScript changes are needed.
 
 ### Fonts
 
-Fonts are exposed as four tokens declared in `src/styles/base/fonts.css`:
+Fonts are exposed as four tokens declared in `src/styles/foundation/fontFamilyTokens.css`:
 `--font-title`, `--font-ui`, `--font-body` and `--font-terminal`.
 
 - The default set lives on `:root`; each theme block overrides it.
-- Google-hosted families are loaded once in `src/styles/global.css`. If you add
+- Google-hosted families are loaded once in `src/styles/site.css`. If you add
   a new family there, also point a theme token at it in `fonts.css`; unused
   families just add download weight.
 - The pixel families ("Pixel Operator", "Pixel Operator Mono", "Pixeloid Sans",
   etc.) are local files in `src/fonts/`, declared with `@font-face` in
-  `src/styles/base/font-faces.css`. Reference them by family name in a theme
+  `src/styles/foundation/fontFaces.css`. Reference them by family name in a theme
   block like any other font.
 
 Because the fonts are keyed off the same `data-theme` attribute as the colours,

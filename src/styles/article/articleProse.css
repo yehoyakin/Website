@@ -1,0 +1,281 @@
+/* Long-form prose shared by the article and the project write-up. */
+
+:is(#blog-content, .project-panel-body) {
+  color: var(--time-ink);
+  text-align: left;
+}
+
+/* CompactBody — the long-form reading size. */
+.compact-body {
+  font-size: max(16px, 0.75rem + 0.25vw);
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+}
+
+:is(#blog-content, .project-panel-body) p {
+  margin: 0 0 1.05rem;
+  /* Leading belongs to the body above, not to each paragraph. */
+  line-height: inherit;
+  text-align: left;
+  text-shadow: none;
+}
+
+/* Lede: the opening paragraph is a touch larger and takes a drop cap. */
+#blog-content .blog-lede {
+  font-size: 1.05em;
+}
+
+@media (min-width: 768px) {
+  #blog-content .blog-lede::first-letter {
+    float: left;
+    margin: 0.1em 0.14em 0 0;
+    font-size: 3.1em;
+    line-height: 0.78;
+    font-weight: 700;
+    color: var(--project-tag-color, var(--theme-orange));
+  }
+}
+
+/* Headings. */
+
+/* Geometry only: the outline cut (fill + ring) is shared with the masthead
+   title in styles/article/blogArticle.css. */
+:is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6) {
+  margin-left: 0;
+  margin-right: 0;
+  letter-spacing: 0.015em;
+  text-transform: none;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+/* The article title keeps the breathing room the old typography layer set. */
+#blog-content h1 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+:is(#blog-content, .project-panel-body) h2 {
+  margin-top: 2.6rem;
+  margin-bottom: 0.9rem;
+  padding-left: 0.85rem;
+  border-left: var(--outline-width) solid
+    var(--project-tag-color, var(--theme-orange));
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+}
+
+:is(#blog-content, .project-panel-body) h3 {
+  margin-top: 1.9rem;
+  margin-bottom: 0.65rem;
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+}
+
+:is(#blog-content, .project-panel-body) h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+}
+
+:is(#blog-content, .project-panel-body) :is(h5, h6) {
+  margin-top: 1.2rem;
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  /* Smallest headers stay muted: same accent ring, quieter fill. */
+  --heading-fill: var(--time-ink-muted);
+}
+
+/* LISTS — drawn markers, not typed ones.
+
+   A bullet in the pixel face comes out smaller than the copy it labels and sits
+   half a line off the text, which is what made these lists hard to read. So the
+   marker is drawn instead: an accent tile for bullets, a numbered accent chip
+   for ordered lists. Both hang in a fixed gutter, so a wrapped line starts
+   flush with the first line's text instead of sliding back under the marker. */
+
+:is(#blog-content, .project-panel-body) :where(ul, ol) {
+  margin: 0.4rem 0 1.15rem;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: blog-item;
+}
+
+:is(#blog-content, .project-panel-body) :where(ul, ol) > li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-left: 1.7rem;
+  line-height: 1.65;
+}
+
+/* Bullet: one accent tile, on the same bevel as the rest of the chrome. */
+:is(#blog-content, .project-panel-body) ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0.15em;
+  top: 0.55em;
+  width: 0.6em;
+  height: 0.6em;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-orange)) 55%,
+      var(--time-black)
+    );
+  background-color: var(--project-tag-color, var(--theme-orange));
+  box-shadow: inset 0 1px 0 0
+    color-mix(in srgb, var(--time-white) 45%, transparent);
+}
+
+/* Second level: the same tile, hollow — fill alone tells it from the first. */
+:is(#blog-content, .project-panel-body) ul ul > li::before {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Third level and deeper: a short accent bar. Depth then reads by FORM as well
+   as fill — tile, hollow tile, bar — so three nested lists never look alike. */
+:is(#blog-content, .project-panel-body) ul ul ul > li::before {
+  top: 0.73em;
+  width: 0.6em;
+  height: 0.24em;
+  border: 0;
+  background-color: var(--project-tag-color, var(--theme-orange));
+}
+
+/* Number: an accent chip carrying the count. */
+:is(#blog-content, .project-panel-body) ol > li {
+  counter-increment: blog-item;
+}
+
+:is(#blog-content, .project-panel-body) ol > li::before {
+  content: counter(blog-item);
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4em;
+  height: 1.4em;
+  padding: 0 0.3em;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-orange)) 55%,
+      var(--time-black)
+    );
+  background-color: var(--project-tag-color, var(--theme-orange));
+  color: var(--time-black);
+  font-family: var(--font-terminal);
+  font-size: 0.72em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+}
+
+/* Quote. */
+:is(#blog-content, .project-panel-body) blockquote {
+  margin: 1.4rem 0;
+  padding: 0.85rem 1.1rem;
+  border-left: var(--outline-width) solid
+    var(--project-tag-color, var(--theme-orange));
+  background: color-mix(
+    in srgb,
+    var(--project-tag-color, var(--theme-orange)) 10%,
+    transparent
+  );
+  color: var(--time-ink);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Links. */
+:is(#blog-content, .project-panel-body) a {
+  --link-box: var(--project-tag-color, var(--theme-orange));
+  padding: 0.05em 0.3em;
+  border: var(--control-outline-width) solid
+    color-mix(in srgb, var(--link-box) 70%, transparent);
+  background: color-mix(in srgb, var(--link-box) 12%, transparent);
+  color: var(--link-box);
+  text-decoration: none;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition:
+    background-color var(--duration-fast) var(--ease-soft),
+    color var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft);
+}
+
+:is(#blog-content, .project-panel-body) a:hover,
+:is(#blog-content, .project-panel-body) a:focus-visible {
+  /* Filled tile, label flipped to the page ink for contrast. */
+  background: var(--link-box);
+  border-color: color-mix(in srgb, var(--link-box) 55%, var(--time-black));
+  color: var(--time-black);
+  opacity: 1;
+}
+
+/* Divider: a run of accent pixels, not a hairline. */
+:is(#blog-content, .project-panel-body) hr {
+  height: 4px;
+  margin: 2.4rem 0;
+  border: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--theme-orange)) 70%,
+        transparent
+      )
+      0 6px,
+    transparent 6px 12px
+  );
+}
+
+/* Code. */
+:is(#blog-content, .project-panel-body) :not(pre) > code {
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--time-border-soft);
+  background: var(--time-wash);
+  color: var(--time-ink);
+  font-family: var(--font-terminal);
+  font-size: 0.9em;
+}
+
+:is(#blog-content, .project-panel-body) pre {
+  margin: 1.4rem 0;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  border: 1px solid var(--time-border-soft);
+  background: var(--time-page);
+  font-family: var(--font-terminal);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+:is(#blog-content, .project-panel-body) pre code {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Figures. */
+:is(#blog-content, .project-panel-body) figure {
+  margin-top: 1.6rem;
+  margin-bottom: 1.6rem;
+  border: var(--outline-width) solid
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-orange)) 60%,
+      var(--time-black)
+    );
+  box-shadow:
+    inset var(--control-bevel) var(--control-bevel) 0 0
+      color-mix(in srgb, var(--time-white) 35%, transparent),
+    inset calc(var(--control-bevel) * -1) calc(var(--control-bevel) * -1) 0 0
+      color-mix(in srgb, var(--time-black) 55%, transparent);
+}
+
+/* The contribution block styles itself as a listing card in
+   text/contributionBadges.css, including its own heading and markers, so no
+   prose exemptions are needed here. */

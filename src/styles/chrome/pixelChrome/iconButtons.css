@@ -1,0 +1,43 @@
+/* Bare icon buttons: one box, one glyph size, one hover lift. */
+
+.icon-button {
+  border: 0;
+}
+
+.mode-toggle,
+.card-carousel-arrow,
+.panel-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--icon-button-size, 2.75rem);
+  height: var(--icon-button-size, 2.75rem);
+  padding: 0;
+}
+
+/* ONE glyph size for every icon control — switch, panel handles, carousel
+   arrows, back-link arrow. Set here, never by utility classes on a button. */
+.mode-toggle-icon,
+.panel-toggle > img,
+.panel-toggle > .icon-mode,
+.card-carousel-arrow img,
+.card-carousel-arrow .card-carousel-arrow-icon,
+.card-carousel-arrow .icon-mode,
+.chrome-icon {
+  width: var(--icon-button-glyph, 1.75rem);
+  height: var(--icon-button-glyph, 1.75rem);
+}
+
+/* Hover lift for the glyph inside any bare icon control. */
+.icon-button > img {
+  transition:
+    transform var(--duration-fast) var(--ease-settle),
+    filter var(--duration-fast) var(--ease-soft);
+}
+
+.icon-button:hover > img,
+.icon-button:focus-visible > img {
+  filter: brightness(1.3) saturate(1.2);
+  transform: scale(1.12);
+}

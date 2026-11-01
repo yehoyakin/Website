@@ -6,7 +6,7 @@
 // script in MyLayout.astro sets before first paint — so switching modes swaps
 // the artwork without a flash of the wrong one and without per-page JavaScript.
 //
-// The blur stays on this wrapper (styles/base/layout.css), so both images share
+// The blur stays on this wrapper (styles/foundation/layoutPrimitives.css), so both images share
 // it and only their opacity changes — the `.mode-img` pair used by card artwork
 // too, so a mode switch behaves the same wherever there are two versions.
 import { asset } from "../../utils/asset";

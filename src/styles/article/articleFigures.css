@@ -1,0 +1,25 @@
+/* Figure captions — italic, muted, tracked, body font. */
+.blog-figcaption {
+  margin-top: 0.5rem;
+  padding-left: 0.25rem;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  letter-spacing: 0.02em;
+  color: var(--ui-muted, rgb(161 161 170));
+  text-align: center;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Alignment overrides for video captions. */
+.blog-figcaption.text-left {
+  text-align: left;
+}
+
+.blog-figcaption.text-right {
+  text-align: right;
+}
+
+.blog-figcaption.text-center {
+  text-align: center;
+}

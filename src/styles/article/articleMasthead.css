@@ -1,0 +1,87 @@
+/* Article masthead: accent strip, meta row, title, description. */
+
+.blog-masthead {
+  position: relative;
+  overflow: hidden;
+  padding: 1.9rem 1.25rem 1.6rem;
+  /* No fill of its own: the shared pattern plate behind this header supplies
+     the day / night tint (styles/chrome/pixelChrome/patternPlates.css). */
+  text-align: left;
+}
+
+@media (min-width: 640px) {
+  .blog-masthead {
+    padding: 2.4rem 2.25rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .blog-masthead {
+    padding: 2.75rem 3rem 2.25rem;
+  }
+}
+
+/* The animated pattern strip, in the post's accent colour. Scoped to the
+   masthead so it keeps its solid accent fill over the plate's dark default. */
+.blog-masthead .blog-masthead-strip {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 0.6rem;
+  background-color: var(--project-tag-color, var(--theme-orange));
+}
+
+.blog-masthead-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--time-ink-muted);
+}
+
+/* `time` carries its own size from global.css; the row sets the rhythm. */
+.blog-masthead-meta time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+.blog-masthead-kicker {
+  color: var(--project-tag-color, var(--theme-orange));
+  font-weight: 700;
+}
+
+/* Accent hairline that fills the space between "Article" and the date. */
+.blog-masthead-rule {
+  flex: 0 1 4rem;
+  height: 2px;
+  background: color-mix(
+    in srgb,
+    var(--project-tag-color, var(--theme-orange)) 55%,
+    transparent
+  );
+}
+
+/* Size only: this is the page's first header, so its accent fill and white
+   ring come from the shared blog-header outline (styles/article/blogArticle.css). */
+.blog-masthead-title {
+  margin-top: 0.7rem;
+  font-size: clamp(1.65rem, 4vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: 0.015em;
+  text-transform: none;
+  text-wrap: balance;
+}
+
+.blog-masthead-desc {
+  margin-top: 0.85rem;
+  max-width: 46rem;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  line-height: 1.5;
+  letter-spacing: 0.015em;
+  color: var(--time-ink-muted);
+}

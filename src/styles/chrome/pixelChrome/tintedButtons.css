@@ -1,0 +1,41 @@
+/* Per-theme tinted button plates. */
+
+.retro-link.pixel-frame,
+.split-card-action {
+  --plate-base: var(--outline-color);
+  /* Day: tinted plate, dark label. */
+  --tile-fill: color-mix(in srgb, var(--plate-base) 20%, var(--time-white));
+  --tile-light: color-mix(in srgb, var(--tile-fill) 55%, var(--time-white));
+  --tile-dark: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
+  color: color-mix(in srgb, var(--plate-base) 25%, var(--time-black));
+}
+
+:root[data-mode="night"] .retro-link.pixel-frame,
+:root[data-mode="night"] .split-card-action {
+  /* Night flips it: dark tint, light label. */
+  --tile-fill: color-mix(in srgb, var(--plate-base) 30%, var(--time-black));
+  --tile-light: color-mix(in srgb, var(--tile-fill) 55%, var(--time-white));
+  --tile-dark: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
+  color: color-mix(in srgb, var(--plate-base) 12%, var(--time-white));
+}
+
+/* Hover deepens the tint one step instead of jumping to the full accent. */
+.retro-link.pixel-frame:hover,
+.retro-link.pixel-frame:focus-visible,
+.split-card-action:hover,
+.split-card-action:focus-visible {
+  --tile-fill: color-mix(in srgb, var(--plate-base) 32%, var(--time-white));
+  background-color: color-mix(in srgb, var(--plate-base) 32%, var(--time-white));
+  border-color: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
+  color: color-mix(in srgb, var(--plate-base) 30%, var(--time-black));
+}
+
+:root[data-mode="night"] .retro-link.pixel-frame:hover,
+:root[data-mode="night"] .retro-link.pixel-frame:focus-visible,
+:root[data-mode="night"] .split-card-action:hover,
+:root[data-mode="night"] .split-card-action:focus-visible {
+  --tile-fill: color-mix(in srgb, var(--plate-base) 42%, var(--time-black));
+  background-color: color-mix(in srgb, var(--plate-base) 42%, var(--time-black));
+  border-color: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
+  color: color-mix(in srgb, var(--plate-base) 16%, var(--time-white));
+}

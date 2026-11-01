@@ -1,0 +1,67 @@
+/* Carousel dots: the index row, its tile recipe and the active state. */
+
+.card-carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+/* 2rem square button, a real tap target; the tile itself is the ::before. */
+.card-carousel-dot {
+  --dot-accent: var(--icon-accent);
+  --dot-outline: color-mix(in srgb, var(--dot-accent) 42%, var(--time-black));
+  --dot-fill: color-mix(in srgb, var(--dot-accent) 20%, var(--time-black));
+  --dot-light: color-mix(in srgb, var(--dot-accent) 58%, white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* The icon set's tile recipe at dot scale. */
+.card-carousel-dot::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  border: var(--control-outline-width) solid var(--dot-outline);
+  background-color: var(--dot-fill);
+  box-shadow:
+    inset 0 var(--control-bevel) 0 0 var(--dot-light),
+    inset var(--control-bevel) 0 0 0 var(--dot-light),
+    inset 0 calc(var(--control-bevel) * -1) 0 0 var(--dot-outline),
+    inset calc(var(--control-bevel) * -1) 0 0 var(--dot-outline);
+  transition:
+    background-color var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft),
+    transform var(--duration-fast) var(--ease-settle);
+}
+
+.card-carousel-dot:hover::before,
+.card-carousel-dot:focus-visible::before {
+  background-color: color-mix(in srgb, var(--dot-accent) 45%, var(--time-black));
+  transform: scale(1.1);
+}
+
+/* The active index takes the same opaque mode plate as every other control. */
+.card-carousel-dot[aria-current="true"] {
+  --dot-outline: var(--time-button-ink);
+  --dot-fill: var(--time-button-fill);
+  --dot-light: color-mix(
+    in srgb,
+    var(--time-button-fill) 55%,
+    var(--time-white)
+  );
+}
+
+.card-carousel-dot[aria-current="true"]::before {
+  background-color: var(--time-button-fill);
+  border-color: var(--time-button-ink);
+  transform: scale(1.18);
+}

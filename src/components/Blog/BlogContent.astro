@@ -1,6 +1,8 @@
 ---
 // Purpose: Component - src/components/Blog/BlogContent.astro (Render post body and scene images)
 
+import CompactBody from "../UI/CompactBody.astro";
+
 interface SceneItem {
   image: string;
   align?: "left" | "right" | "center";
@@ -403,17 +405,43 @@ const sceneHtml =
         return `<div class="${groupClass}">${groupedScenes}</div>${groupCaptionMarkup}`;
       })
     : videoHtml;
+/*
+ * Every post opens with a [background[x]] marker on its own line, which markdown
+ * wraps in a <p>. Two reasons to unwrap those:
+ *
+ *   - the wrapper added a full paragraph gap for an invisible anchor;
+ *   - it made the marker the article's first <p>, so the lede treatment
+ *     (and the drop cap on it) landed on an empty paragraph instead of the
+ *     opening sentence.
+ *
+ * The span itself stays: scripts in pages/blog/[slug].astro measure its
+ * position to drive the background crossfade.
+ */
+const articleHtml = sceneHtml
+  .replace(/<p>\s*(<span class="bg-marker"[^>]*><\/span>)\s*<\/p>/g, "$1")
+  .replace(/<p>/, '<p class="blog-lede">');
 ---
 
-{/* Article content container. */}
+{/* Reading surface. The frame, plate and padding live in
+       styles/article/blogArticle.css (`#blog-content`), which is also where
+       the prose typography is: one file owns how an article reads.
+
+       `pattern-plate--huge` carries the post's texture across the column: the
+       biggest tile on the site, scrolling at about half the card speed and at a
+       seventh of their opacity, so it registers as a surface and never as
+       movement behind the words. The tile URL comes from the page, which owns
+       the post's theme. */}
 <div
-  class="prose prose-invert max-w-none rounded-none
-         border border-[color:var(--time-border-soft)] bg-[var(--time-panel)]
-         p-4 sm:p-6 md:p-8 backdrop-blur-2xl
-         shadow-[inset_0_0_80px_var(--time-shadow)]"
+  class="blog-article-body pattern-plate pattern-plate--huge"
   id="blog-content"
 >
-  <div set:html={sceneHtml} />
+  {/* Long-form body: Body.astro is sized for short copy and drops under the
+      16px the pixel face needs, so the article's text is rendered through
+      CompactBody instead. No theme prop — the section already carries the
+      post's accent and the body must inherit it. */}
+  <CompactBody>
+    <div set:html={articleHtml} />
+  </CompactBody>
 </div>
 
 <script is:inline>

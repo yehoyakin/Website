@@ -1,0 +1,192 @@
+/* Blog card tile: frame, artwork, overlay, copy. */
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: var(--outline-width) solid var(--outline-color);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  /* Box-shadow lives on the card itself, never on an inset pseudo-element. */
+  transition:
+    transform var(--duration-base) var(--ease-settle),
+    border-color var(--duration-base) var(--ease-soft),
+    box-shadow var(--duration-base) var(--ease-soft);
+}
+
+/* Hover brightens the frame and the artwork; it never moves the card. */
+.blog-card:hover {
+  border-color: var(--outline-color-hover);
+  box-shadow: 0 16px 40px var(--time-shadow);
+}
+
+.blog-card-bar {
+  /* Positioned so the `.pattern-plate` pseudo-element is scoped to the bar.
+     The bar has no fill of its own: the plate supplies the near-black,
+     day / night-tinted surface (styles/chrome/pixelChrome/patternPlates.css). */
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  transition: background-color var(--duration-base) var(--ease-soft);
+}
+
+/* Hover adds a little more of the card's accent to the same dark plate; an
+   unthemed card falls back to the general day / night tint. */
+.blog-card:hover .blog-card-bar {
+  background-color: color-mix(
+    in srgb,
+    rgb(0 0 0 / 0.92) 84%,
+    var(--project-tag-color, var(--plate-tint))
+  );
+}
+
+.blog-card-info-bar {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+/* Fixed-size image area: every card renders the same height. */
+.blog-card-image-wrap {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: clamp(4rem, 24vw, 18rem);
+  overflow: hidden;
+  position: relative;
+  background: var(--time-page);
+}
+
+.blog-card-bg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  /* Own layer: the hover zoom fades a composited bitmap, so it stays sharp. */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition:
+    transform 320ms var(--ease-settle),
+    opacity 320ms var(--ease-soft),
+    filter 320ms var(--ease-soft);
+}
+
+.blog-card:hover .blog-card-bg {
+  transform: translateZ(0) scale(1.05);
+  opacity: 1;
+  filter: brightness(1.1);
+}
+
+/* Dark overlay like split card. */
+.blog-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  opacity: 1;
+  transition: opacity 280ms var(--ease-soft);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.blog-card:hover .blog-card-overlay {
+  opacity: 0.4;
+}
+
+.blog-card-title {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  line-height: 1.2;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  transition: color var(--duration-fast) var(--ease-soft);
+}
+
+/* CARD COPY — every label sits on the near-black plate, so each needs an edge
+   that suits its fill:
+
+     white / muted copy  → a soft shadow; it separates the letters from the plate
+                           without thickening them;
+     accent copy         → a hard ring in the current day / night colour, so a
+                           glyph filled with its own tint keeps its shape.
+
+   `.gallery-thumb` carries `.blog-card`, so the portfolio cards are covered by
+   the same two rules. */
+
+.blog-card .blog-card-title,
+.blog-card .blog-card-date,
+.blog-card .blog-card-desc,
+.blog-card .gallery-thumb-title,
+.blog-card .gallery-thumb-desc {
+  text-shadow:
+    0 1px 2px var(--time-shadow, rgb(0 0 0 / 0.6)),
+    0 0 6px rgb(0 0 0 / 0.5);
+}
+
+/* Accent fill: the project tag always, and a card title once it turns accent on
+   hover / focus — the same in both card families. */
+.blog-card .thumb-tag,
+.blog-card:hover .blog-card-title,
+.blog-card:focus-visible .blog-card-title,
+.blog-card:hover .gallery-thumb-title,
+.blog-card:focus-visible .gallery-thumb-title {
+  --card-copy-ring: var(--time-black, rgb(9 9 11));
+  --card-copy-step: max(1px, calc(1em / 16));
+  text-shadow:
+    var(--card-copy-step) 0 0 var(--card-copy-ring),
+    calc(var(--card-copy-step) * -1) 0 0 var(--card-copy-ring),
+    0 var(--card-copy-step) 0 var(--card-copy-ring),
+    0 calc(var(--card-copy-step) * -1) 0 var(--card-copy-ring),
+    var(--card-copy-step) var(--card-copy-step) 0 var(--card-copy-ring),
+    calc(var(--card-copy-step) * -1) var(--card-copy-step) 0
+      var(--card-copy-ring),
+    var(--card-copy-step) calc(var(--card-copy-step) * -1) 0
+      var(--card-copy-ring),
+    calc(var(--card-copy-step) * -1) calc(var(--card-copy-step) * -1) 0
+      var(--card-copy-ring);
+}
+
+.blog-card-date {
+  transition: color var(--duration-fast) var(--ease-soft);
+}
+
+.blog-card-desc {
+  transition: color var(--duration-fast) var(--ease-soft);
+}
+
+@media (max-width: 768px) {
+  .blog-card-image-wrap {
+    min-height: 10rem;
+  }
+  .blog-card-title {
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-card-image-wrap {
+    min-height: 8.5rem;
+  }
+  .blog-card-bar {
+    padding: 0.6rem 0.85rem;
+  }
+  .blog-card-info-bar {
+    padding: 0.75rem 0.85rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-card,
+  .blog-card-bg,
+  .blog-card-bar,
+  .blog-card-overlay,
+  .blog-card-title,
+  .blog-card-date,
+  .blog-card-desc {
+    transition: none !important;
+    animation: none !important;
+  }
+}

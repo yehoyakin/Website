@@ -1,0 +1,120 @@
+/* Thumbnail slide: the gallery's blog-card tile and its screenshot carousel. */
+
+.gallery-project-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 0 0 auto;
+  transition: transform 320ms var(--ease-settle);
+}
+
+/* The tile IS a blog card: `.blog-card` carries the frame, the two bars and the
+   hover. This class only turns the <button> into one and fixes its width in the
+   horizontal strip. */
+.gallery-thumb {
+  width: clamp(260px, 40vw, 480px);
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  background: transparent;
+  border-radius: 0;
+}
+
+.gallery-thumb:hover {
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.5),
+    0 0 30px
+      color-mix(in srgb, var(--thumb-theme-color, white) 15%, transparent);
+}
+
+.gallery-thumb:focus {
+  outline: none;
+  border-color: white;
+  box-shadow:
+    0 0 0 6px rgba(255, 255, 255, 0.2),
+    0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Top bar: the project's engine / tool name, where a post puts its date. */
+.thumb-tag {
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Copy bar: the same two type roles as a blog card, in the page ink. */
+.gallery-thumb-title {
+  display: block;
+  color: var(--time-ink);
+  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  word-break: break-word;
+  transition: color var(--duration-fast) var(--ease-soft);
+}
+
+/* The card's own accent on hover / focus, exactly like a blog card title (the
+   ring that goes with an accent fill is in blogCard/blogCardTile.css). */
+.gallery-thumb:hover .gallery-thumb-title,
+.gallery-thumb:focus-visible .gallery-thumb-title {
+  color: var(--project-tag-color, var(--theme-orange));
+}
+
+.gallery-thumb-desc {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--time-ink-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+/* Artwork: the screenshots stack inside the image area and swap. */
+.thumb-carousel {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.thumb-carousel-img {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transform: scale(1);
+  transition:
+    opacity 480ms var(--ease-soft),
+    transform 480ms var(--ease-settle);
+}
+
+.thumb-carousel-img.active {
+  opacity: 1;
+}
+
+/* Image zooms and brightens on hover. */
+.gallery-thumb:hover .thumb-carousel-img.active {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Dark overlay like split card. */
+.thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  transition: opacity 320ms var(--ease-soft);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gallery-thumb:hover .thumb-overlay {
+  opacity: 0.4;
+}

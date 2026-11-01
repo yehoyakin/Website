@@ -1,0 +1,14 @@
+/* Phone type scale: the font-size-* step that shrinks the whole page. */
+
+@media (max-width: 767px) {
+  html:root {
+    --font-size-xs: 0.8rem; /* 12.8px. */
+    --font-size-sm: 0.9rem; /* 14.4px. */
+    --font-size-base: 1rem; /* 16px — also the root size. */
+    --font-size-lg: 1.1rem; /* 17.6px. */
+    --font-size-xl: 1.3rem; /* 20.8px. */
+    --font-size-2xl: 1.6rem; /* 25.6px. */
+    --font-size-3xl: 1.9rem; /* 30.4px. */
+    --font-size-4xl: 2.25rem; /* 36px — phone page titles. */
+  }
+}

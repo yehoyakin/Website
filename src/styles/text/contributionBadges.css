@@ -1,0 +1,115 @@
+/* Contribution block — presented as a listing card.
+
+   In the markdown it is one <div> holding a heading and a list. Here it wears
+   the same chrome as a blog / portfolio card: the same frame, the same
+   near-black tinted plate, a top bar carrying the heading and a body bar for the
+   entries, each marked with the accent tile the prose lists use. Every selector
+   carries the article scope so it outranks the generic prose list rules. */
+
+:is(#blog-content, .project-panel-body) .retro-contribution {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 1.6rem;
+  overflow: hidden;
+  border: var(--outline-width) solid var(--outline-color, var(--time-border));
+  /* Same near-black, accent-tinted surface as every other card bar. */
+  background-color: color-mix(
+    in srgb,
+    rgb(0 0 0 / 0.92) 90%,
+    var(--project-tag-color, var(--plate-tint))
+  );
+}
+
+/* Top bar: the block's title, where a card puts its date or engine tag. */
+:is(#blog-content, .project-panel-body) .retro-contribution :is(h2, h3, h4) {
+  margin: 0;
+  padding: 0.7rem 1.15rem;
+  border-left: 0;
+  border-bottom: var(--control-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-orange)) 45%,
+      transparent
+    );
+  background-color: color-mix(
+    in srgb,
+    var(--project-tag-color, var(--theme-orange)) 14%,
+    transparent
+  );
+  color: var(--project-tag-color, var(--theme-orange));
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  /* A bar, not an article heading: no outline ring behind the label. */
+  -webkit-text-fill-color: currentColor;
+  text-shadow: none;
+}
+
+/* Body bar: the entries, inset like a card's copy. */
+:is(#blog-content, .project-panel-body) .retro-contribution :is(ul, ol) {
+  margin: 0;
+  padding: 1rem 1.15rem 1.15rem;
+  list-style: none;
+}
+
+:is(#blog-content, .project-panel-body) .retro-contribution :is(ul, ol) > li {
+  position: relative;
+  margin-bottom: 0.55rem;
+  padding-left: 1.15rem;
+  line-height: 1.55;
+  font-weight: normal;
+  font-size: var(--contribution-font-size, 1em);
+}
+
+:is(#blog-content, .project-panel-body)
+  .retro-contribution
+  :is(ul, ol)
+  > li:last-child {
+  margin-bottom: 0;
+}
+
+/* The same accent tile the prose lists use, one step down for the bar. */
+:is(#blog-content, .project-panel-body)
+  .retro-contribution
+  :is(ul, ol)
+  > li::before {
+  content: "";
+  position: absolute;
+  left: 0.1em;
+  top: 0.55em;
+  width: 0.5em;
+  height: 0.5em;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-orange)) 55%,
+      var(--time-black)
+    );
+  background-color: var(--project-tag-color, var(--theme-orange));
+}
+
+.project-role {
+  padding: 0.45rem 0.85rem;
+  font-family: var(--retro-font);
+  font-size: var(--contribution-badge-font-size, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  /* Opaque plate, one value per mode (see foundation/dayNightPalette.css). */
+  color: var(--time-button-ink, var(--time-black, #09090b));
+  background: var(--time-button-fill, rgb(244 244 245));
+  border: var(--outline-width) solid var(--outline-color);
+  box-shadow: 0.1875rem 0.1875rem 0 var(--time-black, #09090b);
+  transition:
+    transform 0.12s var(--ease-press),
+    box-shadow 0.12s var(--ease-press);
+}
+
+.project-role:hover {
+  transform: scale(1.04);
+  box-shadow: 0.0625rem 0.0625rem 0 var(--time-black, #09090b);
+}

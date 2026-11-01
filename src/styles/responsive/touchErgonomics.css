@@ -1,0 +1,20 @@
+/* Phone touch ergonomics: tap delay, text inflation, field zoom. */
+
+@media (max-width: 767px) {
+  html {
+    /* Stop iOS from inflating text inside narrow blocks. */
+    -webkit-text-size-adjust: 100%;
+  }
+  /* Removes the ~300ms tap delay and the double-tap-zoom heuristic on. */
+  a,
+  button,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+  /* Keep 16px so focusing a field does not trigger iOS zoom-on-focus. */
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}

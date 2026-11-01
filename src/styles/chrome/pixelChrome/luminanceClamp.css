@@ -1,0 +1,18 @@
+/* Clamp derived tile lightness so no theme's chrome washes out. */
+
+@supports (color: hsl(from red h s l)) {
+  .pixel-frame,
+  .retro-link.pixel-frame,
+  .split-card-action {
+    --chrome-tile-cap: 44;
+    --tile-dark: hsl(
+      from color-mix(in srgb, var(--outline-color) 45%, var(--time-black)) h s
+        min(l, var(--chrome-tile-cap))
+    );
+  }
+}
+
+/* Hero portrait: the button chrome around the artwork. */
+.portrait-frame:hover {
+  background-color: var(--tile-fill);
+}

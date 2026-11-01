@@ -1,0 +1,12 @@
+/* Foundation: reset, tokens, palettes, type, motion, fonts. */
+
+@import "layoutPrimitives.css";
+@import "designTokens.css";
+@import "dayNightPalette.css";
+@import "accentTextColors.css";
+@import "pixelTypeHierarchy.css";
+@import "baseReset.css";
+@import "motionCurves.css";
+@import "pageDissolveTransition.css";
+@import "fontFaces.css";
+@import "fontFamilyTokens.css";

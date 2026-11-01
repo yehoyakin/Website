@@ -1,0 +1,35 @@
+/* Thumbnail strip: the horizontal scroller and the row of slides inside it. */
+
+.gallery-thumbnails-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  padding: 1rem 0 2rem 0;
+  position: relative;
+  z-index: 3;
+}
+
+.gallery-thumbnails-wrapper::-webkit-scrollbar {
+  height: 0.65rem;
+}
+
+.gallery-thumbnails-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gallery-thumbnails-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+}
+
+.gallery-thumbnails {
+  display: flex;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  padding: 0 1rem;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: min-content;
+}

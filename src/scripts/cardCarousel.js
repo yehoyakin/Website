@@ -3,7 +3,7 @@
  *
  * Turns a horizontally scrolling strip into a one-card-at-a-time carousel.
  * Swiping/dragging stays native (the strip keeps its `overflow-x` and gains
- * CSS scroll-snap in `styles/base/responsive.css`); this script only adds and
+ * CSS scroll-snap in `styles/responsive/responsive.css`); this script only adds and
  * syncs the controls — prev/next arrows plus position dots — because the
  * browser scrollbar is hidden.
  *
@@ -65,11 +65,16 @@ function initStrip(scroller) {
     scroller.dataset.carouselLabel || "Carousel navigation",
   );
 
-  // Pixel-art arrow icons from the shared set rather than text glyphs. Text
-  // arrows render with whatever font ends up applied, which the pixel themes
-  // turn into odd or missing shapes; the artwork is the same everywhere.
+  // Pixel-art arrows from the shared set rather than text glyphs. Text arrows
+  // render with whatever font ends up applied, which the pixel themes turn into
+  // odd or missing shapes; the artwork is the same everywhere.
+  //
+  // These are the set's framed Triangle glyphs — the same artwork
+  // config/icons.ts resolves for `arrow-left` / `arrow-right` (that module
+  // reads the filesystem at build time, so it cannot be imported here). The
+  // generated `Arrow *` files are gone.
   // Resolved against BASE_URL because these files live in public/.
-  const ARROW_FILE = { prev: "Arrow Left", next: "Arrow Right" };
+  const ARROW_FILE = { prev: "Triangle Left", next: "Triangle Right" };
 
   /* The two base colours come from the page (MyLayout renders them from
      config/icons.ts, which reads tokens.css), so the glyphs are drawn in the

@@ -1,0 +1,17 @@
+/* The article and the portfolio write-up share one prose block (see. */
+
+@media (max-width: 767px) {
+  :is(#blog-content, .project-panel-body),
+  :is(#blog-content, .project-panel-body) p {
+    text-align: left;
+  }
+  /* The long-form body sits exactly on its 16px floor here: BoldPixels is drawn. */
+  .compact-body {
+    font-size: 16px;
+    line-height: 1.52;
+  }
+  :is(#blog-content, .project-panel-body) p {
+    margin-top: 0;
+    margin-bottom: 0.9rem;
+  }
+}

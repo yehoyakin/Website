@@ -1,0 +1,56 @@
+/* Reading surface: black plate, pattern, accent edge, measure, insets. */
+
+.blog-article-body,
+.project-panel-body {
+  position: relative;
+  max-width: 56rem;
+  margin-inline: auto;
+  padding: 1.5rem 1.25rem 2rem;
+  border: var(--outline-width) solid
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-orange)) 28%,
+      var(--time-border-soft)
+    );
+  /* The near-black, day / night-tinted fill comes from `.pattern-plate`
+     (styles/chrome/pixelChrome/patternPlates.css), like every other plate. */
+  background-image: none;
+  box-shadow: none;
+  isolation: isolate;
+}
+
+/* Spacing in the page belongs to each page, not to the shared surface. */
+.blog-article-body {
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .blog-article-body,
+  .project-panel-body {
+    padding: 2.25rem 2.5rem 2.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .blog-article-body,
+  .project-panel-body {
+    padding: 2.75rem 3.25rem 3.25rem;
+  }
+}
+
+/* Accent edge along the top of the column. `::after`, so the plate pattern can
+   keep `::before` (`styles/chrome/pixelChrome/patternPlates.css`). */
+.blog-article-body::after,
+.project-panel-body::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    var(--project-tag-color, var(--theme-orange)) 0%,
+    transparent 85%
+  );
+  pointer-events: none;
+}

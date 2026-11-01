@@ -1,0 +1,60 @@
+/* Carousel arrows: the control row and its prev / next buttons. */
+
+/* Controls row (markup built by scripts/cardCarousel.js). */
+.card-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0.25rem;
+}
+
+.card-carousel-arrow {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Same box and glyph as every other chrome icon control. */
+  width: var(--icon-button-size, 2.75rem);
+  height: var(--icon-button-size, 2.75rem);
+  padding: 0;
+  /* Opaque plate, one value per mode (see foundation/dayNightPalette.css). */
+  border: var(--control-outline-width) solid var(--time-button-ink);
+  background-color: var(--time-button-fill);
+  /* Same lit-from-above plate as every other button. */
+  background-image: var(--button-lighting);
+  color: var(--time-button-ink);
+  box-shadow:
+    inset 0 var(--control-bevel) 0 0
+      color-mix(in srgb, var(--time-button-fill) 55%, var(--time-white)),
+    inset var(--control-bevel) 0 0 0
+      color-mix(in srgb, var(--time-button-fill) 55%, var(--time-white)),
+    inset 0 calc(var(--control-bevel) * -1) 0 0
+      color-mix(in srgb, var(--time-button-fill) 70%, var(--time-black)),
+    inset calc(var(--control-bevel) * -1) 0 0 0
+      color-mix(in srgb, var(--time-button-fill) 70%, var(--time-black));
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+/* Arrow artwork injected by scripts/cardCarousel.js, at the shared glyph size
+   (pixelChrome/iconButtons.css) — this rule only sets how it paints. */
+.card-carousel-arrow img {
+  display: block;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+/* The arrows wrap, so they are never disabled; hover is the only state. */
+.card-carousel-arrow:hover,
+.card-carousel-arrow:focus-visible {
+  background: color-mix(
+    in srgb,
+    var(--time-button-fill) 85%,
+    var(--time-button-ink)
+  );
+}

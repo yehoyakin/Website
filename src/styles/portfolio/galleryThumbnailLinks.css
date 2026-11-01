@@ -1,0 +1,23 @@
+/* Thumbnail links: the always-visible link row under each thumb. */
+
+.thumb-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  max-width: clamp(260px, 40vw, 480px);
+}
+
+.thumb-links .retro-link {
+  font-size: 0.9rem !important;
+  padding: 0.3rem 0.6rem !important;
+  border-radius: 0 !important;
+  white-space: nowrap;
+  border-width: var(--outline-width) !important;
+  letter-spacing: 0.1em !important;
+}
+
+.thumb-links .retro-link:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}

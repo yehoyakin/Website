@@ -75,7 +75,7 @@ const blog = defineCollection({
                 z.object({
                   href: z.string(),
                   text: z.string().optional(),
-                  // Icon name from public/images/genIcons, e.g. "Handbag".
+                  // Icon name from the registry in config/icons.ts, e.g. "Handbag".
                   icon: z
                     .string()
                     .optional()

@@ -1,9 +1,11 @@
 ---
-import CallCard from "./CallCard.astro";
+import BlogCard from "./BlogCard.astro";
+import CompactBody from "../UI/CompactBody.astro";
 import SocialLink from "../shared/Link.astro";
 import Icon from "../shared/Icon.astro";
 import { asset } from "../../utils/asset";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import type { ProjectRole } from "../../config/uiDictionary";
 import { patternForTheme } from "../../config/patterns";
 
 interface Props {
@@ -14,6 +16,19 @@ interface Props {
 }
 
 const { projects } = Astro.props;
+
+/* Roles are stored as the schema's enum keys; the panel shows their labels. */
+const roleLabels: Record<ProjectRole, string> = {
+  lead_programmer: "Lead Programmer",
+  ui: "UI",
+  game_design: "Game Design",
+  art: "Art",
+  audio: "Audio",
+  tech_art: "Tech Art",
+  systems: "Systems",
+  tools: "Tools",
+  developer: "Developer",
+};
 ---
 
 <div id="project-gallery" class="project-gallery">
@@ -28,7 +43,7 @@ const { projects } = Astro.props;
   </div>
 
   <!-- Scrollable thumbnail grid. On phones this becomes a one-card-at-a-time
-       carousel (see styles/base/responsive.css + scripts/cardCarousel.js). -->
+       carousel (see styles/responsive/responsive.css + scripts/cardCarousel.js). -->
   <div
     class="gallery-thumbnails-wrapper"
     data-carousel
@@ -42,34 +57,50 @@ const { projects } = Astro.props;
           const themeToken = resolveThemeToken(themeName);
           return (
             <div class="gallery-project-item">
-              {/* Thumbnail button */}
+              {/* The same card anatomy the blog listing uses (BlogCard): a meta
+                  bar, the artwork, then the copy bar. The <button> wrapper is
+                  the one difference — a click expands the panel here instead of
+                  navigating to an article. */}
               <button
-                class="gallery-thumb pixel-frame"
+                class="gallery-thumb blog-card pixel-frame"
                 aria-label={`Expand project ${project.data.title ?? index + 1}`}
                 title={project.data.title}
                 data-thumb-index={index}
-                style={`--thumb-theme-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+                style={`--thumb-theme-color: ${themeToken}; --project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
               >
-                {/* Image carousel */}
-                <div class="thumb-carousel">
-                  {project.data.images.map((img: string, imgIndex: number) => (
-                    <img
-                      src={asset(img)}
-                      alt={`${project.data.title ?? `Project ${index + 1}`} - Image ${imgIndex + 1}`}
-                      class={`thumb-carousel-img ${imgIndex === 0 ? "active" : ""}`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ))}
-                </div>
-                <div class="thumb-overlay" />
-
-                {/* Bottom info bar: title + tag. A small overlay on the card,
-                    so it takes the small pattern tile. */}
-                <div class="thumb-info-bar pattern-plate pattern-plate--small">
-                  <span class="thumb-title">{project.data.title}</span>
+                {/* TOP BAR - the project's engine / tool tag, where a post puts
+                    its date. */}
+                <div class="blog-card-bar pattern-plate pattern-plate--small">
                   <span class="thumb-tag" style={`color: ${themeToken}`}>
                     {project.data.tag}
+                  </span>
+                </div>
+
+                {/* IMAGE - the project's screenshots, swapping on a timer. */}
+                <div class="blog-card-image-wrap">
+                  <div class="thumb-carousel">
+                    {project.data.images.map(
+                      (img: string, imgIndex: number) => (
+                        <img
+                          src={asset(img)}
+                          alt={`${project.data.title ?? `Project ${index + 1}`} - Image ${imgIndex + 1}`}
+                          class={`thumb-carousel-img ${imgIndex === 0 ? "active" : ""}`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ),
+                    )}
+                  </div>
+                  <div class="thumb-overlay" />
+                </div>
+
+                {/* BOTTOM BAR - title + description. */}
+                <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+                  <span class="gallery-thumb-title">
+                    {project.data.title}
+                  </span>
+                  <span class="gallery-thumb-desc">
+                    {project.data.shortDescription}
                   </span>
                 </div>
               </button>
@@ -93,30 +124,57 @@ const { projects } = Astro.props;
     </div>
   </div>
 
-  <!-- CallCard Panels - positioned outside the scroll container for full width -->
+  <!-- Expandable panels - outside the scroll container so they can use the
+       full page width. Each one holds the same card the blog listing uses
+       (BlogCard), the project's role chips, and its write-up. -->
   <div class="gallery-panels-container">
     {
-      projects.map((project, index) => (
-        <div class="gallery-card-panel" data-panel={index}>
-          <button
-            class="collapse-btn icon-button"
-            aria-label="Collapse project"
-            data-collapse={index}
+      projects.map((project, index) => {
+        const roles: ProjectRole[] = project.data.roles ?? [];
+        const themeName = toThemeName(project.data.theme);
+
+        return (
+          <div
+            class="gallery-card-panel"
+            data-panel={index}
+            style={`--plate-pattern: url('${patternForTheme(themeName)}')`}
           >
-            {/* Collapsing pushes the card back up, hence the up arrow. */}
-            <Icon name="arrow-up" theme={project.data.theme} class="h-9 w-9" />
-          </button>
-          <CallCard
-            tag={project.data.tag}
-            title={project.data.title}
-            shortDescription={project.data.shortDescription}
-            fullDescription={project.rendered}
-            roles={project.data.roles}
-            theme={project.data.theme}
-            backgroundImage={asset(project.data.images[0])}
-          />
-        </div>
-      ))
+            <button
+              class="collapse-btn icon-button"
+              aria-label="Collapse project"
+              data-collapse={index}
+            >
+              {/* Collapsing pushes the card back up, hence the up arrow. */}
+              <Icon
+                name="arrow-up"
+                theme={project.data.theme}
+                class="h-9 w-9"
+              />
+            </button>
+
+            <BlogCard project={project} />
+
+            {
+              roles.length > 0 && (
+                <div class="project-panel-meta">
+                  {roles.map((role) => (
+                    <span class="project-role">{roleLabels[role]}</span>
+                  ))}
+                </div>
+              )
+            }
+
+            {/* The write-up reads on the same plate as the article: the panel
+                carries the project's pattern, the body the huge tile. */}
+            <CompactBody
+              theme={project.data.theme}
+              class="project-panel-body pattern-plate pattern-plate--huge"
+            >
+              <div set:html={project.rendered} />
+            </CompactBody>
+          </div>
+        );
+      })
     }
   </div>
 </div>
@@ -158,17 +216,12 @@ const { projects } = Astro.props;
         p.style.display = "none";
         p.classList.remove("panel-hover-preview");
         p.classList.remove("panel-hover-fadeout");
-        const card = p.querySelector(".retro-expandable-card");
-        if (card) card.setAttribute("data-active", "false");
       });
 
       const panel = panels.find((p) => p.dataset.panel === String(index));
       if (panel) {
         panel.style.display = "block";
         activeProject = index;
-
-        const card = panel.querySelector(".retro-expandable-card");
-        if (card) card.setAttribute("data-active", "true");
 
         // Update background
         const bgImg = document.getElementById("gallery-bg-img");
@@ -201,8 +254,6 @@ const { projects } = Astro.props;
         p.style.display = "none";
         p.classList.remove("panel-hover-preview");
         p.classList.remove("panel-hover-fadeout");
-        const card = p.querySelector(".retro-expandable-card");
-        if (card) card.setAttribute("data-active", "false");
       });
       activeProject = null;
 
@@ -215,7 +266,7 @@ const { projects } = Astro.props;
     thumbs.forEach((thumb) => {
       const index = Number(thumb.dataset.thumbIndex);
 
-      // Hover preview: show CallCard semi-visible on thumbnail hover
+      // Hover preview: show the panel semi-visible on thumbnail hover
       if (canHover) {
         thumb.addEventListener("mouseenter", () => {
           // Don't show hover preview if a panel is already expanded

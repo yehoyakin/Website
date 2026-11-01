@@ -13,7 +13,7 @@
  * across a panel instead of blurring artwork behind it.
  *
  * Tiles are opaque black-and-white silhouettes, so they are never painted
- * directly: styles/components/callCard.css blends them in `screen` mode, which
+ * directly: styles/chrome/pixelChrome.css blends them in `screen` mode, which
  * leaves the black areas untouched and turns the shapes into light texture.
  *
  * Paths go through utils/asset.ts, which prefixes BASE_URL. The site is served

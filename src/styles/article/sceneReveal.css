@@ -1,0 +1,35 @@
+/* Scroll-reveal: figures start hidden, fade in on scroll. */
+.scene-reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 700ms var(--ease-soft),
+    transform 700ms var(--ease-settle);
+}
+
+.scene-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children in grouped scene grids. */
+.scene-reveal.revealed > *:nth-child(1) {
+  transition-delay: 0ms;
+}
+.scene-reveal.revealed > *:nth-child(2) {
+  transition-delay: 100ms;
+}
+.scene-reveal.revealed > *:nth-child(3) {
+  transition-delay: 200ms;
+}
+.scene-reveal.revealed > *:nth-child(4) {
+  transition-delay: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

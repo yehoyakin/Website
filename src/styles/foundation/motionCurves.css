@@ -1,0 +1,22 @@
+/* Shared keyframes: the scrolling pattern and the reduced-motion opt-out. */
+
+/* Scrolling pixel pattern. It travels exactly one tile so the loop is seamless;
+   the SIGN comes from --plate-pattern-shift, so day drifts up-left and night
+   drifts down-right (see chrome/pixelChrome/patternPlates.css). */
+@keyframes plate-pattern-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position:
+      calc(var(--pattern-tile, 96px) * var(--plate-pattern-shift, -1))
+      calc(var(--pattern-tile, 96px) * var(--plate-pattern-shift, -1));
+  }
+}
+
+/* Reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .split-card-background {
+    animation: none;
+  }
+}

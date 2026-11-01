@@ -1,0 +1,40 @@
+/* Tile chrome tokens: outline weights, the icon-button box, pattern tile sizes. */
+
+:root {
+  /* Two weights: panels stay chunky, controls read thin. */
+  --outline-width: 4px;
+  --tile-bevel: 4px;
+  --control-outline-width: 2px;
+  --control-bevel: 2px;
+  /* One box for every bare icon control in the site chrome — the switch, the
+     contact / sidebar handles, the carousel arrows. It follows the chrome
+     control token, so they all step down together on phones. */
+  --icon-button-size: var(--chrome-control);
+  /* One glyph inside that box, so every one of them carries the same artwork
+     at the same size. Inline icons (card meta, titles) are NOT this size. */
+  --icon-button-glyph: 1.75rem;
+  /* The plate fill: near-black, tinted with the host's own accent. */
+  --plate-fill-dark: rgb(0 0 0 / 0.92);
+  /* Lit-from-above plate: a bright band across the top edge that falls away to a
+     dark base. Every button wears it (links, card actions, carousel arrows, the
+     back link); cards and panels keep their own tile fill. `--tile-light` /
+     `--tile-dark` are set by the themed plates, so a themed button lights in
+     its own accent and an unthemed one lights in white / black. */
+  --button-lighting: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 85%, transparent)
+      0%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 42%, transparent)
+      16%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 8%, transparent) 34%,
+    transparent 52%,
+    color-mix(in srgb, var(--tile-dark, var(--time-black)) 55%, transparent) 100%
+  );
+  /* Pattern tile sizes — one per plate step. */
+  --pattern-size-huge: 1024px;
+  --pattern-size-medium: 512px;
+  --pattern-size-normal: 256px;
+  --pattern-size-small: 128px;
+  --outline-color: var(--project-tag-color, var(--time-border));
+  --outline-color-hover: var(--outline-color);
+}

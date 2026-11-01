@@ -1,0 +1,148 @@
+/* Day / night colours. */
+
+:root {
+  /* The two time colours. */
+  --time-white: rgb(255 255 255);
+  --time-black: rgb(9 9 11);
+  /* Day — the original look: bright whites, translucent darks. */
+  --time-page: var(--time-black);
+  --time-surface: rgb(9 9 11 / 0.75);
+  --time-panel: rgb(9 9 11 / 0.62);
+  --time-ink: rgb(244 244 245);
+  /* No neutrals: secondary copy is white carrying a heavy wash of whatever
+     accent its host sets (a card's theme, or the general day / night tint).
+     Resolved per element, so each card's small copy wears its own colour. */
+  --time-ink-muted: color-mix(
+    in srgb,
+    var(--time-white) 55%,
+    var(--project-tag-color, var(--plate-tint))
+  );
+  --time-border: rgb(255 255 255 / 0.7);
+  --time-highlight: var(--time-white);
+  --time-scrim: rgb(9 9 11 / 0.85);
+  /* The general tint: the default accent for anything without a theme, and the
+     fallback tint for pattern plates. A themed host overrides it through its
+     own --project-tag-color. */
+  --plate-tint: var(--theme-main-day);
+  /* Opaque button plate: no alpha at all, so nothing shows through the fill. */
+  --time-button-fill: color-mix(in srgb, var(--theme-main-day) 10%, var(--time-white));
+  --time-button-ink: color-mix(in srgb, var(--theme-main-day) 25%, var(--time-black));
+  /* Accent for mode-driven chrome (the gallery index dots): the DAY MAIN. */
+  --icon-accent: var(--theme-main-day);
+  color-scheme: dark;
+  /* Derived (same formula in both modes). */
+  --time-border-soft: color-mix(in srgb, var(--time-border) 11%, transparent);
+  --time-wash: color-mix(in srgb, var(--time-ink) 4%, transparent);
+  --time-shadow: rgb(0 0 0 / 0.6);
+}
+
+/* Night — blacks down, panels denser, type to greyish white. */
+:root[data-mode="night"] {
+  --time-page: rgba(0, 0, 0, 0.797);
+  --time-surface: rgba(0, 0, 0, 0.671);
+  --time-panel: rgb(0 0 0 / 0.96);
+  --time-ink: rgb(230, 230, 232);
+  /* Muted ink is NOT redefined here on purpose: the host rule below owns it,
+     and a night value declared on :root would win over that rule and freeze the
+     tint back to the root accent. */
+  --time-border: rgb(255 255 255 / 0.5);
+  --time-highlight: rgb(255 255 255 / 0.9);
+  --time-scrim: rgba(0, 0, 0, 0.886);
+  /* Same tint, flipped to the night base colour. */
+  --plate-tint: var(--theme-main-night);
+  /* Night flips the pair: the night base colour, mixed with black. */
+  --time-button-fill: color-mix(in srgb, var(--theme-main-night) 22%, var(--time-black));
+  --time-button-ink: color-mix(in srgb, var(--theme-main-night) 12%, var(--time-white));
+  /* Same accent, flipped to the night base colour. */
+  --icon-accent: var(--theme-main-night);
+  /* Night accents: the day hues lifted toward white so they stay legible. */
+  --theme-orange: color-mix(in srgb, #ff9c00 88%, white 12%);
+  --theme-purple: color-mix(in srgb, #d366e7 88%, white 12%);
+  --theme-yellow: color-mix(in srgb, #ffce41 88%, white 12%);
+  --theme-green: color-mix(in srgb, #51c229 88%, white 12%);
+  --theme-pink: color-mix(in srgb, #ffa4b1 88%, white 12%);
+  --theme-blue: color-mix(in srgb, #0278d8 88%, white 12%);
+  --theme-lightgreen: color-mix(in srgb, #87e42e 88%, white 12%);
+  --theme-red: color-mix(in srgb, #ff5a0b 88%, white 12%);
+  --theme-gray: color-mix(in srgb, #7c99ad 88%, white 12%);
+  --theme-lightblue: color-mix(in srgb, #28a8ea 88%, white 12%);
+  --theme-white: color-mix(in srgb, #eaeef4 88%, white 12%);
+  --theme-black: color-mix(in srgb, #304666 88%, white 12%);
+}
+
+/* Muted ink, re-derived on every host that carries an accent.
+
+   A var() inside a custom property is substituted where the property is
+   DECLARED, not where it is used — so a definition on :root is computed once
+   with the root accent and inherited as that fixed colour, which is why cards
+   were reading the day / night tint instead of their own. Declaring it again on
+   the elements that set --project-tag-color computes it per host: a project
+   card tints with its project, a post's copy with its theme, and unthemed
+   chrome falls back to the general tint. */
+:is(
+  .pixel-frame,
+  .theme-color,
+  .blog-masthead,
+  #blog-content,
+  .project-panel-body,
+  .split-card
+) {
+  --time-ink-muted: color-mix(
+    in srgb,
+    var(--time-white) 55%,
+    var(--project-tag-color, var(--plate-tint))
+  );
+}
+
+/* Blog pages at night — not pitch black. */
+:root[data-mode="night"][data-page="blog"] {
+  --time-page: rgb(0 0 0 / 0.9);
+}
+
+:root[data-mode="night"][data-page="blog"] body {
+  background-color: transparent;
+}
+
+/* UI text aliases. */
+:root {
+  --ui-base: var(--time-ink);
+  --ui-muted: var(--time-ink-muted);
+  --ui-invert: var(--time-ink);
+}
+
+/* Page. */
+html,
+body {
+  background-color: var(--time-page);
+  color: var(--time-ink);
+}
+
+/* NIGHT BACKDROPS — page backdrops 33% darker. */
+
+:root[data-mode="night"] .blurred-bg-layer:not(.page-backdrop) img,
+:root[data-mode="night"] .gallery-bg {
+  filter: brightness(0.8);
+}
+
+/* Post backgrounds dim through a token rather than an `!important` filter. */
+:root[data-mode="night"] {
+  --layer-dim: 0.8;
+}
+
+/* Night accents keep saturation: only the lightness channel moves. */
+@supports (color: hsl(from red h s l)) {
+  :root[data-mode="night"] {
+    --theme-orange: hsl(from #ff9c00 h s min(calc(l + 7), 93));
+    --theme-purple: hsl(from #d366e7 h s min(calc(l + 7), 93));
+    --theme-yellow: hsl(from #ffce41 h s min(calc(l + 7), 93));
+    --theme-green: hsl(from #51c229 h s min(calc(l + 7), 93));
+    --theme-pink: hsl(from #ffa4b1 h s min(calc(l + 7), 93));
+    --theme-blue: hsl(from #0278d8 h s min(calc(l + 7), 93));
+    --theme-lightgreen: hsl(from #87e42e h s min(calc(l + 7), 93));
+    --theme-red: hsl(from #ff5a0b h s min(calc(l + 7), 93));
+    --theme-gray: hsl(from #7c99ad h s min(calc(l + 7), 93));
+    --theme-lightblue: hsl(from #28a8ea h s min(calc(l + 7), 93));
+    --theme-white: hsl(from #eaeef4 h s min(calc(l + 7), 93));
+    --theme-black: hsl(from #304666 h s min(calc(l + 7), 93));
+  }
+}
