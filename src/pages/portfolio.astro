@@ -29,9 +29,12 @@ const imagesToPreload = [bgDay, bgNight, ...cardPreviews];
 
 <MyLayout title="Portfolio | JoacoDev" preloadImages={imagesToPreload}>
   {/* `relative` (not `absolute inset-0`): the page box has to grow with the
-      content so the project band below can run to its real bottom edge. */}
+      content so the project band below can run to its real bottom edge. No
+      `overflow-x-hidden` here either — the band is wider than this box so it
+      can reach past the layout gutter to the viewport edges; `main` above
+      already clips that overflow. */}
   <div
-    class="relative w-full min-h-screen overflow-x-hidden bg-[var(--time-page)]"
+    class="relative w-full min-h-screen bg-[var(--time-page)]"
   >
     <PageBackdrop
       day="images/pageBackgrounds/PortfolioDay.gif"

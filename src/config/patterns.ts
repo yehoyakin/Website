@@ -26,22 +26,22 @@ import { asset } from "../utils/asset";
 
 /** One tile per theme colour, in theme order. */
 const THEME_PATTERNS: Record<string, string> = {
-  orange: "patterns/256/pattern_0000.png",
-  purple: "patterns/256/pattern_0020.png",
-  yellow: "patterns/256/pattern_0004.png",
-  green: "patterns/256/pattern_0012.png",
-  pink: "patterns/256/pattern_0015.png",
-  blue: "patterns/256/pattern_0005.png",
-  lightgreen: "patterns/256/pattern_0006.png",
-  red: "patterns/256/pattern_0023.png",
-  gray: "patterns/256/pattern_0008.png",
-  lightblue: "patterns/256/pattern_0009.png",
-  white: "patterns/256/pattern_0010.png",
-  black: "patterns/256/pattern_0011.png",
+  orange: "patterns/256/pattern_0000.webp",
+  purple: "patterns/256/pattern_0020.webp",
+  yellow: "patterns/256/pattern_0004.webp",
+  green: "patterns/256/pattern_0012.webp",
+  pink: "patterns/256/pattern_0015.webp",
+  blue: "patterns/256/pattern_0005.webp",
+  lightgreen: "patterns/256/pattern_0006.webp",
+  red: "patterns/256/pattern_0023.webp",
+  gray: "patterns/256/pattern_0008.webp",
+  lightblue: "patterns/256/pattern_0009.webp",
+  white: "patterns/256/pattern_0010.webp",
+  black: "patterns/256/pattern_0011.webp",
 };
 
 /** Any theme without an entry — and any unthemed card — gets this one. */
-const DEFAULT_PATTERN = "patterns/256/pattern_0012.png";
+const DEFAULT_PATTERN = "patterns/256/pattern_0012.webp";
 
 /** Base-aware URL of the pattern tile for a theme name. */
 export function patternForTheme(theme?: string): string {
