@@ -35,9 +35,9 @@ const {
 
 // Buttons with an icon pin it to the left edge so icons line up in a stack,
 // even when the labels are different lengths. Text-only buttons stay centred.
-// Outbound links use the brand glyph from the PixelNetIcons set (detected
-// from the host); `icon` stays the fallback for everything else.
-const resolvedIcon = netIconForUrl(href) ?? icon;
+// Prefer an explicit icon so themed pages keep their own icon language.
+// Outbound brand glyph detection is only a fallback when no icon was provided.
+const resolvedIcon = icon ?? netIconForUrl(href);
 
 const alignment = resolvedIcon ? "justify-start" : "justify-center";
 
@@ -46,11 +46,12 @@ const alignment = resolvedIcon ? "justify-start" : "justify-center";
    is used outside that context. */
 const themeName = theme ? toThemeName(theme) : undefined;
 const themeToken = themeName ? resolveThemeToken(themeName) : undefined;
-const hasExplicitThemeColor = style?.includes("--project-tag-color");
+const linkThemeMode = theme ? (themeName ?? "tinted") : (tinted ? "tinted" : undefined);
+const hasExplicitThemeColor = style?.includes("--project-tag-color") || false;
+/* The button always carries the host's theme so its tile, border and type
+   stay on the accent — day/night never touches it. */
 const inlineThemeStyle = [
-  !hasExplicitThemeColor && themeToken
-    ? `--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark);`
-    : undefined,
+  `--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --data-link-theme: ${linkThemeMode ?? "tinted"};`,
   style,
 ].filter(Boolean).join("; ");
 
@@ -72,21 +73,14 @@ const classes = [
   rel={external ? "noopener noreferrer" : undefined}
   class={classes}
   style={inlineThemeStyle}
-  /* Marks a THEMED button: styles/chrome/pixelChrome/tintedButtons.css lights
-     it in its own accent instead of the day / night tint, and paints the border
-     and the type white over that tile. Unthemed buttons have no marker and keep
-     following the mode. */
-  data-link-theme={themeName || (tinted ? "tinted" : undefined)}
+  data-link-theme={linkThemeMode}
 >
   {
     resolvedIcon && (
       <Icon
         name={resolvedIcon}
         theme={theme}
-        /* A themed tile is filled with the theme's own colour, so a glyph in
-           that same colour would disappear into it: the label is white over
-           the tile, and the glyph keeps it company. */
-        color={themeName || tinted ? "White" : undefined}
+        color={tinted && !themeName ? "White" : undefined}
         class="relative z-10 h-5 w-5 shrink-0"
       />
     )

@@ -298,7 +298,7 @@ const renderVideo = (
 
   const caption = captionText
     ? `
-      <figcaption class="blog-figcaption ${getCaptionAlignmentClass(align)}">
+      <figcaption class="blog-figcaption blog-figcaption--video blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small ${getCaptionAlignmentClass(align)}">
         ${captionText}
       </figcaption>
     `
@@ -525,48 +525,50 @@ const renderInlineMarkdown = (text: string) => {
           const ListTag = block.ordered ? "ol" : "ul";
 
           return (
-            <ListTag>
-              {block.items.map((item, index) => {
-                const itemText = renderInlineMarkdown(item).map((part, partIndex) => {
-                  if (part.type === "text") return <>{part.value}</>;
-                  if (part.type === "strong") return <strong key={partIndex}>{part.value}</strong>;
-                  if (part.type === "em") return <em key={partIndex}>{part.value}</em>;
-                  return <code key={partIndex}>{part.value}</code>;
-                });
+            <div class="retro-contribution retro-contribution--listing">
+              <ListTag>
+                {block.items.map((item, index) => {
+                  const itemText = renderInlineMarkdown(item).map((part, partIndex) => {
+                    if (part.type === "text") return <>{part.value}</>;
+                    if (part.type === "strong") return <strong key={partIndex}>{part.value}</strong>;
+                    if (part.type === "em") return <em key={partIndex}>{part.value}</em>;
+                    return <code key={partIndex}>{part.value}</code>;
+                  });
 
-                if (block.ordered) {
+                  if (block.ordered) {
+                    return (
+                      <li class="markdown-list-item" key={`${block.ordered ? "ol" : "ul"}-${index}`}>
+                        <span class="list-number-icon" aria-hidden="true">
+                          <img
+                            src={asset(`images/Icons/${listIconColor}/Number ${index + 1}_${listIconColor}.webp`)}
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            class="list-number-icon-img"
+                          />
+                        </span>
+                        <span class="markdown-list-text">{itemText}</span>
+                      </li>
+                    );
+                  }
+
                   return (
                     <li class="markdown-list-item" key={`${block.ordered ? "ol" : "ul"}-${index}`}>
-                      <span class="list-number-icon" aria-hidden="true">
+                      <span class="list-bullet-icon" aria-hidden="true">
                         <img
-                          src={asset(`images/Icons/${listIconColor}/Number ${index + 1}_${listIconColor}.webp`)}
+                          src={asset(`images/Icons/${listIconColor}/Circle Base_${listIconColor}.webp`)}
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          class="list-number-icon-img"
+                          class="list-bullet-icon-img"
                         />
                       </span>
                       <span class="markdown-list-text">{itemText}</span>
                     </li>
                   );
-                }
-
-                return (
-                  <li class="markdown-list-item" key={`${block.ordered ? "ol" : "ul"}-${index}`}>
-                    <span class="list-bullet-icon" aria-hidden="true">
-                      <img
-                        src={asset(`images/Icons/${listIconColor}/Circle Base_${listIconColor}.webp`)}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                        class="list-bullet-icon-img"
-                      />
-                    </span>
-                    <span class="markdown-list-text">{itemText}</span>
-                  </li>
-                );
-              })}
-            </ListTag>
+                })}
+              </ListTag>
+            </div>
           );
         }
 
@@ -604,18 +606,26 @@ const renderInlineMarkdown = (text: string) => {
                           data-lightbox-src={image.src}
                           data-lightbox-alt={titleText || image.alt || `Image ${index + 1}`}
                           style={galleryStyle}
-                        >
-                          <div class="blog-card-image-wrap">
-                            <div class="thumb-carousel">
-                              <img src={image.src} alt={titleText || ""} class="thumb-carousel-media thumb-carousel-img active" loading="lazy" decoding="async" />
-                            </div>
-                            <div class="thumb-overlay" />
-                          </div>
-                          {hasTitleText && (
-                            <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-                              <span class="gallery-thumb-desc">{titleText}</span>
-                            </div>
-                          )}
+                        >                              <div
+                                class="blog-card-image-wrap relative flex min-h-0 flex-col"
+                                style="aspect-ratio:21/10"
+                              >
+                                <div class="thumb-carousel" style="height:100%">
+                                  <img
+                                    src={image.src}
+                                    alt={titleText || ""}
+                                    class="thumb-carousel-media thumb-carousel-img active"
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                </div>
+                                <div class="thumb-overlay" />
+                              </div>
+                              {hasTitleText && (
+                                <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+                                  <span class="gallery-thumb-desc">{titleText}</span>
+                                </div>
+                              )}
                         </button>
                       </div>
                     );

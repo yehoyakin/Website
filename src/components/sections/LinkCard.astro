@@ -85,8 +85,8 @@ const themeStyle = themeName
 
         {description && <Body class="mt-2 text-sm">{description}</Body>}
 
-        <div class="links-panel-links mt-3">
-          {links.map((l: LinkItem) => (
+        <div class="links-panel-links">
+          {links.map((l: LinkItem, liIndex: number) => (
             <Link
               href={resolve(l.href)}
               text={l.text ?? "Open"}

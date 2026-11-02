@@ -46,7 +46,11 @@
    dark variant, so it stands out instead of washing into the background. */
 #blog-content .blog-lede {
   --lede-cap-fill: var(--project-tag-color, var(--theme-main-day));
-  --lede-cap-shadow: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-night)));
+  --lede-cap-shadow: color-mix(
+    in srgb,
+    var(--project-tag-color-dark, var(--theme-main-night)) 56%,
+    var(--time-black)
+  );
 }
 
 :root[data-mode="night"] #blog-content .blog-lede {
@@ -54,9 +58,10 @@
     --project-tag-color-dark,
     var(--project-tag-color, var(--theme-main-night))
   );
-  --lede-cap-shadow: var(
-    --project-tag-color,
-    var(--theme-main-day)
+  --lede-cap-shadow: color-mix(
+    in srgb,
+    var(--project-tag-color-dark, var(--theme-main-night)) 64%,
+    var(--time-black)
   );
 }
 
@@ -71,7 +76,9 @@
   /* Big, bright opener: the theme's own tint plus the dark variant as its hard
      shadow, so the letter stays legible and stands out by itself over whatever
      is behind it. */
-  text-shadow: 2px 3px 0 var(--lede-cap-shadow);
+  text-shadow:
+    3px 5px 0 var(--lede-cap-shadow),
+    6px 9px 0 color-mix(in srgb, var(--lede-cap-shadow) 44%, var(--time-black));
 }
 
 /* MAGAZINE OPENERS — the first letter of every top-level heading in the copy.
@@ -188,7 +195,7 @@
   position: relative;
   margin-bottom: 0.5rem;
   padding-left: 0;
-  line-height: 1.65;
+  line-height: 1.55;
   display: flex;
   align-items: flex-start;
   gap: 0.65rem;
@@ -246,22 +253,36 @@
 
 :is(#blog-content, .project-panel-body) strong {
   color: var(--project-tag-color, var(--theme-main-day));
-  text-shadow: 2px 3px 0
-    color-mix(
-      in srgb,
-      var(--project-tag-color-dark, var(--theme-main-night)) 72%,
-      transparent 28%
-    );
+  text-shadow:
+    2px 3px 0
+      color-mix(
+        in srgb,
+        var(--project-tag-color-dark, var(--theme-main-night)) 56%,
+        var(--time-black)
+      ),
+    4px 6px 0
+      color-mix(
+        in srgb,
+        var(--project-tag-color-dark, var(--theme-main-night)) 64%,
+        var(--time-black)
+      );
 }
 
 :is(#blog-content, .project-panel-body) em {
-  color: color-mix(
-    in srgb,
-    var(--project-tag-color, var(--theme-main-day)) 78%,
-    var(--time-ink) 22%
-  );
-  text-shadow: 1px 2px 0
-    var(--project-tag-color-dark, var(--theme-main-night));
+  color: color-mix(in srgb, white 88%, var(--project-tag-color, var(--theme-main-day)) 12%);
+  text-shadow:
+    2px 3px 0
+      color-mix(
+        in srgb,
+        var(--project-tag-color, var(--theme-main-day)) 66%,
+        var(--project-tag-color-dark, var(--theme-main-night)) 34%
+      ),
+    4px 6px 0
+      color-mix(
+        in srgb,
+        var(--project-tag-color-dark, var(--theme-main-night)) 78%,
+        var(--project-tag-color, var(--theme-main-day)) 22%
+      );
 }
 
 /* Links. */

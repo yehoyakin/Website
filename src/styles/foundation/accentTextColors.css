@@ -6,61 +6,107 @@
    colour (not the mode shadow). Only the ink in bold/italic changes — the
    surrounding copy keeps the accent wash from the rest of the prose rules. */
 .theme-color {
-  --accent-bold: var(--project-tag-color, var(--theme-orange));
-  --accent-bold-shadow: rgb(0 0 0 / 1);
-  --accent-italic-fill: rgb(255 255 255 / 0.98);
-  --accent-italic-shadow: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-orange)));
+  --accent-bold: color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 74%, white);
+  --accent-bold-shadow: color-mix(in srgb, var(--project-tag-color-dark, var(--theme-main-night)) 56%, var(--time-black));
+  --accent-italic-fill: color-mix(in srgb, white 88%, var(--project-tag-color, var(--theme-orange)) 12%);
+  --accent-italic-shadow: color-mix(
+    in srgb,
+    var(--project-tag-color, var(--theme-orange)) 66%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 34%
+  );
 }
 
 .theme-color strong,
 .theme-color b {
   color: var(--accent-bold);
-  text-shadow: 2px 3px 0 var(--accent-bold-shadow);
+  text-shadow:
+    2px 3px 0 var(--accent-bold-shadow),
+    4px 6px 0 color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
 }
 
 .theme-color em,
 .theme-color i {
   color: var(--accent-italic-fill);
-  text-shadow: 2px 3px 0 var(--accent-italic-shadow);
+  text-shadow:
+    2px 3px 0 var(--accent-italic-shadow),
+    4px 6px 0
+      color-mix(
+        in srgb,
+        var(--accent-italic-shadow) 58%,
+        var(--project-tag-color-dark, var(--theme-main-night))
+      );
 }
 
 /* #blog-content inherits project-tag-color from the page (set via inline style). */
 
 #blog-content {
-  --accent-bold: var(--project-tag-color, var(--theme-orange));
-  --accent-bold-shadow: rgb(0 0 0 / 1);
-  --accent-italic-fill: rgb(180 180 180 / 0.98);
-  --accent-italic-shadow: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-orange)));
+  --accent-bold: color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 74%, white);
+  --accent-bold-shadow: color-mix(in srgb, var(--project-tag-color-dark, var(--theme-main-night)) 56%, var(--time-black));
+  --accent-italic-fill: color-mix(in srgb, white 88%, var(--project-tag-color, var(--theme-orange)) 12%);
+  --accent-italic-shadow: color-mix(
+    in srgb,
+    var(--project-tag-color, var(--theme-orange)) 66%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 34%
+  );
 }
 
 #blog-content strong,
 #blog-content b {
   color: var(--accent-bold);
-  text-shadow: 2px 3px 0 var(--accent-bold-shadow);
+  text-shadow:
+    2px 3px 0 var(--accent-bold-shadow),
+    4px 6px 0 color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
 }
 
 #blog-content em,
 #blog-content i {
   color: var(--accent-italic-fill);
-  text-shadow: 2px 3px 0 var(--accent-italic-shadow);
+  text-shadow:
+    2px 3px 0 var(--accent-italic-shadow),
+    4px 6px 0
+      color-mix(
+        in srgb,
+        var(--accent-italic-shadow) 58%,
+        var(--project-tag-color-dark, var(--theme-main-night))
+      );
 }
 
 /* Project panel write-up (portfolio). */
+
+.project-panel-body {
+  --accent-bold: color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 74%, white);
+  --accent-bold-shadow: color-mix(in srgb, var(--project-tag-color-dark, var(--theme-main-night)) 56%, var(--time-black));
+  --accent-italic-fill: color-mix(in srgb, white 88%, var(--project-tag-color, var(--theme-orange)) 12%);
+  --accent-italic-shadow: color-mix(
+    in srgb,
+    var(--project-tag-color, var(--theme-orange)) 66%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 34%
+  );
+}
 
 .project-panel-body strong,
 .project-panel-body b,
 .project-panel-body .retro-contribution strong,
 .project-panel-body .retro-contribution b {
-  color: var(--project-tag-color, white);
-  text-shadow: 2px 3px 0 rgb(0 0 0 / 1);
+  color: var(--accent-bold);
+  text-shadow:
+    2px 3px 0 var(--accent-bold-shadow),
+    4px 6px 0 color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
 }
 
 .project-panel-body em,
 .project-panel-body i,
 .project-panel-body .retro-contribution em,
 .project-panel-body .retro-contribution i {
-  color: color-mix(in srgb, var(--project-tag-color, white) 70%, white 30%);
-  text-shadow: 2px 3px 0 rgb(255 255 255 / 0.96);
+  color: var(--accent-italic-fill);
+  text-shadow:
+    2px 3px 0 var(--accent-italic-shadow),
+    4px 6px 0
+      color-mix(
+        in srgb,
+        var(--accent-italic-shadow) 58%,
+        var(--project-tag-color-dark, var(--theme-main-night))
+      );
 }
 
 /* ACCENT TYPE IS STILL TYPE — no animation, no box.
@@ -78,12 +124,21 @@
   background: none;
   color: var(--accent-bold);
   -webkit-text-fill-color: initial;
-  text-shadow: 2px 3px 0 var(--accent-bold-shadow);
+  text-shadow:
+    2px 3px 0 var(--accent-bold-shadow),
+    4px 6px 0 color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
 }
 
 :is(.theme-color, #blog-content, .project-panel-body) :is(em, i) {
   background: none;
   color: var(--accent-italic-fill);
   -webkit-text-fill-color: initial;
-  text-shadow: 1px 2px 0 var(--accent-italic-shadow);
+  text-shadow:
+    2px 3px 0 var(--accent-italic-shadow),
+    4px 6px 0
+      color-mix(
+        in srgb,
+        var(--accent-italic-shadow) 58%,
+        var(--project-tag-color-dark, var(--theme-main-night))
+      );
 }

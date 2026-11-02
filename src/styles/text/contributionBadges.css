@@ -85,6 +85,36 @@
   display: none;
 }
 
+/* Blog listing variant: ordered lists should keep their number icons. */
+:is(#blog-content, .project-panel-body)
+  .retro-contribution--listing
+  ol
+  > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding-left: 0;
+}
+
+:is(#blog-content, .project-panel-body)
+  .retro-contribution--listing
+  ol
+  > li::before {
+  content: none;
+}
+
+:is(#blog-content, .project-panel-body)
+  .retro-contribution--listing
+  ol
+  > li
+  .list-number-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 1.12em;
+  height: 1.12em;
+  margin-top: 0.12em;
+}
+
 :is(#blog-content, .project-panel-body)
   .retro-contribution
   :is(ul, ol)
@@ -122,24 +152,43 @@
   pointer-events: none;
 }
 
-/* The same accent tile the prose lists use, one step down for the bar. */
+/* The same accent tile the prose lists use, one step down for the bar — the
+   tile a project's links panel draws, so every grouping marker on the site
+   picks up the post's own colour and reads as part of that panel. */
 :is(#blog-content, .project-panel-body)
   .retro-contribution
   :is(ul, ol)
   > li::before {
   content: "";
   position: absolute;
-  left: 0.1em;
-  top: 0.55em;
-  width: 0.5em;
-  height: 0.5em;
+  left: 0.15em;
+  top: 0.6em;
+  width: 0.44em;
+  height: 0.44em;
   border: 1px solid
     color-mix(
       in srgb,
-      var(--project-tag-color, var(--theme-orange)) 55%,
+      var(--project-tag-color, var(--theme-orange)) 48%,
       var(--time-black)
     );
   background-color: var(--project-tag-color, var(--theme-orange));
+  border-radius: 2px;
+}
+
+/* Ordered listing rows: use number icons ONLY (no square marker overlap). */
+:is(#blog-content, .project-panel-body)
+  .retro-contribution--listing
+  ol
+  > li::before {
+  content: none;
+}
+
+:is(#blog-content, .project-panel-body)
+  .retro-contribution--listing
+  ol
+  > li
+  .list-number-icon {
+  display: inline-flex;
 }
 
 /* Role chip: the project's own accent, like every other mark on the panel.

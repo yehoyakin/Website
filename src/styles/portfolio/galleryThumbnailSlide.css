@@ -119,6 +119,27 @@
   width: 100%;
 }
 
+/* Blog slug inline galleries: every card in a multi-item strip keeps the same
+   height, even when some cards have a caption bar and others do not. */
+.markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
+  display: flex;
+  align-items: stretch;
+}
+
+.markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .gallery-thumb {
+  height: clamp(20rem, 50dvh, 28rem) !important;
+  max-height: clamp(20rem, 50dvh, 28rem) !important;
+  min-height: clamp(20rem, 50dvh, 28rem) !important;
+}
+
+.markdown-gallery:not(.markdown-gallery--single)
+  .gallery-project-item
+  .gallery-thumb
+  .blog-card-image-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 /* INLINE GALLERIES — the project write-up's media frame.
 
    A post's galleries keep their own behaviour (the grid, and the lightbox

@@ -33,3 +33,21 @@
   text-align: center;
 }
 
+/* Video descriptions should read like gallery card descriptions. */
+.blog-figcaption--video {
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0.75rem 1.25rem 1.25rem;
+  color: color-mix(
+    in srgb,
+    rgb(255 255 255 / 0.9) 80%,
+    var(--project-tag-color, var(--plate-tint)) 20%
+  );
+  font-size: clamp(0.66rem, 1.05vw, 1.15rem);
+  line-height: 1.45;
+  letter-spacing: normal;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 2px 3px 0 var(--time-shadow);
+}
+

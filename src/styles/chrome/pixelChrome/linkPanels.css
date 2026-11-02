@@ -33,6 +33,46 @@
   justify-content: flex-start;
 }
 
+/* The blog post's links panel is one plate of the post's own theme, so its
+   buttons must take that accent the same way the project write-up's links
+   panel does — the same themed tile, with the white outline and white type,
+   in both day and night. */
+:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link) {
+  --link-tile: var(--project-tag-color, var(--theme-main-day));
+  --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  --tile-fill: var(--link-tile);
+  --tile-light: var(--link-tile);
+  --tile-dark: var(--link-tile-dark);
+  --button-label-color: var(--time-white);
+  --button-label-shadow: color-mix(
+    in srgb,
+    var(--time-black) 70%,
+    var(--link-tile-dark)
+  );
+  /* The banded recipe, built from the post's theme instead of the mode tint. */
+  --button-lighting: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--link-tile) 96%, var(--time-white) 4%) 0%,
+    var(--link-tile) 16%,
+    color-mix(in srgb, var(--link-tile) 76%, var(--link-tile-dark) 24%) 56%,
+    color-mix(in srgb, var(--link-tile) 44%, var(--link-tile-dark) 56%) 100%
+  );
+  background-color: var(--link-tile);
+  border-color: var(--time-white);
+  color: var(--time-white);
+}
+
+/* The press is a darker tile, not a white one: the border and the type stay
+   white so the control keeps its outline and its label in both modes. */
+:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link):hover,
+:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link):focus-visible {
+  --tile-fill: var(--link-tile-dark);
+  --button-label-color: var(--time-white);
+  background-color: var(--link-tile-dark);
+  border-color: var(--time-white);
+  color: var(--time-white);
+}
+
 /* A post's links arrive grouped by card; the groups stack as blocks on the one
    plate rather than as panels of their own. */
 .links-panel .links-panel-group + .links-panel-group {
@@ -50,8 +90,23 @@
   overflow: hidden;
 }
 
+.rail-panel.links-panel--scroll {
+  overflow-y: hidden;
+}
+
 .links-panel--scroll > :where(aside, div) {
   max-height: calc(70vh - 2rem);
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-right: 0.45rem;
+}
+
+/* The post's links panel scrolls through its own list, so the buttons keep
+   their one scrollbar and never catch the page's. */
+.links-panel--scroll .links-panel-links {
+  overflow-y: auto;
+}
+.links-panel--scroll .links-panel-links .retro-link {
+  flex: 0 0 auto;
 }

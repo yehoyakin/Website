@@ -286,6 +286,51 @@
   --plate-pattern-shadow-opacity: 0.05;
 }
 
+/* Long-copy panel over ghost page: same layered plate system, but with a
+   darker card-like base and a stronger local motif so it reads as its own
+   surface while still letting the ghost wash exist behind it. */
+:root:not([data-mode="night"])
+  .pattern-plate--ghost
+  .pattern-plate.pattern-plate--text-backdrop,
+:root[data-mode="night"]
+  .pattern-plate--ghost
+  .pattern-plate.pattern-plate--text-backdrop {
+  background-color: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--plate-accent) 32%, var(--plate-fill-dark)) 96%,
+    transparent
+  );
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(
+        in srgb,
+        color-mix(in srgb, var(--plate-accent) 56%, var(--plate-fill-dark)) 96%,
+        transparent
+      )
+      0%,
+    color-mix(
+        in srgb,
+        color-mix(in srgb, var(--plate-accent) 44%, var(--plate-fill-dark)) 96%,
+        transparent
+      )
+      20%,
+    color-mix(
+        in srgb,
+        color-mix(in srgb, var(--plate-accent) 34%, var(--plate-fill-dark)) 96%,
+        transparent
+      )
+      62%,
+    color-mix(
+        in srgb,
+        color-mix(in srgb, var(--plate-accent) 24%, var(--plate-fill-dark)) 96%,
+        transparent
+      )
+      100%
+  );
+  --plate-pattern-opacity: 0.2;
+  --plate-pattern-shadow-opacity: 0.08;
+}
+
 /* SLUG MASTHEADS — the theme colour itself.
 
    A header's job is to announce its entry, so it wears the accent at full
