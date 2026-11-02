@@ -3,24 +3,16 @@
 .blog-cards-wrapper {
   width: 100%;
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   padding: 1rem 0 2rem 0;
 }
 
 .blog-cards-wrapper::-webkit-scrollbar {
-  height: 0.625rem;
-}
-
-.blog-cards-wrapper::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.blog-cards-wrapper::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 0;
+  display: none;
+  height: 0;
 }
 
 .blog-cards-scroll {

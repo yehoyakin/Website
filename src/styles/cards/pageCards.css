@@ -37,23 +37,15 @@
   .page-cards {
     /* A ROW OF CARDS, NOT A FILLED PANEL.
 
-       This was a grid whose rows were `minmax(0, 1fr)`: one row, exactly as
-       tall as the room, so every card was stretched over the whole screen and
-       a card became a 800px poster on a tall window. Flex rows keep each card
-       at its natural size — width sets the artwork, the artwork sets the
-       height — and the row is centred in whatever room is left under the hero.
-
-       `max-height: 100%` is the safety net for a short window: the row can only
-       be as tall as the space the landing page actually has, so the copy bar
-       keeps its height and the artwork gives. The credits never get pushed off.
-       A third page needs nothing here: the row wraps. */
+       Each card keeps its own size (50dvh tall, natural width) — nothing is
+       stretched to fill the remaining room. `align-items: flex-start` keeps
+       each card at its natural height; the row is centred in the column with
+       `align-content: center` so there is no dead space above or below the
+       cards when there are only two of them. */
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: stretch;
-    /* `safe` keeps the cards under the hero if a future row ever does not fit,
-       instead of centring the overflow up over the hero. */
+    align-items: flex-start;
     align-content: center;
-    align-content: safe center;
     justify-content: center;
     gap: 1.25rem;
     padding: 1rem;
@@ -61,11 +53,12 @@
     min-height: 0;
   }
   .page-cards > li {
-    /* A basis narrow enough that a pair (or a third card) shares one row on a
-       laptop; the card then grows to its 36rem frame and no further. */
-    flex: 1 1 16rem;
+    /* Each card is self-contained: 50dvh tall, natural width (max 36rem).
+       `max-height: none` lets the card be exactly 50dvh without being capped
+       by `100%` of a parent that has its own height. */
+    flex: 1 1 36rem;
     max-width: 36rem;
-    max-height: 100%;
+    max-height: none;
   }
 }
 
@@ -74,6 +67,24 @@
   max-width: 36rem;
   height: auto;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: var(--outline-width) solid var(--outline-color);
+  background-color: var(--time-panel);
+}
+
+.page-card:hover .page-card {
+  border-color: var(--outline-color-hover);
+}
+
+/* Landing page cards match the blog card height exactly (50dvh) inside a
+   container of natural width. Cards are compact, not stretched to fill the
+   remaining viewport space. */
+@media (min-width: 40rem) {
+  .page-card {
+    height: 50dvh;
+    max-height: 50dvh;
+  }
 }
 
 /* ARTWORK. On a phone it is a picture with a shape of its own; on a row it is
@@ -86,18 +97,21 @@
   aspect-ratio: 16 / 10;
 }
 
-/* COPY BAR — sized for a whole page title, not an article excerpt. */
+/* Blog card header: same padding as blogCardTile.css, same pattern-plate plate. */
 .page-card .blog-card-bar {
-  padding: 0.6rem 1rem;
+  padding: 0.75rem 1.25rem;
 }
 
 .page-card .blog-card-info-bar {
-  padding: 0.85rem 1rem 1rem;
+  padding: 1rem 1.25rem 1.25rem;
 }
 
 .page-card .blog-card-title {
   margin: 0;
-  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  line-height: 1.2;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* A landing card's description is a sentence, so it gets no paragraph margins
@@ -120,6 +134,9 @@
   font-size: 0.85rem;
   letter-spacing: 0.12em;
   padding: 0.5rem 0.9rem;
+  height: fit-content;
+  min-height: 0;
+  padding-block: 0;
 }
 
 /* Hovering the card lights the action too, so the tile reads as the target. */
@@ -143,16 +160,17 @@
     background 0.15s var(--ease-soft),
     color 0.15s var(--ease-soft),
     transform var(--duration-press) var(--ease-press);
+  height: fit-content;
+  min-height: 0;
+  padding-block: 0;
 }
 
-/* CREDITS ROW — one line when it fits, more when it does not.
+.page-card .page-card-action {
+  height: fit-content;
+  min-height: 0;
+}
 
-   It used to be `nowrap` with `overflow-x: auto` as the escape hatch, and that
-   does not work for a CENTRED flex row: when the content is wider than the box
-   it spills past BOTH edges, and the left overflow cannot be scrolled to — so
-   the first and last credit came out cut in half on any window narrower than
-   the three buttons. Wrapping keeps every credit whole instead. */
-.credits-row {
+.landing-credits-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -162,7 +180,24 @@
   max-width: 100%;
 }
 
-.credits-row .retro-link {
+/* CREDITS ROW — one line when it fits, more when it does not.
+
+   It used to be `nowrap` with `overflow-x: auto` as the escape hatch, and that
+   does not work for a CENTRED flex row: when the content is wider than the box
+   it spills past BOTH edges, and the left overflow cannot be scrolled to — so
+   the first and last credit came out cut in half on any window narrower than
+   the three buttons. Wrapping keeps every credit whole instead. */
+.landing-credits-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 0.25rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.landing-credits-row .retro-link {
   flex: 0 0 auto;
   padding-inline: 0.5rem;
   font-size: clamp(6px, 0.9vw, 0.3rem);

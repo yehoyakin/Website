@@ -99,16 +99,8 @@
 }
 
 :root[data-view="desktop"] .page-card {
-  height: auto;
-  /* The layout viewport here is the whole scaled screen, so the card cap that
-     keeps cards short on a desktop window does not apply. */
-  max-height: none;
-}
-
-:root[data-view="desktop"] .page-card .blog-card-image-wrap {
-  flex: 0 0 auto;
-  aspect-ratio: 16 / 10;
-  min-height: 0;
+  height: 50dvh;
+  max-height: 50dvh;
 }
 
 @media (min-width: 768px) and (max-height: 840px) {

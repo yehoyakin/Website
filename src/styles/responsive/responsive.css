@@ -8,3 +8,46 @@
 @import "../chrome/sideRails.css";
 @import "../chrome/backLink.css";
 @import "phoneLandingHeight.css";
+
+/* Horizontal scroll: scrollbar only appears when content overflows the viewport
+   width. Otherwise the scrollbar is hidden. This ensures the gallery and page
+   content don't show a scrollbar when there's no horizontal overflow. */
+@supports (overflow: hidden) {
+  .blog-cards-wrapper,
+  .gallery-thumbnails-wrapper,
+  [data-carousel-track] {
+    scrollbar-width: auto;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 0.625rem;
+    height: 0.625rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .blog-cards-wrapper,
+  .gallery-thumbnails-wrapper,
+  [data-carousel-track] {
+    scrollbar-width: auto;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 0.625rem;
+    height: 0.625rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0;
+  }
+}
