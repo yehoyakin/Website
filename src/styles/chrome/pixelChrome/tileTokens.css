@@ -48,6 +48,25 @@
   --outline-color-hover: var(--outline-color);
 }
 
+/* Day buttons: keep the same banded recipe but avoid a pure-white start. */
+:root:not([data-mode="night"]) {
+  --button-lighting: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 84%, transparent)
+      0 9%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 66%, transparent)
+      9% 25%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 40%, transparent)
+      25% 44%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 16%, transparent)
+      44% 60%,
+    color-mix(in srgb, var(--tile-dark, var(--time-black)) 22%, transparent)
+      60% 78%,
+    color-mix(in srgb, var(--tile-dark, var(--time-black)) 68%, transparent)
+      78% 100%
+  );
+}
+
 /* PHONES: the same outlines at half weight.
 
    4px is one pixel-art step at a desktop viewing distance; on a phone the

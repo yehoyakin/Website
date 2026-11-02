@@ -16,19 +16,24 @@
 
 .page-cards {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: center;
+  justify-content: center;
+  gap: 0.9rem;
   margin: 0;
-  /* Full-bleed on a phone: half a rem of gutter, not a framed column. */
-  padding: 0.5rem;
+  padding: 0.55rem;
   list-style: none;
   min-height: 0;
+  flex: 1 1 auto;
 }
 
 .page-cards > li {
   display: flex;
-  width: 100%;
+  flex: 1 1 min(100%, 32rem);
+  width: min(100%, 32rem);
+  max-width: 32rem;
   min-width: 0;
   min-height: 0;
 }
@@ -47,24 +52,23 @@
     align-items: flex-start;
     align-content: center;
     justify-content: center;
-    gap: 1.25rem;
-    padding: 1rem;
+    gap: 0.9rem;
+    padding: 0.55rem;
     flex: 1 1 auto;
     min-height: 0;
   }
   .page-cards > li {
-    /* Each card is self-contained: 50dvh tall, and all cards keep the same
-       width so the landing grid reads as a matched set. */
-    flex: 0 0 36rem;
-    width: 36rem;
-    max-width: 36rem;
+    /* Desktop: lock card width for a strict two-card row. */
+    flex: 0 0 32rem;
+    width: 32rem;
+    max-width: 32rem;
     max-height: none;
   }
 }
 
 .page-card {
   width: 100%;
-  max-width: 36rem;
+  max-width: 32rem;
   height: auto;
   min-height: 0;
   display: flex;
@@ -82,8 +86,8 @@
    remaining viewport space. */
 @media (min-width: 40rem) {
   .page-card {
-    height: 50dvh;
-    max-height: 50dvh;
+    height: 44dvh;
+    max-height: 44dvh;
   }
 }
 
@@ -99,7 +103,7 @@
 
 /* Blog card header: same padding as blogCardTile.css, same pattern-plate plate. */
 .page-card .blog-card-bar {
-  padding: 0.75rem 1.25rem;
+  padding: 0.6rem 1rem;
 }
 
 .page-card .thumb-tag {
@@ -111,12 +115,12 @@
 }
 
 .page-card .blog-card-info-bar {
-  padding: 1rem 1.25rem 1.25rem;
+  padding: 0.75rem 1rem 0.9rem;
 }
 
 .page-card .blog-card-title {
   margin: 0;
-  font-size: clamp(2.1rem, 4vw, 4.2rem);
+  font-size: clamp(1.8rem, 3.4vw, 3.4rem);
   line-height: 1.2;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -125,13 +129,13 @@
 /* A landing card's description is a sentence, so it gets no paragraph margins
    and no more than two lines: extra lines come out of the picture. */
 .page-card .blog-card-desc {
-  margin: 0.35rem 0 0;
+  margin: 0.25rem 0 0;
   color: color-mix(
     in srgb,
     rgb(255 255 255 / 0.9) 82%,
     var(--project-tag-color, var(--plate-tint)) 18%
   );
-  font-size: clamp(0.703rem, 1.2vw, 1.359rem);
+  font-size: clamp(0.66rem, 1.05vw, 1rem);
   line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -143,13 +147,19 @@
 .page-card .page-card-action {
   display: inline-flex;
   align-items: center;
-  margin-top: 0.8rem;
-  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  margin-top: 0.65rem;
+  font-size: clamp(0.62rem, 0.85vw, 0.76rem);
   letter-spacing: 0.12em;
-  padding: 0.5rem 0.9rem;
+  padding: 0.38rem 0.72rem;
   height: fit-content;
   min-height: 0;
   padding-block: 0;
+  color: var(--time-white);
+  text-shadow: 2px 2px 0 var(--time-shadow);
+}
+
+.page-card .page-card-action > span {
+  text-shadow: 2px 2px 0 var(--time-shadow);
 }
 
 /* Hovering the card lights the action too, so the tile reads as the target. */
@@ -164,8 +174,8 @@
    of the pixel-chrome files that light it, so the cascade order is unchanged. */
 .split-card-action {
   display: inline-flex;
-  margin-top: 1.25rem;
-  padding: 0.75rem 1.5rem;
+  margin-top: 0.8rem;
+  padding: 0.55rem 1rem;
   font-family: var(--retro-font);
   text-transform: uppercase;
   letter-spacing: 0.15em;

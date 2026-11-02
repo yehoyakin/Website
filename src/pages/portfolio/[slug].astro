@@ -1,0 +1,544 @@
+---
+import MyLayout from "../../layouts/MyLayout.astro";
+import BackLink from "../../components/shared/BackLink.astro";
+import Title from "../../components/UI/Title.astro";
+import Body from "../../components/UI/Body.astro";
+import CompactBody from "../../components/UI/CompactBody.astro";
+import Link from "../../components/shared/Link.astro";
+import Icon from "../../components/shared/Icon.astro";
+import PageBackdrop from "../../components/shared/PageBackdrop.astro";
+
+import { getCollection } from "astro:content";
+import { asset } from "../../utils/asset";
+import { isExternalUrl, videoEmbedUrl } from "../../utils/video";
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import { patternForTheme } from "../../config/patterns";
+import { defaultIconColor, defaultIconColorNight } from "../../config/icons";
+
+type ProjectRole =
+  | "lead_programmer"
+  | "ui"
+  | "game_design"
+  | "art"
+  | "audio"
+  | "tech_art"
+  | "systems"
+  | "tools"
+  | "developer";
+
+const roleLabels: Record<ProjectRole, string> = {
+  lead_programmer: "Lead Programmer",
+  ui: "UI",
+  game_design: "Game Design",
+  art: "Art",
+  audio: "Audio",
+  tech_art: "Tech Art",
+  systems: "Systems",
+  tools: "Tools",
+  developer: "Developer",
+};
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+
+  return projects.map((project) => ({
+    params: { slug: project.id },
+  }));
+}
+
+const slug = Astro.params.slug;
+const projects = await getCollection("projects");
+const project = projects.find((entry) => entry.id === slug);
+
+if (!project) {
+  throw new Response("Project not found", { status: 404 });
+}
+
+const themeName = toThemeName(project.data.theme);
+const themeToken = resolveThemeToken(themeName);
+
+const scenes = (project.data.scenes ?? []).map((scene) => asset(scene.image));
+const videos = project.data.videos ?? [];
+const projectLinks = project.data.links ?? [];
+
+const mediaItems = [
+  ...scenes.map((src) => ({ kind: "image" as const, src })),
+  ...videos.map((video) => {
+    const embed = videoEmbedUrl(video.src, video.type);
+
+    if (embed) {
+      return {
+        kind: "embed" as const,
+        src: embed,
+        title: video.title ?? `${project.data.title} video`,
+      };
+    }
+
+    return {
+      kind: "file" as const,
+      src: isExternalUrl(video.src) ? video.src : asset(video.src),
+      poster: video.poster ? asset(video.poster) : undefined,
+      title: video.title,
+    };
+  }),
+];
+
+const backgroundImage = asset(project.data.background ?? project.data.cardBackground);
+const preloadImages = [
+  backgroundImage,
+  asset(project.data.cardBackground),
+  ...scenes,
+  ...videos
+    .filter((video) => !isExternalUrl(video.src))
+    .map((video) => asset(video.src)),
+  ...videos
+    .map((video) => video.poster)
+    .filter(Boolean)
+    .map((poster) => asset(poster as string)),
+];
+
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<MyLayout title={`${project.data.title} | Portfolio`} preloadImages={preloadImages}>
+  <div class="relative w-full min-h-screen bg-[var(--time-page)]">
+    <PageBackdrop
+      day={project.data.background ?? project.data.cardBackground}
+      night={project.data.background ?? project.data.cardBackground}
+    />
+
+    <div class="absolute inset-0 z-10 pointer-events-none"></div>
+
+    <div
+      class="project-page relative z-20 mx-auto w-full px-4 sm:px-6 md:px-8"
+      style={`--project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+    >
+      <BackLink href={`${baseUrl}portfolio/`} text="Back to portfolio" />
+
+      <section class="project-page-shell pt-20 pb-8 md:pt-24 md:pb-12">
+        <header class="project-page-header project-page-masthead pixel-frame pattern-plate pattern-plate--medium">
+          <p class="project-page-tag">{project.data.tag}</p>
+          <Title level={1} theme={themeName} class="project-page-title">
+            {project.data.title}
+          </Title>
+
+          <Body theme={themeName} class="project-page-description">
+            {project.data.description}
+          </Body>
+
+          <div class="project-page-roles">
+            {(project.data.roles ?? []).map((role) => (
+              <span class="project-role">{roleLabels[role as ProjectRole] ?? role}</span>
+            ))}
+          </div>
+        </header>
+
+        <div class="project-page-lower-grid">
+          <section class="project-page-left-stack">
+            <section class="project-page-links-panel pixel-frame pattern-plate pattern-plate--small">
+              <div class="project-page-links">
+                {projectLinks.map((link, index) => (
+                  <Link
+                    href={link.href}
+                    text={link.text?.trim() || `Project link ${index + 1}`}
+                    external={true}
+                    theme={themeName}
+                  />
+                ))}
+              </div>
+            </section>
+
+            <CompactBody
+              theme={themeName}
+              class="project-page-content-panel pattern-plate pattern-plate--text-backdrop pattern-plate--huge"
+            >
+              <div id="blog-content" set:html={project.rendered?.html ?? ""} />
+            </CompactBody>
+          </section>
+
+          {
+            mediaItems.length > 0 && (
+              <section class="project-page-gallery-plain" aria-label="Project media" data-project-rotator>
+                <div class="project-panel-media">
+                  <div class="project-panel-frame">
+                    <div class="thumb-carousel">
+                      {mediaItems.map((item, index) => {
+                        const mediaClass = `thumb-carousel-media ${index === 0 ? "active" : ""}`;
+
+                        if (item.kind === "image") {
+                          return (
+                            <img
+                              src={item.src}
+                              alt={`${project.data.title} screenshot ${index + 1}`}
+                              loading="lazy"
+                              decoding="async"
+                              class={`${mediaClass} thumb-carousel-img`}
+                            />
+                          );
+                        }
+
+                        if (item.kind === "embed") {
+                          return (
+                            <iframe
+                              src={item.src}
+                              title={item.title ?? `${project.data.title} video`}
+                              loading="lazy"
+                              referrerpolicy="strict-origin-when-cross-origin"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              allowfullscreen
+                              class={`${mediaClass} thumb-carousel-frame`}
+                            />
+                          );
+                        }
+
+                        return (
+                          <video
+                            src={item.src}
+                            poster={item.poster}
+                            controls
+                            preload="metadata"
+                            playsinline
+                            class={`${mediaClass} thumb-carousel-video`}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {
+                    mediaItems.length > 1 && (
+                      <div class="card-carousel-controls project-panel-controls">
+                        <button
+                          type="button"
+                          class="card-carousel-arrow icon-button"
+                          aria-label="Previous media"
+                          data-rotator-prev
+                        >
+                          <Icon
+                            name="arrow-left"
+                            theme={project.data.theme}
+                            class="card-carousel-arrow-icon"
+                          />
+                        </button>
+
+                        <div class="card-carousel-dots">
+                          {mediaItems.map((_item, dotIndex) => (
+                            <button
+                              type="button"
+                              class="card-carousel-dot"
+                              aria-label={`Go to slide ${dotIndex + 1}`}
+                              aria-current={dotIndex === 0 ? "true" : "false"}
+                              data-rotator-dot={dotIndex}
+                            >
+                              <span class="card-carousel-dot-icon icon-mode">
+                                <img
+                                  src={asset(`images/Icons/${defaultIconColor}/Circle Base_${defaultIconColor}.webp`)}
+                                  alt=""
+                                  aria-hidden="true"
+                                  decoding="async"
+                                  class="icon-mode-img icon-mode-img--day"
+                                />
+                                <img
+                                  src={asset(`images/Icons/${defaultIconColorNight}/Circle Base_${defaultIconColorNight}.webp`)}
+                                  alt=""
+                                  aria-hidden="true"
+                                  decoding="async"
+                                  class="icon-mode-img icon-mode-img--night"
+                                />
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+
+                        <button
+                          type="button"
+                          class="card-carousel-arrow icon-button"
+                          aria-label="Next media"
+                          data-rotator-next
+                        >
+                          <Icon
+                            name="arrow-right"
+                            theme={project.data.theme}
+                            class="card-carousel-arrow-icon"
+                          />
+                        </button>
+                      </div>
+                    )
+                  }
+                </div>
+              </section>
+            )
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+</MyLayout>
+
+<script is:inline>
+  function initProjectSlugRotators() {
+    const rotators = document.querySelectorAll("[data-project-rotator]");
+
+    rotators.forEach((rotator) => {
+      if (rotator.dataset.rotatorReady === "true") return;
+      rotator.dataset.rotatorReady = "true";
+
+      const media = [...rotator.querySelectorAll(".thumb-carousel-media")];
+      if (media.length <= 1) return;
+
+      const dots = [...rotator.querySelectorAll("[data-rotator-dot]")];
+      const prev = rotator.querySelector("[data-rotator-prev]");
+      const next = rotator.querySelector("[data-rotator-next]");
+
+      let activeIndex = 0;
+
+      function syncDots() {
+        dots.forEach((dot, dotIndex) => {
+          dot.setAttribute("aria-current", dotIndex === activeIndex ? "true" : "false");
+        });
+      }
+
+      function show(index) {
+        media[activeIndex].classList.remove("active");
+        activeIndex = ((index % media.length) + media.length) % media.length;
+        media[activeIndex].classList.add("active");
+        syncDots();
+      }
+
+      prev?.addEventListener("click", () => show(activeIndex - 1));
+      next?.addEventListener("click", () => show(activeIndex + 1));
+      dots.forEach((dot, dotIndex) => {
+        dot.addEventListener("click", () => show(dotIndex));
+      });
+
+      syncDots();
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initProjectSlugRotators);
+  } else {
+    initProjectSlugRotators();
+  }
+
+  document.addEventListener("astro:after-swap", initProjectSlugRotators);
+</script>
+
+<style>
+  .project-page-shell {
+    max-width: 64rem;
+    margin-inline: auto;
+  }
+
+  .project-page-header {
+    padding: clamp(0.9rem, 1.8vw, 1.5rem);
+    margin-bottom: 0.9rem;
+  }
+
+  .project-page-masthead {
+    padding: clamp(1rem, 2vw, 1.6rem);
+    margin-bottom: 0.9rem;
+    max-width: 64rem;
+    margin-inline: auto;
+  }
+
+  .project-page-tag {
+    margin: 0;
+    color: var(--project-tag-color, var(--theme-orange));
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: clamp(0.72rem, 1vw, 0.9rem);
+    text-shadow: 1px 2px 0 var(--time-shadow);
+  }
+
+  :global(.project-page-title) {
+    margin-top: 0.3rem;
+    font-size: clamp(1.35rem, 2.6vw, 2.35rem) !important;
+    line-height: 1.06;
+  }
+
+  .project-page-description {
+    margin-top: 0.45rem;
+    max-width: 62rem;
+  }
+
+  .project-page-roles {
+    margin-top: 0.65rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .project-page-lower-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 0.9rem;
+    align-items: start;
+    max-width: 64rem;
+    margin-inline: auto;
+  }
+
+  .project-page-left-stack {
+    display: grid;
+    gap: 0.65rem;
+    align-items: start;
+  }
+
+  .project-page-panel-label,
+  .project-page-aside-label {
+    margin: 0;
+    font-size: clamp(0.66rem, 0.9vw, 0.8rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--project-tag-color, var(--theme-orange));
+    text-shadow: 1px 2px 0 var(--time-shadow);
+  }
+
+  .project-page-links-panel {
+    padding: 1rem;
+  }
+
+  .project-page-links {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .project-page-links :global(.retro-link) {
+    min-height: 2rem;
+    font-size: clamp(0.7rem, 0.9vw, 0.86rem);
+    letter-spacing: 0.09em;
+    justify-content: flex-start;
+  }
+
+  :global(.project-page-content-panel) {
+    padding: 1rem;
+    --plate-pattern-size: max(1600px, calc(var(--pattern-size-huge, 1024px) * 1.5));
+    --plate-pattern-opacity: 0.09;
+    max-width: none;
+    --frame-bevel: none;
+    border: none !important;
+    border-image: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  :global(.project-page-content-panel::after) {
+    content: none !important;
+    display: none !important;
+  }
+
+  :global(.project-page-content-panel .retro-contribution) {
+    border: none !important;
+    border-image: none !important;
+    box-shadow: none !important;
+  }
+
+  :global(.project-page-content-panel.compact-body) {
+    font-size: clamp(calc(0.74rem + 6px), calc(0.8vw + 6px), calc(0.86rem + 6px)) !important;
+    line-height: 1.46 !important;
+  }
+
+  :global(.project-page-content-panel #blog-content) {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  :global(.project-page-content-panel #blog-content p) {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .project-page-panel-label {
+    margin-bottom: 0.65rem;
+  }
+
+  .project-page-content-panel :global(#blog-content h2) {
+    font-size: clamp(2rem, 2.35vw, 2.5rem);
+  }
+
+  .project-page-content-panel :global(#blog-content h3) {
+    font-size: clamp(1.7rem, 2vw, 2.1rem);
+  }
+
+  .project-page-gallery-plain {
+    padding: 0;
+  }
+
+  .project-page-gallery-plain .project-panel-media {
+    max-width: 100%;
+    margin: 0;
+    gap: 0.55rem;
+  }
+
+  .project-page-gallery-plain .project-panel-frame {
+    aspect-ratio: 4 / 3;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .project-page-gallery-plain .card-carousel-arrow-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 767px) {
+    .project-page-shell {
+      padding-bottom: 0.5rem;
+    }
+
+    .project-page-header {
+      padding: 0.9rem;
+      margin-bottom: 0.85rem;
+    }
+
+    :global(.project-page-title) {
+      font-size: clamp(1.3rem, 4.6vw, 2rem) !important;
+    }
+
+    .project-page-lower-grid {
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 0.8rem;
+    }
+
+    .project-page-left-stack {
+      gap: 0.65rem;
+    }
+
+    .project-page-description {
+      margin-top: 0.35rem;
+    }
+
+    .project-page-links,
+    .project-page-roles {
+      margin-top: 0.6rem;
+      gap: 0.4rem;
+    }
+
+    .project-page-links-panel {
+      padding: 0.95rem;
+    }
+
+    .project-page-links :global(.retro-link) {
+      min-height: 1.95rem;
+    }
+
+    :global(.project-page-content-panel) {
+      padding: 0.9rem;
+    }
+
+    :global(.project-page-content-panel.compact-body) {
+      font-size: calc(0.72rem + 6px) !important;
+      line-height: 1.46 !important;
+    }
+  }
+</style>

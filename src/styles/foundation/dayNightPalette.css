@@ -66,7 +66,7 @@
   --theme-red: color-mix(in srgb, #ff5a0b 88%, white 12%);
   --theme-gray: color-mix(in srgb, #7c99ad 88%, white 12%);
   --theme-lightblue: color-mix(in srgb, #28a8ea 88%, white 12%);
-  --theme-white: color-mix(in srgb, #eaeef4 88%, white 12%);
+  --theme-white: color-mix(in srgb, #eaeef4 88%, rgb(236, 236, 236) 12%);
   --theme-black: color-mix(in srgb, #304666 88%, white 12%);
 }
 
@@ -140,7 +140,7 @@ body {
     --theme-red: hsl(from #ff5a0b h s min(calc(l + 7), 93));
     --theme-gray: hsl(from #7c99ad h s min(calc(l + 7), 93));
     --theme-lightblue: hsl(from #28a8ea h s min(calc(l + 7), 93));
-    --theme-white: hsl(from #eaeef4 h s min(calc(l + 7), 93));
+    --theme-white: hsl(from #ffffff h s min(calc(l + 7), 93));
     --theme-black: hsl(from #304666 h s min(calc(l + 7), 93));
   }
 }

@@ -30,9 +30,9 @@ const links = [
   /* Same texture recipe as the landing credits bar: the white motif, tinted by
      the mode base colour, so the panel follows day / night rather than a theme. */
   style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
-  panelClass="bg-[var(--time-panel)] backdrop-blur-md p-6 border border-[color:var(--time-border-soft)] shadow-2xl w-64"
+  panelClass="bg-[var(--time-panel)] backdrop-blur-md p-4 border border-[color:var(--time-border-soft)] shadow-2xl w-56"
 >
-  <div class="space-y-3">
+  <div class="space-y-2">
     {
       links.map((link) => (
         <SocialLink

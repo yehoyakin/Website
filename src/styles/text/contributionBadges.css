@@ -61,6 +61,7 @@
   margin-bottom: 0.55rem;
   padding-left: 1.15rem;
   line-height: 1.55;
+  display: block;
   font-weight: normal;
   font-size: var(--contribution-font-size, 1em);
 }
@@ -68,8 +69,57 @@
 :is(#blog-content, .project-panel-body)
   .retro-contribution
   :is(ul, ol)
+  > li
+  > .markdown-list-text {
+  display: block;
+  line-height: inherit;
+}
+
+/* The global prose list enhancer injects icon nodes; the contribution card
+   draws its own marker, so hide injected markers in this block only. */
+:is(#blog-content, .project-panel-body)
+  .retro-contribution
+  :is(ul, ol)
+  > li
+  :is(.list-bullet-icon, .list-number-icon) {
+  display: none;
+}
+
+:is(#blog-content, .project-panel-body)
+  .retro-contribution
+  :is(ul, ol)
   > li:last-child {
   margin-bottom: 0;
+}
+
+:is(#blog-content, .project-panel-body)
+  .retro-contribution
+  :is(ul, ol)
+  > li + li {
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+}
+
+/* Divider fades at both ends and is brighter at center. */
+:is(#blog-content, .project-panel-body)
+  .retro-contribution
+  :is(ul, ol)
+  > li + li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 60%, transparent) 14%,
+    color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 92%, var(--time-white)) 50%,
+    color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 60%, transparent) 86%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 /* The same accent tile the prose lists use, one step down for the bar. */
