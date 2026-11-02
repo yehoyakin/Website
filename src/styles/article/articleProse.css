@@ -40,16 +40,23 @@
    body size — only its first letter is enlarged.
 
    The cap is filled like every other magazine opener — the post's theme by
-   day, the theme's dark variant at night — hence its own `--lede-cap-fill`
-   token rather than `--heading-fill`, which is only declared on headings. */
+   day, the theme's dark variant at night — and, like the rest of the prose
+   type, pushed to its own chroma so it pops over the plate:
+   `--lede-cap-fill` is the bright theme tint, and the cap's hard shadow is its
+   dark variant, so it stands out instead of washing into the background. */
 #blog-content .blog-lede {
   --lede-cap-fill: var(--project-tag-color, var(--theme-main-day));
+  --lede-cap-shadow: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-night)));
 }
 
 :root[data-mode="night"] #blog-content .blog-lede {
   --lede-cap-fill: var(
     --project-tag-color-dark,
     var(--project-tag-color, var(--theme-main-night))
+  );
+  --lede-cap-shadow: var(
+    --project-tag-color,
+    var(--theme-main-day)
   );
 }
 
@@ -61,10 +68,10 @@
   font-weight: 700;
   color: var(--lede-cap-fill);
   -webkit-text-fill-color: var(--lede-cap-fill);
-  /* The cap is body copy, not a heading: it keeps a drop shadow (larger, and
-     darkened toward black, because the glyph is 3.4× the body size) instead of
-     the heading's hard ring, so it stays legible over whatever plate it lands on. */
-  text-shadow: 2px 3px 0 color-mix(in srgb, var(--time-shadow) 45%, var(--time-black));
+  /* Big, bright opener: the theme's own tint plus the dark variant as its hard
+     shadow, so the letter stays legible and stands out by itself over whatever
+     is behind it. */
+  text-shadow: 2px 3px 0 var(--lede-cap-shadow);
 }
 
 /* MAGAZINE OPENERS — the first letter of every top-level heading in the copy.
