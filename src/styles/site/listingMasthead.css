@@ -10,12 +10,29 @@
    and it keeps its breathing space on a tall screen. */
 
 .listing-shell {
-  padding-block: clamp(4.25rem, 13dvh, 7rem) clamp(0.75rem, 2dvh, 1.5rem);
+  padding-block: clamp(3.5rem, 11dvh, 5.5rem) clamp(0.5rem, 1.6dvh, 1.1rem);
 }
 
 /* The gap between the intro and the strip, one step tighter than `mt-16`. */
 .listing-gap {
-  margin-top: clamp(0.75rem, 3.5dvh, 2.5rem);
+  margin-top: clamp(0.5rem, 2.2dvh, 1.4rem);
+}
+
+/* PHONES — same spacing rhythm across blog + portfolio listing pages. */
+@media (max-width: 767px) {
+  .listing-shell {
+    padding-block: 3.1rem 0.4rem;
+  }
+  .listing-shell h1 {
+    font-size: var(--font-size-3xl);
+  }
+  .listing-shell p {
+    margin-top: 0.45rem;
+    line-height: 1.32;
+  }
+  .listing-gap {
+    margin-top: 0.45rem;
+  }
 }
 
 /* SHORT WINDOWS — a laptop at 720/768px high, where every pixel above the
@@ -23,7 +40,7 @@
    title and two lines of intro, and the title steps down one size. */
 @media (min-width: 768px) and (max-height: 820px) {
   .listing-shell {
-    padding-block: 4rem 0.5rem;
+    padding-block: 3.25rem 0.35rem;
   }
   .listing-shell h1 {
     font-size: var(--font-size-2xl);

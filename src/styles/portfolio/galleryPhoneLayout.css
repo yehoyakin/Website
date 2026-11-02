@@ -2,20 +2,20 @@
 
 @media (max-width: 768px) {
   .gallery-thumbnails {
-    gap: 1rem;
-    padding: 0 0.75rem;
+    gap: 0.75rem;
+    padding: 0 0.6rem;
   }
   .gallery-thumb {
-    width: 70vw !important;
+    width: 72vw !important;
   }
   .thumb-links {
-    max-width: 70vw;
+    max-width: 72vw;
   }
   .gallery-thumb-title {
-    font-size: clamp(2rem, 8vw, 2.9rem);
+    font-size: clamp(1.8rem, 7vw, 2.5rem);
   }
   .gallery-thumb-desc {
-    font-size: clamp(0.9rem, 3vw, 1.725rem);
+    font-size: clamp(0.78rem, 2.65vw, 1.2rem);
   }
   .thumb-tag {
     font-size: clamp(0.6rem, 1.8vw, 0.75rem);
@@ -27,12 +27,15 @@
   .project-panel-layout,
   .project-panel-layout--solo {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.75rem;
+    gap: 0.65rem;
   }
   /* The media frame keeps a landscape ratio, but 16:10 is needlessly tall on a
      phone where the column is only ~350px wide. */
   .project-panel-frame {
     aspect-ratio: 16 / 9;
+  }
+  .project-panel-body {
+    max-width: 100%;
   }
   .collapse-btn {
     width: 3rem;
@@ -46,21 +49,21 @@
 
 @media (max-width: 480px) {
   .gallery-thumb {
-    width: 85vw !important;
+    width: 86vw !important;
   }
   .thumb-links {
-    max-width: 85vw;
+    max-width: 86vw;
   }
   .gallery-thumb-title {
-    font-size: clamp(1.8rem, 7vw, 2.7rem);
+    font-size: clamp(1.5rem, 6.2vw, 2.2rem);
   }
   .gallery-thumb-desc {
-    font-size: clamp(0.8rem, 2.8vw, 1.575rem);
+    font-size: clamp(0.74rem, 2.4vw, 1rem);
   }
   /* A full-width 16:9 frame is only ~180px tall on the smallest phones; the
      screenshot is still the biggest thing in the panel, so let it breathe. */
   .project-panel-frame {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 10;
   }
   .thumb-tag {
     font-size: 0.7rem;

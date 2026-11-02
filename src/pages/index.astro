@@ -68,15 +68,15 @@ const credits: PageCredit[] = [
         whatever height is left. */}
     <div
       id="landing-content"
-      class="relative z-20 flex min-h-full w-full flex-col pb-6 md:pb-0"
+      class="relative z-20 flex min-h-full w-full flex-col pb-3 md:pb-0"
     >
-      <header class="absolute top-0 right-0 z-50 px-8 py-6">
+      <header class="absolute top-0 right-0 z-50 px-4 py-3 md:px-6 md:py-4">
         <ContactPanel />
       </header>
 
       {/* HERO — never squeezed, never clipped. */}
       <div
-        class="flex w-full shrink-0 items-center justify-center px-2 pb-2 pt-16 md:pt-2"
+        class="flex w-full shrink-0 items-center justify-center px-2 pb-1 pt-12 md:pt-1"
       >
         <HeaderInfo
           name="Joaquin Herrera"
@@ -88,7 +88,7 @@ const credits: PageCredit[] = [
 
       {/* CARD GRID — one card per entry in `pages` above. */}
       <div
-        class="flex w-full min-h-0 flex-1 items-start justify-center px-2 pb-2 md:p-2"
+        class="flex w-full min-h-0 flex-1 items-start justify-center px-2 pb-1 md:px-2 md:pb-2"
       >
         <PageCards pages={pages} credits={credits} />
       </div>
