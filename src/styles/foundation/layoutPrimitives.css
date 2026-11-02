@@ -6,7 +6,7 @@
   filter: blur(var(--bg-blur, var(--layer-blur, 0px)))
     brightness(var(--layer-dim, 1));
   transform: translate3d(0, 0, 0);
-  transition: opacity var(--dissolve-duration, 450ms)
+  transition: opacity var(--dissolve-duration, 220ms)
     var(--dissolve-ease, ease-in-out);
   will-change: opacity;
 }

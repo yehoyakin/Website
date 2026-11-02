@@ -2,13 +2,20 @@
    duplicate sits under and slightly to the right of the glyph for a tighter,
    more directional cast without the harsh black punch. */
 .readable-text:not(:is(h1, h2, h3)) {
-  text-shadow: 2px 3px 0 var(--time-shadow);
+  text-shadow: 1px 2px 0 var(--time-shadow);
 }
 
 /* PIXEL TYPE — bold and outline cuts drawn on the font's own grid. */
 
 body {
-  text-shadow: 2px 3px 0 var(--time-shadow);
+  text-shadow: 1px 2px 0 var(--time-shadow);
+}
+
+@media (max-width: 767px) {
+  .readable-text:not(:is(h1, h2, h3)),
+  body {
+    text-shadow: 1px 1px 0 var(--time-shadow);
+  }
 }
 
 :root {

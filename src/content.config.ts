@@ -136,8 +136,12 @@ const projects = defineCollection({
     /** The listing's cover — card artwork, and the preloaded preview. */
     cardBackground: z.string(),
 
-    /** Backdrop behind the gallery. Falls back to the cover when omitted. */
-    background: z.string().optional(),
+    /** The slug's own backdrop artwork. Deliberately separate from the cover:
+        the card crops a portrait-ish tile, the slug blurs a full-window image,
+        and reusing one for the other made every project page show its card
+        stretched behind the panels. Required, so a project cannot silently
+        fall back to the cover again. */
+    background: z.string(),
 
     /** Screenshots, in gallery order. A project can be clip-only. */
     scenes: z.array(z.object({ image: z.string() })).nullish(),

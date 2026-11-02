@@ -4,13 +4,20 @@
   color: var(--time-ink);
   font-size: 0.875rem;
   text-align: left;
-  text-shadow: 2px 3px 0 var(--time-shadow);
+  text-shadow: 1px 2px 0 var(--time-shadow);
 }
 
-/* CompactBody — the long-form reading size. */
+/* CompactBody — the long-form reading size, shared by the article and the
+   project write-up. Both read at ONE size: the project panel's recipe, which is
+   the one that holds up at reading distance, so the post takes it too instead
+   of a fixed 14px. (The project panel re-declares the same numbers on itself.) */
 .compact-body {
-  font-size: 0.875rem;
-  line-height: 1.52;
+  font-size: clamp(
+    calc(0.74rem + 6px),
+    calc(0.8vw + 6px),
+    calc(0.86rem + 6px)
+  );
+  line-height: 1.46;
   letter-spacing: 0.01em;
 }
 
@@ -19,23 +26,80 @@
   /* Leading belongs to the body above, not to each paragraph. */
   line-height: inherit;
   text-align: left;
-  text-shadow: 2px 3px 0 var(--time-shadow);
+  text-shadow: 1px 2px 0 var(--time-shadow);
 }
 
-/* Lede: the opening paragraph is a touch larger and takes a drop cap. */
-#blog-content .blog-lede {
-  font-size: 1.05em;
-}
-
-@media (min-width: 768px) {
-  #blog-content .blog-lede::first-letter {
-    float: left;
-    margin: 0.1em 0.14em 0 0;
-    font-size: 3.1em;
-    line-height: 0.78;
-    font-weight: 700;
-    color: var(--project-tag-color, var(--theme-orange));
+@media (max-width: 767px) {
+  :is(#blog-content, .project-panel-body),
+  :is(#blog-content, .project-panel-body) p {
+    text-shadow: 1px 1px 0 var(--time-shadow);
   }
+}
+
+/* Lede: the opening paragraph takes the drop cap and otherwise reads at the
+   body size — only its first letter is enlarged.
+
+   The cap is filled like every other magazine opener — the post's theme by
+   day, the theme's dark variant at night — hence its own `--lede-cap-fill`
+   token rather than `--heading-fill`, which is only declared on headings. */
+#blog-content .blog-lede {
+  --lede-cap-fill: var(--project-tag-color, var(--theme-main-day));
+}
+
+:root[data-mode="night"] #blog-content .blog-lede {
+  --lede-cap-fill: var(
+    --project-tag-color-dark,
+    var(--project-tag-color, var(--theme-main-night))
+  );
+}
+
+#blog-content .blog-lede::first-letter {
+  float: left;
+  margin: 0.1em 0.14em 0 0;
+  font-size: 3.4em;
+  line-height: 0.78;
+  font-weight: 700;
+  color: var(--lede-cap-fill);
+  -webkit-text-fill-color: var(--lede-cap-fill);
+  /* The cap is body copy, not a heading: it keeps a drop shadow (larger, and
+     darkened toward black, because the glyph is 3.4× the body size) instead of
+     the heading's hard ring, so it stays legible over whatever plate it lands on. */
+  text-shadow: 2px 3px 0 color-mix(in srgb, var(--time-shadow) 45%, var(--time-black));
+}
+
+/* MAGAZINE OPENERS — the first letter of every top-level heading in the copy.
+
+   A post's `#` headings open a movement, so their first character is set as a
+   drop cap: large, floated into the copy below, and filled with the heading's
+   own ink — the theme by day, the theme's dark variant at night, exactly what
+   the rest of the heading uses — inside the same hard white ring.
+
+   The ring is the heading's eight-shadow outline (styles/article/blogArticle.css),
+   repeated here with one change: the step is measured against the cap's own
+   size, so the outline keeps the heading's weight relative to the glyph instead
+   of staying a 1px hairline around a letter 2.6 times larger. */
+#blog-content h1::first-letter {
+  float: left;
+  margin: 0.04em 0.12em 0 0;
+  font-size: 2.6em;
+  line-height: 0.78;
+  /* 1 / 41.6 em — the heading's 1 / 16 em step, scaled by the cap's 2.6. */
+  --heading-step: max(1px, calc(1em / 41.6));
+  color: var(--heading-fill, var(--project-tag-color, var(--theme-main-day)));
+  -webkit-text-fill-color: var(
+    --heading-fill,
+    var(--project-tag-color, var(--theme-main-day))
+  );
+  text-shadow:
+    calc(var(--heading-step) * -1) 0 0 var(--heading-ring),
+    var(--heading-step) 0 0 var(--heading-ring),
+    0 calc(var(--heading-step) * -1) 0 var(--heading-ring),
+    0 var(--heading-step) 0 var(--heading-ring),
+    calc(var(--heading-step) * -1) calc(var(--heading-step) * -1) 0
+      var(--heading-ring),
+    var(--heading-step) calc(var(--heading-step) * -1) 0 var(--heading-ring),
+    calc(var(--heading-step) * -1) var(--heading-step) 0 var(--heading-ring),
+    var(--heading-step) var(--heading-step) 0 var(--heading-ring);
 }
 
 /* Headings. */
@@ -174,13 +238,23 @@
 }
 
 :is(#blog-content, .project-panel-body) strong {
-  color: var(--project-tag-color, var(--theme-orange));
-  text-shadow: 2px 3px 0 rgb(0 0 0 / 1);
+  color: var(--project-tag-color, var(--theme-main-day));
+  text-shadow: 2px 3px 0
+    color-mix(
+      in srgb,
+      var(--project-tag-color-dark, var(--theme-main-night)) 72%,
+      transparent 28%
+    );
 }
 
 :is(#blog-content, .project-panel-body) em {
-  color: rgb(255 255 255 / 0.97);
-  text-shadow: 1px 2px 0 var(--project-tag-color, var(--theme-orange));
+  color: color-mix(
+    in srgb,
+    var(--project-tag-color, var(--theme-main-day)) 78%,
+    var(--time-ink) 22%
+  );
+  text-shadow: 1px 2px 0
+    var(--project-tag-color-dark, var(--theme-main-night));
 }
 
 /* Links. */
@@ -204,8 +278,8 @@
 :is(#blog-content, .project-panel-body) a:focus-visible {
   /* Filled tile, label flipped to the page ink for contrast. */
   background: var(--link-box);
-  border-color: color-mix(in srgb, var(--link-box) 55%, var(--time-black));
-  color: var(--time-black);
+  border-color: var(--project-tag-color-dark, var(--theme-main-night));
+  color: var(--project-tag-color-dark, var(--theme-main-night));
   opacity: 1;
 }
 
@@ -256,17 +330,36 @@
 :is(#blog-content, .project-panel-body) figure {
   margin-top: 1.6rem;
   margin-bottom: 1.6rem;
-  border: var(--outline-width) solid
+  border: var(--outline-width) solid transparent;
+  border-image: linear-gradient(
+    to bottom,
     color-mix(
       in srgb,
-      var(--project-tag-color, var(--theme-orange)) 60%,
-      var(--time-black)
-    );
+      var(--project-tag-color, var(--theme-main-day)) 92%,
+      var(--project-tag-color-dark, var(--theme-main-night)) 8%
+    )
+      0%,
+    var(--project-tag-color, var(--theme-main-day)) 18%,
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-main-day)) 78%,
+      var(--project-tag-color-dark, var(--theme-main-night)) 22%
+    )
+      52%,
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-main-day)) 45%,
+      var(--project-tag-color-dark, var(--theme-main-night)) 55%
+    )
+      82%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 100%
+  )
+    1;
   box-shadow:
     inset var(--control-bevel) var(--control-bevel) 0 0
-      color-mix(in srgb, var(--time-white) 35%, transparent),
+      color-mix(in srgb, var(--project-tag-color, var(--theme-main-day)) 36%, transparent),
     inset calc(var(--control-bevel) * -1) calc(var(--control-bevel) * -1) 0 0
-      color-mix(in srgb, var(--time-black) 55%, transparent);
+      color-mix(in srgb, var(--project-tag-color-dark, var(--theme-main-night)) 58%, transparent);
 }
 
 /* The contribution block styles itself as a listing card in

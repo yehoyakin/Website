@@ -154,7 +154,7 @@ I constantly find myself having a harder time enjoying most popular video games,
 
 [background[0]]
 
-# .45 PARABELLUM BLOODHOUND - Cyberpunk Active Time Action
+# . 45 PARABELLUM BLOODHOUND - Cyberpunk Active Time Action
 
 Based on the trailer alone, there is a lot that I appreciate from the game:
 

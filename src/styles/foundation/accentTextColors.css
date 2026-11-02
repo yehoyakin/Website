@@ -59,103 +59,27 @@
   text-shadow: 2px 3px 0 rgb(255 255 255 / 0.96);
 }
 
-/* ANIMATED ACCENT TYPE — a bouncing menu hop, the Wii-channel / Yoshi's Island
-   kind: the word rises on a smooth sine arc, stretches as it climbs, then lands
-   and squashes wide before springing back up.
+/* ACCENT TYPE IS STILL TYPE — no animation, no box.
 
-   The curves below are a sine SAMPLED into keyframes — every stop is one frame
-   of sin() / cos() — and both animations run `linear`, so what plays is that
-   curve, not a curve re-eased between three points. `translateY` is the sine;
-   `scaleY` / `scaleX` are its cosine partner, so the word stretches while it
-   travels and flattens on impact instead of sliding like a sticker.
+   Bold and italic used to be `display: inline-block` with a looping vertical
+   bob (`accent-bob-slow` / `accent-bob-quick`). A plain transform does not move
+   a line box, but an inline-block's box DOES grow when its content is scaled,
+   so every burst pushed the whole line down and back up — the "line jump" —
+   and a coloured word could be bumped onto the next line while its box was
+   wide. Both are gone: the emphasis keeps its accent paint and its hard
+   shadow, nothing else. `display` is deliberately left alone, so these stay
+   ordinary inline words that wrap exactly like the text around them. */
 
-   Neither runs constantly: each cycle opens with one short burst of motion and
-   then sits still for the rest of it, so the words hop every now and then
-   rather than twitching forever. Bold's burst is one heavy thump — it barely
-   lifts, drops hard and squashes wide, then wobbles down to rest. Italic's is
-   two quick springy hops with a skew wobble on each landing. The two cycles are
-   different lengths, so they never fall into step with each other.
-
-   `display: inline-block` is what makes this possible at all: a transform is
-   ignored on a non-replaced inline box, so the emphasis needs a box of its own
-   to move in. */
-
-@keyframes accent-bob-slow {
-  0%,
-  20%,
-  100% {
-    transform: translateY(0) scaleX(1) scaleY(1);
-  }
-  /* A short wind-up, then the drop. */
-  3% {
-    transform: translateY(-0.07em) scaleX(0.97) scaleY(1.04);
-  }
-  /* Impact: the heavy part — barely any lift, a wide flat squash. */
-  7% {
-    transform: translateY(0.02em) scaleX(1.09) scaleY(0.88);
-  }
-  /* Two settling wobbles, each smaller than the last. */
-  11% {
-    transform: translateY(-0.025em) scaleX(0.985) scaleY(1.03);
-  }
-  15% {
-    transform: translateY(0.008em) scaleX(1.03) scaleY(0.97);
-  }
-}
-
-@keyframes accent-bob-quick {
-  0%,
-  26%,
-  100% {
-    transform: translateY(0) scaleX(1) scaleY(1) skewX(0deg);
-  }
-  /* Hop one. */
-  3% {
-    transform: translateY(-0.09em) scaleX(0.96) scaleY(1.07) skewX(-3deg);
-  }
-  6% {
-    transform: translateY(0.015em) scaleX(1.1) scaleY(0.87) skewX(4deg);
-  }
-  /* Hop two, lower and tighter. */
-  10% {
-    transform: translateY(-0.06em) scaleX(0.98) scaleY(1.04) skewX(-2deg);
-  }
-  14% {
-    transform: translateY(0.01em) scaleX(1.06) scaleY(0.93) skewX(3deg);
-  }
-  /* One last wobble before it settles. */
-  19% {
-    transform: translateY(-0.02em) scaleX(1) scaleY(1.02) skewX(-1deg);
-  }
-}
-
-/* Bold: one heavy thump, then a long rest. */
 :is(.theme-color, #blog-content, .project-panel-body) :is(strong, b) {
-  display: inline-block;
-  transform-origin: 50% 85%;
-  animation: accent-bob-slow 11s linear infinite;
   background: none;
   color: var(--accent-bold);
   -webkit-text-fill-color: initial;
   text-shadow: 2px 3px 0 var(--accent-bold-shadow);
 }
 
-/* Italic: two springy hops, then a rest — on its own, shorter clock. */
 :is(.theme-color, #blog-content, .project-panel-body) :is(em, i) {
-  display: inline-block;
-  transform-origin: 50% 85%;
-  animation: accent-bob-quick 9s linear infinite;
   background: none;
   color: var(--accent-italic-fill);
   -webkit-text-fill-color: initial;
   text-shadow: 1px 2px 0 var(--accent-italic-shadow);
-}
-
-/* Reduced motion: the words keep their paint and their natural width. */
-@media (prefers-reduced-motion: reduce) {
-  :is(.theme-color, #blog-content, .project-panel-body) :is(strong, b, em, i) {
-    display: inline;
-    transform: none;
-    animation: none;
-  }
 }

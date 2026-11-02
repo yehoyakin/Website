@@ -52,16 +52,14 @@
     var(--frame-accent) 28%,
     var(--time-black)
   );
-  /* The frame, as a border image: one gradient, four edges, no per-side rules. */
+  /* Smooth vertical progression: the accent stays readable but the colour is
+     allowed to transition gradually instead of snapping between hard bands. */
   --frame-bevel: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--frame-edge-light) 100%, var(--time-white)) 0%,
-    var(--frame-edge-light) 12%,
-    color-mix(in srgb, var(--frame-accent) 68%, var(--time-white)) 28%,
-    var(--frame-accent) 52%,
-    color-mix(in srgb, var(--frame-accent) 52%, var(--time-black)) 78%,
-    var(--frame-edge-dark) 92%,
-    color-mix(in srgb, var(--frame-edge-dark) 100%, var(--time-black)) 100%
+    to bottom,
+    color-mix(in srgb, var(--frame-accent) 98%, var(--time-white) 2%) 0%,
+    var(--frame-accent) 12%,
+    color-mix(in srgb, var(--frame-accent) 72%, var(--time-black) 28%) 58%,
+    color-mix(in srgb, var(--frame-accent) 45%, var(--time-black) 55%) 100%
   );
 }
 

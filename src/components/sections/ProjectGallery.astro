@@ -2,6 +2,8 @@
 import { asset } from "../../utils/asset";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 import { patternForTheme } from "../../config/patterns";
+import Title from "../UI/Title.astro";
+import Body from "../UI/Body.astro";
 
 interface Props {
   projects: {
@@ -39,13 +41,15 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
             <div class="gallery-project-item">
               <a
                 href={projectHref}
-                class="gallery-thumb blog-card pixel-frame"
+                class="gallery-thumb blog-card pixel-frame group"
                 aria-label={`Open project ${project.data.title ?? index + 1}`}
                 title={project.data.title}
-                style={`--thumb-theme-color: ${themeToken}; --project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+                style={`--thumb-theme-color: ${themeToken}; --project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`}
               >
-                <div class="blog-card-bar pattern-plate pattern-plate--small">
-                  <span class="thumb-tag">{project.data.tag}</span>
+                <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
+                  <Body theme={themeName} class="blog-card-date text-xs sm:text-sm">
+                    {project.data.tag}
+                  </Body>
                 </div>
 
                 <div class="blog-card-image-wrap">
@@ -63,8 +67,16 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
                 {hasDescription && (
                   <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-                    <span class="gallery-thumb-title">{project.data.title}</span>
-                    <span class="gallery-thumb-desc">{project.data.description}</span>
+                    <Title level={3} theme={themeName} class="blog-card-title">
+                      {project.data.title}
+                    </Title>
+
+                    <Body
+                      theme={themeName}
+                      class="blog-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
+                    >
+                      {project.data.description}
+                    </Body>
                   </div>
                 )}
               </a>

@@ -53,16 +53,18 @@ const isExternal = (url?: string) =>
   url?.startsWith("http://") || url?.startsWith("https://");
 
 const themeName = toThemeName(theme);
-const themeStyle = `--project-tag-color: ${resolveThemeToken(themeName)}; --plate-pattern: url('${patternForTheme(themeName)}')`;
+const themeStyle = themeName
+  ? `--project-tag-color: ${resolveThemeToken(themeName)}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`
+  : undefined;
 ---
 
 {
   links.length > 0 ? (
-    <div
-      class={`group block overflow-hidden transition backdrop-blur-[1.5rem] pattern-plate pixel-frame ${extraClass}`}
-      style={themeStyle}
-    >
-      <div class="p-4">
+    /* In a post's links panel the PLATE belongs to the panel (RailPanel): a
+       card here is one group of links on that plate, the way the project
+       write-up's panel is one plate with its links on it. */
+    <div class={`block overflow-hidden ${extraClass}`} style={themeStyle}>
+      <div>
         {backgroundImage && (
           <div class="w-full h-36 mb-4 overflow-hidden">
             <img
@@ -83,7 +85,7 @@ const themeStyle = `--project-tag-color: ${resolveThemeToken(themeName)}; --plat
 
         {description && <Body class="mt-2 text-sm">{description}</Body>}
 
-        <div class="mt-4 flex flex-col gap-2">
+        <div class="links-panel-links mt-3">
           {links.map((l: LinkItem) => (
             <Link
               href={resolve(l.href)}

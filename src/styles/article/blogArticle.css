@@ -11,21 +11,25 @@
    Muted ink is tinted globally now (see foundation/dayNightPalette.css); what is
    scoped here are the article's frames: hairlines and washes are white carrying
    a heavy wash of the post's own accent. */
-:is(.blog-masthead, #blog-content) {
+/* `.blog-article-body`, not `#blog-content`: the id is the body on a post but
+   the div INSIDE the write-up panel on a project page, where this border width
+   (Tailwind's preflight makes every element `border-style: solid`) drew a plain
+   ink-coloured frame around the whole write-up. */
+:is(.blog-masthead, .blog-article-body) {
   --time-border: color-mix(
     in srgb,
-    var(--time-white) 40%,
-    var(--project-tag-color, var(--theme-orange))
+    var(--project-tag-color, var(--theme-main-day)) 86%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 14%
   );
   --time-border-soft: color-mix(
     in srgb,
-    var(--time-white) 18%,
-    var(--project-tag-color, var(--theme-orange))
+    var(--project-tag-color, var(--theme-main-day)) 72%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 28%
   );
   --time-wash: color-mix(
     in srgb,
-    var(--time-white) 8%,
-    var(--project-tag-color, var(--theme-orange))
+    var(--project-tag-color, var(--theme-main-day)) 62%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 38%
   );
   /* 2px growth: the tinted frame is a statement, not a hairline. */
   border-width: calc(var(--outline-width) + 2px);
@@ -41,8 +45,8 @@
 :is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6),
 .blog-masthead-title {
   --heading-step: max(1px, calc(1em / 16));
-  --heading-fill: var(--project-tag-color, var(--theme-orange));
-  --heading-ring: var(--time-white);
+  --heading-fill: var(--project-tag-color, var(--theme-main-day));
+  --heading-ring: var(--project-tag-color-dark, var(--theme-main-night));
   color: var(--heading-fill);
   -webkit-text-fill-color: var(--heading-fill);
   -webkit-font-smoothing: antialiased;
@@ -59,7 +63,23 @@
     var(--heading-step) var(--heading-step) 0 var(--heading-ring);
 }
 
-:root[data-mode="night"] :is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6),
-:root[data-mode="night"] .blog-masthead-title {
-  --heading-ring: var(--time-black);
+/* HEADINGS INSIDE THE COPY — the same two knobs, set per mode.
+
+   A heading written in the post body wears the post's accent by day and that
+   accent's dark variant at night, ALWAYS ringed in white so the outline cut
+   survives both. Only `#blog-content` is targeted: the masthead title above it
+   is a white-on-accent cut (see styles/article/articleMasthead.css) and must
+   not follow the copy. These outrank the base heading rule above and the h5/h6
+   muted fill in articleProse.css, so every level takes the theme. */
+:root:not([data-mode="night"]) #blog-content :is(h1, h2, h3, h4, h5, h6) {
+  --heading-fill: var(--project-tag-color, var(--theme-main-day));
+  --heading-ring: var(--time-white);
+}
+
+:root[data-mode="night"] #blog-content :is(h1, h2, h3, h4, h5, h6) {
+  --heading-fill: var(
+    --project-tag-color-dark,
+    var(--project-tag-color, var(--theme-main-night))
+  );
+  --heading-ring: var(--time-white);
 }

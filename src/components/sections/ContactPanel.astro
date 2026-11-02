@@ -27,12 +27,13 @@ const links = [
   id="contacts"
   label="Toggle contact links"
   icon="contacts"
-  /* Same texture recipe as the landing credits bar: the white motif, tinted by
-     the mode base colour, so the panel follows day / night rather than a theme. */
+  /* Same plate as a project's links panel (chrome/pixelChrome/linkPanels.css):
+     the pixel frame and the white motif, tinted by the mode base colour, so the
+     panel follows day / night rather than a theme. */
   style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
-  panelClass="bg-[var(--time-panel)] backdrop-blur-md p-4 border border-[color:var(--time-border-soft)] shadow-2xl w-56"
+  panelClass="links-panel w-56"
 >
-  <div class="space-y-2">
+  <div class="links-panel-links">
     {
       links.map((link) => (
         <SocialLink
@@ -40,6 +41,11 @@ const links = [
           text={link.text}
           external={link.external}
           icon={link.icon}
+          tinted
+          /* The accent, not a named theme: `--icon-accent` is the day colour by
+             day and the night colour at night, so the tiles keep following the
+             mode with the themed tile's white outline. */
+          style="--project-tag-color: var(--icon-accent); --project-tag-color-dark: var(--icon-accent)"
         />
       ))
     }

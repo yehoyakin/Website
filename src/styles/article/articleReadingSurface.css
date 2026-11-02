@@ -6,12 +6,25 @@
   max-width: 46rem;
   margin-inline: auto;
   padding: 1.25rem 1rem 1.75rem;
-  border: var(--outline-width) solid
+  border: var(--outline-width) solid transparent;
+  border-image: linear-gradient(
+    to bottom,
     color-mix(
       in srgb,
-      var(--project-tag-color, var(--theme-orange)) 28%,
-      var(--time-border-soft)
-    );
+      var(--project-tag-color, var(--theme-main-day)) 92%,
+      var(--project-tag-color-dark, var(--theme-main-night)) 8%
+    )
+      0%,
+    var(--project-tag-color, var(--theme-main-day)) 18%,
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-main-day)) 78%,
+      var(--project-tag-color-dark, var(--theme-main-night)) 22%
+    )
+      58%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 100%
+  )
+    1;
   /* Fill and tint gradient both come from `.pattern-plate`
      (styles/chrome/pixelChrome/patternPlates.css), like every other plate —
      nothing here may reset `background-image`, or the reading surface would be
@@ -39,6 +52,40 @@
   }
 }
 
+/* The long-copy columns - the article body and the project write-up - take
+   the shared PANEL recipe from chrome/pixelChrome/patternPlates.css:
+   the same fill, banding and texture as the links panel on a project
+   page. No rule here may give them a tint of their own. */
+
+/* THE ARTICLE'S BODY WEARS THE PROJECT WRITE-UP'S SURFACE.
+
+   Both columns are the same thing — long copy on the ghost page's 95% panel
+   plate — but only the write-up sat on a plain surface. The article also took
+   the site's frame recipe (the border image and inset bevel in
+   chrome/pixelChrome/frames.css) plus a 3px accent cap along its top, and its
+   texture ran at the huge tile while the write-up uses one and a half of them.
+
+   The id keeps these ahead of frames.css, which is imported after the article
+   and frames `.blog-article-body` by class. Opacity is deliberately NOT set:
+   the page's plate group (patternPlates.css) owns it for both columns, so they
+   stay on one value. */
+#blog-content.blog-article-body {
+  /* No frame: the copy sits ON the plate, not inside a box. `border: 0` also
+     leaves the frame's border image nothing to paint on. */
+  border: 0;
+  box-shadow: none;
+  /* The write-up's texture step: one and a half huge tiles. */
+  --plate-pattern-size: max(
+    1600px,
+    calc(var(--pattern-size-huge, 1024px) * 1.5)
+  );
+}
+
+/* The accent cap belongs to the framed column; the write-up has none. */
+#blog-content.blog-article-body::after {
+  content: none;
+}
+
 /* Accent edge along the top of the column. `::after`, so the plate pattern can
    keep `::before` (`styles/chrome/pixelChrome/patternPlates.css`). */
 .blog-article-body::after,
@@ -49,9 +96,21 @@
   height: 3px;
   z-index: 1;
   background: linear-gradient(
-    90deg,
-    var(--project-tag-color, var(--theme-orange)) 0%,
-    transparent 85%
+    to bottom,
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-main-day)) 92%,
+      var(--project-tag-color-dark, var(--theme-main-night)) 8%
+    )
+      0%,
+    var(--project-tag-color, var(--theme-main-day)) 18%,
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-main-day)) 78%,
+      var(--project-tag-color-dark, var(--theme-main-night)) 22%
+    )
+      58%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 100%
   );
   pointer-events: none;
 }

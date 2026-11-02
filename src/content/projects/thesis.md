@@ -17,6 +17,8 @@ theme: pink
 
 cardBackground: "images/projects/thesis/playfield.webp"
 
+background: "images/projects/thesis/playfield.webp"
+
 scenes:
   - image: "images/projects/thesis/playfield.webp"
 

@@ -151,7 +151,7 @@
    card follows. */
 .blog-card .blog-card-title {
   --card-title-step: max(1px, calc(1em / 16));
-  --card-title-fill: var(--project-tag-color, var(--theme-orange));
+  --card-title-fill: var(--project-tag-color, var(--theme-main-day));
   --card-title-ring: var(--time-white);
   color: var(--card-title-fill);
   -webkit-text-fill-color: var(--card-title-fill);

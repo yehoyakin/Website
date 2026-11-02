@@ -26,18 +26,26 @@
      unthemed one lights in white / black. */
   --button-lighting: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 100%, transparent)
-      0 9%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 78%, transparent)
-      9% 25%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 45%, transparent)
-      25% 44%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 18%, transparent)
-      44% 60%,
-    color-mix(in srgb, var(--tile-dark, var(--time-black)) 22%, transparent)
-      60% 78%,
-    color-mix(in srgb, var(--tile-dark, var(--time-black)) 68%, transparent)
-      78% 100%
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--time-white)) 96%,
+        var(--time-white) 4%
+      )
+      0%,
+    var(--project-tag-color, var(--time-white)) 18%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--time-white)) 78%,
+        var(--project-tag-color-dark, var(--time-black)) 22%
+      )
+      52%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--time-white)) 44%,
+        var(--project-tag-color-dark, var(--time-black)) 56%
+      )
+      78%,
+    var(--project-tag-color-dark, var(--time-black)) 100%
   );
   /* Pattern tile sizes — one per plate step. */
   --pattern-size-huge: 1024px;
@@ -52,20 +60,28 @@
 :root:not([data-mode="night"]) {
   --button-lighting: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 84%, transparent)
-      0 9%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 66%, transparent)
-      9% 25%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 40%, transparent)
-      25% 44%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 16%, transparent)
-      44% 60%,
-    color-mix(in srgb, var(--tile-dark, var(--time-black)) 22%, transparent)
-      60% 78%,
-    color-mix(in srgb, var(--tile-dark, var(--time-black)) 68%, transparent)
-      78% 100%
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--time-white)) 98%,
+        var(--time-white) 2%
+      )
+      0%,
+    var(--project-tag-color, var(--time-white)) 12%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--time-white)) 72%,
+        var(--project-tag-color-dark, var(--time-black)) 28%
+      )
+      58%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--time-white)) 45%,
+        var(--project-tag-color-dark, var(--time-black)) 55%
+      )
+      100%
   );
 }
+
 
 /* PHONES: the same outlines at half weight.
 

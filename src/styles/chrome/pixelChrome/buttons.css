@@ -1,11 +1,11 @@
 /* A lit tile: radial bloom under the top edge over a sinking fill. */
 .retro-link.pixel-frame,
 .split-card-action {
-  --outline-color: var(--project-tag-color, var(--time-border));
+  --outline-color: var(--project-tag-color, var(--theme-main-day));
   --outline-color-hover: var(--outline-color);
-  --tile-light: color-mix(in srgb, var(--outline-color) 65%, white);
-  --tile-dark: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
-  --button-label-color: var(--time-white);
+  --tile-light: var(--project-tag-color, var(--theme-main-day));
+  --tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  --button-label-color: contrast-color(var(--outline-color));
   --button-label-shadow: color-mix(in srgb, var(--time-shadow) 84%, var(--outline-color));
   --button-icon-shadow: var(--time-shadow);
   /* The accent at full strength; contrast comes from the label. */
@@ -36,7 +36,6 @@
 
 .split-card-action,
 .retro-link.pixel-frame {
-  /* Always white, always with a slightly deeper darker underside. */
   color: var(--button-label-color);
   text-shadow: 2px 2px 0 var(--button-label-shadow);
 }
@@ -44,16 +43,18 @@
 @supports (color: contrast-color(red)) {
   .split-card-action,
   .retro-link.pixel-frame {
-    color: contrast-color(var(--outline-color));
+    --button-label-color: contrast-color(var(--tile-fill));
+    color: var(--button-label-color);
   }
 }
 
-/* Hover: the same tile, mixed further toward white. */
+/* Hover: the theme always drives the fill and the text contrast. */
 .retro-link.pixel-frame:hover,
 .split-card-action:hover {
-  background-color: color-mix(in srgb, var(--outline-color) 85%, white);
-  border-color: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
-  color: var(--time-black);
+  --button-label-color: contrast-color(var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day))));
+  background-color: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  border-color: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  color: var(--button-label-color);
 }
 
 /* CUT PIXEL CORNERS. The icon artwork rounds its corners by removing pixels —

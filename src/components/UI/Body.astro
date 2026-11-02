@@ -27,8 +27,8 @@ const {
   shadow = true,
 } = Astro.props;
 const themeName = toThemeName(rawTheme);
-const config = getThemeConfig(themeName);
-const themeToken = resolveThemeToken(themeName);
+const config = getThemeConfig(themeName || "");
+const themeToken = themeName ? resolveThemeToken(themeName) : undefined;
 
 // Only an explicitly assigned theme swaps the typeface. Without one the text
 // keeps inheriting the page's font, which is the previous behaviour.
@@ -47,7 +47,7 @@ const themeAttribute = hasTheme ? toThemeToken(themeName) : undefined;
     customClass,
   ]}
   data-theme={themeAttribute}
-  style={`--project-tag-color: ${themeToken}`}
+  style={themeToken ? `--project-tag-color: ${themeToken}` : undefined}
 >
   <slot />
 </p>

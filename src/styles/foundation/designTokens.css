@@ -15,17 +15,29 @@
 
   /* One value per pixel-icon colour in public/images/Icons/. */
   --theme-orange: #ff9c00; /* Orange — tile orange. */
-  --theme-purple: #d366e7; /* Purple — lilac. */
+  --theme-orange-dark: #eb6a00; /* Dark orange — plate shadow. */
+  --theme-purple: #a124b7; /* Purple — lilac. */
+  --theme-purple-dark: #6d00a8; /* Dark purple — plate shadow. */
   --theme-yellow: #ffce41; /* Yellow — butter. */
+  --theme-yellow-dark: #f9a31b; /* Dark yellow — plate shadow. */
   --theme-green: #51c229; /* Green — green. */
-  --theme-pink: #ffa4b1; /* Pink — mauve rose. */
+  --theme-green-dark: #00b60f; /* Dark green — plate shadow. */
+  --theme-pink: #ffa5a5; /* Pink — mauve rose. */
+  --theme-pink-dark: #ff5b79; /* Dark pink — plate shadow. */
   --theme-blue: #0278d8; /* Blue — cornflower. */
+  --theme-blue-dark: #0158a9; /* Dark blue — plate shadow. */
   --theme-lightgreen: #87e42e; /* Lightgreen — pistachio. */
-  --theme-red: #ff5a0b; /* Red — coral. */
+  --theme-lightgreen-dark: #57a300; /* Dark lightgreen — plate shadow. */
+  --theme-red: #ff5506; /* Red — coral. */
+  --theme-red-dark: #ca4300; /* Dark red — plate shadow. */
   --theme-gray: #7c99ad; /* Gray — taupe. */
+  --theme-gray-dark: #4f6476; /* Dark gray — plate shadow. */
   --theme-lightblue: #28a8ea; /* Lightblue — sky. */
-  --theme-white: #ffffff; /* White — cream. */
+  --theme-lightblue-dark: #1272b7; /* Dark lightblue — plate shadow. */
+  --theme-white: #eff1ff; /* White — cream. */
+  --theme-white-dark: #b0b7c6; /* Dark white — plate shadow. */
   --theme-black: #304666; /* Black — plum shadow. */
+  --theme-black-dark: #0d2854; /* Dark black — plate shadow. */
 }
 
 /* Screen chrome rail. */
@@ -65,7 +77,7 @@
   --ease-soft: cubic-bezier(0.45, 0, 0.55, 1);
   --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-press: cubic-bezier(0.3, 0, 0.2, 1);
-  /* Page dissolve: 450ms, half the original 900ms. */
-  --dissolve-duration: 450ms;
+  /* Page dissolve: kept intentionally brief so route changes feel snappy. */
+  --dissolve-duration: 220ms;
   --dissolve-ease: cubic-bezier(0.45, 0, 0.55, 1);
 }

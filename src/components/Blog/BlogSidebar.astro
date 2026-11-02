@@ -26,13 +26,15 @@ interface Props {
 const { cards = [], theme } = Astro.props as Props;
 ---
 
-<aside
-  class="relative z-20 w-full lg:sticky lg:top-24 lg:h-fit
-         lg:max-h-[calc(100vh-6rem)] overflow-y-auto retro-scrollbar"
->
+{
+  /* No scroll frame of its own: this sits inside the rail panel
+     (components/shared/RailPanel.astro), which already caps its height and
+     scrolls. A second `overflow-y: auto` here gave the panel two scrollbars. */
+}
+<aside class="relative z-20 w-full">
   {
     cards.map((card) => (
-      <div class="w-full overflow-hidden">
+      <div class="links-panel-group w-full overflow-hidden">
         <LinkCard
           href={card.href}
           links={card.links}

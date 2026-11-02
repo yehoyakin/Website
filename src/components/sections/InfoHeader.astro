@@ -14,7 +14,7 @@ interface Props {
 
 const { name, description, portraitSrc, theme = "orange" } = Astro.props;
 
-const dynamicStyle = `--project-tag-color: ${resolveThemeToken(theme)};`;
+const dynamicStyle = `--project-tag-color: ${resolveThemeToken(theme)}; --project-tag-color-dark: var(--theme-${theme}-dark);`;
 ---
 
 <div

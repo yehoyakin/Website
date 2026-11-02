@@ -73,16 +73,27 @@ export function toThemeToken(themeName: string): string {
  * the var() as invalid and drops the declaration — graceful degradation.
  */
 export function resolveThemeToken(themeName: string): string {
+  if (!themeName) return "var(--theme-main-day)";
   return `var(${toThemeToken(themeName)})`;
+}
+
+export function toThemeDarkToken(themeName: string): string {
+  return `--theme-${themeName}-dark`;
+}
+
+export function resolveThemeDarkToken(themeName: string): string {
+  if (!themeName) return "var(--theme-main-night)";
+  return `var(${toThemeDarkToken(themeName)})`;
 }
 
 /**
  * Normalize an arbitrary value into a valid theme name string.
- * Returns "orange" for null/undefined/empty, passes through everything else.
+ * Returns an empty string when no explicit theme is supplied so the page can
+ * keep the global day / night default instead of forcing an accent.
  */
 export function toThemeName(value: unknown): string {
   if (typeof value === "string" && value.trim()) return value.trim();
-  return "orange";
+  return "";
 }
 
 // ── Project roles ───────────────────────────────────────────────────────

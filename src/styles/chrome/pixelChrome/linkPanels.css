@@ -1,0 +1,40 @@
+/* THE LINKS PANEL — one look for every panel that is nothing but links.
+
+   The recipe comes from the project write-up's links panel
+   (pages/portfolio/[slug].astro): a small plate on the pixel frame, then a row
+   of compact chip buttons that wraps. The landing's contacts tab and a post's
+   links tab are the same control (components/shared/RailPanel.astro), so they
+   wear that recipe instead of each painting its own background.
+
+   Both hosts already carry `.pixel-frame` and `.pattern-plate--small`; this
+   adds the padding, the chip row and the button type scale. `position:
+   relative` keeps the plate's motif inside the panel's own box — a plate draws
+   it with absolutely positioned `::before` / `::after` layers at `inset: 0`,
+   and `.pattern-plate` deliberately leaves positioning to its host. */
+
+.links-panel {
+  position: relative;
+  padding: 1rem;
+}
+
+.links-panel .links-panel-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* The project panel's button size: control-height tiles, tighter tracking than
+   the default button, and left-aligned so stacked icons line up. */
+.links-panel .links-panel-links .retro-link {
+  min-height: 2rem;
+  font-size: clamp(0.7rem, 0.9vw, 0.86rem);
+  letter-spacing: 0.09em;
+  justify-content: flex-start;
+}
+
+/* A post's links arrive grouped by card; the groups stack as blocks on the one
+   plate rather than as panels of their own. */
+.links-panel .links-panel-group + .links-panel-group {
+  margin-top: 0.85rem;
+}

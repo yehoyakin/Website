@@ -112,7 +112,7 @@
 }
 
 .blog-card-item .blog-card-title,
-.gallery-project-item .gallery-thumb-title {
+.gallery-project-item .blog-card-title {
   font-size: clamp(1.5rem, 2vw, 2.3rem);
   line-height: 1.15;
 }
@@ -120,7 +120,7 @@
 /* A card-level description: two lines at most, and no paragraph margins.
    Extra lines come out of the picture, not out of the card. */
 .blog-card-item .blog-card-desc,
-.gallery-project-item .gallery-thumb-desc {
+.gallery-project-item .blog-card-desc {
   margin-top: 0.2rem;
   font-size: clamp(0.639rem, 1.02vw, 0.812rem);
   line-height: 1.35;
@@ -132,7 +132,7 @@
 
 /* The meta line: 1.6 body leading is half the bar at card scale. */
 .blog-card-item .blog-card-date,
-.gallery-project-item .thumb-tag {
+.gallery-project-item .blog-card-date {
   font-size: clamp(0.7rem, 1vw, 0.9rem);
   line-height: 1.25;
 }

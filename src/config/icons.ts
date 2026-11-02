@@ -147,6 +147,12 @@ export const iconRegistry = {
   "arrow-right": "Triangle Right",
   "arrow-up": "Triangle Up",
   "arrow-down": "Triangle Down",
+
+  // Theme-aware close glyph for overlays: the icon set ships a letter X in each
+  // colour, so this gives the gallery's lightbox the same palette treatment as
+  // the rest of the chrome without introducing a one-off custom asset.
+  close: "Letter X",
+  x: "Letter X",
 } as const;
 
 export type IconName = keyof typeof iconRegistry;

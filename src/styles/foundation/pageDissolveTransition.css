@@ -21,9 +21,9 @@
     }
     to {
       opacity: 0;
-      mask-size: var(--dissolve-mask-grow, 14rem) var(--dissolve-mask-grow, 14rem);
-      mask-position: var(--dissolve-mask-grow, 14rem)
-        var(--dissolve-mask-grow, 14rem);
+      mask-size: var(--dissolve-mask-grow, 10rem) var(--dissolve-mask-grow, 10rem);
+      mask-position: var(--dissolve-mask-grow, 10rem)
+        var(--dissolve-mask-grow, 10rem);
     }
   }
   @keyframes pageDissolveIn {
@@ -39,11 +39,11 @@
     mask-image: var(--transition-pattern, none);
     mask-repeat: repeat;
     mask-size: 2rem 2rem;
-    animation: patternDissolveOut var(--dissolve-duration, 450ms)
+    animation: patternDissolveOut var(--dissolve-duration, 220ms)
       var(--dissolve-ease, ease-in-out) both;
   }
   :root::view-transition-new(root) {
-    animation: pageDissolveIn var(--dissolve-duration, 450ms)
+    animation: pageDissolveIn var(--dissolve-duration, 220ms)
       var(--dissolve-ease, ease-in-out) both;
   }
 }

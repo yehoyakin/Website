@@ -65,6 +65,7 @@ const external = href ? isExternal(href) : false;
    styles/chrome/pixelChrome.css under `.pattern-plate`. */
 const cardStyle = [
   `--project-tag-color: ${dynamicToken}`,
+  `--project-tag-color-dark: var(--theme-${themeName}-dark)`,
   `--plate-pattern: url('${patternForTheme(themeName)}')`,
 ].join("; ");
 ---

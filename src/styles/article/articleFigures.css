@@ -11,8 +11,8 @@
   letter-spacing: 0.02em;
   color: color-mix(
     in srgb,
-    var(--time-white) 55%,
-    var(--project-tag-color, var(--plate-tint))
+    var(--project-tag-color, var(--plate-tint)) 72%,
+    var(--project-tag-color-dark, var(--theme-main-night)) 28%
   );
   text-align: center;
   font-family: var(--font-body);

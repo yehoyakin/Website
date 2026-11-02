@@ -2,12 +2,12 @@
 
 .retro-link.pixel-frame,
 .split-card-action {
-  --plate-base: var(--outline-color);
-  /* Day: tinted plate with white label. */
-  --tile-fill: color-mix(in srgb, var(--plate-base) 20%, var(--time-white));
-  --tile-light: color-mix(in srgb, var(--tile-fill) 55%, var(--time-white));
-  --tile-dark: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
-  --button-label-color: var(--time-white);
+  --plate-base: var(--project-tag-color, var(--theme-main-day));
+  /* Day and night both route through the active theme token. */
+  --tile-fill: var(--project-tag-color, var(--theme-main-day));
+  --tile-light: var(--project-tag-color, var(--theme-main-day));
+  --tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  --button-label-color: contrast-color(var(--tile-fill));
   --button-label-shadow: color-mix(in srgb, var(--time-shadow) 78%, var(--plate-base));
   --button-icon-shadow: var(--time-shadow);
   color: var(--button-label-color);
@@ -15,33 +15,85 @@
 
 :root[data-mode="night"] .retro-link.pixel-frame,
 :root[data-mode="night"] .split-card-action {
-  /* Night flips it: darker plate, white label, darker underside shadow. */
-  --tile-fill: color-mix(in srgb, var(--plate-base) 30%, var(--time-black));
-  --tile-light: color-mix(in srgb, var(--tile-fill) 55%, var(--time-white));
-  --tile-dark: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
-  --button-label-color: var(--time-white);
+  --tile-fill: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-night)));
+  --tile-light: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-night)));
+  --tile-dark: var(--project-tag-color, var(--project-tag-color-dark, var(--theme-main-night)));
+  --button-label-color: contrast-color(var(--tile-fill));
   --button-label-shadow: color-mix(in srgb, var(--time-shadow) 82%, var(--plate-base));
   --button-icon-shadow: var(--time-white);
   color: var(--button-label-color);
 }
 
-/* Hover deepens the tint one step instead of jumping to the full accent. */
+/* Hover routes entirely through the active theme darker variant. */
 .retro-link.pixel-frame:hover,
 .retro-link.pixel-frame:focus-visible,
 .split-card-action:hover,
 .split-card-action:focus-visible {
-  --tile-fill: color-mix(in srgb, var(--plate-base) 32%, var(--time-white));
-  background-color: color-mix(in srgb, var(--plate-base) 32%, var(--time-white));
-  border-color: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
-  color: color-mix(in srgb, var(--plate-base) 30%, var(--time-black));
+  --tile-fill: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  --button-label-color: contrast-color(var(--tile-fill));
+  background-color: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  border-color: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  color: var(--button-label-color);
 }
 
 :root[data-mode="night"] .retro-link.pixel-frame:hover,
 :root[data-mode="night"] .retro-link.pixel-frame:focus-visible,
 :root[data-mode="night"] .split-card-action:hover,
 :root[data-mode="night"] .split-card-action:focus-visible {
-  --tile-fill: color-mix(in srgb, var(--plate-base) 42%, var(--time-black));
-  background-color: color-mix(in srgb, var(--plate-base) 42%, var(--time-black));
-  border-color: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
-  color: color-mix(in srgb, var(--plate-base) 16%, var(--time-white));
+  --tile-fill: var(--project-tag-color, var(--project-tag-color-dark, var(--theme-main-night)));
+  --button-label-color: contrast-color(var(--tile-fill));
+  background-color: var(--project-tag-color, var(--project-tag-color-dark, var(--theme-main-night)));
+  border-color: var(--project-tag-color, var(--project-tag-color-dark, var(--theme-main-night)));
+  color: var(--button-label-color);
+}
+
+/* THEMED BUTTONS — the host's accent, in either mode.
+
+   Everything above substitutes `var(--project-tag-color)` where it is
+   DECLARED, and the lighting gradient is declared at `:root`
+   (chrome/pixelChrome/tileTokens.css). So the gradient was computed once with
+   the mode tint and inherited as a fixed picture: every button in the site lit
+   white by day and black at night, even inside a red project or a themed card.
+
+   A button that carries an explicit theme (`data-link-theme`, set by
+   shared/Link.astro and the landing cards) re-declares that recipe ON the
+   button, where its own inline `--project-tag-color` is in scope, and opts out
+   of   the mode swaps above entirely: the same tile in day and night, a white
+   pixel border, and white type over it. Unthemed buttons — the credits row, the
+   contacts panel, the back link — keep following day / night, and the back link
+   is excluded outright above so no theme can ever reach the chrome. */
+:root[data-mode] :is(.retro-link.pixel-frame, .split-card-action):not(.back-link)[data-link-theme] {
+  --link-tile: var(--project-tag-color, var(--theme-main-day));
+  --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
+  --tile-fill: var(--link-tile);
+  --tile-light: var(--link-tile);
+  --tile-dark: var(--link-tile-dark);
+  --button-label-color: var(--time-white);
+  --button-label-shadow: color-mix(
+    in srgb,
+    var(--time-black) 70%,
+    var(--link-tile-dark)
+  );
+  /* The banded recipe, built from the theme instead of the mode tint. */
+  --button-lighting: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--link-tile) 96%, var(--time-white) 4%) 0%,
+    var(--link-tile) 16%,
+    color-mix(in srgb, var(--link-tile) 76%, var(--link-tile-dark) 24%) 56%,
+    color-mix(in srgb, var(--link-tile) 44%, var(--link-tile-dark) 56%) 100%
+  );
+  background-color: var(--link-tile);
+  border-color: var(--time-white);
+  color: var(--time-white);
+}
+
+/* The press is a darker tile, not a white one: the border and the type stay
+   white so the control keeps its outline and its label in both modes. */
+:root[data-mode] :is(.retro-link.pixel-frame, .split-card-action):not(.back-link)[data-link-theme]:hover,
+:root[data-mode] :is(.retro-link.pixel-frame, .split-card-action):not(.back-link)[data-link-theme]:focus-visible {
+  --tile-fill: var(--link-tile-dark);
+  --button-label-color: var(--time-white);
+  background-color: var(--link-tile-dark);
+  border-color: var(--time-white);
+  color: var(--time-white);
 }

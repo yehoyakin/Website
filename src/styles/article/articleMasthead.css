@@ -3,7 +3,7 @@
 .blog-masthead {
   position: relative;
   overflow: hidden;
-  padding: 1.9rem 1.25rem 1.6rem;
+  padding: 0.9rem 1rem 1rem;
   /* No fill of its own: the shared pattern plate behind this header supplies
      the day / night tint (styles/chrome/pixelChrome/patternPlates.css). */
   text-align: left;
@@ -11,13 +11,13 @@
 
 @media (min-width: 640px) {
   .blog-masthead {
-    padding: 2.4rem 2.25rem 2rem;
+    padding: 1rem 1.25rem 1.1rem;
   }
 }
 
 @media (min-width: 1024px) {
   .blog-masthead {
-    padding: 2.75rem 3rem 2.25rem;
+    padding: 1.2rem 1.5rem 1.25rem;
   }
 }
 
@@ -26,19 +26,22 @@
 .blog-masthead .blog-masthead-strip {
   position: absolute;
   inset: 0 0 auto 0;
-  height: 0.6rem;
-  background-color: var(--project-tag-color, var(--theme-orange));
+  height: 0.38rem;
+  background-color: var(--project-tag-color, var(--theme-main-day));
 }
 
 .blog-masthead-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 0.8rem;
-  letter-spacing: 0.16em;
+  gap: 0.35rem 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--project-tag-color, var(--theme-orange));
+  color: var(
+    --project-tag-color-very-dark,
+    var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)))
+  );
 }
 
 /* `time` carries its own size from global.css; the row sets the rhythm. */
@@ -48,34 +51,46 @@
   gap: 0.45rem;
   font-size: inherit;
   letter-spacing: inherit;
-  color: var(--project-tag-color, var(--theme-orange));
+  color: var(
+    --project-tag-color-very-dark,
+    var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)))
+  );
 }
 
 .blog-masthead-meta time svg,
 .blog-masthead-meta time .icon {
-  color: var(--project-tag-color, var(--theme-orange));
+  color: var(
+    --project-tag-color-very-dark,
+    var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)))
+  );
 }
 
 .blog-masthead-kicker {
-  color: var(--project-tag-color, var(--theme-orange));
-  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  color: var(
+    --project-tag-color-very-dark,
+    var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)))
+  );
+  font-size: clamp(0.72rem, 1.1vw, 0.9rem);
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 /* Accent hairline that fills the space between "Article" and the date. */
 .blog-masthead-rule {
-  flex: 0 1 4rem;
+  flex: 0 1 2.8rem;
   height: 2px;
-  background: var(--project-tag-color, var(--theme-orange));
+  background: var(
+    --project-tag-color-very-dark,
+    var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)))
+  );
 }
 
 /* Size only: this is the page's first header, so its accent fill and white
    ring come from the shared blog-header outline (styles/article/blogArticle.css). */
 .blog-masthead-title {
-  margin-top: 0.7rem;
-  font-size: clamp(1.65rem, 4vw, 2.8rem);
+  margin-top: 0.35rem;
+  font-size: clamp(1.3rem, 2.6vw, 2.2rem);
   line-height: 1.08;
   letter-spacing: 0.015em;
   text-transform: none;
@@ -83,10 +98,60 @@
 }
 
 .blog-masthead-desc {
-  margin-top: 0.85rem;
+  margin-top: 0.45rem;
   max-width: 46rem;
-  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
-  line-height: 1.5;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  line-height: 1.45;
   letter-spacing: 0.015em;
   color: var(--time-ink-muted);
+}
+
+/* BLOG HEADER — a white outline in both modes, the theme as its ink.
+
+   The header keeps the same white ring whatever the time of day is; the only
+   thing that changes is the ink: the post's accent by day, that accent's dark
+   variant at night. `border-image: none` is required because the shared frame
+   recipe (chrome/pixelChrome/frames.css) draws borders with a bevel image,
+   which would otherwise ignore `border-color` entirely. */
+/* `.blog-masthead.pixel-frame` is deliberate: the shared frame recipe in
+   chrome/pixelChrome/frames.css is `.pixel-frame:not(.retro-link):not(...)`,
+   the same weight, and it is imported LAST — the extra class is what keeps
+   this ring, rather than the accent bevel, on the header. */
+:root[data-mode] .blog-masthead.pixel-frame {
+  border-image: none;
+  border-color: var(--time-white);
+}
+
+/* INK — the page ink, because the plate under it is now the post's accent
+   (see the slug masthead rule in chrome/pixelChrome/patternPlates.css). Accent
+   type on an accent plate is invisible — yellow on yellow, green on green — so
+   the header follows the project header instead: white copy on the theme
+   colour. */
+:root[data-mode] .blog-masthead {
+  --header-ink: var(--time-ink);
+}
+
+:root[data-mode]
+  .blog-masthead
+  :is(
+    .blog-masthead-kicker,
+    .blog-masthead-meta,
+    .blog-masthead-meta time,
+    .blog-masthead-desc
+  ) {
+  color: var(--header-ink);
+}
+
+/* The hairline in the meta row is part of that same ink. */
+:root[data-mode] .blog-masthead .blog-masthead-meta .blog-masthead-rule {
+  background: var(--header-ink);
+}
+
+/* The title is painted by `--heading-fill` (styles/article/blogArticle.css),
+   which is declared on the title itself — so the tokens are re-declared here,
+   at a weight that outranks it. White letters with the accent's dark variant as
+   the hard ring: on an accent-filled header that is the readable pairing. */
+:root[data-mode] .blog-masthead .blog-masthead-title {
+  --heading-fill: var(--time-white);
+  --heading-ring: var(--project-tag-color-dark, var(--theme-main-night));
 }

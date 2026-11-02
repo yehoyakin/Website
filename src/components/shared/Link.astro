@@ -9,10 +9,17 @@ interface Props {
   text?: string;
   external?: boolean;
   class?: string;
+  style?: string;
   /** Icon name from the shared registry, e.g. "Handbag". */
   icon?: string;
   /** Theme name — picks the icon colour that matches the card/page. */
   theme?: string;
+  /**
+   * Take the themed tile — accent fill, white outline — when the host has no
+   * theme of its own and paints the accent through `style` instead (the
+   * landing's contacts panel). `theme` does the same thing by naming one.
+   */
+  tinted?: boolean;
 }
 
 const {
@@ -20,8 +27,10 @@ const {
   text = "",
   external,
   class: extraClass = "",
+  style,
   icon,
   theme,
+  tinted,
 } = Astro.props;
 
 // Buttons with an icon pin it to the left edge so icons line up in a stack,
@@ -32,11 +41,18 @@ const resolvedIcon = netIconForUrl(href) ?? icon;
 
 const alignment = resolvedIcon ? "justify-start" : "justify-center";
 
-/* The button carries its own theme token. Its plate and frame are both derived
-   from --project-tag-color, so without it every link on a page falls back to
-   the root accent — which is why project links all came out the same colour
-   instead of wearing their project's. No theme keeps the inherited value. */
-const themeToken = theme ? resolveThemeToken(toThemeName(theme)) : undefined;
+/* The button must take the host's contextual accent when placed in a themed
+   card or panel, while still accepting an explicit theme override when a link
+   is used outside that context. */
+const themeName = theme ? toThemeName(theme) : undefined;
+const themeToken = themeName ? resolveThemeToken(themeName) : undefined;
+const hasExplicitThemeColor = style?.includes("--project-tag-color");
+const inlineThemeStyle = [
+  !hasExplicitThemeColor && themeToken
+    ? `--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark);`
+    : undefined,
+  style,
+].filter(Boolean).join("; ");
 
 const classes = [
   "retro-link pixel-frame group relative overflow-hidden flex items-center gap-2",
@@ -55,13 +71,22 @@ const classes = [
   target={external ? "_blank" : undefined}
   rel={external ? "noopener noreferrer" : undefined}
   class={classes}
-  style={themeToken ? `--project-tag-color: ${themeToken}` : undefined}
+  style={inlineThemeStyle}
+  /* Marks a THEMED button: styles/chrome/pixelChrome/tintedButtons.css lights
+     it in its own accent instead of the day / night tint, and paints the border
+     and the type white over that tile. Unthemed buttons have no marker and keep
+     following the mode. */
+  data-link-theme={themeName || (tinted ? "tinted" : undefined)}
 >
   {
     resolvedIcon && (
       <Icon
         name={resolvedIcon}
         theme={theme}
+        /* A themed tile is filled with the theme's own colour, so a glyph in
+           that same colour would disappear into it: the label is white over
+           the tile, and the glyph keeps it company. */
+        color={themeName || tinted ? "White" : undefined}
         class="relative z-10 h-5 w-5 shrink-0"
       />
     )

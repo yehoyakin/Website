@@ -16,6 +16,8 @@ theme: red
 
 cardBackground: "images/projects/bw/bw.webp"
 
+background: "images/projects/bw/bw.webp"
+
 videos:
   - src: "https://www.youtube.com/watch?v=ZAhuBuNjiVo"
 

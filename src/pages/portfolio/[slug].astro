@@ -83,10 +83,15 @@ const mediaItems = [
   }),
 ];
 
-const backgroundImage = asset(project.data.background ?? project.data.cardBackground);
+/* The page backdrop is the project's OWN artwork. It used to fall back to
+   `cardBackground`, which meant a project that never set a backdrop showed its
+   card art blown up behind the page; `background` is required in the schema
+   now, so the two images can never stand in for each other. */
+const backgroundImage = asset(project.data.background);
+/* Preload only what this page actually paints: the backdrop and the gallery.
+   The card cover is not shown on a slug, so it is no longer in this list. */
 const preloadImages = [
   backgroundImage,
-  asset(project.data.cardBackground),
   ...scenes,
   ...videos
     .filter((video) => !isExternalUrl(video.src))
@@ -105,15 +110,15 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 <MyLayout title={`${project.data.title} | Portfolio`} preloadImages={preloadImages}>
   <div class="relative w-full min-h-screen bg-[var(--time-page)]">
     <PageBackdrop
-      day={project.data.background ?? project.data.cardBackground}
-      night={project.data.background ?? project.data.cardBackground}
+      day={project.data.background}
+      night={project.data.background}
     />
 
     <div class="absolute inset-0 z-10 pointer-events-none"></div>
 
     <div
-      class="project-page relative z-20 mx-auto w-full px-4 sm:px-6 md:px-8"
-      style={`--project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+      class="project-page pattern-plate pattern-plate--medium pattern-plate--ghost relative z-20 mx-auto w-full px-4 sm:px-6 md:px-8"
+      style={`--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`}
     >
       <BackLink href={`${baseUrl}portfolio/`} text="Back to portfolio" />
 
@@ -397,6 +402,11 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   .project-page-links-panel {
+    /* The links panel is a plate, and a plate draws its motif with absolutely
+       positioned layers at `inset: 0` while leaving `position` to its host.
+       Without this they anchored to `.project-page`, so the links texture was
+       sized to the page instead of the panel and spilled out of it. */
+    position: relative;
     padding: 1rem;
   }
 
@@ -416,6 +426,13 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   :global(.project-page-content-panel) {
+    /* A plate's motif is drawn by its `::before` / `::after`, which are
+       absolutely positioned at `inset: 0` — `.pattern-plate` deliberately
+       leaves `position` to its host. This panel had none, so those two layers
+       anchored to the nearest positioned ancestor, `.project-page`, and the
+       write-up's texture painted the WHOLE page (the pattern showing between
+       the panels). Relative here keeps the texture inside the panel's box. */
+    position: relative;
     padding: 1rem;
     --plate-pattern-size: max(1600px, calc(var(--pattern-size-huge, 1024px) * 1.5));
     --plate-pattern-opacity: 0.09;
@@ -540,5 +557,18 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       font-size: calc(0.72rem + 6px) !important;
       line-height: 1.46 !important;
     }
+  }
+  /* The masthead plate is a tint of the project accent, so the tag cannot be
+     the accent too: it takes the reading ink and keeps the theme in its hard
+     shadow. On the near-transparent slug plate that is also what makes it
+     readable in both modes. */
+  .project-page-tag {
+    color: var(--time-ink);
+    text-shadow: 1px 2px 0
+      color-mix(
+        in srgb,
+        var(--project-tag-color, var(--theme-orange)) 45%,
+        var(--time-black)
+      );
   }
 </style>

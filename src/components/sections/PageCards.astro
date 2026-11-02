@@ -42,7 +42,7 @@ const { pages = [], credits = [] } = Astro.props as Props;
               <a
                 href={page.href}
                 class="page-card blog-card pixel-frame"
-                style={`--project-tag-color: ${themeToken}; --thumb-theme-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+                style={`--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --thumb-theme-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
               >
                 {/* META BAR — the card's own label, where a post shows its date. */}
                 <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
@@ -64,7 +64,11 @@ const { pages = [], credits = [] } = Astro.props as Props;
                 <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
                   <h2 class="blog-card-title">{page.title}</h2>
                   <p class="blog-card-desc">{page.description}</p>
-                  <span class="split-card-action page-card-action">
+                  <span
+                    class="split-card-action page-card-action"
+                    data-link-theme={themeName || undefined}
+                    style={`--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark);`}
+                  >
                     <span>{page.actionText}</span>
                   </span>
                 </div>

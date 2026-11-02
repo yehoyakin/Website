@@ -26,8 +26,8 @@ const {
 } = Astro.props;
 
 const themeName = toThemeName(rawTheme);
-const config = getThemeConfig(themeName);
-const themeToken = resolveThemeToken(themeName);
+const config = getThemeConfig(themeName || "");
+const themeToken = themeName ? resolveThemeToken(themeName) : undefined;
 
 // Only an explicitly assigned theme swaps the typeface. Without one the
 // heading keeps the page's font, which is the previous behaviour.
@@ -65,7 +65,7 @@ const outlineClass = outline ? (level === 1 ? "outline-3" : "outline-2") : "";
     customClass,
   ]}
   data-theme={themeAttribute}
-  style={`--project-tag-color: ${themeToken}`}
+  style={themeToken ? `--project-tag-color: ${themeToken}` : undefined}
 >
   <slot />
 </Tag>

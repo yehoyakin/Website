@@ -407,11 +407,11 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
 
   <section
     id="blog-article-section"
-    class="relative py-12 md:py-16 px-4 max-w-4xl mx-auto w-full"
+    class="pattern-plate pattern-plate--medium pattern-plate--ghost relative py-12 md:py-16 px-4 max-w-4xl mx-auto w-full"
     /* The post's pattern tile is set here so the reading column inside can
        inherit it: the texture belongs to the post's theme, and this section is
        the element that already carries that theme's colour. */
-    style={`--project-tag-color: ${postDynamicToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
+    style={`--project-tag-color: ${postDynamicToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`}
   >
     <!-- Background rendering layer -->
 
@@ -463,8 +463,8 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
     label="Toggle this post's links"
     icon="document"
     theme={themeName}
-    style={`--project-tag-color: ${postDynamicToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
-    panelClass="w-80"
+    style={`--project-tag-color: ${postDynamicToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`}
+    panelClass="links-panel w-80"
   >
     <BlogSidebar cards={cards} theme={themeName} />
   </RailPanel>
