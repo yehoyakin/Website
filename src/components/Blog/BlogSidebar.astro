@@ -31,7 +31,7 @@ const { cards = [], theme } = Astro.props as Props;
      (components/shared/RailPanel.astro), which already caps its height and
      scrolls. A second `overflow-y: auto` here gave the panel two scrollbars. */
 }
-<aside class="relative z-20 w-full">
+<aside class="relative z-20 w-full retro-scrollbar">
   {
     cards.map((card) => (
       <div class="links-panel-group w-full overflow-hidden">

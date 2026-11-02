@@ -36,6 +36,7 @@ type MarkdownBlock =
   | { type: "image"; src: string; alt: string }
   | { type: "gallery"; images: Array<{ src: string; alt: string }> }
   | { type: "list"; ordered: boolean; items: string[] }
+  | { type: "video"; index: number; size?: string; caption?: string }
   | { type: "background"; index: number };
 
 interface Props {
@@ -566,6 +567,16 @@ const renderInlineMarkdown = (text: string) => {
                 );
               })}
             </ListTag>
+          );
+        }
+
+        if (block.type === "video") {
+          /* Same markup the marker replacement has always produced — the frame,
+             the aspect box and the caption come from renderVideo. */
+          return (
+            <Fragment
+              set:html={renderVideo(block.index, block.size, block.caption)}
+            />
           );
         }
 

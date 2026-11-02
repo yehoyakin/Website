@@ -38,3 +38,20 @@
 .links-panel .links-panel-group + .links-panel-group {
   margin-top: 0.85rem;
 }
+
+/* A TALL LINKS PANEL SCROLLS INSIDE ITSELF.
+
+   The plate's motif is drawn by `::before` / `::after` layers at `inset: 0`.
+   Those are sized to the SCROLLPORT, not to the scrolled content, so a panel
+   that scrolled its own content showed the texture only down to the first
+   viewport's worth and left the rest bare. The panel now holds still and the
+   list scrolls inside it: one scrollbar, and texture edge to edge. */
+.links-panel--scroll {
+  overflow: hidden;
+}
+
+.links-panel--scroll > :where(aside, div) {
+  max-height: calc(70vh - 2rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

@@ -281,6 +281,24 @@ const parseMarkdownBlocks = (text: string) => {
       continue;
     }
 
+    /* Uploaded clips and embeds. The parser used to skip these markers, so
+       `[video[0]]` fell through to the paragraph buffer and a post rendered the
+       marker as text instead of the figure — no <video> or <iframe> at all. */
+    const videoMatch = line.match(
+      /^\[video\[(\d+)(?:,\s*(wide|large|full))?\](?:,\s*(.*?))?\]$/,
+    );
+    if (videoMatch) {
+      flushParagraph();
+      flushGallery();
+      blocks.push({
+        type: "video",
+        index: Number.parseInt(videoMatch[1], 10),
+        size: videoMatch[2] || undefined,
+        caption: parseInlineDescription(videoMatch[3]) || undefined,
+      });
+      continue;
+    }
+
     const imageMatches = [...line.matchAll(IMAGE_RE)];
     if (imageMatches.length > 0 && line.replace(IMAGE_RE, "").trim() === "") {
       flushParagraph();
@@ -464,7 +482,7 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
     icon="document"
     theme={themeName}
     style={`--project-tag-color: ${postDynamicToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`}
-    panelClass="links-panel w-80"
+    panelClass="links-panel links-panel--scroll w-80"
   >
     <BlogSidebar cards={cards} theme={themeName} />
   </RailPanel>
