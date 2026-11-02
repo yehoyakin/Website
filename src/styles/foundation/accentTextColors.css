@@ -1,11 +1,15 @@
-/* Theme-aware bold / italic (works anywhere .theme-color is applied). */
+/* Theme-aware bold / italic (works anywhere .theme-color is applied).
 
-/* Any themed block resolves its own accent pair from the tag colour. */
+   To make the emphasis pop at a glance we push the two glyphs to their own
+   chroma: bold takes the theme's bright tint at full strength, italics take
+   the near-white, and both get a hard shadow the DARKER variant of their own
+   colour (not the mode shadow). Only the ink in bold/italic changes — the
+   surrounding copy keeps the accent wash from the rest of the prose rules. */
 .theme-color {
   --accent-bold: var(--project-tag-color, var(--theme-orange));
   --accent-bold-shadow: rgb(0 0 0 / 1);
-  --accent-italic-fill: rgb(255 255 255 / 0.97);
-  --accent-italic-shadow: var(--project-tag-color, var(--theme-orange));
+  --accent-italic-fill: rgb(255 255 255 / 0.98);
+  --accent-italic-shadow: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-orange)));
 }
 
 .theme-color strong,
@@ -25,8 +29,8 @@
 #blog-content {
   --accent-bold: var(--project-tag-color, var(--theme-orange));
   --accent-bold-shadow: rgb(0 0 0 / 1);
-  --accent-italic-fill: rgb(255 255 255 / 0.97);
-  --accent-italic-shadow: var(--project-tag-color, var(--theme-orange));
+  --accent-italic-fill: rgb(180 180 180 / 0.98);
+  --accent-italic-shadow: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-orange)));
 }
 
 #blog-content strong,
