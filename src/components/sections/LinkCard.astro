@@ -3,6 +3,8 @@
 import Title from "../UI/Title.astro";
 import Body from "../UI/Body.astro";
 import Link from "../shared/Link.astro";
+import { patternForTheme } from "../../config/patterns";
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 
 interface LinkItem {
   href: string;
@@ -49,12 +51,16 @@ const resolve = (path?: string) => {
 
 const isExternal = (url?: string) =>
   url?.startsWith("http://") || url?.startsWith("https://");
+
+const themeName = toThemeName(theme);
+const themeStyle = `--project-tag-color: ${resolveThemeToken(themeName)}; --plate-pattern: url('${patternForTheme(themeName)}')`;
 ---
 
 {
   links.length > 0 ? (
     <div
-      class={`group block overflow-hidden transition backdrop-blur-[1.5rem] ${extraClass}`}
+      class={`group block overflow-hidden transition backdrop-blur-[1.5rem] pattern-plate pixel-frame ${extraClass}`}
+      style={themeStyle}
     >
       <div class="p-4">
         {backgroundImage && (
@@ -95,7 +101,8 @@ const isExternal = (url?: string) =>
       href={resolve(href)}
       target={isExternal(href) ? "_blank" : undefined}
       rel={isExternal(href) ? "noopener noreferrer" : undefined}
-      class={` overflow-hidden border border-[color:var(--time-border-soft)] bg-[var(--time-panel)] transition hover:scale-[1.01] ${extraClass}`}
+      class={`overflow-hidden transition hover:scale-[1.01] pattern-plate pixel-frame ${extraClass}`}
+      style={themeStyle}
     >
       <div class="flex items-center gap-4 p-4">
         {backgroundImage && (

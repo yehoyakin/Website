@@ -2,22 +2,24 @@
 
 :is(#blog-content, .project-panel-body) {
   color: var(--time-ink);
+  font-size: 0.875rem;
   text-align: left;
+  text-shadow: 2px 3px 0 var(--time-shadow);
 }
 
 /* CompactBody — the long-form reading size. */
 .compact-body {
-  font-size: max(16px, 0.75rem + 0.25vw);
-  line-height: 1.55;
+  font-size: 0.875rem;
+  line-height: 1.52;
   letter-spacing: 0.01em;
 }
 
 :is(#blog-content, .project-panel-body) p {
-  margin: 0 0 1.05rem;
+  margin: 0 0 0.9rem;
   /* Leading belongs to the body above, not to each paragraph. */
   line-height: inherit;
   text-align: left;
-  text-shadow: none;
+  text-shadow: 2px 3px 0 var(--time-shadow);
 }
 
 /* Lede: the opening paragraph is a touch larger and takes a drop cap. */
@@ -53,6 +55,8 @@
 #blog-content h1 {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
+  font-size: clamp(3.1rem, 4.8vw, 4.5rem);
+  line-height: 1.05;
 }
 
 :is(#blog-content, .project-panel-body) h2 {
@@ -61,28 +65,36 @@
   padding-left: 0.85rem;
   border-left: var(--outline-width) solid
     var(--project-tag-color, var(--theme-orange));
-  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-size: clamp(2.5rem, 3.6vw, 3.2rem);
 }
 
 :is(#blog-content, .project-panel-body) h3 {
   margin-top: 1.9rem;
   margin-bottom: 0.65rem;
-  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  font-size: clamp(2rem, 2.7vw, 2.4rem);
 }
 
 :is(#blog-content, .project-panel-body) h4 {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
-  font-size: 1.15rem;
+  font-size: clamp(1.7rem, 2.1vw, 2rem);
 }
 
-:is(#blog-content, .project-panel-body) :is(h5, h6) {
+:is(#blog-content, .project-panel-body) h5 {
   margin-top: 1.2rem;
   margin-bottom: 0.4rem;
-  font-size: 1rem;
+  font-size: clamp(1.35rem, 1.7vw, 1.65rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  /* Smallest headers stay muted: same accent ring, quieter fill. */
+  --heading-fill: var(--time-ink-muted);
+}
+
+:is(#blog-content, .project-panel-body) h6 {
+  margin-top: 1.1rem;
+  margin-bottom: 0.35rem;
+  font-size: clamp(1.15rem, 1.4vw, 1.35rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   --heading-fill: var(--time-ink-muted);
 }
 
@@ -104,74 +116,45 @@
 :is(#blog-content, .project-panel-body) :where(ul, ol) > li {
   position: relative;
   margin-bottom: 0.5rem;
-  padding-left: 1.7rem;
+  padding-left: 0;
   line-height: 1.65;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
 }
 
-/* Bullet: one accent tile, on the same bevel as the rest of the chrome. */
-:is(#blog-content, .project-panel-body) ul > li::before {
-  content: "";
-  position: absolute;
-  left: 0.15em;
-  top: 0.55em;
-  width: 0.6em;
-  height: 0.6em;
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--project-tag-color, var(--theme-orange)) 55%,
-      var(--time-black)
-    );
-  background-color: var(--project-tag-color, var(--theme-orange));
-  box-shadow: inset 0 1px 0 0
-    color-mix(in srgb, var(--time-white) 45%, transparent);
+:is(#blog-content, .project-panel-body) :where(ul, ol) > li::before {
+  content: none;
 }
 
-/* Second level: the same tile, hollow — fill alone tells it from the first. */
-:is(#blog-content, .project-panel-body) ul ul > li::before {
-  background-color: transparent;
-  box-shadow: none;
+/* Bullet and number markers are both drawn from theme icon assets so the list
+   style is consistent no matter whether the markdown is unordered or ordered. */
+:is(#blog-content, .project-panel-body) .list-bullet-icon,
+:is(#blog-content, .project-panel-body) .list-number-icon {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 1.4em;
+  height: 1.4em;
+  margin-top: 0.14em;
 }
 
-/* Third level and deeper: a short accent bar. Depth then reads by FORM as well
-   as fill — tile, hollow tile, bar — so three nested lists never look alike. */
-:is(#blog-content, .project-panel-body) ul ul ul > li::before {
-  top: 0.73em;
-  width: 0.6em;
-  height: 0.24em;
-  border: 0;
-  background-color: var(--project-tag-color, var(--theme-orange));
+:is(#blog-content, .project-panel-body) .list-bullet-icon img,
+:is(#blog-content, .project-panel-body) .list-number-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
 }
 
-/* Number: an accent chip carrying the count. */
+:is(#blog-content, .project-panel-body) .markdown-list-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 :is(#blog-content, .project-panel-body) ol > li {
   counter-increment: blog-item;
-}
-
-:is(#blog-content, .project-panel-body) ol > li::before {
-  content: counter(blog-item);
-  position: absolute;
-  left: 0;
-  top: 0.1em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.4em;
-  height: 1.4em;
-  padding: 0 0.3em;
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--project-tag-color, var(--theme-orange)) 55%,
-      var(--time-black)
-    );
-  background-color: var(--project-tag-color, var(--theme-orange));
-  color: var(--time-black);
-  font-family: var(--font-terminal);
-  font-size: 0.72em;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
 }
 
 /* Quote. */
@@ -188,6 +171,16 @@
   color: var(--time-ink);
   font-style: italic;
   line-height: 1.6;
+}
+
+:is(#blog-content, .project-panel-body) strong {
+  color: var(--project-tag-color, var(--theme-orange));
+  text-shadow: 2px 3px 0 rgb(0 0 0 / 1);
+}
+
+:is(#blog-content, .project-panel-body) em {
+  color: rgb(255 255 255 / 0.97);
+  text-shadow: 1px 2px 0 var(--project-tag-color, var(--theme-orange));
 }
 
 /* Links. */

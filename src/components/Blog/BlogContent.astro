@@ -2,6 +2,15 @@
 // Purpose: Component - src/components/Blog/BlogContent.astro (Render post body and scene images)
 
 import CompactBody from "../UI/CompactBody.astro";
+import Icon from "../shared/Icon.astro";
+import {
+  defaultIconColor,
+  defaultIconColorNight,
+  iconColorForTheme,
+} from "../../config/icons";
+import { patternForTheme } from "../../config/patterns";
+import { resolveThemeToken } from "../../config/uiDictionary";
+import { asset } from "../../utils/asset";
 import { videoEmbedUrl } from "../../utils/video";
 
 interface SceneItem {
@@ -21,13 +30,27 @@ interface VideoItem {
   type?: "auto" | "file" | "embed";
 }
 
+type MarkdownBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "heading"; level: number; text: string }
+  | { type: "image"; src: string; alt: string }
+  | { type: "gallery"; images: Array<{ src: string; alt: string }> }
+  | { type: "list"; ordered: boolean; items: string[] }
+  | { type: "background"; index: number };
+
 interface Props {
-  bodyHtml: string;
+  bodyHtml?: string;
+  blocks?: MarkdownBlock[];
   scenes?: SceneItem[];
   videos?: VideoItem[];
+  theme?: string;
 }
 
-const { bodyHtml, scenes = [], videos = [] } = Astro.props as Props;
+const { bodyHtml = "", blocks = [], scenes = [], videos = [], theme = "orange" } = Astro.props as Props;
+const themeToken = resolveThemeToken(theme);
+const listIconColor = iconColorForTheme(theme);
+const galleryThemeIconColor = iconColorForTheme(theme);
+const galleryStyle = `--thumb-theme-color: ${themeToken}; --project-tag-color: ${themeToken}; --plate-pattern: url('${patternForTheme(theme)}')`;
 
 /**
  * Replace [scene[x]] and [scene[x,y,z]] markers with image blocks.
@@ -393,9 +416,40 @@ const sceneHtml =
  * The span itself stays: scripts in pages/blog/[slug].astro measure its
  * position to drive the background crossfade.
  */
-const articleHtml = sceneHtml
-  .replace(/<p>\s*(<span class="bg-marker"[^>]*><\/span>)\s*<\/p>/g, "$1")
-  .replace(/<p>/, '<p class="blog-lede">');
+const renderInlineMarkdown = (text: string) => {
+  const inlinePattern = /(\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|_[^_]+_|`[^`]+`)/g;
+  const parts: Array<{ type: "text" | "strong" | "em" | "code"; value: string }> = [];
+  let lastIndex = 0;
+
+  for (const match of text.matchAll(inlinePattern)) {
+    const start = match.index ?? 0;
+    const value = match[0];
+
+    if (start > lastIndex) {
+      parts.push({ type: "text", value: text.slice(lastIndex, start) });
+    }
+
+    const inner = value.replace(/^\*\*|^__|^\*|^_|^`|\*\*$|__$|\*$|_$|`$/g, "");
+
+    if (value.startsWith("**") || value.startsWith("__")) {
+      parts.push({ type: "strong", value: inner });
+    } else if (value.startsWith("*") || value.startsWith("_")) {
+      parts.push({ type: "em", value: inner });
+    } else {
+      parts.push({ type: "code", value: inner });
+    }
+
+    lastIndex = start + value.length;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push({ type: "text", value: text.slice(lastIndex) });
+  }
+
+  return parts;
+};
+
+
 ---
 
 {/* Reading surface. The frame, plate and padding live in
@@ -408,7 +462,7 @@ const articleHtml = sceneHtml
        movement behind the words. The tile URL comes from the page, which owns
        the post's theme. */}
 <div
-  class="blog-article-body pattern-plate pattern-plate--huge"
+  class="blog-article-body pattern-plate pattern-plate--text-backdrop pattern-plate--huge"
   id="blog-content"
 >
   {/* Long-form body: Body.astro is sized for short copy and drops under the
@@ -416,12 +470,356 @@ const articleHtml = sceneHtml
       CompactBody instead. No theme prop — the section already carries the
       post's accent and the body must inherit it. */}
   <CompactBody>
-    <div set:html={articleHtml} />
+    <div>
+      {blocks.map((block) => {
+        if (block.type === "background") {
+          return (
+            <span
+              class="bg-marker"
+              data-bg-index={String(block.index)}
+            />
+          );
+        }
+
+        if (block.type === "heading") {
+          const HeadingTag = `h${Math.min(6, Math.max(1, block.level))}` as keyof HTMLElementTagNameMap;
+
+          return (
+            <HeadingTag>
+              {renderInlineMarkdown(block.text).map((part, index) => {
+                if (part.type === "text") return <>{part.value}</>;
+                if (part.type === "strong") return <strong key={index}>{part.value}</strong>;
+                if (part.type === "em") return <em key={index}>{part.value}</em>;
+                return <code key={index}>{part.value}</code>;
+              })}
+            </HeadingTag>
+          );
+        }
+
+        if (block.type === "paragraph") {
+          return (
+            <p>
+              {renderInlineMarkdown(block.text).map((part, index) => {
+                if (part.type === "text") return <>{part.value}</>;
+                if (part.type === "strong") return <strong key={index}>{part.value}</strong>;
+                if (part.type === "em") return <em key={index}>{part.value}</em>;
+                return <code key={index}>{part.value}</code>;
+              })}
+            </p>
+          );
+        }
+
+        if (block.type === "list") {
+          const ListTag = block.ordered ? "ol" : "ul";
+
+          return (
+            <ListTag>
+              {block.items.map((item, index) => {
+                const itemText = renderInlineMarkdown(item).map((part, partIndex) => {
+                  if (part.type === "text") return <>{part.value}</>;
+                  if (part.type === "strong") return <strong key={partIndex}>{part.value}</strong>;
+                  if (part.type === "em") return <em key={partIndex}>{part.value}</em>;
+                  return <code key={partIndex}>{part.value}</code>;
+                });
+
+                if (block.ordered) {
+                  return (
+                    <li class="markdown-list-item" key={`${block.ordered ? "ol" : "ul"}-${index}`}>
+                      <span class="list-number-icon" aria-hidden="true">
+                        <img
+                          src={asset(`images/Icons/${listIconColor}/Number ${index + 1}_${listIconColor}.webp`)}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          class="list-number-icon-img"
+                        />
+                      </span>
+                      <span class="markdown-list-text">{itemText}</span>
+                    </li>
+                  );
+                }
+
+                return (
+                  <li class="markdown-list-item" key={`${block.ordered ? "ol" : "ul"}-${index}`}>
+                    <span class="list-bullet-icon" aria-hidden="true">
+                      <img
+                        src={asset(`images/Icons/${listIconColor}/Circle Base_${listIconColor}.webp`)}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        class="list-bullet-icon-img"
+                      />
+                    </span>
+                    <span class="markdown-list-text">{itemText}</span>
+                  </li>
+                );
+              })}
+            </ListTag>
+          );
+        }
+
+        if (block.type === "image") {
+          const images = [{ src: block.src, alt: block.alt || "" }];
+
+          return (
+            <div class="project-gallery markdown-gallery markdown-gallery--single" data-gallery-ready="false" data-icon-color={galleryThemeIconColor}>
+              <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+                <div class="gallery-thumbnails" data-carousel-track>
+                  {images.map((image, index) => {
+                    const titleText = image.alt?.trim();
+                    const hasTitleText = Boolean(titleText && titleText.length > 0);
+
+                    return (
+                      <div class="gallery-project-item">
+                        <button
+                          class="gallery-thumb blog-card pixel-frame blog-inner-image-card"
+                          aria-label={hasTitleText ? `View ${titleText}` : `View image ${index + 1}`}
+                          title={titleText || undefined}
+                          data-thumb-index={0}
+                          style={galleryStyle}
+                        >
+                          <div class="blog-card-image-wrap">
+                            <div class="thumb-carousel">
+                              <img src={image.src} alt={titleText || ""} class="thumb-carousel-media thumb-carousel-img active" loading="lazy" decoding="async" />
+                            </div>
+                            <div class="thumb-overlay" />
+                          </div>
+                          {hasTitleText && (
+                            <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+                              <span class="gallery-thumb-desc">{titleText}</span>
+                            </div>
+                          )}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div class="gallery-panels-container">
+                <div class="gallery-card-panel" data-panel="0" style={galleryStyle}>
+                  <button class="collapse-btn icon-button" aria-label="Collapse gallery" data-collapse="0">
+                    <Icon name="arrow-up" theme={theme} class="h-9 w-9" />
+                  </button>
+
+                  <div class="project-panel-layout project-panel-layout--solo">
+                    <div class="project-panel-media" data-project-rotator>
+                      <div class="project-panel-frame">
+                        <div class="thumb-carousel">
+                          <img src={images[0].src} alt={images[0].alt || ""} class="thumb-carousel-media thumb-carousel-img active" loading="lazy" decoding="async" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        if (block.type === "gallery") {
+          const isSingleImageGallery = block.images.length === 1;
+
+          return (
+            <div class={`project-gallery markdown-gallery${isSingleImageGallery ? " markdown-gallery--single" : ""}`} data-gallery-ready="false" data-icon-color={galleryThemeIconColor}>
+              <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+                <div class="gallery-thumbnails" data-carousel-track>
+                  {block.images.map((image, index) => {
+                    const titleText = image.alt?.trim();
+                    const hasTitleText = Boolean(titleText && titleText.length > 0);
+
+                    return (
+                      <div class="gallery-project-item">
+                        <button
+                          class="gallery-thumb blog-card pixel-frame blog-inner-image-card"
+                          aria-label={hasTitleText ? `View ${titleText}` : `View image ${index + 1}`}
+                          title={titleText || undefined}
+                          data-thumb-index={0}
+                          style={galleryStyle}
+                        >
+                          <div class="blog-card-image-wrap">
+                            <div class="thumb-carousel">
+                              <img src={image.src} alt={titleText || `Image ${index + 1}`} class="thumb-carousel-media thumb-carousel-img active" loading="lazy" decoding="async" />
+                            </div>
+                            <div class="thumb-overlay" />
+                          </div>
+                          {hasTitleText && (
+                            <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+                              <span class="gallery-thumb-desc">{titleText}</span>
+                            </div>
+                          )}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div class="gallery-panels-container">
+                <div class="gallery-card-panel" data-panel="0" style={galleryStyle}>
+                  <button class="collapse-btn icon-button" aria-label="Collapse gallery" data-collapse="0">
+                    <Icon name="arrow-up" theme={theme} class="h-9 w-9" />
+                  </button>
+
+                  <div class="project-panel-layout project-panel-layout--solo">
+                    <div class="project-panel-media" data-project-rotator>
+                      <div class="project-panel-frame">
+                        <div class="thumb-carousel">
+                          {block.images.map((image, imageIndex) => (
+                            <img
+                              src={image.src}
+                              alt={image.alt || `Image ${imageIndex + 1}`}
+                              class={imageIndex === 0 ? "thumb-carousel-media thumb-carousel-img active" : "thumb-carousel-media thumb-carousel-img"}
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {block.images.length > 1 && (
+                        <div class="card-carousel-controls project-panel-controls">
+                          <button type="button" class="card-carousel-arrow icon-button" aria-label="Previous image" data-rotator-prev>
+                            <Icon name="arrow-left" theme={theme} class="card-carousel-arrow-icon" />
+                          </button>
+
+                          <div class="card-carousel-dots">
+                            {block.images.map((_, dotIndex) => (
+                              <button
+                                type="button"
+                                class="card-carousel-dot"
+                                aria-label={`Go to slide ${dotIndex + 1}`}
+                                aria-current={dotIndex === 0 ? "true" : "false"}
+                                data-rotator-dot={dotIndex}
+                              >
+                                <span class="card-carousel-dot-icon icon-mode">
+                                  <img src={asset(`images/Icons/${galleryThemeIconColor}/Circle Base_${galleryThemeIconColor}.webp`)} alt="" aria-hidden="true" decoding="async" class="icon-mode-img icon-mode-img--day" />
+                                  <img src={asset(`images/Icons/${galleryThemeIconColor}/Circle Base_${galleryThemeIconColor}.webp`)} alt="" aria-hidden="true" decoding="async" class="icon-mode-img icon-mode-img--night" />
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+
+                          <button type="button" class="card-carousel-arrow icon-button" aria-label="Next image" data-rotator-next>
+                            <Icon name="arrow-right" theme={theme} class="card-carousel-arrow-icon" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        return null;
+      })}
+    </div>
   </CompactBody>
 </div>
 
 <script is:inline>
   (function () {
+    const initMarkdownGalleries = () => {
+      const galleries = document.querySelectorAll(".project-gallery[data-gallery-ready='false']");
+      if (!galleries.length) return;
+
+      galleries.forEach((gallery) => {
+        gallery.dataset.galleryReady = "true";
+
+        const thumbs = [...gallery.querySelectorAll("[data-thumb-index]")];
+        const panels = [...gallery.querySelectorAll("[data-panel]")];
+        const collapseBtns = [...gallery.querySelectorAll("[data-collapse]")];
+        const pageBand = document.getElementById("project-band");
+        let activeIndex = null;
+
+        function hideBand() {
+          if (pageBand) pageBand.style.display = "none";
+        }
+
+        function showBand(panel) {
+          if (!pageBand || !panel) return;
+          const page = pageBand.parentElement;
+          if (!page) return;
+          const pageTop = page.getBoundingClientRect().top;
+          const panelTop = panel.getBoundingClientRect().top;
+          pageBand.style.top = `${Math.round(panelTop - pageTop)}px`;
+          pageBand.style.display = "block";
+        }
+
+        function expandProject(index) {
+          panels.forEach((panel) => {
+            panel.style.display = "none";
+          });
+
+          const panel = panels.find((entry) => entry.dataset.panel === String(index));
+          if (panel) {
+            panel.style.display = "block";
+            activeIndex = index;
+            showBand(panel);
+            const thumb = thumbs[index];
+            const item = thumb?.closest(".gallery-project-item");
+            if (item) item.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            panel.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
+
+        function collapseProject() {
+          panels.forEach((panel) => {
+            panel.style.display = "none";
+          });
+          activeIndex = null;
+          hideBand();
+        }
+
+        thumbs.forEach((thumb) => {
+          const index = Number(thumb.dataset.thumbIndex);
+          thumb.addEventListener("click", () => {
+            if (activeIndex === index) collapseProject();
+            else expandProject(index);
+          });
+        });
+
+        collapseBtns.forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            collapseProject();
+          });
+        });
+
+        const rotators = gallery.querySelectorAll("[data-project-rotator]");
+        rotators.forEach((rotator) => {
+          const media = [...rotator.querySelectorAll(".thumb-carousel-media")];
+          if (media.length <= 1) return;
+          const dots = [...rotator.querySelectorAll("[data-rotator-dot]")];
+          const prev = rotator.querySelector("[data-rotator-prev]");
+          const next = rotator.querySelector("[data-rotator-next]");
+          let mediaIndex = 0;
+
+          function syncDots() {
+            dots.forEach((dot, dotIndex) => {
+              dot.setAttribute("aria-current", dotIndex === mediaIndex ? "true" : "false");
+            });
+          }
+
+          function show(index) {
+            media[mediaIndex].classList.remove("active");
+            mediaIndex = ((index % media.length) + media.length) % media.length;
+            media[mediaIndex].classList.add("active");
+            syncDots();
+          }
+
+          prev?.addEventListener("click", () => show(mediaIndex - 1));
+          next?.addEventListener("click", () => show(mediaIndex + 1));
+          dots.forEach((dot, dotIndex) => {
+            dot.addEventListener("click", () => show(dotIndex));
+          });
+          syncDots();
+        });
+      });
+    };
+
     const initReveal = () => {
       const figures = document.querySelectorAll(".scene-reveal");
       if (!figures.length) return;
@@ -441,8 +839,15 @@ const articleHtml = sceneHtml
       figures.forEach((fig) => observer.observe(fig));
     };
 
-    document.addEventListener("astro:page-load", initReveal);
-    document.addEventListener("DOMContentLoaded", initReveal);
+    document.addEventListener("astro:page-load", () => {
+      initMarkdownGalleries();
+      initReveal();
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+      initMarkdownGalleries();
+      initReveal();
+    });
+    initMarkdownGalleries();
     initReveal();
   })();
 </script>

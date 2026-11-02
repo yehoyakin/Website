@@ -41,6 +41,263 @@ if (!post) {
   throw new Response("Post not found", { status: 404 });
 }
 
+const markdownSource = post.body ?? "";
+
+const IMAGE_RE = /!\[([^\]]*)\]\(((?:[^()]+|\([^)]*\))*)\)/g;
+
+const parseMarkdownImage = (src: string, alt = "") => ({
+  src: isRemoteUrl(src.trim()) ? src.trim() : asset(src.trim()),
+  alt: alt.trim(),
+});
+
+const parseMarkdownBlocks = (text: string) => {
+  const blocks = [];
+  const lines = text.replace(/\r\n/g, "\n").split("\n");
+  let paragraphBuffer: string[] = [];
+  let galleryBuffer: Array<{ src: string; alt: string }> = [];
+  let listBuffer: { ordered: boolean; items: string[] } | null = null;
+
+  const parseInlineDescription = (raw: string | undefined) => {
+    if (!raw) return "";
+    return raw
+      .trim()
+      .replace(/^['"“”]+/, "")
+      .replace(/['"“”]+$/, "")
+      .trim();
+  };
+
+  const flushParagraph = () => {
+    if (!paragraphBuffer.length) return;
+    const value = paragraphBuffer.join(" ").trim();
+    if (value) {
+      blocks.push({ type: "paragraph", text: value });
+    }
+    paragraphBuffer = [];
+  };
+
+  const flushGallery = () => {
+    if (!galleryBuffer.length) return;
+    if (galleryBuffer.length === 1) {
+      blocks.push({ type: "image", ...galleryBuffer[0] });
+    } else {
+      blocks.push({ type: "gallery", images: galleryBuffer });
+    }
+    galleryBuffer = [];
+  };
+
+  const flushList = () => {
+    if (!listBuffer || !listBuffer.items.length) {
+      listBuffer = null;
+      return;
+    }
+
+    blocks.push({
+      type: "list",
+      ordered: listBuffer.ordered,
+      items: listBuffer.items,
+    });
+    listBuffer = null;
+  };
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i].trim();
+
+    if (!line) {
+      flushParagraph();
+      flushGallery();
+      flushList();
+      continue;
+    }
+
+    const markdownBulletMatch = line.match(/^[-*+]\s+(.+)$/);
+    if (markdownBulletMatch) {
+      flushParagraph();
+      flushGallery();
+      if (!listBuffer || listBuffer.ordered) {
+        flushList();
+        listBuffer = { ordered: false, items: [] };
+      }
+      listBuffer.items.push(markdownBulletMatch[1].trim());
+      continue;
+    }
+
+    const markdownOrderedMatch = line.match(/^(\d+)[.)]\s+(.+)$/);
+    if (markdownOrderedMatch) {
+      flushParagraph();
+      flushGallery();
+      if (!listBuffer || !listBuffer.ordered) {
+        flushList();
+        listBuffer = { ordered: true, items: [] };
+      }
+      listBuffer.items.push(markdownOrderedMatch[2].trim());
+      continue;
+    }
+
+    const htmlListMatch = line.match(/^<(ol|ul)>$/i);
+    if (htmlListMatch) {
+      flushParagraph();
+      flushGallery();
+      flushList();
+
+      const ordered = htmlListMatch[1].toLowerCase() === "ol";
+      const htmlItems: string[] = [];
+      let j = i + 1;
+
+      while (j < lines.length) {
+        const htmlLine = lines[j].trim();
+        if (!htmlLine) {
+          j += 1;
+          continue;
+        }
+
+        if (htmlLine.toLowerCase() === `</${ordered ? "ol" : "ul"}>`) {
+          break;
+        }
+
+        const htmlListItemMatch = htmlLine.match(/^<li\b[^>]*>\s*(.*?)\s*<\/li>\s*$/i);
+        if (htmlListItemMatch) {
+          const text = htmlListItemMatch[1].trim();
+          if (text) htmlItems.push(text);
+          j += 1;
+          continue;
+        }
+
+        const htmlListItemOpenMatch = htmlLine.match(/^<li\b[^>]*>\s*(.*)$/i);
+        if (htmlListItemOpenMatch) {
+          const text = htmlListItemOpenMatch[1].trim();
+          if (text) htmlItems.push(text);
+          j += 1;
+          continue;
+        }
+
+        const htmlListItemCloseMatch = htmlLine.match(/^(.*)<\/li>\s*$/i);
+        if (htmlListItemCloseMatch) {
+          const text = htmlListItemCloseMatch[1].trim();
+          if (text) htmlItems.push(text);
+          j += 1;
+          continue;
+        }
+
+        break;
+      }
+
+      i = j;
+      if (htmlItems.length) {
+        blocks.push({
+          type: "list",
+          ordered,
+          items: htmlItems,
+        });
+      }
+      continue;
+    }
+
+    if (listBuffer) {
+      if (line === "</ol>" || line === "</ul>") {
+        flushList();
+        continue;
+      }
+
+      const listItemMatch = line.match(/^<li>\s*(.*?)\s*<\/li>$/i);
+      if (listItemMatch) {
+        const text = listItemMatch[1].trim();
+        if (text) {
+          listBuffer.items.push(text);
+        }
+        continue;
+      }
+
+      const listItemOpenMatch = line.match(/^<li>\s*(.*)$/i);
+      if (listItemOpenMatch) {
+        const text = listItemOpenMatch[1].trim();
+        if (text) {
+          listBuffer.items.push(text);
+        }
+        continue;
+      }
+
+      const listItemCloseMatch = line.match(/^(.*)<\/li>\s*$/i);
+      if (listItemCloseMatch) {
+        const text = listItemCloseMatch[1].trim();
+        if (text) {
+          listBuffer.items.push(text);
+        }
+        flushList();
+        continue;
+      }
+
+      flushList();
+    }
+
+    const backgroundMatch = line.match(/^\[background\[(\d+)\]\]$/);
+    if (backgroundMatch) {
+      flushParagraph();
+      flushGallery();
+      blocks.push({
+        type: "background",
+        index: Number.parseInt(backgroundMatch[1], 10),
+      });
+      continue;
+    }
+
+    const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
+    if (headingMatch) {
+      flushParagraph();
+      flushGallery();
+      blocks.push({
+        type: "heading",
+        level: headingMatch[1].length,
+        text: headingMatch[2].trim(),
+      });
+      continue;
+    }
+
+    const sceneMatch = line.match(/^\[scene\[((?:\d+\s*,\s*)*\d+)(?:,\s*(wide|large|full))?\](?:,\s*(.*?))?\]$/);
+    if (sceneMatch) {
+      flushParagraph();
+      const rawIndexes = sceneMatch[1]
+        .split(",")
+        .map((value) => Number.parseInt(value.trim(), 10))
+        .filter((value) => Number.isInteger(value) && value >= 0);
+      const inlineCaption = parseInlineDescription(sceneMatch[3]);
+
+      if (rawIndexes.length > 0) {
+        const images = rawIndexes
+          .map((index) => {
+            const scene = scenes[index];
+            if (!scene) return null;
+            return {
+              src: scene.image,
+              alt: inlineCaption || scene.caption || "",
+            };
+          })
+          .filter(Boolean) as Array<{ src: string; alt: string }>;
+
+        if (images.length > 0) {
+          galleryBuffer.push(...images);
+          continue;
+        }
+      }
+      continue;
+    }
+
+    const imageMatches = [...line.matchAll(IMAGE_RE)];
+    if (imageMatches.length > 0 && line.replace(IMAGE_RE, "").trim() === "") {
+      flushParagraph();
+      galleryBuffer.push(...imageMatches.map((match) => parseMarkdownImage(match[2], match[1])));
+      continue;
+    }
+
+    flushGallery();
+    paragraphBuffer.push(line);
+  }
+
+  flushParagraph();
+  flushGallery();
+  flushList();
+  return blocks;
+};
+
 const cards = post.data.cards ?? [];
 
 /* ---------------------------------------------------------
@@ -91,20 +348,7 @@ const backgrounds = Array.isArray(rawBackgrounds)
  * with invisible runtime anchors.
  * --------------------------------------------------------- */
 
-const backgroundMarkerRe = /\[background\[(\d+)\]\]/g;
-
-const bodyHtml = (post.rendered?.html ?? "").replace(
-  backgroundMarkerRe,
-  (_match, indexStr: string) => {
-    const index = Number.parseInt(indexStr, 10);
-
-    if (!Number.isInteger(index) || index < 0 || index >= backgrounds.length) {
-      return "";
-    }
-
-    return `<span class="bg-marker" data-bg-index="${index}"></span>`;
-  },
-);
+const bodyBlocks = parseMarkdownBlocks(markdownSource);
 
 /* ---------------------------------------------------------
  * Hero / background settings
@@ -189,7 +433,7 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
           theme={themeName}
         />
 
-        <BlogContent bodyHtml={bodyHtml} scenes={scenes} videos={videos} />
+        <BlogContent blocks={bodyBlocks} scenes={scenes} videos={videos} theme={themeName} />
       </div>
     </div>
 

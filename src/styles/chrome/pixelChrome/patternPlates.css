@@ -12,35 +12,84 @@
   background-color: var(--plate-fill-dark, rgb(0 0 0 / 0.92));
   background-color: color-mix(
     in srgb,
-    rgb(0 0 0 / 0.92) 90%,
-    var(--project-tag-color, var(--plate-tint))
+    rgb(0 0 0 / 0.34) 46%,
+    var(--project-tag-color, var(--plate-tint)) 54%
   );
-  /* Tint gradient over that fill — the host's accent strongest at the leading
-     edge, gone on the trailing one. Every plate carries it, so cards, the
-     masthead, the article surface and the project panel band all grade the
-     same way; the pattern scales are still the only difference between them. */
+  /* Tint gradient over that fill — warm in day mode, cool in night mode. The
+     base theme hue always stays visible, but the edge tones drift toward amber
+     or ice as the mode changes. */
   background-image: linear-gradient(
     90deg,
     color-mix(
         in srgb,
-        var(--project-tag-color, var(--plate-tint)) 30%,
-        transparent
+        var(--project-tag-color, var(--plate-tint)) 82%,
+        white 18%
       )
       0%,
     color-mix(
         in srgb,
-        var(--project-tag-color, var(--plate-tint)) 10%,
-        transparent
+        var(--project-tag-color, var(--plate-tint)) 64%,
+        rgb(103 153 255 / 0.75) 36%
       )
-      55%,
-    transparent 85%
+      60%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 38%,
+        rgb(22 48 92 / 0.9) 62%
+      )
+      100%
   );
   --plate-pattern-size: var(--pattern-size-normal, 96px);
-  --plate-pattern-opacity: 0.16;
+  --plate-pattern-opacity: 0.1;
   /* One loop scrolls exactly one tile, so the SPEED is tile ÷ duration. */
   --plate-pattern-duration: 18s;
   /* Travel direction: -1 drifts up-left (day), 1 drifts down-right (night). */
   --plate-pattern-shift: -1;
+}
+
+/* Text backdrop variant: far lighter and more transparent, intended to sit under
+   copy rather than sit in front of it. It warms from the theme accent into a
+   dark charcoal, without ever going full black, so the text remains legible. */
+.pattern-plate--text-backdrop {
+  background-color: color-mix(
+    in srgb,
+    rgb(0 0 0 / 0.78) 35%,
+    var(--project-tag-color, var(--plate-tint)) 65%
+  );
+  background-image:
+    linear-gradient(
+      90deg,
+      color-mix(
+          in srgb,
+          var(--project-tag-color, var(--plate-tint)) 68%,
+          rgb(4 8 16 / 1) 32%
+        )
+        0%,
+      color-mix(
+          in srgb,
+          var(--project-tag-color, var(--plate-tint)) 48%,
+          rgb(28 52 80 / 0.8) 52%
+        )
+        18%,
+      color-mix(
+          in srgb,
+          var(--project-tag-color, var(--plate-tint)) 26%,
+          rgb(8 8 8 / 1) 74%
+        )
+        100%
+    ),
+    radial-gradient(
+      circle at 15% 18%,
+      color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 52%,
+        transparent
+      ) 0%,
+      transparent 42%
+    );
+  background-blend-mode: normal, screen;
+  --plate-pattern-opacity: 0.1;
+  --plate-pattern-duration: 24s;
 }
 
 /* Mid-size surfaces: a panel or a masthead, slower and calmer than a card. */
@@ -63,7 +112,10 @@
   --plate-pattern-size: var(--pattern-size-small, 48px);
   --plate-pattern-opacity: 0.2;
 }
-
+.rail-panel.pattern-plate {
+  background-color: var(--project-tag-color, var(--plate-tint));
+  background-image: none;
+}
 .pattern-plate::before {
   content: "";
   position: absolute;
@@ -83,13 +135,69 @@
 
 /* Night dims the texture: the neon accents already carry the panel — and the
    drift reverses, so the night surface settles downward instead of rising. */
+:root:not([data-mode="night"]) .pattern-plate {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 54%,
+        rgb(255 214 142 / 0.78) 46%
+      )
+      0%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 40%,
+        rgb(255 153 84 / 0.72) 60%
+      )
+      58%,
+    color-mix(
+        in srgb,
+        var(--project-tag-color, var(--plate-tint)) 22%,
+        rgb(94 56 22 / 0.82) 78%
+      )
+      100%
+  );
+}
+
 :root[data-mode="night"] .pattern-plate {
-  --plate-pattern-opacity: 0.1;
+  background-image:
+    linear-gradient(
+      90deg,
+      color-mix(
+          in srgb,
+          var(--project-tag-color, var(--plate-tint)) 52%,
+          rgb(12 22 36 / 0.98) 48%
+        )
+        0%,
+      color-mix(
+          in srgb,
+          var(--project-tag-color, var(--plate-tint)) 34%,
+          rgb(18 38 64 / 0.94) 66%
+        )
+        52%,
+      color-mix(
+          in srgb,
+          var(--project-tag-color, var(--plate-tint)) 16%,
+          rgb(4 10 18 / 0.96) 84%
+        )
+        100%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0.24),
+      rgb(0 0 0 / 0.46)
+    );
+  --plate-pattern-opacity: 0.07;
   --plate-pattern-shift: 1;
 }
 
+:root[data-mode="night"] .pattern-plate::before {
+  mix-blend-mode: multiply;
+  opacity: 0.07;
+}
+
 :root[data-mode="night"] .pattern-plate--huge {
-  --plate-pattern-opacity: 0.07;
+  --plate-pattern-opacity: 0.05;
 }
 
 @media (prefers-reduced-motion: reduce) {

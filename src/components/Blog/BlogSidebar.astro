@@ -32,9 +32,7 @@ const { cards = [], theme } = Astro.props as Props;
 >
   {
     cards.map((card) => (
-      <div
-        class="w-full overflow-hidden border border-[color:var(--time-border-soft)] bg-[var(--time-panel)]"
-      >
+      <div class="w-full overflow-hidden">
         <LinkCard
           href={card.href}
           links={card.links}

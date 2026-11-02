@@ -3,34 +3,42 @@
 /* Any themed block resolves its own accent pair from the tag colour. */
 .theme-color {
   --accent-bold: var(--project-tag-color, var(--theme-orange));
-  --accent-italic: var(--project-tag-color, var(--theme-orange));
+  --accent-bold-shadow: rgb(0 0 0 / 1);
+  --accent-italic-fill: rgb(255 255 255 / 0.97);
+  --accent-italic-shadow: var(--project-tag-color, var(--theme-orange));
 }
 
 .theme-color strong,
 .theme-color b {
   color: var(--accent-bold);
+  text-shadow: 2px 3px 0 var(--accent-bold-shadow);
 }
 
 .theme-color em,
 .theme-color i {
-  color: var(--accent-italic);
+  color: var(--accent-italic-fill);
+  text-shadow: 2px 3px 0 var(--accent-italic-shadow);
 }
 
 /* #blog-content inherits project-tag-color from the page (set via inline style). */
 
 #blog-content {
   --accent-bold: var(--project-tag-color, var(--theme-orange));
-  --accent-italic: var(--project-tag-color, var(--theme-orange));
+  --accent-bold-shadow: rgb(0 0 0 / 1);
+  --accent-italic-fill: rgb(255 255 255 / 0.97);
+  --accent-italic-shadow: var(--project-tag-color, var(--theme-orange));
 }
 
 #blog-content strong,
 #blog-content b {
   color: var(--accent-bold);
+  text-shadow: 2px 3px 0 var(--accent-bold-shadow);
 }
 
 #blog-content em,
 #blog-content i {
-  color: var(--accent-italic);
+  color: var(--accent-italic-fill);
+  text-shadow: 2px 3px 0 var(--accent-italic-shadow);
 }
 
 /* Project panel write-up (portfolio). */
@@ -40,13 +48,15 @@
 .project-panel-body .retro-contribution strong,
 .project-panel-body .retro-contribution b {
   color: var(--project-tag-color, white);
+  text-shadow: 2px 3px 0 rgb(0 0 0 / 1);
 }
 
 .project-panel-body em,
 .project-panel-body i,
 .project-panel-body .retro-contribution em,
 .project-panel-body .retro-contribution i {
-  color: var(--project-tag-color, white);
+  color: color-mix(in srgb, var(--project-tag-color, white) 70%, white 30%);
+  text-shadow: 2px 3px 0 rgb(255 255 255 / 0.96);
 }
 
 /* ANIMATED ACCENT TYPE — a bouncing menu hop, the Wii-channel / Yoshi's Island
@@ -124,6 +134,10 @@
   display: inline-block;
   transform-origin: 50% 85%;
   animation: accent-bob-slow 11s linear infinite;
+  background: none;
+  color: var(--accent-bold);
+  -webkit-text-fill-color: initial;
+  text-shadow: 2px 3px 0 var(--accent-bold-shadow);
 }
 
 /* Italic: two springy hops, then a rest — on its own, shorter clock. */
@@ -131,6 +145,10 @@
   display: inline-block;
   transform-origin: 50% 85%;
   animation: accent-bob-quick 9s linear infinite;
+  background: none;
+  color: var(--accent-italic-fill);
+  -webkit-text-fill-color: initial;
+  text-shadow: 1px 2px 0 var(--accent-italic-shadow);
 }
 
 /* Reduced motion: the words keep their paint and their natural width. */

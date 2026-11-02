@@ -108,19 +108,20 @@
   color: var(--time-white, #fff);
   background: var(--time-black, #09090b);
   border: var(--outline-width) solid var(--role-accent);
-  box-shadow: 0.1875rem 0.1875rem 0 var(--time-black, #09090b);
+  box-shadow: 2px 3px 0 var(--time-shadow);
+  text-shadow: 1px 2px 0 var(--time-shadow);
   transition:
     transform 0.12s var(--ease-press),
     box-shadow 0.12s var(--ease-press);
 }
 
 .project-role {
-  color: color-mix(in srgb, var(--role-accent) 24%, var(--time-black));
-  background: color-mix(in srgb, var(--time-white) 62%, var(--role-accent));
+  color: var(--role-accent);
+  background: rgb(255 255 255 / 1);
   border-color: color-mix(in srgb, var(--role-accent) 70%, transparent);
 }
 
 .project-role:hover {
   transform: scale(1.04);
-  box-shadow: 0.0625rem 0.0625rem 0 var(--time-black, #09090b);
+  box-shadow: 1px 2px 0 var(--time-shadow);
 }

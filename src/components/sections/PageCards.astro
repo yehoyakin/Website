@@ -46,9 +46,7 @@ const { pages = [], credits = [] } = Astro.props as Props;
               >
                 {/* META BAR — the card's own label, where a post shows its date. */}
                 <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
-                  <span class="thumb-tag" style={`color: ${themeToken}`}>
-                    {page.tag}
-                  </span>
+                  <span class="thumb-tag">{page.tag}</span>
                 </div>
 
                 {/* ARTWORK */}

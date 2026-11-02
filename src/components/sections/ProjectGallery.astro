@@ -86,6 +86,10 @@ const roleLabels: Record<ProjectRole, string> = {
              media: rotating them on the cover showed the same screenshots
              twice and put pictures on a card that were never chosen for it. */
 
+          const hasDescription = Boolean(
+            project.data.description && project.data.description.trim().length > 0,
+          );
+
           return (
             <div class="gallery-project-item">
               {/* The same card anatomy the blog listing uses (BlogCard): a meta
@@ -102,9 +106,7 @@ const roleLabels: Record<ProjectRole, string> = {
                 {/* TOP BAR - the project's engine / tool tag, where a post puts
                     its date. */}
                 <div class="blog-card-bar pattern-plate pattern-plate--small">
-                  <span class="thumb-tag" style={`color: ${themeToken}`}>
-                    {project.data.tag}
-                  </span>
+                  <span class="thumb-tag">{project.data.tag}</span>
                 </div>
 
                 {/* IMAGE - the project's screenshots, swapping on a timer. */}
@@ -122,14 +124,16 @@ const roleLabels: Record<ProjectRole, string> = {
                 </div>
 
                 {/* BOTTOM BAR - title + description. */}
-                <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-                  <span class="gallery-thumb-title">
-                    {project.data.title}
-                  </span>
-                  <span class="gallery-thumb-desc">
-                    {project.data.description}
-                  </span>
-                </div>
+                {hasDescription && (
+                  <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+                    <span class="gallery-thumb-title">
+                      {project.data.title}
+                    </span>
+                    <span class="gallery-thumb-desc">
+                      {project.data.description}
+                    </span>
+                  </div>
+                )}
               </button>
               {/* Links below the thumbnail, always visible */}
               <div class="thumb-links">
@@ -208,7 +212,7 @@ const roleLabels: Record<ProjectRole, string> = {
             >
               <CompactBody
                 theme={project.data.theme}
-                class="project-panel-body pattern-plate pattern-plate--huge"
+                class="project-panel-body pattern-plate pattern-plate--text-backdrop pattern-plate--huge"
               >
                 <div set:html={project.rendered} />
               </CompactBody>
@@ -356,6 +360,30 @@ const roleLabels: Record<ProjectRole, string> = {
     const collapseBtns = [...gallery.querySelectorAll("[data-collapse]")];
 
     let activeProject = null;
+    let hoverCooldownTimer = null;
+
+    function clearHoverCooldown() {
+      if (hoverCooldownTimer) {
+        window.clearTimeout(hoverCooldownTimer);
+        hoverCooldownTimer = null;
+      }
+    }
+
+    function scheduleHidePreview(index) {
+      if (activeProject !== null) return;
+
+      clearHoverCooldown();
+      hoverCooldownTimer = window.setTimeout(() => {
+        const panel = panels.find((p) => p.dataset.panel === String(index));
+        if (!panel) return;
+
+        panel.classList.remove("panel-hover-preview");
+        panel.classList.remove("panel-hover-fadeout");
+        panel.style.display = "none";
+        hideBand();
+        hoverCooldownTimer = null;
+      }, 1000);
+    }
 
     /*
      * Hover previews are a pointer-only affordance. On a touch screen a tap
@@ -381,7 +409,10 @@ const roleLabels: Record<ProjectRole, string> = {
       const pageTop = page.getBoundingClientRect().top;
       const panelTop = panel.getBoundingClientRect().top;
 
+      const panelHeight = Math.round(panel.getBoundingClientRect().height);
+
       pageBand.style.top = `${Math.round(panelTop - pageTop)}px`;
+      pageBand.style.height = `${panelHeight}px`;
 
       /* The band wears the project too: the panel carries both tokens inline. */
       pageBand.style.setProperty(
@@ -449,6 +480,8 @@ const roleLabels: Record<ProjectRole, string> = {
           // Don't show hover preview if a panel is already expanded
           if (activeProject !== null) return;
 
+          clearHoverCooldown();
+
           const panel = panels.find((p) => p.dataset.panel === String(index));
           if (panel) {
             // Clean up any pending fadeout and show preview
@@ -463,13 +496,7 @@ const roleLabels: Record<ProjectRole, string> = {
           // Don't hide if a panel is actively expanded
           if (activeProject !== null) return;
 
-          const panel = panels.find((p) => p.dataset.panel === String(index));
-          if (panel) {
-            panel.classList.remove("panel-hover-preview");
-            panel.classList.remove("panel-hover-fadeout");
-            panel.style.display = "none";
-            hideBand();
-          }
+          scheduleHidePreview(index);
         });
       }
 

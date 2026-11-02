@@ -38,7 +38,7 @@
   font-size: 0.8rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--time-ink-muted);
+  color: var(--project-tag-color, var(--theme-orange));
 }
 
 /* `time` carries its own size from global.css; the row sets the rhythm. */
@@ -48,22 +48,27 @@
   gap: 0.45rem;
   font-size: inherit;
   letter-spacing: inherit;
+  color: var(--project-tag-color, var(--theme-orange));
+}
+
+.blog-masthead-meta time svg,
+.blog-masthead-meta time .icon {
+  color: var(--project-tag-color, var(--theme-orange));
 }
 
 .blog-masthead-kicker {
   color: var(--project-tag-color, var(--theme-orange));
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
   font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 /* Accent hairline that fills the space between "Article" and the date. */
 .blog-masthead-rule {
   flex: 0 1 4rem;
   height: 2px;
-  background: color-mix(
-    in srgb,
-    var(--project-tag-color, var(--theme-orange)) 55%,
-    transparent
-  );
+  background: var(--project-tag-color, var(--theme-orange));
 }
 
 /* Size only: this is the page's first header, so its accent fill and white

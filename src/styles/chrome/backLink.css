@@ -16,6 +16,8 @@
   --control-outline-width: 2px;
   /* The phone block below draws its frame from `--outline-width`. */
   --outline-width: 2px;
+  --button-label-color: var(--time-white);
+  --button-label-shadow: color-mix(in srgb, var(--time-shadow) 82%, var(--plate-tint));
   /* Fixed: the label is `nowrap`, so it can never need a second line and this
      rule needs no growth. */
   height: var(--back-link-height);
@@ -27,7 +29,8 @@
   background-color: var(--time-button-fill);
   /* Same lit-from-above plate as every other button. */
   background-image: var(--button-lighting);
-  color: var(--time-button-ink);
+  color: var(--button-label-color);
+  text-shadow: 2px 2px 0 var(--button-label-shadow);
 }
 
 /* The label is the control's, not a paragraph's: `a.back-link` has to outrank

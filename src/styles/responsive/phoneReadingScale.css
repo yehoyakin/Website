@@ -5,9 +5,10 @@
   :is(#blog-content, .project-panel-body) p {
     text-align: left;
   }
-  /* The long-form body sits exactly on its 16px floor here: BoldPixels is drawn. */
+  /* The long-form body sits on a slightly larger mobile floor to match the
+     site-wide 2px scale bump without making the reading surface too dense. */
   .compact-body {
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.52;
   }
   :is(#blog-content, .project-panel-body) p {

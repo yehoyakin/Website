@@ -1,17 +1,15 @@
-/* Shadow for readability against blurred / bright backgrounds.
-
-   Two layers, because one cannot do both jobs: a tight contact shadow gives the
-   glyph edges definition against a white patch, and a wide, faint halo lifts the
-   whole word off a bright photo without drawing a visible line around it. A
-   stroke/outline is deliberately not used here — at body sizes a ring closes up
-   the counters of the pixel face and reads as a dirty outline. */
+/* The pressed backdrop uses a bottom-right contact shadow: a solid dark-grey
+   duplicate sits under and slightly to the right of the glyph for a tighter,
+   more directional cast without the harsh black punch. */
 .readable-text:not(:is(h1, h2, h3)) {
-  text-shadow:
-    0 2px 3px var(--time-shadow, rgb(0 0 0 / 0.75)),
-    0 0 14px rgb(0 0 0 / 0.55);
+  text-shadow: 2px 3px 0 var(--time-shadow);
 }
 
 /* PIXEL TYPE — bold and outline cuts drawn on the font's own grid. */
+
+body {
+  text-shadow: 2px 3px 0 var(--time-shadow);
+}
 
 :root {
   /* One design pixel of the BoldPixels grid. */

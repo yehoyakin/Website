@@ -2,10 +2,10 @@
 
 :root {
   /* Two weights: panels stay chunky, controls read thin. */
-  --outline-width: 4px;
-  --tile-bevel: 4px;
-  --control-outline-width: 2px;
-  --control-bevel: 2px;
+  --outline-width: 2px;
+  --tile-bevel: 2px;
+  --control-outline-width: 1px;
+  --control-bevel: 1px;
   /* One box for every bare icon control in the site chrome — the switch, the
      contact / sidebar handles, the carousel arrows. It follows the chrome
      control token, so they all step down together on phones. */
@@ -26,18 +26,18 @@
      unthemed one lights in white / black. */
   --button-lighting: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 96%, transparent)
-      0 13%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 66%, transparent)
-      13% 30%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 38%, transparent)
-      30% 47%,
-    color-mix(in srgb, var(--tile-light, var(--time-white)) 16%, transparent)
-      47% 63%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 100%, transparent)
+      0 9%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 78%, transparent)
+      9% 25%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 45%, transparent)
+      25% 44%,
+    color-mix(in srgb, var(--tile-light, var(--time-white)) 18%, transparent)
+      44% 60%,
     color-mix(in srgb, var(--tile-dark, var(--time-black)) 22%, transparent)
-      63% 82%,
-    color-mix(in srgb, var(--tile-dark, var(--time-black)) 58%, transparent)
-      82% 100%
+      60% 78%,
+    color-mix(in srgb, var(--tile-dark, var(--time-black)) 68%, transparent)
+      78% 100%
   );
   /* Pattern tile sizes — one per plate step. */
   --pattern-size-huge: 1024px;
@@ -58,7 +58,7 @@
    `--outline-width` (they set it locally), so the controls read unchanged. */
 @media (max-width: 767px) {
   :root {
-    --outline-width: 2px;
+    --outline-width: 1px;
     --control-outline-width: 1px;
   }
 }

@@ -10,6 +10,29 @@
   will-change: transform, filter;
 }
 
+.markdown-gallery .gallery-thumb,
+.markdown-gallery .gallery-thumb:hover,
+.markdown-gallery .gallery-thumb:focus,
+.markdown-gallery .gallery-thumb:active,
+.markdown-gallery .blog-card,
+.markdown-gallery .blog-card:hover,
+.markdown-gallery .blog-card:focus,
+.markdown-gallery .blog-card:active {
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+.markdown-gallery .gallery-thumb:hover .thumb-carousel-media.active,
+.markdown-gallery .gallery-thumb:focus .thumb-carousel-media.active,
+.markdown-gallery .gallery-thumb:hover .thumb-overlay,
+.markdown-gallery .gallery-thumb:focus .thumb-overlay {
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
 /* Hover / focus stops the shake and zooms in place. */
 .retro-link:hover,
 .retro-link:focus,

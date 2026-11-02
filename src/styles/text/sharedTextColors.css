@@ -14,5 +14,5 @@
 
 /* Project tag utility: use the `--project-tag-color` set on the element. */
 .text-project-tag {
-  color: var(--project-tag-color);
+  color: rgb(255 255 255 / 1);
 }

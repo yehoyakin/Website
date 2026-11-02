@@ -55,12 +55,13 @@
   /* The frame, as a border image: one gradient, four edges, no per-side rules. */
   --frame-bevel: linear-gradient(
     135deg,
-    var(--frame-edge-light) 0%,
-    var(--frame-edge-light) 10%,
-    var(--frame-accent) 34%,
-    var(--frame-accent) 62%,
+    color-mix(in srgb, var(--frame-edge-light) 100%, var(--time-white)) 0%,
+    var(--frame-edge-light) 12%,
+    color-mix(in srgb, var(--frame-accent) 68%, var(--time-white)) 28%,
+    var(--frame-accent) 52%,
+    color-mix(in srgb, var(--frame-accent) 52%, var(--time-black)) 78%,
     var(--frame-edge-dark) 92%,
-    var(--frame-edge-dark) 100%
+    color-mix(in srgb, var(--frame-edge-dark) 100%, var(--time-black)) 100%
   );
 }
 

@@ -53,10 +53,10 @@
     min-height: 0;
   }
   .page-cards > li {
-    /* Each card is self-contained: 50dvh tall, natural width (max 36rem).
-       `max-height: none` lets the card be exactly 50dvh without being capped
-       by `100%` of a parent that has its own height. */
-    flex: 1 1 36rem;
+    /* Each card is self-contained: 50dvh tall, and all cards keep the same
+       width so the landing grid reads as a matched set. */
+    flex: 0 0 36rem;
+    width: 36rem;
     max-width: 36rem;
     max-height: none;
   }
@@ -102,13 +102,21 @@
   padding: 0.75rem 1.25rem;
 }
 
+.page-card .thumb-tag {
+  color: rgb(255 255 255 / 1);
+  font-size: clamp(0.8rem, 1.2vw, 1.35rem);
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-shadow: 1px 2px 0 var(--time-shadow);
+}
+
 .page-card .blog-card-info-bar {
   padding: 1rem 1.25rem 1.25rem;
 }
 
 .page-card .blog-card-title {
   margin: 0;
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: clamp(2.1rem, 4vw, 4.2rem);
   line-height: 1.2;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -118,7 +126,12 @@
    and no more than two lines: extra lines come out of the picture. */
 .page-card .blog-card-desc {
   margin: 0.35rem 0 0;
-  font-size: 0.95rem;
+  color: color-mix(
+    in srgb,
+    rgb(255 255 255 / 0.9) 82%,
+    var(--project-tag-color, var(--plate-tint)) 18%
+  );
+  font-size: clamp(0.703rem, 1.2vw, 1.359rem);
   line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -131,7 +144,7 @@
   display: inline-flex;
   align-items: center;
   margin-top: 0.8rem;
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
   letter-spacing: 0.12em;
   padding: 0.5rem 0.9rem;
   height: fit-content;

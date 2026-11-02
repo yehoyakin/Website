@@ -3,20 +3,26 @@
 .retro-link.pixel-frame,
 .split-card-action {
   --plate-base: var(--outline-color);
-  /* Day: tinted plate, dark label. */
+  /* Day: tinted plate with white label. */
   --tile-fill: color-mix(in srgb, var(--plate-base) 20%, var(--time-white));
   --tile-light: color-mix(in srgb, var(--tile-fill) 55%, var(--time-white));
   --tile-dark: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
-  color: color-mix(in srgb, var(--plate-base) 25%, var(--time-black));
+  --button-label-color: var(--time-white);
+  --button-label-shadow: color-mix(in srgb, var(--time-shadow) 78%, var(--plate-base));
+  --button-icon-shadow: var(--time-shadow);
+  color: var(--button-label-color);
 }
 
 :root[data-mode="night"] .retro-link.pixel-frame,
 :root[data-mode="night"] .split-card-action {
-  /* Night flips it: dark tint, light label. */
+  /* Night flips it: darker plate, white label, darker underside shadow. */
   --tile-fill: color-mix(in srgb, var(--plate-base) 30%, var(--time-black));
   --tile-light: color-mix(in srgb, var(--tile-fill) 55%, var(--time-white));
   --tile-dark: color-mix(in srgb, var(--tile-fill) 70%, var(--time-black));
-  color: color-mix(in srgb, var(--plate-base) 12%, var(--time-white));
+  --button-label-color: var(--time-white);
+  --button-label-shadow: color-mix(in srgb, var(--time-shadow) 82%, var(--plate-base));
+  --button-icon-shadow: var(--time-white);
+  color: var(--button-label-color);
 }
 
 /* Hover deepens the tint one step instead of jumping to the full accent. */

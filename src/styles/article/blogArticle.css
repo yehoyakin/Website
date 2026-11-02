@@ -41,36 +41,25 @@
 :is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6),
 .blog-masthead-title {
   --heading-step: max(1px, calc(1em / 16));
-  --heading-fill: var(--time-white);
-  --heading-ring: var(--project-tag-color, var(--theme-orange));
+  --heading-fill: var(--project-tag-color, var(--theme-orange));
+  --heading-ring: var(--time-white);
   color: var(--heading-fill);
   -webkit-text-fill-color: var(--heading-fill);
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
   text-shadow:
-    var(--heading-step) 0 0 var(--heading-ring),
     calc(var(--heading-step) * -1) 0 0 var(--heading-ring),
-    0 var(--heading-step) 0 var(--heading-ring),
+    var(--heading-step) 0 0 var(--heading-ring),
     0 calc(var(--heading-step) * -1) 0 var(--heading-ring),
-    var(--heading-step) var(--heading-step) 0 var(--heading-ring),
-    calc(var(--heading-step) * -1) var(--heading-step) 0 var(--heading-ring),
-    var(--heading-step) calc(var(--heading-step) * -1) 0 var(--heading-ring),
+    0 var(--heading-step) 0 var(--heading-ring),
     calc(var(--heading-step) * -1) calc(var(--heading-step) * -1) 0
-      var(--heading-ring);
+      var(--heading-ring),
+    var(--heading-step) calc(var(--heading-step) * -1) 0 var(--heading-ring),
+    calc(var(--heading-step) * -1) var(--heading-step) 0 var(--heading-ring),
+    var(--heading-step) var(--heading-step) 0 var(--heading-ring);
 }
 
-/* First header: accent fill, white ring. */
-:is(#blog-content, .project-panel-body) h1,
-.blog-masthead-title {
-  --heading-fill: var(--project-tag-color, var(--theme-orange));
-  --heading-ring: var(--time-white);
-}
-
-/* Night inverts the whole cut: every blog header is filled with the post's
-   accent and ringed in the night colour, so the type lights up on the dark
-   plate instead of carrying a pale edge. */
 :root[data-mode="night"] :is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6),
 :root[data-mode="night"] .blog-masthead-title {
-  --heading-fill: var(--project-tag-color, var(--theme-orange));
   --heading-ring: var(--time-black);
 }

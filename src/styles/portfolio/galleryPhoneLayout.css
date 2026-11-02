@@ -12,13 +12,13 @@
     max-width: 70vw;
   }
   .gallery-thumb-title {
-    font-size: 1.05rem;
+    font-size: clamp(2rem, 8vw, 2.9rem);
   }
   .gallery-thumb-desc {
-    font-size: 0.85rem;
+    font-size: clamp(0.9rem, 3vw, 1.725rem);
   }
   .thumb-tag {
-    font-size: 0.75rem;
+    font-size: clamp(0.6rem, 1.8vw, 0.75rem);
   }
   /* Body and screenshots STACK. `.project-panel-layout` is a two-column grid
      on desktop (write-up + media); at phone width two columns leave about
@@ -52,10 +52,10 @@
     max-width: 85vw;
   }
   .gallery-thumb-title {
-    font-size: 1rem;
+    font-size: clamp(1.8rem, 7vw, 2.7rem);
   }
   .gallery-thumb-desc {
-    font-size: 0.8rem;
+    font-size: clamp(0.8rem, 2.8vw, 1.575rem);
   }
   /* A full-width 16:9 frame is only ~180px tall on the smallest phones; the
      screenshot is still the biggest thing in the panel, so let it breathe. */

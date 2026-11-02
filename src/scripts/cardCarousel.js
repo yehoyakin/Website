@@ -84,9 +84,14 @@ function initStrip(scroller) {
      config/icons.ts, which reads tokens.css), so the glyphs are drawn in the
      day and night main colours instead of a fixed folder. Both are rendered
      and CSS shows one — the same swap the mode-toggle icon uses. */
+  const themedColor =
+    scroller.closest("[data-icon-color]")?.dataset.iconColor ||
+    document.documentElement.dataset.iconDay ||
+    "Lightblue";
+
   const ICON_FOLDER = {
-    day: document.documentElement.dataset.iconDay || "Lightblue",
-    night: document.documentElement.dataset.iconNight || "Blue",
+    day: themedColor,
+    night: themedColor,
   };
 
   const makeArrow = (label, direction) => {

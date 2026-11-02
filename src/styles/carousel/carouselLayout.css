@@ -86,6 +86,13 @@
   max-height: 50dvh;
 }
 
+.markdown-gallery .gallery-project-item .blog-card,
+.markdown-gallery .gallery-project-item .gallery-thumb {
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+}
+
 .blog-card-item .blog-card-image-wrap,
 .gallery-project-item .blog-card-image-wrap {
   flex: 1 1 auto;
@@ -106,7 +113,7 @@
 
 .blog-card-item .blog-card-title,
 .gallery-project-item .gallery-thumb-title {
-  font-size: 1.15rem;
+  font-size: clamp(1.5rem, 2vw, 2.3rem);
   line-height: 1.15;
 }
 
@@ -115,7 +122,7 @@
 .blog-card-item .blog-card-desc,
 .gallery-project-item .gallery-thumb-desc {
   margin-top: 0.2rem;
-  font-size: 0.78rem;
+  font-size: clamp(0.639rem, 1.02vw, 0.812rem);
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -126,5 +133,6 @@
 /* The meta line: 1.6 body leading is half the bar at card scale. */
 .blog-card-item .blog-card-date,
 .gallery-project-item .thumb-tag {
+  font-size: clamp(0.7rem, 1vw, 0.9rem);
   line-height: 1.25;
 }

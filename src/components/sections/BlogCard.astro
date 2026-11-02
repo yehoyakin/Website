@@ -53,6 +53,7 @@ const metaIcon = post ? "Calendar" : undefined;
 const image = post ? post.data.cardBackground : project!.data.cardBackground;
 const title = post ? post.data.title : project!.data.title;
 const description = post ? post.data.description : project!.data.description;
+const hasDescription = Boolean(description && description.trim().length > 0);
 
 /* Without a destination (a project with no links) the card renders as a plain
    block: nothing that is not clickable should wear the link hover. */
@@ -103,20 +104,22 @@ const cardStyle = [
   }
 
   {/* BOTTOM BAR - Title + Description */}
-  <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-    <Title
-      level={3}
-      theme={themeName}
-      class="blog-card-title"
-    >
-      {title}
-    </Title>
+  {hasDescription && (
+    <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+      <Title
+        level={3}
+        theme={themeName}
+        class="blog-card-title"
+      >
+        {title}
+      </Title>
 
-    <Body
-      theme={themeName}
-      class="blog-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
-    >
-      {description}
-    </Body>
-  </div>
+      <Body
+        theme={themeName}
+        class="blog-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
+      >
+        {description}
+      </Body>
+    </div>
+  )}
 </Tag>

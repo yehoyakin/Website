@@ -33,26 +33,26 @@
   /* Derived (same formula in both modes). */
   --time-border-soft: color-mix(in srgb, var(--time-border) 11%, transparent);
   --time-wash: color-mix(in srgb, var(--time-ink) 4%, transparent);
-  --time-shadow: rgb(0 0 0 / 0.6);
+  --time-shadow: rgb(46 52 61 / 0.88);
 }
 
 /* Night — blacks down, panels denser, type to greyish white. */
 :root[data-mode="night"] {
-  --time-page: rgba(0, 0, 0, 0.797);
-  --time-surface: rgba(0, 0, 0, 0.671);
-  --time-panel: rgb(0 0 0 / 0.96);
-  --time-ink: rgb(230, 230, 232);
+  --time-page: rgb(5 10 18 / 0.9);
+  --time-surface: rgb(10 16 24 / 0.74);
+  --time-panel: rgb(11 17 25 / 0.96);
+  --time-ink: rgb(226, 234, 242);
   /* Muted ink is NOT redefined here on purpose: the host rule below owns it,
      and a night value declared on :root would win over that rule and freeze the
      tint back to the root accent. */
-  --time-border: rgb(255 255 255 / 0.5);
-  --time-highlight: rgb(255 255 255 / 0.9);
-  --time-scrim: rgba(0, 0, 0, 0.886);
+  --time-border: rgb(154 184 219 / 0.55);
+  --time-highlight: rgb(233 242 255 / 0.94);
+  --time-scrim: rgb(3 7 12 / 0.88);
   /* Same tint, flipped to the night base colour. */
   --plate-tint: var(--theme-main-night);
-  /* Night flips the pair: the night base colour, mixed with black. */
-  --time-button-fill: color-mix(in srgb, var(--theme-main-night) 22%, var(--time-black));
-  --time-button-ink: color-mix(in srgb, var(--theme-main-night) 12%, var(--time-white));
+  /* Night flips the pair: a cooler deep-blue panel with a slight steel tint. */
+  --time-button-fill: color-mix(in srgb, var(--theme-main-night) 28%, rgb(10 17 25));
+  --time-button-ink: color-mix(in srgb, var(--theme-main-night) 12%, rgb(235 244 255));
   /* Same accent, flipped to the night base colour. */
   --icon-accent: var(--theme-main-night);
   /* Night accents: the day hues lifted toward white so they stay legible. */

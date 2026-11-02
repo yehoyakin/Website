@@ -5,6 +5,9 @@
   --outline-color-hover: var(--outline-color);
   --tile-light: color-mix(in srgb, var(--outline-color) 65%, white);
   --tile-dark: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
+  --button-label-color: var(--time-white);
+  --button-label-shadow: color-mix(in srgb, var(--time-shadow) 84%, var(--outline-color));
+  --button-icon-shadow: var(--time-shadow);
   /* The accent at full strength; contrast comes from the label. */
   --tile-fill: var(--outline-color);
   /* Lighter than a panel: same tile recipe, control-sized frame and bevel. */
@@ -33,8 +36,9 @@
 
 .split-card-action,
 .retro-link.pixel-frame {
-  /* Ten of twelve accents take black type; the two dark ones take white. */
-  color: var(--time-black);
+  /* Always white, always with a slightly deeper darker underside. */
+  color: var(--button-label-color);
+  text-shadow: 2px 2px 0 var(--button-label-shadow);
 }
 
 @supports (color: contrast-color(red)) {
@@ -90,8 +94,8 @@
 .retro-link.pixel-frame:hover > img,
 .retro-link.pixel-frame:focus-visible > img {
   filter:
-    drop-shadow(1px 0 0 var(--time-black))
-    drop-shadow(-1px 0 0 var(--time-black))
-    drop-shadow(0 1px 0 var(--time-black))
-    drop-shadow(0 -1px 0 var(--time-black));
+    drop-shadow(1px 0 0 var(--button-icon-shadow))
+    drop-shadow(-1px 0 0 var(--button-icon-shadow))
+    drop-shadow(0 1px 0 var(--button-icon-shadow))
+    drop-shadow(0 -1px 0 var(--button-icon-shadow));
 }

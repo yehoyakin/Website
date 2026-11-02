@@ -39,16 +39,19 @@
 
 /* Top bar: the project's engine / tool name, where a post puts its date. */
 .thumb-tag {
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
+  color: rgb(255 255 255 / 1);
+  font-size: clamp(0.7rem, 1vw, 1.05rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  text-shadow: 1px 2px 0 var(--time-shadow);
 }
 
 /* Copy bar: the same two type roles as a blog card, in the page ink. */
 .gallery-thumb-title {
   display: block;
   color: var(--time-ink);
-  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  font-size: clamp(2.2rem, 4vw, 5rem);
   font-weight: 700;
   line-height: 1.2;
   word-break: break-word;
@@ -65,8 +68,12 @@
 .gallery-thumb-desc {
   display: block;
   margin-top: 0.35rem;
-  color: var(--time-ink-muted);
-  font-size: 0.95rem;
+  color: color-mix(
+    in srgb,
+    rgb(255 255 255 / 0.9) 80%,
+    var(--project-tag-color, var(--plate-tint)) 20%
+  );
+  font-size: clamp(0.703rem, 1.34vw, 1.598rem);
   line-height: 1.45;
 }
 
@@ -99,17 +106,149 @@
 
 .thumb-carousel-img,
 .thumb-carousel-video {
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  background: color-mix(
+    in srgb,
+    var(--thumb-theme-color, var(--project-tag-color, var(--plate-tint))) 18%,
+    var(--time-page)
+  );
+}
+
+.markdown-gallery .gallery-thumb {
+  width: 100%;
+}
+
+.markdown-gallery .gallery-thumb:hover .thumb-carousel-media.active,
+.markdown-gallery .gallery-thumb:focus-visible .thumb-carousel-media.active,
+.markdown-gallery .gallery-thumb:hover .thumb-overlay,
+.markdown-gallery .gallery-thumb:focus-visible .thumb-overlay {
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.blog-inner-image-card {
+  width: min(100%, 42rem);
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.blog-inner-image-card .blog-card-image-wrap {
+  min-height: 0;
+  height: auto;
+  background: transparent;
+  overflow: hidden;
+}
+
+.blog-inner-image-card .thumb-carousel {
+  position: static;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.blog-inner-image-card .thumb-carousel-media {
+  position: static;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 767px) {
+  .blog-inner-image-card {
+    width: min(100%, 28rem);
+  }
+}
+
+.blog-inner-image-card .thumb-overlay {
+  display: none;
+}
+
+.markdown-gallery--single .gallery-thumbnails-wrapper {
+  overflow: visible;
+}
+
+.markdown-gallery--single .gallery-thumbnails {
+  display: block;
+  padding: 0;
+  justify-content: center;
+}
+
+.markdown-gallery--single .gallery-project-item {
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 100%;
+}
+
+.markdown-gallery--single .gallery-project-item .blog-card,
+.markdown-gallery--single .gallery-thumb {
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+}
+
+.markdown-gallery--single .gallery-thumb {
+  width: min(100%, 46rem);
+  margin-inline: auto;
+}
+
+.markdown-gallery--single .blog-card-image-wrap {
+  background: transparent;
+  min-height: 0;
+  height: auto;
+}
+
+.markdown-gallery--single .thumb-overlay {
+  display: none;
+}
+
+.markdown-gallery--single .thumb-carousel-img,
+.markdown-gallery--single .thumb-carousel-video {
+  object-position: center;
+}
+
+.markdown-gallery--single .gallery-thumb-desc {
+  font-size: clamp(0.576rem, 0.896vw, 0.864rem);
+  line-height: 1.45;
+}
+
+.markdown-gallery .blog-card-info-bar,
+.markdown-gallery--single .blog-card-info-bar {
+  min-height: clamp(3.5rem, 5vw, 4.75rem);
+  display: flex;
+  align-items: center;
+  padding-block: 0.85rem;
 }
 
 .thumb-carousel-video {
-  background: var(--time-black);
+  background: color-mix(
+    in srgb,
+    var(--thumb-theme-color, var(--project-tag-color, var(--plate-tint))) 18%,
+    var(--time-page)
+  );
 }
 
 /* The slide zooms and brightens on hover. */
 .gallery-thumb:hover .thumb-carousel-media.active {
   transform: scale(1.05);
   filter: brightness(1.1);
+}
+
+.markdown-gallery .gallery-thumb:hover .thumb-carousel-media.active,
+.markdown-gallery .gallery-thumb:focus-visible .thumb-carousel-media.active,
+.markdown-gallery .gallery-thumb:hover .thumb-overlay,
+.markdown-gallery .gallery-thumb:focus-visible .thumb-overlay {
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
 }
 
 /* Dark overlay like split card. */

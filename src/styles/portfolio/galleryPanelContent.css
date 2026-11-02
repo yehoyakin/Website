@@ -37,9 +37,9 @@
 .project-band {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 50%;
   width: 100vw;
+  height: 0;
   transform: translateX(-50%);
   z-index: 1;
   display: none;

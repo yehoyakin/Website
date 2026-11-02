@@ -26,3 +26,23 @@
   min-width: min-content;
 }
 
+.markdown-gallery .gallery-thumbnails {
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.markdown-gallery .gallery-thumbnails {
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.markdown-gallery .gallery-thumbnails::before,
+.markdown-gallery .gallery-thumbnails::after {
+  display: none;
+}
+
+.markdown-gallery .gallery-thumbnails::before,
+.markdown-gallery .gallery-thumbnails::after {
+  display: none;
+}
+
