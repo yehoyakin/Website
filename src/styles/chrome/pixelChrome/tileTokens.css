@@ -47,3 +47,18 @@
   --outline-color: var(--project-tag-color, var(--time-border));
   --outline-color-hover: var(--outline-color);
 }
+
+/* PHONES: the same outlines at half weight.
+
+   4px is one pixel-art step at a desktop viewing distance; on a phone the
+   pixels are physically smaller but the frame is not, so every card, panel,
+   masthead and figure wore a band that read as a heavy stroke around a small
+   surface. Halving both weights keeps the same proportions on the small
+   screen: panels at 2px, images and media at 1px. Buttons keep their own
+   `--outline-width` (they set it locally), so the controls read unchanged. */
+@media (max-width: 767px) {
+  :root {
+    --outline-width: 2px;
+    --control-outline-width: 1px;
+  }
+}

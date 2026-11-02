@@ -81,17 +81,10 @@ const roleLabels: Record<ProjectRole, string> = {
           const themeName = toThemeName(project.data.theme);
           const themeToken = resolveThemeToken(themeName);
 
-          /* The card opens on its cover and then rotates the screenshots —
-             the cover is dropped from the rotation when it is also a scene. */
-          const previews = [
-            project.data.cardBackground,
-            ...(project.data.scenes ?? [])
-              .map((scene: { image: string }) => scene.image)
-              .filter((image: string) => image !== project.data.cardBackground),
-          ];
-
-          /* Media is exactly what the project ships: screenshots, then clips.
-             Nothing is invented, so a clip-only project shows one slide. */
+          /* The card's artwork is its `cardBackground` — the cover the project
+             ships for that slot — and nothing else. The scenes are the PANEL's
+             media: rotating them on the cover showed the same screenshots
+             twice and put pictures on a card that were never chosen for it. */
 
           return (
             <div class="gallery-project-item">
@@ -117,17 +110,13 @@ const roleLabels: Record<ProjectRole, string> = {
                 {/* IMAGE - the project's screenshots, swapping on a timer. */}
                 <div class="blog-card-image-wrap">
                   <div class="thumb-carousel">
-                    {previews.map(
-                      (img: string, imgIndex: number) => (
-                        <img
-                          src={asset(img)}
-                          alt={`${project.data.title ?? `Project ${index + 1}`} - Image ${imgIndex + 1}`}
-                          class={`thumb-carousel-img ${imgIndex === 0 ? "active" : ""}`}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      ),
-                    )}
+                    <img
+                      src={asset(project.data.cardBackground)}
+                      alt={project.data.title ?? `Project ${index + 1}`}
+                      class="thumb-carousel-media thumb-carousel-img active"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
                   <div class="thumb-overlay" />
                 </div>
@@ -355,19 +344,12 @@ const roleLabels: Record<ProjectRole, string> = {
 </div>
 
 <script is:inline>
-  const CAROUSEL_INTERVAL = 3000;
-
   function initGallery() {
     const gallery = document.getElementById("project-gallery");
     if (!gallery) return;
 
     if (gallery.dataset.galleryInitialized === "true") return;
     gallery.dataset.galleryInitialized = "true";
-
-    if (gallery._carouselTimers) {
-      gallery._carouselTimers.forEach((t) => clearInterval(t));
-    }
-    gallery._carouselTimers = new Set();
 
     const thumbs = [...gallery.querySelectorAll("[data-thumb-index]")];
     const panels = [...gallery.querySelectorAll("[data-panel]")];
@@ -531,24 +513,6 @@ const roleLabels: Record<ProjectRole, string> = {
 
     window.addEventListener("resize", window._galleryBandResize);
 
-    /* Thumbnail cards: auto-cycling only, no controls. */
-    function initCardPreviews() {
-      const carousels = gallery.querySelectorAll(".gallery-thumb .thumb-carousel");
-      carousels.forEach((carousel) => {
-        const images = carousel.querySelectorAll(".thumb-carousel-img");
-        if (images.length <= 1) return;
-
-        let imageIndex = 0;
-        const timer = setInterval(() => {
-          images[imageIndex].classList.remove("active");
-          imageIndex = (imageIndex + 1) % images.length;
-          images[imageIndex].classList.add("active");
-        }, CAROUSEL_INTERVAL);
-
-        gallery._carouselTimers.add(timer);
-      });
-    }
-
     /* Panel gallery: the same `.card-carousel-*` controls the strips use,
        wiring the cross-fade instead of a scroll.
 
@@ -595,7 +559,6 @@ const roleLabels: Record<ProjectRole, string> = {
       });
     }
 
-    initCardPreviews();
     initPanelRotators();
   }
 
@@ -603,10 +566,6 @@ const roleLabels: Record<ProjectRole, string> = {
     const gallery = document.getElementById("project-gallery");
     if (!gallery) return;
     gallery.dataset.galleryInitialized = "false";
-    if (gallery._carouselTimers) {
-      gallery._carouselTimers.forEach((t) => clearInterval(t));
-      gallery._carouselTimers = new Set();
-    }
   }
 
   if (document.readyState === "loading") {

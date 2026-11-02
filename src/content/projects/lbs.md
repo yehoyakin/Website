@@ -14,7 +14,7 @@ roles:
 
 theme: lightblue
 
-cardBackground: "images/projects/lbs/lbs-1.webp"
+cardBackground: "images/projects/lbs/background.webp"
 
 background: "images/projects/lbs/background.webp"
 
