@@ -29,10 +29,17 @@
   flex: 1 1 auto;
 }
 
+/* A CARD IS AS WIDE AS THE ROW ALLOWS, NOT 32rem OR NOTHING.
+
+   Below the tablet breakpoint every card was pinned to the full width, so a
+   window narrower than two 32rem cards stacked them one per row however much
+   room there was. The row now wraps on a 20rem basis — two cards share the row
+   from about 41rem up — and the 32rem maximum keeps the desktop row the size it
+   always was. */
 .page-cards > li {
   display: flex;
-  flex: 1 1 min(100%, 32rem);
-  width: min(100%, 32rem);
+  flex: 1 1 min(100%, 20rem);
+  width: auto;
   max-width: 32rem;
   min-width: 0;
   min-height: 0;
@@ -58,9 +65,11 @@
     min-height: 0;
   }
   .page-cards > li {
-    /* Desktop: lock card width for a strict two-card row. */
-    flex: 0 0 32rem;
-    width: 32rem;
+    /* Tablet and up: the same 20rem basis, growing to the desktop width and no
+       further, so two or three cards share the row instead of one waiting for
+       the window to reach 32rem. */
+    flex: 1 1 20rem;
+    width: auto;
     max-width: 32rem;
     max-height: none;
   }
