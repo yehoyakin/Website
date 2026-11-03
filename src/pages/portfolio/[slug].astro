@@ -210,6 +210,22 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                         );
                       })}
                     </div>
+
+                    {/* The overlay is the only way to see a clip or an embed
+                        larger than the frame, and an <iframe> swallows clicks on
+                        the media itself, so the frame carries its own opener. */}
+                    <button
+                      type="button"
+                      class="project-panel-open"
+                      aria-label="Open the project gallery"
+                      data-lightbox-open
+                    >
+                      <Icon
+                        name="Gallery 2"
+                        theme={project.data.theme}
+                        class="project-panel-open-icon"
+                      />
+                    </button>
                   </div>
 
                   {
@@ -273,6 +289,108 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                     )
                   }
                 </div>
+
+                {/* THE SAME OVERLAY A POST'S GALLERY OPENS.
+
+                    One panel per page, holding only this project's media: the
+                    list is read from the rotator the opener belongs to, at the
+                    moment it is opened, so it can never show another gallery's
+                    picture. The stage is filled in by the script — an image, a
+                    <video> or an embed — because this gallery rotates all three
+                    and the blog's panel only ever holds stills. */}
+                <div
+                  class="blog-gallery-lightbox"
+                  aria-hidden="true"
+                  data-project-lightbox
+                >
+                  <div class="blog-gallery-lightbox__backdrop" data-lightbox-close />
+
+                  <div
+                    class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Project media preview"
+                  >
+                    <button
+                      type="button"
+                      class="blog-gallery-lightbox__close icon-button"
+                      aria-label="Close media preview"
+                      data-lightbox-close
+                    >
+                      <Icon
+                        name="close"
+                        theme={project.data.theme}
+                        class="blog-gallery-lightbox__close-icon"
+                      />
+                    </button>
+
+                    <div class="blog-gallery-lightbox__media">
+                      <button
+                        type="button"
+                        class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button"
+                        aria-label="Previous media"
+                        data-lightbox-prev
+                      >
+                        <Icon
+                          name="arrow-left"
+                          theme={project.data.theme}
+                          class="card-carousel-arrow-icon"
+                        />
+                      </button>
+
+                      <div class="blog-gallery-lightbox__stage" data-lightbox-stage />
+
+                      <button
+                        type="button"
+                        class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button"
+                        aria-label="Next media"
+                        data-lightbox-next
+                      >
+                        <Icon
+                          name="arrow-right"
+                          theme={project.data.theme}
+                          class="card-carousel-arrow-icon"
+                        />
+                      </button>
+                    </div>
+
+                    <div class="blog-gallery-lightbox__meta">
+                      <div
+                        class="blog-gallery-lightbox__dots card-carousel-dots"
+                        aria-label="Media index"
+                      >
+                        {mediaItems.map((_item, dotIndex) => (
+                          <button
+                            type="button"
+                            class="card-carousel-dot"
+                            aria-label={`Show media ${dotIndex + 1}`}
+                            aria-current={dotIndex === 0 ? "true" : "false"}
+                            data-lightbox-dot={dotIndex}
+                          >
+                            <span class="card-carousel-dot-icon icon-mode">
+                              <img
+                                src={asset(`images/Icons/${defaultIconColor}/Circle Base_${defaultIconColor}.webp`)}
+                                alt=""
+                                aria-hidden="true"
+                                decoding="async"
+                                class="icon-mode-img icon-mode-img--day"
+                              />
+                              <img
+                                src={asset(`images/Icons/${defaultIconColorNight}/Circle Base_${defaultIconColorNight}.webp`)}
+                                alt=""
+                                aria-hidden="true"
+                                decoding="async"
+                                class="icon-mode-img icon-mode-img--night"
+                              />
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+
+                      <span class="blog-gallery-lightbox__caption" data-lightbox-caption hidden />
+                    </div>
+                  </div>
+                </div>
               </section>
             )
           }
@@ -322,13 +440,160 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initProjectSlugRotators);
-  } else {
-    initProjectSlugRotators();
+  function initProjectSlugLightboxes() {
+    document.querySelectorAll("[data-project-lightbox]").forEach((lightbox) => {
+      if (lightbox.dataset.lightboxReady === "true") return;
+      lightbox.dataset.lightboxReady = "true";
+
+      const section = lightbox.closest("[data-project-rotator]");
+      if (!section) return;
+
+      /* The list is read from the rotator the opener lives in, at the moment it
+         is opened, never cached at load: this panel can only ever hold this
+         project's media. */
+      const items = [...section.querySelectorAll(".thumb-carousel-media")].map((node) => ({
+        kind: node.tagName === "IFRAME" ? "embed" : node.tagName === "VIDEO" ? "video" : "image",
+        src: node.getAttribute("src") || "",
+        poster: node.getAttribute("poster") || "",
+        label: node.getAttribute("alt") || node.getAttribute("title") || "",
+      }));
+      if (!items.length) return;
+
+      const stage = lightbox.querySelector("[data-lightbox-stage]");
+      const caption = lightbox.querySelector("[data-lightbox-caption]");
+      const dots = [...lightbox.querySelectorAll("[data-lightbox-dot]")];
+      const prev = lightbox.querySelector("[data-lightbox-prev]");
+      const next = lightbox.querySelector("[data-lightbox-next]");
+      const openers = [...section.querySelectorAll("[data-lightbox-open]")];
+
+      let currentIndex = 0;
+
+      /* The frame rotates in place, so the panel opens on whatever is showing
+         rather than always on the first item. */
+      const activeIndex = () => {
+        const index = [...section.querySelectorAll(".thumb-carousel-media")].findIndex((node) =>
+          node.classList.contains("active"),
+        );
+        return index < 0 ? 0 : index;
+      };
+
+      /* One element, three kinds: this gallery rotates stills, clips and embeds,
+         so the stage is built per item instead of being a fixed <img>. */
+      const render = (index) => {
+        const item = items[index];
+        if (!item || !stage) return;
+
+        let node;
+
+        if (item.kind === "embed") {
+          node = document.createElement("iframe");
+          node.src = item.src;
+          node.title = item.label || "Project media";
+          node.referrerPolicy = "strict-origin-when-cross-origin";
+          node.allow =
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+          node.setAttribute("allowfullscreen", "");
+        } else if (item.kind === "video") {
+          node = document.createElement("video");
+          node.src = item.src;
+          if (item.poster) node.poster = item.poster;
+          node.controls = true;
+          node.playsInline = true;
+          node.preload = "metadata";
+        } else {
+          node = document.createElement("img");
+          node.src = item.src;
+          node.alt = item.label;
+          node.loading = "eager";
+          node.decoding = "async";
+        }
+
+        node.className = "blog-gallery-lightbox__image";
+        stage.replaceChildren(node);
+
+        if (caption) {
+          caption.textContent = item.label;
+          caption.hidden = !item.label;
+        }
+
+        dots.forEach((dot, dotIndex) => {
+          dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
+        });
+      };
+
+      const show = (index) => {
+        currentIndex = ((index % items.length) + items.length) % items.length;
+        render(currentIndex);
+      };
+
+      const open = (index) => {
+        /* One panel at a time, the same as a post's galleries. */
+        document.querySelectorAll(".blog-gallery-lightbox.is-open").forEach((other) => {
+          if (other === lightbox) return;
+          other.classList.remove("is-open");
+          other.setAttribute("aria-hidden", "true");
+        });
+
+        lightbox.classList.add("is-open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.classList.add("lightbox-open");
+        show(index);
+      };
+
+      const close = () => {
+        lightbox.classList.remove("is-open");
+        lightbox.setAttribute("aria-hidden", "true");
+
+        /* Unmounting the stage is what stops a clip or an embed that was left
+           playing behind the panel. */
+        stage?.replaceChildren();
+
+        if (!document.querySelector(".blog-gallery-lightbox.is-open")) {
+          document.body.classList.remove("lightbox-open");
+        }
+
+        /* The inline frame catches up with the last picture seen, through the
+           rotator's own dots rather than a second copy of its index. */
+        section.querySelector(`[data-rotator-dot="${currentIndex}"]`)?.click();
+      };
+
+      openers.forEach((opener) => {
+        opener.addEventListener("click", () => open(activeIndex()));
+      });
+
+      dots.forEach((dot, dotIndex) => {
+        dot.addEventListener("click", () => show(dotIndex));
+      });
+
+      prev?.addEventListener("click", () => show(currentIndex - 1));
+      next?.addEventListener("click", () => show(currentIndex + 1));
+
+      lightbox.querySelectorAll("[data-lightbox-close]").forEach((button) => {
+        button.addEventListener("click", close);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (!lightbox.classList.contains("is-open")) return;
+
+        if (event.key === "Escape") close();
+        if (event.key === "ArrowRight") show(currentIndex + 1);
+        if (event.key === "ArrowLeft") show(currentIndex - 1);
+      });
+    });
   }
 
-  document.addEventListener("astro:after-swap", initProjectSlugRotators);
+  function initProjectSlug() {
+    initProjectSlugRotators();
+    initProjectSlugLightboxes();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initProjectSlug);
+  } else {
+    initProjectSlug();
+  }
+
+  document.addEventListener("astro:after-swap", initProjectSlug);
 </script>
 
 <style>
@@ -503,6 +768,42 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
   .project-page-gallery-plain .project-panel-frame > :global(.thumb-carousel) {
     inset: 0.5rem;
+  }
+
+  /* The frame's own opener. An <iframe> swallows clicks on the media it covers,
+     so the corner button is the one trigger that works for every item kind. */
+  .project-panel-open {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .project-panel-open-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* The overlay's stage. The blog's panel sizes one <img>; this one is filled by
+     the script, so an embed needs its own shape. */
+  .blog-gallery-lightbox__stage {
+    display: grid;
+    place-items: center;
+    width: 100%;
+  }
+
+  .blog-gallery-lightbox__stage :global(iframe.blog-gallery-lightbox__image) {
+    aspect-ratio: 16 / 9;
+    border: 0;
   }
 
   .project-page-gallery-plain .card-carousel-arrow-icon {
