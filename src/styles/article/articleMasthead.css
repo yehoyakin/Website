@@ -125,21 +125,23 @@
    A card rings itself in white by day and in black after dark (see the title
    ring in blogCardTile.css), and the header followed the day half of that in
    both modes: a white ring around a panel that went dark underneath. It now
-   switches with the mode the way the cards do. `border-image: none` is
-   required because the shared frame recipe (chrome/pixelChrome/frames.css)
-   draws borders with a bevel image, which would otherwise ignore
-   `border-color` entirely. */
+   switches with the mode the way the cards do.   The frame recipe has to be
+   switched off, because the shared one (chrome/pixelChrome/frames.css) draws
+   borders with a bevel image, which ignores `border-color` entirely. It is
+   switched off with `border-image-source`, NOT the `border-image` shorthand:
+   the CSS minifier collapses `border-image: none` to an empty declaration, so
+   the bevel stayed on both headers in the built stylesheet. */
 /* `.blog-masthead.pixel-frame` is deliberate: the shared frame recipe in
    chrome/pixelChrome/frames.css is `.pixel-frame:not(.retro-link):not(...)`,
    the same weight, and it is imported LAST — the extra class is what keeps
    this ring, rather than the accent bevel, on the header. */
 :root[data-mode] .blog-masthead.pixel-frame {
-  border-image: none;
-  border-color: var(--time-white);
+  border-image-source: none !important;
+  border-color: var(--time-white) !important;
 }
 
 :root[data-mode="night"] .blog-masthead.pixel-frame {
-  border-color: var(--time-black);
+  border-color: var(--time-black) !important;
 }
 
 /* THE PROJECT HEADER — the same outline switch as the post header's.
@@ -149,12 +151,12 @@
    switches white by day and black after dark. `border-image: none` is what lets
    `border-color` paint, exactly as on `.blog-masthead` above. */
 :root[data-mode] .project-page-masthead.pixel-frame {
-  border-image: none;
-  border-color: var(--time-white);
+  border-image-source: none !important;
+  border-color: var(--time-white) !important;
 }
 
 :root[data-mode="night"] .project-page-masthead.pixel-frame {
-  border-color: var(--time-black);
+  border-color: var(--time-black) !important;
 }
 
 /* INK — the page ink, on the card plate the header now shares with the bars of
