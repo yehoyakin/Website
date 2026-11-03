@@ -65,11 +65,13 @@
 
 /* HEADINGS INSIDE THE COPY — the same two knobs, set per mode.
 
-   A heading written in the post body wears the post's accent by day and that
-   accent's dark variant at night, ALWAYS ringed in white so the outline cut
-   survives both. Only `#blog-content` is targeted: the masthead title above it
-   is a white-on-accent cut (see styles/article/articleMasthead.css) and must
-   not follow the copy. These outrank the base heading rule above and the h5/h6
+   A heading written in the post body is painted in the post's accent IN BOTH
+   MODES — the theme colour is the ink, so it does not drop to the accent's dark
+   variant after dark. Only the ring switches: white by day, black at night, the
+   same outline switch a card's title makes (blogCardTile.css).
+   Only `#blog-content` is targeted: the masthead title above it is a
+   white-on-accent cut (see styles/article/articleMasthead.css) and must not
+   follow the copy. These outrank the base heading rule above and the h5/h6
    muted fill in articleProse.css, so every level takes the theme. */
 :root:not([data-mode="night"]) #blog-content :is(h1, h2, h3, h4, h5, h6) {
   --heading-fill: var(--project-tag-color, var(--theme-main-day));
@@ -77,9 +79,6 @@
 }
 
 :root[data-mode="night"] #blog-content :is(h1, h2, h3, h4, h5, h6) {
-  --heading-fill: var(
-    --project-tag-color-dark,
-    var(--project-tag-color, var(--theme-main-night))
-  );
-  --heading-ring: var(--time-white);
+  --heading-fill: var(--project-tag-color, var(--theme-main-day));
+  --heading-ring: var(--time-black);
 }

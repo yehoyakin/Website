@@ -243,8 +243,19 @@
   --plate-pattern-shadow-opacity: 0.04;
 }
 
-:root:not([data-mode="night"]) .pattern-plate--ghost .pattern-plate,
-:root[data-mode="night"] .pattern-plate--ghost .pattern-plate {
+/* A POST'S PANELS ARE NOT GHOST PANELS.
+
+   `:not(#blog-article-section *)` takes the blog post's header, reading column
+   and in-body bars out of this recipe. They wear the plain plate — the surface
+   a card's bar has — so they darken after dark like the card that led there,
+   instead of keeping the one softened fill day and night. The project page has
+   no such section, so its panels are untouched. */
+:root:not([data-mode="night"])
+  .pattern-plate--ghost
+  .pattern-plate:not(#blog-article-section *),
+:root[data-mode="night"]
+  .pattern-plate--ghost
+  .pattern-plate:not(#blog-article-section *) {
   /* 95% of the panel fill, 5% page. The accent is carried 75% stronger than
      the softened plate elsewhere in the site (26% → 45%), which is what pulls
      these panels out of the near-black: same recipe, more of the theme in it. */
@@ -291,10 +302,10 @@
    surface while still letting the ghost wash exist behind it. */
 :root:not([data-mode="night"])
   .pattern-plate--ghost
-  .pattern-plate.pattern-plate--text-backdrop,
+  .pattern-plate.pattern-plate--text-backdrop:not(#blog-article-section *),
 :root[data-mode="night"]
   .pattern-plate--ghost
-  .pattern-plate.pattern-plate--text-backdrop {
+  .pattern-plate.pattern-plate--text-backdrop:not(#blog-article-section *) {
   background-color: color-mix(
     in srgb,
     color-mix(in srgb, var(--plate-accent) 32%, var(--plate-fill-dark)) 96%,
@@ -342,10 +353,14 @@
    project's header are the same plate. */
 :root:not([data-mode="night"])
   .pattern-plate--ghost
-  .pattern-plate:is(.project-page-masthead, .blog-masthead),
+  .pattern-plate:is(.project-page-masthead, .blog-masthead):not(
+    #blog-article-section *
+  ),
 :root[data-mode="night"]
   .pattern-plate--ghost
-  .pattern-plate:is(.project-page-masthead, .blog-masthead) {
+  .pattern-plate:is(.project-page-masthead, .blog-masthead):not(
+    #blog-article-section *
+  ) {
   background-color: var(--plate-accent);
   background-image: linear-gradient(
     to bottom,
@@ -367,9 +382,10 @@
    article section on a post, the page wrapper on a project. Its texture used to
    tile across the whole page, and then to sit fixed behind it, which put the
    motif in every margin and gap around the panels. It paints nothing there now:
-   the pattern is only wanted where a panel gives it a surface, so these two
-   pseudo-elements are switched off and the layer keeps just its 10% accent
-   wash. */
+   the pattern is only wanted on a surface, so these two pseudo-elements are
+   switched off and the layer keeps just its 10% accent wash. On a post that
+   surface is the content panel, which carries the ghost motif as its own layer
+   — see the block at the end of this file. */
 :root[data-mode] .pattern-plate--ghost::before,
 :root[data-mode] .pattern-plate--ghost::after {
   display: none;
@@ -411,6 +427,162 @@
 
 :root[data-mode="night"] :is(.pattern-plate--ghost, .pattern-plate--ghost .pattern-plate)::after {
   opacity: 0.04;
+}
+
+/* BLOG POST PANELS — THE BLOG CARD'S TEXTURE.
+
+   A post's panels painted the ghost group's texture: one and a half huge tiles
+   on the reading column, the small tile at 0.2 on the header, and both pinned to
+   the VIEWPORT by the parallax rule above, so the motif slid against the panel
+   instead of with it. The cards that lead here take theirs from the small step
+   of the plain plate — a 128px tile at 0.14 by day, 0.07 by night, drifting one
+   tile every 18s, moving with the surface it is painted on.
+
+   The header and the reading surface now wear that card recipe, so the panel a
+   reader lands on carries the same motif as the card they clicked. This reaches
+   only the two panels inside the article section — they are also taken out of
+   the ghost group's own panel fill above, so they sit on the card surface and
+   darken after dark like a card. Both surfaces survive: the card's fine tile on
+   the panels, and the ghost motif inside the content panel, painted by the last
+   block in this file. */
+:root:not([data-mode="night"])
+  #blog-article-section
+  :is(.blog-masthead, .blog-article-body) {
+  --plate-pattern-size: var(--pattern-size-small, 128px);
+  --plate-pattern-duration: 18s;
+  --plate-pattern-opacity: 0.14;
+  --plate-pattern-shadow-opacity: 0.08;
+}
+
+/* Night is the card's night: the light pass becomes a multiply at 0.07 and the
+   inverted pass drops to 0.04 (the night steps declared above), so the motif
+   sits INTO the dark surface after dark instead of glowing on it. */
+:root[data-mode="night"]
+  #blog-article-section
+  :is(.blog-masthead, .blog-article-body) {
+  --plate-pattern-size: var(--pattern-size-small, 128px);
+  --plate-pattern-duration: 18s;
+  --plate-pattern-opacity: 0.07;
+  --plate-pattern-shadow-opacity: 0.04;
+}
+
+/* `scroll`, not the ghost group's `fixed`: a card's motif belongs to the card
+   and travels with it. Stated on both passes, because the parallax rule above
+   reaches every plate inside the ghost layer.
+
+   The inverted pass is the HEADER's alone: on the reading surface `::after` is
+   the layer the ghost motif is painted in (last block in this file). */
+:root:not([data-mode="night"])
+  #blog-article-section
+  :is(.blog-masthead, .blog-article-body)::before {
+  background-attachment: scroll;
+  opacity: 0.14;
+}
+
+:root:not([data-mode="night"])
+  #blog-article-section
+  .blog-masthead::after {
+  background-attachment: scroll;
+  opacity: 0.08;
+}
+
+:root[data-mode="night"]
+  #blog-article-section
+  :is(.blog-masthead, .blog-article-body)::before {
+  background-attachment: scroll;
+  opacity: 0.07;
+}
+
+:root[data-mode="night"]
+  #blog-article-section
+  .blog-masthead::after {
+  background-attachment: scroll;
+  opacity: 0.04;
+}
+
+/* THE GHOST MOTIF, INSIDE THE CONTENT PANEL.
+
+   The ghost layer above paints no texture of its own; a motif tiled across the
+   whole section is what used to put the pattern in every gap and margin around
+   the panels. It is wanted on the page's content panel and nowhere else, so the
+   reading surface carries it as a layer of its own: the tile at the column's
+   one-and-a-half-huge step, pinned to the VIEWPORT like the ghost backdrop it
+   comes from, so it slides against the copy as the page scrolls.
+
+   `::after` is that layer because the plate's light pass owns `::before`, and
+   because the accent cap the framed column used to draw there is switched off
+   (styles/article/articleReadingSurface.css). Every property the cap and the
+   base pass would put on this pseudo-element is restated below, so what paints
+   is the motif alone — one screen pass by day, one multiply pass at night — and
+   only across the panel's box, which is what keeps it off the rest of the page. */
+:root[data-mode] #blog-content.blog-article-body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: auto;
+  z-index: -1;
+  --pattern-tile: max(1600px, calc(var(--pattern-size-huge, 1024px) * 1.5));
+  background: var(--plate-pattern, none) repeat;
+  background-size: var(--pattern-tile) var(--pattern-tile);
+  background-attachment: fixed;
+  animation: plate-pattern-scroll 120s linear infinite;
+  filter: none;
+  mix-blend-mode: screen;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+:root[data-mode="night"] #blog-content.blog-article-body::after {
+  mix-blend-mode: multiply;
+  opacity: 0.12;
+}
+
+/* MEDIA BANNERS IN A POST — the card's banner, gradient and all.
+
+   The caption under a scene image or a clip is a `.blog-card-bar` in the
+   reading column: it shares the cards' classes but not their bar. Inside the
+   column it was painting the plate's surface — a low tint under a long article —
+   so it read as a flat strip next to the strongly graded banners of the cards
+   that lead to the page.
+
+   These bars now paint the banner themselves, and the ramp is stated here
+   instead of inherited: the accent lifted with white along the top edge,
+   stepping down through the plate tint to the accent's dark end at the bottom,
+   the same light-from-above direction every card banner has. The night pass
+   starts from the night accent and lands near-black, so the bar darkens with the
+   surface it sits on. */
+:root:not([data-mode="night"])
+  #blog-article-section
+  :is(.blog-card-bar, .blog-card-info-bar) {
+  background-color: color-mix(
+    in srgb,
+    var(--plate-accent) 42%,
+    var(--plate-fill-dark)
+  );
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--plate-accent) 78%, var(--time-white) 22%) 0%,
+    color-mix(in srgb, var(--plate-accent) 52%, var(--plate-fill-dark)) 34%,
+    color-mix(in srgb, var(--plate-accent) 26%, var(--plate-fill-dark)) 72%,
+    color-mix(in srgb, var(--plate-accent) 12%, var(--plate-fill-dark)) 100%
+  );
+}
+
+:root[data-mode="night"]
+  #blog-article-section
+  :is(.blog-card-bar, .blog-card-info-bar) {
+  background-color: color-mix(
+    in srgb,
+    var(--plate-accent) 22%,
+    var(--plate-fill-dark)
+  );
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--plate-accent) 58%, var(--plate-fill-dark)) 0%,
+    color-mix(in srgb, var(--plate-accent) 34%, var(--plate-fill-dark)) 34%,
+    color-mix(in srgb, var(--plate-accent) 16%, var(--plate-fill-dark)) 72%,
+    color-mix(in srgb, var(--plate-fill-dark) 88%, var(--time-black)) 100%
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {

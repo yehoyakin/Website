@@ -295,6 +295,31 @@
   padding-block: 0.85rem;
 }
 
+/* POST GALLERY CAPTIONS — body size, and inside their bar.
+
+   A gallery card on a post is the reading column's media frame, so its caption
+   is read at the copy's own size. It was taking the portfolio thumbnail's
+   vw-scaled clamp instead, which tops out at 1.15rem (18px) — larger than the
+   14px article text the caption belongs to, and it grew again on phones.
+
+   The bar was also a flexible flex item of a card whose height is pinned in a
+   multi-image strip (`clamp(20rem, 50dvh, 28rem)` above): a long caption flexed
+   the bar down to a sliver and the words spilled out over the card, the frame
+   and the page. The bar now holds its own height and wraps; the artwork, which
+   already has `min-height: 0`, is what gives way when the card is short. */
+.markdown-gallery .gallery-thumb .blog-card-bar,
+.markdown-gallery .gallery-thumb .blog-card-info-bar {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.markdown-gallery .gallery-thumb-desc,
+.markdown-gallery--single .gallery-thumb-desc {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
 .thumb-carousel-video {
   background: color-mix(
     in srgb,

@@ -39,11 +39,12 @@
 /* Lede: the opening paragraph takes the drop cap and otherwise reads at the
    body size — only its first letter is enlarged.
 
-   The cap is filled like every other magazine opener — the post's theme by
-   day, the theme's dark variant at night — and, like the rest of the prose
-   type, pushed to its own chroma so it pops over the plate:
-   `--lede-cap-fill` is the bright theme tint, and the cap's hard shadow is its
-   dark variant, so it stands out instead of washing into the background. */
+   The cap is filled like every other magazine opener — with the post's theme,
+   in both modes; the ink is the theme colour, so it never drops to the accent's
+   dark variant after dark. Like the rest of the prose type it is pushed to its
+   own chroma so it pops over the plate: `--lede-cap-fill` is the bright theme
+   tint, and the cap's hard shadow is its dark variant, so it stands out instead
+   of washing into the background. */
 #blog-content .blog-lede {
   --lede-cap-fill: var(--project-tag-color, var(--theme-main-day));
   --lede-cap-shadow: color-mix(
@@ -54,10 +55,7 @@
 }
 
 :root[data-mode="night"] #blog-content .blog-lede {
-  --lede-cap-fill: var(
-    --project-tag-color-dark,
-    var(--project-tag-color, var(--theme-main-night))
-  );
+  --lede-cap-fill: var(--project-tag-color, var(--theme-main-day));
   --lede-cap-shadow: color-mix(
     in srgb,
     var(--project-tag-color-dark, var(--theme-main-night)) 64%,

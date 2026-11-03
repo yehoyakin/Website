@@ -30,6 +30,20 @@
   background-color: var(--project-tag-color, var(--theme-main-day));
 }
 
+/* THE STRIP IS THE ACCENT, NOT A PLATE.
+
+   The strip is a `.pattern-plate`, so the ghost page's panel rule repaints it
+   like any other surface — and that rule outranks the two-class selector above
+   by one class. On the accent-filled header its darkened band (the panel
+   gradient ramps from a 73% accent mix down to a 28% one) landed across the top
+   edge as a single dark bar. The strip takes the post's accent back, flat: no
+   gradient, because there is nothing to shade — the texture still runs over it
+   through the plate's two pseudo-elements. */
+:root[data-mode] .blog-masthead .blog-masthead-strip {
+  background-color: var(--project-tag-color, var(--theme-main-day));
+  background-image: none;
+}
+
 .blog-masthead-meta {
   display: flex;
   flex-wrap: wrap;
@@ -106,13 +120,15 @@
   color: var(--time-ink-muted);
 }
 
-/* BLOG HEADER — a white outline in both modes, the theme as its ink.
+/* BLOG HEADER — the card's outline, on the header.
 
-   The header keeps the same white ring whatever the time of day is; the only
-   thing that changes is the ink: the post's accent by day, that accent's dark
-   variant at night. `border-image: none` is required because the shared frame
-   recipe (chrome/pixelChrome/frames.css) draws borders with a bevel image,
-   which would otherwise ignore `border-color` entirely. */
+   A card rings itself in white by day and in black after dark (see the title
+   ring in blogCardTile.css), and the header followed the day half of that in
+   both modes: a white ring around a panel that went dark underneath. It now
+   switches with the mode the way the cards do. `border-image: none` is
+   required because the shared frame recipe (chrome/pixelChrome/frames.css)
+   draws borders with a bevel image, which would otherwise ignore
+   `border-color` entirely. */
 /* `.blog-masthead.pixel-frame` is deliberate: the shared frame recipe in
    chrome/pixelChrome/frames.css is `.pixel-frame:not(.retro-link):not(...)`,
    the same weight, and it is imported LAST — the extra class is what keeps
@@ -122,11 +138,13 @@
   border-color: var(--time-white);
 }
 
-/* INK — the page ink, because the plate under it is now the post's accent
-   (see the slug masthead rule in chrome/pixelChrome/patternPlates.css). Accent
-   type on an accent plate is invisible — yellow on yellow, green on green — so
-   the header follows the project header instead: white copy on the theme
-   colour. */
+:root[data-mode="night"] .blog-masthead.pixel-frame {
+  border-color: var(--time-black);
+}
+
+/* INK — the page ink, on the card plate the header now shares with the bars of
+   the cards that lead here (see the panel rule in
+   chrome/pixelChrome/patternPlates.css): dark surface, so white copy. */
 :root[data-mode] .blog-masthead {
   --header-ink: var(--time-ink);
 }
