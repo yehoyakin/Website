@@ -492,12 +492,17 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     gap: 0.55rem;
   }
 
+  /* The frame now carries the cards' banner ramp (patternPlates.css) and the
+     outline that goes with it, so it keeps a band around the picture for that
+     grading to show in. The rotation is pinned to the PADDING box, so it has to
+     be inset by the same amount or the picture would cover the band. */
   .project-page-gallery-plain .project-panel-frame {
     aspect-ratio: 4 / 3;
-    border: none;
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
+    padding: 0.5rem;
+  }
+
+  .project-page-gallery-plain .project-panel-frame > :global(.thumb-carousel) {
+    inset: 0.5rem;
   }
 
   .project-page-gallery-plain .card-carousel-arrow-icon {

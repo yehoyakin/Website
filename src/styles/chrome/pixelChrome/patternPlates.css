@@ -593,6 +593,44 @@
   );
 }
 
+/* THE PROJECT'S PICTURE FRAME — the banner recipe around the media.
+
+   A post's media is a card: the picture, then a caption bar graded with the
+   banner's ramp. The project page's media has no caption — it is one rotating
+   frame with dots and arrows — so the frame is the only surface there is to
+   grade, and it takes that same ramp. The band the frame keeps around the
+   picture is what shows it; the picture itself is untouched, so a screenshot
+   still reads at full strength. */
+:root:not([data-mode="night"]) .project-page .project-panel-frame {
+  background-color: color-mix(
+    in srgb,
+    var(--plate-accent) 42%,
+    var(--plate-fill-dark)
+  );
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--plate-accent) 78%, var(--time-white) 22%) 0%,
+    color-mix(in srgb, var(--plate-accent) 52%, var(--plate-fill-dark)) 34%,
+    color-mix(in srgb, var(--plate-accent) 26%, var(--plate-fill-dark)) 72%,
+    color-mix(in srgb, var(--plate-accent) 12%, var(--plate-fill-dark)) 100%
+  );
+}
+
+:root[data-mode="night"] .project-page .project-panel-frame {
+  background-color: color-mix(
+    in srgb,
+    var(--plate-accent) 22%,
+    var(--plate-fill-dark)
+  );
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--plate-accent) 58%, var(--plate-fill-dark)) 0%,
+    color-mix(in srgb, var(--plate-accent) 34%, var(--plate-fill-dark)) 34%,
+    color-mix(in srgb, var(--plate-accent) 16%, var(--plate-fill-dark)) 72%,
+    color-mix(in srgb, var(--plate-fill-dark) 88%, var(--time-black)) 100%
+  );
+}
+
 /* PROJECT PAGE PANELS — THE SAME RECIPE, ON THE OTHER SLUG.
 
    A project page's panels now sit on the plain plate too (see the exclusions on
