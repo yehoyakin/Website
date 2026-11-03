@@ -754,10 +754,8 @@ const renderInlineMarkdown = (text: string) => {
         const prevBtn = lightbox.querySelector("[data-lightbox-prev]");
         const nextBtn = lightbox.querySelector("[data-lightbox-next]");
 
-        const images = thumbs.map((thumb) => ({
-          src: thumb.dataset.lightboxSrc,
-          alt: thumb.dataset.lightboxAlt || thumb.getAttribute("aria-label") || "Image preview",
-        }));
+        /* No image list is kept here: `openLightbox` builds it from the strip
+           the clicked thumbnail lives in (see `imagesFor` below). */
 
         const themedColor = gallery.dataset.iconColor || document.documentElement.dataset.iconDay || "Lightblue";
         const baseUrl = gallery.dataset.siteBaseUrl || "/";
@@ -786,14 +784,31 @@ const renderInlineMarkdown = (text: string) => {
           return dot;
         };
 
-        const dotButtons = images.map((_image, index) => makeDot(index));
-        if (dotsWrap) {
-          dotsWrap.replaceChildren(...dotButtons);
-        }
-
+        let images = [];
+        let dotButtons = [];
         let currentIndex = 0;
 
+        /* THE PANEL ONLY EVER HOLDS ITS OWN GALLERY.
+
+           A panel's list is built from the strip the clicked thumbnail belongs
+           to, at the moment of the click — never once at page load and never
+           from the gallery the panel happened to be initialised with. Whatever
+           else is on the page, `closest(".project-gallery")` can only resolve
+           to that thumbnail's own strip, and a list built earlier (before the
+           last image settled, or before a client-side navigation swapped the
+           markup) can never put a neighbouring gallery's picture in the panel. */
+        const imagesFor = (thumb) => {
+          const owner = thumb?.closest(".project-gallery") || gallery;
+
+          return [...owner.querySelectorAll(".gallery-thumb[data-lightbox-index]")].map((node) => ({
+            src: node.dataset.lightboxSrc,
+            alt: node.dataset.lightboxAlt || node.getAttribute("aria-label") || "Image preview",
+          }));
+        };
+
         const updateLightbox = (index) => {
+          if (!images.length) return;
+
           const normalizedIndex = ((index % images.length) + images.length) % images.length;
           currentIndex = normalizedIndex;
 
@@ -812,23 +827,45 @@ const renderInlineMarkdown = (text: string) => {
           });
         };
 
-        const openLightbox = (index) => {
-          updateLightbox(index);
+        /* One panel on screen at a time: a gallery opened while another panel is
+           still up would otherwise show through behind it. */
+        const closeOtherLightboxes = () => {
+          document.querySelectorAll(".blog-gallery-lightbox.is-open").forEach((other) => {
+            if (other === lightbox) return;
+            other.classList.remove("is-open");
+            other.setAttribute("aria-hidden", "true");
+          });
+        };
+
+        const openLightbox = (index, thumb) => {
+          images = imagesFor(thumb);
+          dotButtons = images.map((_image, dotIndex) => makeDot(dotIndex));
+          if (dotsWrap) {
+            dotsWrap.replaceChildren(...dotButtons);
+          }
+
+          closeOtherLightboxes();
           lightbox.classList.add("is-open");
           lightbox.setAttribute("aria-hidden", "false");
           document.body.classList.add("lightbox-open");
+          updateLightbox(index);
         };
 
         const closeLightbox = () => {
           lightbox.classList.remove("is-open");
           lightbox.setAttribute("aria-hidden", "true");
-          document.body.classList.remove("lightbox-open");
+
+          if (!document.querySelector(".blog-gallery-lightbox.is-open")) {
+            document.body.classList.remove("lightbox-open");
+          }
         };
 
-        thumbs.forEach((thumb, index) => {
+        /* The thumbnail's own index inside its strip is what opens it, so the
+           number of galleries above it on the page cannot shift the picture. */
+        thumbs.forEach((thumb) => {
           thumb.addEventListener("click", (event) => {
             event.preventDefault();
-            openLightbox(index);
+            openLightbox(Number(thumb.dataset.lightboxIndex) || 0, thumb);
           });
         });
 
