@@ -33,6 +33,22 @@
   justify-content: flex-start;
 }
 
+/* A LONG LABEL WRAPS INSTEAD OF WIDENING THE PANEL.
+
+   The chip row wraps, but each chip refused to shrink and kept its label on one
+   line, so a label longer than the panel pushed the panel's content wider
+   instead of taking a second line. The chips shrink with the row now and their
+   labels wrap; the box is a minimum height, so it grows a line at a time. */
+.links-panel .links-panel-links .retro-link,
+.project-page-links .retro-link {
+  flex: 0 1 auto;
+  max-width: 100%;
+  height: auto;
+  padding-block: 0.2rem;
+  line-height: 1.2;
+  white-space: normal;
+}
+
 /* The blog post's links panel is one plate of the post's own theme, so its
    buttons must take that accent the same way the project write-up's links
    panel does — the same themed tile, with the white outline and white type,
@@ -108,5 +124,6 @@
   overflow-y: auto;
 }
 .links-panel--scroll .links-panel-links .retro-link {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
 }
