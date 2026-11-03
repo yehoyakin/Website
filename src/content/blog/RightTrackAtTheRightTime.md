@@ -3,13 +3,13 @@ title: "Right track at the right time"
 theme: "green"
 description: "Music | Mood | Videogame"
 date: 10/18/2026
-cardBackground: "images/blog/music1/image (7).webp"
+cardBackground: "images/blog/RightTrackAtTheRightTime/ocarinaSong.webp"
 backgrounds:
-  - image: "images/blog/music1/music1bc1.webp"
-  - image: "images/blog/music1/music1bc2.webp"
-  - image: "images/blog/music1/music1bc3.webp"
-  - image: "images/blog/music1/music1bc4.webp"
-  - image: "images/blog/music1/music1bc5.webp"
+  - image: "images/blog/RightTrackAtTheRightTime/backdropCave.webp"
+  - image: "images/blog/RightTrackAtTheRightTime/backdropCemetery.webp"
+  - image: "images/blog/RightTrackAtTheRightTime/backdropBayonetta.webp"
+  - image: "images/blog/RightTrackAtTheRightTime/backdropUnderwater.webp"
+  - image: "images/blog/RightTrackAtTheRightTime/backdropCitadel.webp"
 
 backgroundBlur: 0.33
 backgroundOpacity: 0.9
@@ -70,34 +70,40 @@ cards:
 
 
 scenes:
-  - image: "images/blog/music1/image (0).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/snakeFarewell.webp"
     align: "center"
-  - image: "images/blog/music1/image (1).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/metroidCorridor.webp"
     align: "center"
-  - image: "images/blog/music1/image (2).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/belmontJoanDialogue.webp"
     align: "left"
-  - image: "images/blog/music1/image (3).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/forbiddenLandBridge.webp"
     align: "right"
-  - image: "images/blog/music1/image (4).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/ecclesiaForestFight.webp"
     align: "center"
-  - image: "images/blog/music1/image (5).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/sotnDemonBoss.webp"
     align: "center"
-  - image: "images/blog/music1/image (6).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/sotnLibrary.webp"
     align: "center"
-  - image: "images/blog/music1/image (8).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/kakarikoVillage.webp"
     align: "center"
-  - image: "images/blog/music1/image (9).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/finalBonfire.webp"
     align: "center"
-  - image: "images/blog/music1/image (10).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/templeOfTime.webp"
     align: "center"
-  - image: "images/blog/music1/image (11).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/wanderRuins.webp"
     align: "center"
-  - image: "images/blog/music1/image (12).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/spiralDescent.webp"
     align: "center"
-  - image: "images/blog/music1/image (13).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/distantCitadel.webp"
     align: "center"
-  - image: "images/blog/music1/image (14).webp"
+  - image: "images/blog/RightTrackAtTheRightTime/rockColossus.webp"
     align: "center"    
+  - image: "images/blog/RightTrackAtTheRightTime/flyingColossus.webp"
+    align: "center"  
+  - image: "images/blog/RightTrackAtTheRightTime/armoredColossus.webp"
+    align: "center"  
+  - image: "images/blog/RightTrackAtTheRightTime/agroDesertRide.webp"
+    align: "center"  
 
 videos:
   - src: "https://www.youtube.com/watch?v=TFsTz02Eavo"
@@ -213,16 +219,16 @@ I mean you can put 2 and 2 together. Anyways the presentation of the song itself
 One of the greatest video game directors of all time, *Fumito Ueda* released **Shadow of the Colossus** on 2006, I remember we had a completely fully legal PS2 and that's one of the first games I got to play, it was unlike anything I played before, it's unique color pallette, a wide empty world in ruin, gloomy skies and a blinding sun a princess and a knight, the fantasy base with a wrapping twist. 
 
 [scene[10], "Vibrant colors and lightning from the PS2 era. PLEASE I URGE YOU if you can **play the original version** however you can get your hand on it, **skip the Remake**."]
-
-[scene[13], "Beautiful vistas all over this game."]
-
+[scene[12], "Beautiful vistas all over this game."]
 [scene[11], "You get the sense that every buidling, temple, shrine was lived in, it had a purpuse long ago, long forgotten."]
 
 [video[4]]
 
 Via visual cues we realize we have to kill these colosi beings that roam, they have structures on themselves (could those be pieces of armor, or shackles, or simply what they wore?), these beings also have fur, therefore, we can conclude they are living creatures. We must explore these forgotten lands with our *Swift Horse*, find the colossus and kill them all.
 
-[scene[12], "Look at his eyes..."]
+[scene[13], "Look at his eyes..."]
+[scene[14], "Moment with this levels of epicness that I haven't experienced in a while. I guess its in big part magic of the bloom and the lighting of ps2 games."]
+[scene[15], "Big boy with a big mace."]
 
 The spots you have to hit to get the deed done, shine with a strong light (that says hit me! hit me!), and yet this is so weird as we are conditioned to relate light with good, with safety, with protection, and yet, here we are taking out this gigantic creature, that was in peace, that irradiates light. Of course each colosi has it's own epic theme that exhaserbates the best moments such as landing a damaging hit, and that will slow down when we fall from their shoulders back into the ground, to try again.
 
@@ -231,3 +237,8 @@ And finally when all their weak points bleed out, *The End of Battle* plays, not
 [video[5]]
 
 WE came into his home and killed it almost by inertia, because that's what videogames tells us to do against giant unknown creatures, because its fun, it's a challenge to overcome, and yet, here it feels very much wrong, we are wiping some of the few living beings left in this wide barren forgotten land.
+
+
+# Unto more
+
+Needless yo say **all the before mentioned games are highly recommended**, give them a try and I hope you find memorable moments linked to music in videogames as the ones I've told you about. I'll definitely write on new cases or once I get back enough memories together.
