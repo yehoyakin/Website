@@ -142,6 +142,21 @@
   border-color: var(--time-black);
 }
 
+/* THE PROJECT HEADER — the same outline switch as the post header's.
+
+   `.project-page-masthead` wears the same `.pixel-frame`, so it followed the
+   frame recipe's bevel in both modes while the post header it now matches
+   switches white by day and black after dark. `border-image: none` is what lets
+   `border-color` paint, exactly as on `.blog-masthead` above. */
+:root[data-mode] .project-page-masthead.pixel-frame {
+  border-image: none;
+  border-color: var(--time-white);
+}
+
+:root[data-mode="night"] .project-page-masthead.pixel-frame {
+  border-color: var(--time-black);
+}
+
 /* INK — the page ink, on the card plate the header now shares with the bars of
    the cards that lead here (see the panel rule in
    chrome/pixelChrome/patternPlates.css): dark surface, so white copy. */

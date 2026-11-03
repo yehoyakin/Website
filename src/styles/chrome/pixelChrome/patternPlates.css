@@ -252,10 +252,10 @@
    no such section, so its panels are untouched. */
 :root:not([data-mode="night"])
   .pattern-plate--ghost
-  .pattern-plate:not(#blog-article-section *),
+  .pattern-plate:not(#blog-article-section *, .project-page *),
 :root[data-mode="night"]
   .pattern-plate--ghost
-  .pattern-plate:not(#blog-article-section *) {
+  .pattern-plate:not(#blog-article-section *, .project-page *) {
   /* 95% of the panel fill, 5% page. The accent is carried 75% stronger than
      the softened plate elsewhere in the site (26% → 45%), which is what pulls
      these panels out of the near-black: same recipe, more of the theme in it. */
@@ -302,10 +302,16 @@
    surface while still letting the ghost wash exist behind it. */
 :root:not([data-mode="night"])
   .pattern-plate--ghost
-  .pattern-plate.pattern-plate--text-backdrop:not(#blog-article-section *),
+  .pattern-plate.pattern-plate--text-backdrop:not(
+    #blog-article-section *,
+    .project-page *
+  ),
 :root[data-mode="night"]
   .pattern-plate--ghost
-  .pattern-plate.pattern-plate--text-backdrop:not(#blog-article-section *) {
+  .pattern-plate.pattern-plate--text-backdrop:not(
+    #blog-article-section *,
+    .project-page *
+  ) {
   background-color: color-mix(
     in srgb,
     color-mix(in srgb, var(--plate-accent) 32%, var(--plate-fill-dark)) 96%,
@@ -401,7 +407,9 @@
    the title instead of a surface. The blog masthead is pinned to the small
    tile, the one the panels' bars use, so the motif stays fine and the theme
    colour does the talking. */
-:root[data-mode] .pattern-plate--ghost .pattern-plate.blog-masthead {
+:root[data-mode]
+  .pattern-plate--ghost
+  .pattern-plate:is(.blog-masthead, .project-page-masthead) {
   --plate-pattern-size: var(--pattern-size-small, 128px);
   --plate-pattern-opacity: 0.2;
 }
@@ -583,6 +591,91 @@
     color-mix(in srgb, var(--plate-accent) 16%, var(--plate-fill-dark)) 72%,
     color-mix(in srgb, var(--plate-fill-dark) 88%, var(--time-black)) 100%
   );
+}
+
+/* PROJECT PAGE PANELS — THE SAME RECIPE, ON THE OTHER SLUG.
+
+   A project page's panels now sit on the plain plate too (see the exclusions on
+   the ghost group above), so they darken after dark like the cards that lead to
+   them. What they still borrowed from the ghost layer was its texture: the huge
+   tile on the write-up, the medium one on the header, both pinned to the
+   VIEWPORT by the parallax rule. They take the card recipe instead — the 128px
+   tile, one tile every 18s, travelling with the surface it is painted on — so a
+   project's header carries the same motif as the card that opened it. */
+:root:not([data-mode="night"])
+  .project-page
+  :is(.project-page-masthead, .project-page-content-panel) {
+  --plate-pattern-size: var(--pattern-size-small, 128px);
+  --plate-pattern-duration: 18s;
+  --plate-pattern-opacity: 0.14;
+  --plate-pattern-shadow-opacity: 0.08;
+}
+
+:root[data-mode="night"]
+  .project-page
+  :is(.project-page-masthead, .project-page-content-panel) {
+  --plate-pattern-size: var(--pattern-size-small, 128px);
+  --plate-pattern-duration: 18s;
+  --plate-pattern-opacity: 0.07;
+  --plate-pattern-shadow-opacity: 0.04;
+}
+
+/* The inverted pass is the HEADER's alone here too: on the write-up panel
+   `::after` is the layer the ghost motif is painted in, below. */
+:root:not([data-mode="night"])
+  .project-page
+  :is(.project-page-masthead, .project-page-content-panel)::before {
+  background-attachment: scroll;
+  opacity: 0.14;
+}
+
+:root:not([data-mode="night"])
+  .project-page
+  .project-page-masthead::after {
+  background-attachment: scroll;
+  opacity: 0.08;
+}
+
+:root[data-mode="night"]
+  .project-page
+  :is(.project-page-masthead, .project-page-content-panel)::before {
+  background-attachment: scroll;
+  opacity: 0.07;
+}
+
+:root[data-mode="night"] .project-page .project-page-masthead::after {
+  background-attachment: scroll;
+  opacity: 0.04;
+}
+
+/* THE GHOST MOTIF INSIDE THE PROJECT'S WRITE-UP.
+
+   The page's ghost layer paints no texture of its own, and the write-up panel's
+   own `::after` is switched off by the page (pages/portfolio/[slug].astro), so
+   the motif comes from the copy div: the one-and-a-half-huge tile, pinned to the
+   VIEWPORT like the backdrop it came from, clipped to the panel's box. It sits
+   under the copy and above the panel's own card texture, which is what gives the
+   project page the same two-pattern arrangement a post has. */
+:root[data-mode] .project-page #blog-content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: auto;
+  z-index: -1;
+  --pattern-tile: max(1600px, calc(var(--pattern-size-huge, 1024px) * 1.5));
+  background: var(--plate-pattern, none) repeat;
+  background-size: var(--pattern-tile) var(--pattern-tile);
+  background-attachment: fixed;
+  animation: plate-pattern-scroll 120s linear infinite;
+  filter: none;
+  mix-blend-mode: screen;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+:root[data-mode="night"] .project-page #blog-content::after {
+  mix-blend-mode: multiply;
+  opacity: 0.12;
 }
 
 @media (prefers-reduced-motion: reduce) {
