@@ -34,6 +34,7 @@
 .project-panel-body,
 .blog-article-body,
 .article-reading-surface,
+.retro-contribution,
 .thumb-carousel-media,
 #blog-content :is(figure img, video, iframe),
 .project-panel-body :is(figure img, video, iframe) {
@@ -73,7 +74,8 @@
 .project-panel-frame,
 .project-panel-body,
 .blog-article-body,
-.article-reading-surface {
+.article-reading-surface,
+.retro-contribution {
   border-image: var(--frame-bevel) 1;
   /* The hard inner edge the border image cannot give: one pixel of light along
      the top and left, one of shadow along the bottom and right. */
@@ -90,11 +92,13 @@
   filter: brightness(1.04);
 }
 
-/* IMAGES, VIDEO, EMBEDS — the same bevel at control weight, so a screenshot in
-   an article is framed like the panel it sits in rather than by a flat line. */
+/* IMAGES, VIDEO — the same bevel at control weight, so a screenshot in
+   an article is framed like the panel it sits in rather than by a flat line.
+   <iframe> embeds are excluded: border-image breaks iframe rendering in browsers,
+   making embedded videos invisible. */
 .thumb-carousel-media,
-#blog-content :is(figure img, video, iframe),
-.project-panel-body :is(figure img, video, iframe) {
+#blog-content :is(figure img, video),
+.project-panel-body :is(figure img, video) {
   border: var(--control-outline-width) solid transparent;
   border-image: var(--frame-bevel) 1;
   box-shadow:

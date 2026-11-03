@@ -88,8 +88,16 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   </div>
 </div>
 
-<script>
-  import { initCardCarousels } from "../../scripts/cardCarousel";
+<script is:inline>
+  (async function () {
+    const { initCardCarousels } = await import("../../scripts/cardCarousel.js");
 
-  initCardCarousels();
+    document.addEventListener("astro:page-load", () => {
+      initCardCarousels();
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+      initCardCarousels();
+    });
+    initCardCarousels();
+  })();
 </script>

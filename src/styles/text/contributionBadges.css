@@ -13,7 +13,8 @@
   box-sizing: border-box;
   margin-top: 1.6rem;
   overflow: hidden;
-  border: var(--outline-width) solid var(--outline-color, var(--time-border));
+  border: var(--outline-width) solid transparent;
+  /* Frame gradient is applied by frames.css. */
   /* Same near-black, accent-tinted surface as every other card bar. */
   background-color: color-mix(
     in srgb,
@@ -23,7 +24,7 @@
 }
 
 /* Top bar: the block's title, where a card puts its date or engine tag. */
-:is(#blog-content, .project-panel-body) .retro-contribution :is(h2, h3, h4) {
+:is(#blog-content, .project-panel-body) .retro-contribution :is(h2, h3, h4, h5) {
   margin: 0;
   padding: 0.7rem 1.15rem;
   border-left: 0;

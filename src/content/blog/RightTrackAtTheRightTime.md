@@ -144,7 +144,7 @@ videos:
 
 [background[0]]
 
-Some of my best memories and experience in videogames are tightly related to videogame music, not only there are beautiful tracks all over in most games I've played, but they are used at poigniant moments, by admission of many developers (via written interviews or behind the scene videos on game development) *music should take a backseat and let the player focus on gameplay*, while this makes sense, I hard disagree with it, mess with the player, even if you make them loose concentration for a few seconds (that could or might cause death), to me the memory is more important, the impact of the moment. This might read as nonsense and it very well could be, so to illustrate my point here are moments in videogames where to me a track is used perfectly:
+Some of my best memories and experience in video games are tightly related to video-game music, not only there are beautiful tracks all over in most games I've played, but they are used at poigniant moments, by admission of many developers (via written interviews or behind the scene videos on game development) *music should take a backseat and let the player focus on gameplay*, while this makes sense, I disagree with it, mess with the player, even if you make them loose concentration for a few seconds (that could or might cause death), to me the memory is more important, the impact of the moment. This might read as nonsense, and it very well could be, so to illustrate my point here are moments in video-games where to me a track is used perfectly:
 
 
 # Snake Eater
@@ -153,18 +153,18 @@ Some of my best memories and experience in videogames are tightly related to vid
 
 The game's titular theme, *Snake Eater* from **Metal Gear Solid 3: Snake Eater** is a clear nod to 007 and its movie adaptations intro, a great mechanism to display the movie's (or in this case the game's) tone that awaits in the tale to be told. This track appears at 3 moments during the game, first off during the game's intro, if you did not wait at the Main Menu, then after the tutorial's ending cutscene is done, here it accompanies a cinematic, filled with style, as we glimpse into scenes further into the story, gameplay moments, cool imagery and **snakes** lots and lots of **SNAKES**. 
 
-[scene[1], Incredible memorable moment in videogame history, imo. I don't think you can play MSG 3 and NOT remember this."]
+[scene[1], Incredible memorable moment in video-game history, imo. I don't think you can play MSG 3 and NOT remember this."]
 
-Much later, halfway through the game we have a long breathing moment, no enemies, a long ladder must be climbed, so the player can think back on their journey and what's ahead (of course this is a loading screen) and in the back we hear *Snake Eater*'s vocals until the song ends and we reach the top.
+Much later, halfway through the game we have a long breathing moment, no enemies, a long ladder must be climbed, so the player can think back on their journey and what's ahead (of course this is a loading screen) and in the back we hear *Snake Eater*'s vocals until the song ends, and we reach the top.
 
 [scene[0], "A final battle amongst a field of white flowers."]
 
 
-Near the end, after a long final sequence full of action we reach a meadow filled with white flowers, the battlefield for the last boss. While the fight begins in complete silence other than sound effects such as the guns being shot, footsteps on mud, the jungle's wildlife, a strong wind, and dialogue, should the player get near a time limit of the sequence an orchestra version of *Snake Eater* begins, and it just nails the moment, the whole experience this game delivers is encapsulated in this moment and the music that welcomed us is saying goodbye.  
+Near the end, after a long final sequence full of action we reach a meadow filled with white flowers, the battlefield for the last boss. While the fight begins in complete silence other than sound effects such as the guns being shot, footsteps on mud, the jungle's wildlife, a strong wind, and dialogue, should the player get near a time limit of the sequence an orchestra version of *Snake Eater* begins, and it just nails the moment, the whole experience this game delivers is encapsulated at this moment and the music that welcomed us is saying goodbye.  
 
 I find that *Hideo Kojima*'s background and interest in filmmaking is definitely always shown, *on a cinematic level his games are well above the rest*.
 
-[video[0]]
+[gallery:video[0]]
 
 
 # The morning sun, come to vanish this horrible night!
@@ -179,19 +179,19 @@ For years I waited a new entry into the Castlevania franchise, after finally get
 So, now that I look back I think that last entry was a perfect knot to tie the franchise, after having finished all of its entries except for the pachinko atrocity; To me Order of Ecclesia is the culmination of what *IGA (Koji Igarashi)* made of the Castlevania saga. Unlike previous entries it's much more linear colorful and with unique tilesets thanks to great part of the game being outside the Castle. 
 
 [scene[4], "I love the aesthetic achieved by the DS Castlevanias, which you can now get in the *Dominus Collection* see the links panel!"]
-[scene[5], "Creepy boss in a gothic room."]
-[scene[6], "Dracula sure like reading and hot naked succubuses."]
+[scene[5], "Creepy boss in a Gothic room."]
+[scene[6], "Dracula sure like reading and hot naked succubus."]
 
-The game's story is one of trust, protection and sacrifice, to believe in those we care for even when they go astray from good, intro destructive behaviors. The game pin points this theme as we enter the last level, with a short animated cutscene followed by some in-game dialogue, followed by silence and quiet path forward towards Dracula's castle and as finally set foot and enter the demonic castle, a hopeful (and groovey?) track starts playing, it's not just perfect for this moment to give the player a new push towards the endgame but also portraits the journey we are about to finish.
+The game's story is one of trust, protection and sacrifice, to believe in those we care for even when they go astray from good, intro destructive behaviors. The game pinpoints this theme as we enter the last level, with a short animated cutscene followed by some in-game dialogue, followed by silence and quiet path forward towards Dracula's castle and as finally set foot and enter the demonic castle, a hopeful (and groovey?) track starts playing, it's not just perfect for this moment to give the player a new push towards the endgame but also portraits the journey we are about to finish.
 
-[video[1]]
+[gallery:video[1]]
 
 # You've met a terrible fate...
 
 [background[3]]
 
-While *Ocarina of Time* was an incredible experience, to which I own learning english (as I played with a dictionary in hand to know what to do and where to go) and my love for puzzles and non-linear adventure games, back then I had no access to internet, so all I had was my wits, part of the reason I despise objective markers in videogames is because of it (I know people have less time, but it makes for a more convenient/less memorable experience). The game that impacted my childhood the most, and my idea of what a videogame could be was **Majora's Mask**.
-[video[2]]
+While *Ocarina of Time* was an incredible experience, to which I own learning English (as I played with a dictionary in hand to know what to do and where to go) and my love for puzzles and non-linear adventure games, back then I had no access to internet, so all I had was my wits, part of the reason I despise objective markers in video-games is because of it (I know people have less time, but it makes for a more convenient/less memorable experience). The game that impacted my childhood the most, and my idea of what a videogame could be was **Majora's Mask**.
+[gallery:video[2]]
 
 To me the whole introduction is just a piece of art in itself, the introduction of stakes, the mood, the tone, the main character's introductions, the weird music, how the laws of physics of the game's world are being broken, the creepiness, its just so complete I'm yet to find one that tops it! 
 
@@ -201,44 +201,44 @@ To me the whole introduction is just a piece of art in itself, the introduction 
 To me the perfect track besides the whole soundtrack, is the *Song of Healing* as it is not only a game-mechanic but its also directly tied to the narrative and themes, this is a game about moving on, about death and loss, even though the game's director, *Eiji Aonuma*, has explicitly said that the game does not take place in limbo, I DO NOT BELIEVE HIM, there's just way too many coincidences:
 
 <ul>
-  <li>The world is call Termina (TERMINAL), you know those stations where you move from one vehicle to another to move places; You are moving from this life into the next one, the limbo is the station to the afterlife.</li>
-  <li>We see character's from the previous game, but with different lives, in some cases these are big changes, such as the Evil Witches being good!</li>
-  <li>We acquire our masks (upgrades/abilities) by playing the Song of Healing to people that are experiencing the loss of a loved one and well... Link, our protagonists is looking Navi, his friend.</li>
+  <li>The world is call **Termina** (TERMINAL), you know those stations where you move from one vehicle to another to move places; You are moving from this life into the next one, the limbo is the station to the afterlife.</li>
+  <li>We see character's from the previous game, but with different lives, in some cases these are big changes, such as the Evil Witches being good; This second change or second life is common in limbo representations through art, is the **redemption chance for broken souls**.</li>
+  <li>We acquire our masks (upgrades/abilities) by playing the **Song of Healing** to people that are experiencing the loss of a loved one and well... Link, our protagonists is looking Navi, his friend.</li>
 </ul>
  
-I mean you can put 2 and 2 together. Anyways the presentation of the song itself is also very cool, this weird, creepy guy teaches us this song, so we can stop an evil from destroying this part of life, finding closure and moving on, which is pretty evil if you ask me!
+I mean you can put 2 and 2 together. Anyway the presentation of the song itself is also very cool, this weird, creepy guy teaches us this song, so we can stop an evil from destroying this part of life, finding closure and moving on, which is pretty evil if you ask me!
 
-[scene[9], "Our creppy Masks's salesman pulling a huge organ out of his butt (no pun intended - maybe yes - also ewww)"]
+[scene[9], "Our creepy Masks's salesman pulling a huge organ out of his butt (no pun intended - maybe yes - also ewww)"]
 
-[video[3]]
+[gallery:video[3]]
 
 # I Killed the big thing! why do I feel bad about it?
 
 [background[4]]
 
-One of the greatest video game directors of all time, *Fumito Ueda* released **Shadow of the Colossus** on 2006, I remember we had a completely fully legal PS2 and that's one of the first games I got to play, it was unlike anything I played before, it's unique color pallette, a wide empty world in ruin, gloomy skies and a blinding sun a princess and a knight, the fantasy base with a wrapping twist. 
+One of the greatest video game directors of all time, *Fumito Ueda* released **Shadow of the Colossus** on 2006, I remember we had a completely fully legal PS2 and that's one of the first games I got to play, it was unlike anything I played before, it's unique color palette, a wide empty world in ruin, gloomy skies and a blinding sun a princess and a knight, the fantasy base with a new twist. 
 
 [scene[10], "Vibrant colors and lightning from the PS2 era. PLEASE I URGE YOU if you can **play the original version** however you can get your hand on it, **skip the Remake**."]
 [scene[12], "Beautiful vistas all over this game."]
-[scene[11], "You get the sense that every buidling, temple, shrine was lived in, it had a purpuse long ago, long forgotten."]
+[scene[11], "You get the sense that every building, temple, shrine was lived in, it had a purpose long ago, long forgotten."]
 
-[video[4]]
+[gallery:video[4]]
 
-Via visual cues we realize we have to kill these colosi beings that roam, they have structures on themselves (could those be pieces of armor, or shackles, or simply what they wore?), these beings also have fur, therefore, we can conclude they are living creatures. We must explore these forgotten lands with our *Swift Horse*, find the colossus and kill them all.
+Via visual cues we realize we have to kill these colossi beings that roam, they have structures on themselves (could those be pieces of armor, or shackles, or simply what they wore?), these beings also have fur, therefore, we can conclude they are living creatures. We must explore these forgotten lands with our *Swift Horse*, find the colossus and kill them all.
 
 [scene[13], "Look at his eyes..."]
-[scene[14], "Moment with this levels of epicness that I haven't experienced in a while. I guess its in big part magic of the bloom and the lighting of ps2 games."]
+[scene[14], "The whole game is filled with epicness moments. I guess its in big part because climbing giants had never been done before, add to that magical ps2 look, hard bloom and muted colors."]
 [scene[15], "Big boy with a big mace."]
 
-The spots you have to hit to get the deed done, shine with a strong light (that says hit me! hit me!), and yet this is so weird as we are conditioned to relate light with good, with safety, with protection, and yet, here we are taking out this gigantic creature, that was in peace, that irradiates light. Of course each colosi has it's own epic theme that exhaserbates the best moments such as landing a damaging hit, and that will slow down when we fall from their shoulders back into the ground, to try again.
+The spots you have to hit to get the deed done, shine with a strong light (that says hit me! hit me!), and yet this is so weird as we are conditioned to relate light with good, with safety, with protection, and yet, here we are taking out this gigantic creature, that was in peace, that irradiates light. Of course each colossus has its own epic theme that exacerbates the best moments such as landing a damaging hit, and that will slow down when we fall from their shoulders back into the ground, to try again.
 
-And finally when all their weak points bleed out, *The End of Battle* plays, not a victorious, triumphant song, but one of sorrow, of demise; What we here is a last breath.
+And finally when all their weak points bleed out, *The End of Battle* plays, not a victorious, triumphant song, but one of sorrow, of demise; What we hear is a last breath.
 
-[video[5]]
+[gallery:video[5]]
 
-WE came into his home and killed it almost by inertia, because that's what videogames tells us to do against giant unknown creatures, because its fun, it's a challenge to overcome, and yet, here it feels very much wrong, we are wiping some of the few living beings left in this wide barren forgotten land.
+WE came into his home and killed it almost by inertia, because that's what video-games tells us to do against giant unknown creatures, because its fun, it's a challenge to overcome, and yet, here it feels very much wrong, we are wiping some of the few living beings left in this wide barren forgotten land.
 
 
 # Unto more
 
-Needless yo say **all the before mentioned games are highly recommended**, give them a try and I hope you find memorable moments linked to music in videogames as the ones I've told you about. I'll definitely write on new cases or once I get back enough memories together.
+Needless to say **all the before mentioned games are highly recommended**, give them a try and I hope you find memorable moments linked to music in video-games as the ones I've told you about. I'll definitely write on new cases or once I get back enough memories together.

@@ -18,6 +18,7 @@ import RailPanel from "../../components/shared/RailPanel.astro";
 import { getCollection } from "astro:content";
 
 import { asset, isRemoteUrl } from "../../utils/asset";
+import { videoEmbedUrl } from "../../utils/video";
 
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 
@@ -54,7 +55,11 @@ const parseMarkdownBlocks = (text: string) => {
   const blocks = [];
   const lines = text.replace(/\r\n/g, "\n").split("\n");
   let paragraphBuffer: string[] = [];
-  let galleryBuffer: Array<{ src: string; alt: string }> = [];
+  type GalleryBufferItem =
+    | { kind: "image"; src: string; alt: string }
+    | { kind: "video"; src: string; poster?: string; title?: string }
+    | { kind: "embed"; src: string; title?: string };
+  let galleryBuffer: GalleryBufferItem[] = [];
   let listBuffer: { ordered: boolean; items: string[] } | null = null;
 
   const parseInlineDescription = (raw: string | undefined) => {
@@ -77,10 +82,13 @@ const parseMarkdownBlocks = (text: string) => {
 
   const flushGallery = () => {
     if (!galleryBuffer.length) return;
-    if (galleryBuffer.length === 1) {
-      blocks.push({ type: "image", ...galleryBuffer[0] });
+    const items = galleryBuffer;
+    // If the gallery has a single image, emit it as an image block.
+    // If it has a single video or multiple items, emit as a gallery.
+    if (items.length === 1 && items[0].kind === "image") {
+      blocks.push({ type: "image", src: items[0].src, alt: items[0].alt });
     } else {
-      blocks.push({ type: "gallery", images: galleryBuffer });
+      blocks.push({ type: "gallery", items });
     }
     galleryBuffer = [];
   };
@@ -274,8 +282,40 @@ const parseMarkdownBlocks = (text: string) => {
           .filter(Boolean) as Array<{ src: string; alt: string }>;
 
         if (images.length > 0) {
-          galleryBuffer.push(...images);
+          galleryBuffer.push(...images.map((img) => ({ kind: "image" as const, src: img.src, alt: img.alt })));
           continue;
+        }
+      }
+      continue;
+    }
+
+    /* Gallery video marker: [gallery:video[0]] or [gallery:video[0], "caption"] —
+       adds a video from the frontmatter videos array to the gallery buffer so it
+       appears as a gallery card alongside images. Uses the same embed detection as
+       the project slug so YouTube / Vimeo links become iframe embeds. The optional
+       inline caption (second argument) overrides the frontmatter title. */
+    const galleryVideoMatch = line.match(/^\[gallery:video\[(\d+)\](?:,\s*(.*?))?\]$/);
+    if (galleryVideoMatch) {
+      flushParagraph();
+      const index = Number.parseInt(galleryVideoMatch[1], 10);
+      const inlineCaption = parseInlineDescription(galleryVideoMatch[2]);
+      const video = videos[index];
+      if (video) {
+        const embed = videoEmbedUrl(video.src, video.type);
+        const caption = inlineCaption || video.title;
+        if (embed) {
+          galleryBuffer.push({
+            kind: "embed",
+            src: embed,
+            title: caption,
+          });
+        } else {
+          galleryBuffer.push({
+            kind: "video",
+            src: video.src,
+            poster: video.poster,
+            title: caption,
+          });
         }
       }
       continue;
@@ -302,7 +342,7 @@ const parseMarkdownBlocks = (text: string) => {
     const imageMatches = [...line.matchAll(IMAGE_RE)];
     if (imageMatches.length > 0 && line.replace(IMAGE_RE, "").trim() === "") {
       flushParagraph();
-      galleryBuffer.push(...imageMatches.map((match) => parseMarkdownImage(match[2], match[1])));
+      galleryBuffer.push(...imageMatches.map((match) => ({ kind: "image" as const, ...parseMarkdownImage(match[2], match[1]) })));
       continue;
     }
 

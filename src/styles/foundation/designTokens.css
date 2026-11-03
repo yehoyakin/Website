@@ -1,7 +1,7 @@
 /* Contribution font sizing — one :root rule of its own, next to the tokens. */
 :root {
-  --contribution-font-size: 1.125em;
-  --contribution-heading-size: 1.125em;
+  --contribution-font-size: 1em;
+  --contribution-heading-size: 1em;
   --contribution-badge-font-size: 0.9rem;
 }
 

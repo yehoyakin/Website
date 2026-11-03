@@ -3,7 +3,7 @@ title: "10 Games that caught my eye in 2026"
 theme: "purple"
 description: "Indie | Games | Upcoming"
 date: 09/12/2026
-cardBackground: "images/blog/GamesThatCaughtMyEyeIn2026/backdropFaces.webp"
+cardBackground: "images/blog/GamesThatCaughtMyEyeIn2026/backdropWings.webp"
 backgrounds:
   - image: "images/blog/GamesThatCaughtMyEyeIn2026/parabellumWasteland.webp"
   - image: "images/blog/GamesThatCaughtMyEyeIn2026/bigcatchSunset.webp"
@@ -198,21 +198,15 @@ And *somehow, even though Sword Hero screams of Dark Fantasy, I can’t help but
 
 <ul>
 
-  <li>Lock-picking mini-game.</li>
-
   <li>Crime and punishment system.</li>
 
   <li>Parkour | Level traversal.</li>
 
   <li>Action limb-based combat.</li>
 
-  <li>Smart AI | Enviromental interaction</li>
+  <li>Smart AI | Environmental interaction</li>
 
-  <li>World Factions.</li>
-
-  <li>Towns and cities filled with NPCs(routines)</li>
-
-  <li>Equipment | Inventort |Trading system</li>
+  <li>Equipment | Inventory |Trading system</li>
 
 </ul>
 
@@ -298,7 +292,7 @@ By the time this blog is being written, the game has come out, to some recent mi
 
 [background[9]]
 
-A fast paced game **third person action** game, with some of the most unique ideas I’ve seen in a game, such as:
+A fast-paced **third person action** game set in a desolated land, filled with ruined megastructures, robots, and junk, lots of junk; With some of very interesting and unique ideas, that at least I haven't seen before in video games such as:
 
 <ul>
 
@@ -310,6 +304,7 @@ A fast paced game **third person action** game, with some of the most unique ide
 
 </ul>
 
+I got to know this thanks to Youtube Shorts of all things, the color palette and shading caught my eye, and then the combat did the rest of the work to lure me in.
 It’s been quite some time in development, but good things take time.
 
 [scene[27], "Flashy responsive combat."]
@@ -318,4 +313,4 @@ It’s been quite some time in development, but good things take time.
 
 ## And so…
 
-All of the games that caught my interest are either indie or very, very close to AA, in big part thanks to engines and the democratization of game development. That’s the beauty of games: there are all kinds of flavors for different palates. Thankfully, I found a whole course meal; the bad part is the chefs are still halfway through the process. The good part is the time and love I see when I get a peek of the ingredients through the kitchen window is strong, and the smell is so fierce it’s ingrained in my brain. So I say let them cook!
+All the games that caught my interest are either indie or very, very close to AA, in big part thanks to engines and the democratization of game development. That’s the beauty of games: there are all kinds of flavors for different palates. Thankfully, I found a whole course meal; the bad part is the chefs are still halfway through the process. The good part is the time and love I see when I get a peek of the ingredients through the kitchen window is strong, and the smell is so fierce it’s ingrained in my brain. So I say let them cook!

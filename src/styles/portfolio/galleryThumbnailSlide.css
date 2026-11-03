@@ -120,16 +120,22 @@
 }
 
 /* Blog slug inline galleries: every card in a multi-item strip keeps the same
-   height, even when some cards have a caption bar and others do not. */
+   height, even when some cards have a caption bar and others do not.
+   The card has a minimum height so the description bar sits at a consistent
+   position; the image area fills the remaining space, showing letterbox bars
+   for small images so the card still reaches the minimum height. */
 .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
   display: flex;
   align-items: stretch;
 }
 
+.markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .blog-card,
 .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .gallery-thumb {
-  height: clamp(20rem, 50dvh, 28rem) !important;
-  max-height: clamp(20rem, 50dvh, 28rem) !important;
-  min-height: clamp(20rem, 50dvh, 28rem) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  max-height: clamp(20rem, 50dvh, 36rem) !important;
+  min-height: clamp(12rem, 30dvh, 20rem) !important;
 }
 
 .markdown-gallery:not(.markdown-gallery--single)
@@ -166,7 +172,6 @@
 
 .markdown-gallery .blog-inner-image-card .blog-card-image-wrap,
 .markdown-gallery .gallery-project-item .gallery-thumb .blog-card-image-wrap {
-  aspect-ratio: 21 / 10;
   background: transparent;
 }
 
@@ -186,13 +191,22 @@
   );
 }
 
+/* Iframes in multi-image blog galleries need absolute positioning. */
+.markdown-gallery .blog-card-image-wrap .thumb-carousel-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+  border-image: none !important;
+  box-shadow: none !important;
+}
+
+
 .markdown-gallery .gallery-thumb:hover .thumb-carousel-media.active,
-.markdown-gallery .gallery-thumb:focus-visible .thumb-carousel-media.active,
-.markdown-gallery .gallery-thumb:hover .thumb-overlay,
-.markdown-gallery .gallery-thumb:focus-visible .thumb-overlay {
+.markdown-gallery .gallery-thumb:focus-visible .thumb-carousel-media.active {
   transform: none !important;
   filter: none !important;
-  opacity: 1 !important;
 }
 
 .blog-inner-image-card {
@@ -206,14 +220,15 @@
   height: auto;
   background: transparent;
   overflow: hidden;
+  flex: 1 1 auto;
 }
 
 .blog-inner-image-card .thumb-carousel {
-  position: static;
-  inset: auto;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
-  overflow: visible;
+  height: 100%;
+  overflow: hidden;
 }
 
 .blog-inner-image-card .thumb-carousel-media {
@@ -229,6 +244,18 @@
   transform: none;
 }
 
+/* Videos and iframes in blog inner cards need absolute positioning to fill the carousel frame. */
+.blog-inner-image-card .thumb-carousel-video,
+.blog-inner-image-card .thumb-carousel-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+  border-image: none !important;
+  box-shadow: none !important;
+}
+
 @media (max-width: 767px) {
   .blog-inner-image-card {
     width: min(100%, 28rem);
@@ -236,7 +263,12 @@
 }
 
 .blog-inner-image-card .thumb-overlay {
-  display: none;
+  opacity: 1;
+  transition: opacity 320ms var(--ease-soft);
+}
+
+.blog-inner-image-card:hover .thumb-overlay {
+  opacity: 0.4;
 }
 
 .markdown-gallery--single .gallery-thumbnails-wrapper {
@@ -256,10 +288,12 @@
 }
 
 .markdown-gallery--single .gallery-project-item .blog-card,
-.markdown-gallery--single .gallery-thumb {
+.markdown-gallery--single .gallery-project-item .gallery-thumb {
+  display: flex !important;
+  flex-direction: column !important;
   height: auto !important;
-  max-height: none !important;
-  min-height: 0 !important;
+  max-height: clamp(20rem, 50dvh, 36rem) !important;
+  min-height: clamp(12rem, 30dvh, 20rem) !important;
 }
 
 .markdown-gallery--single .gallery-thumb {
@@ -271,15 +305,32 @@
   background: transparent;
   min-height: 0;
   height: auto;
+  flex: 1 1 auto;
 }
 
 .markdown-gallery--single .thumb-overlay {
-  display: none;
+  opacity: 1;
+  transition: opacity 320ms var(--ease-soft);
+}
+
+.markdown-gallery--single .gallery-thumb:hover .thumb-overlay {
+  opacity: 0.4;
 }
 
 .markdown-gallery--single .thumb-carousel-img,
 .markdown-gallery--single .thumb-carousel-video {
   object-position: center;
+}
+
+/* Iframes in single-image blog galleries also need absolute positioning. */
+.markdown-gallery--single .blog-card-image-wrap .thumb-carousel-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+  border-image: none !important;
+  box-shadow: none !important;
 }
 
 .markdown-gallery--single .gallery-thumb-desc {
@@ -320,7 +371,17 @@
   overflow-wrap: anywhere;
 }
 
-.thumb-carousel-video {
+.thumb-carousel-video,
+.thumb-carousel-frame {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  /* Prevent frames.css border-image from breaking video/iframe rendering. */
+  border: 0 !important;
+  border-image: none !important;
+  box-shadow: none !important;
   background: color-mix(
     in srgb,
     var(--thumb-theme-color, var(--project-tag-color, var(--plate-tint))) 18%,
@@ -335,12 +396,9 @@
 }
 
 .markdown-gallery .gallery-thumb:hover .thumb-carousel-media.active,
-.markdown-gallery .gallery-thumb:focus-visible .thumb-carousel-media.active,
-.markdown-gallery .gallery-thumb:hover .thumb-overlay,
-.markdown-gallery .gallery-thumb:focus-visible .thumb-overlay {
+.markdown-gallery .gallery-thumb:focus-visible .thumb-carousel-media.active {
   transform: none !important;
   filter: none !important;
-  opacity: 1 !important;
 }
 
 /* Dark overlay like split card. */

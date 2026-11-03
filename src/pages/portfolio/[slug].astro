@@ -13,7 +13,9 @@ import { asset } from "../../utils/asset";
 import { isExternalUrl, videoEmbedUrl } from "../../utils/video";
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
 import { patternForTheme } from "../../config/patterns";
-import { defaultIconColor, defaultIconColorNight } from "../../config/icons";
+import { defaultIconColor, defaultIconColorNight, iconColorForTheme } from "../../config/icons";
+import "../../styles/portfolio/galleryThumbnailSlide.css";
+import "../../styles/carousel/carouselLayout.css";
 
 type ProjectRole =
   | "lead_programmer"
@@ -56,21 +58,108 @@ if (!project) {
 
 const themeName = toThemeName(project.data.theme);
 const themeToken = resolveThemeToken(themeName);
+const galleryThemeIconColor = iconColorForTheme(themeName);
+const galleryStyle = `--thumb-theme-color: ${themeToken}; --project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`;
 
-const scenes = (project.data.scenes ?? []).map((scene) => asset(scene.image));
+const projectScenes = (project.data.scenes ?? []).map((scene) => ({
+  image: asset(scene.image),
+  caption: scene.caption ?? "",
+}));
+const scenes = projectScenes.map((s) => s.image);
 const videos = project.data.videos ?? [];
 const projectLinks = project.data.links ?? [];
 
+/**
+ * Clean up a caption string: strip quotes (straight or curly), HTML entities, trim.
+ */
+function cleanCaption(raw: string): string {
+  return raw
+    .replace(/^[\s,]*/, "")
+    .replace(/&quot;/g, '"')
+    .replace(/&ldquo;/g, '"')
+    .replace(/&rdquo;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lsquo;/g, "'")
+    .replace(/&rsquo;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/^["""\u201c\u201d]/, "")
+    .replace(/["""\u201c\u201d]$/, "")
+    .replace(/^['''\u2018\u2019]/, "")
+    .replace(/['''\u2018\u2019]$/, "")
+    .trim();
+}
+
+/**
+ * Extract captions from [scene[N], "caption"] markers in the raw Markdown body
+ * so gallery thumbnails can display them, then remove the markers from the body
+ * so images only appear in the right-side gallery.
+ */
+const markdownBody = project.body ?? "";
+const SCENE_MARKER_RE = /\[scene\[([0-9,\s]+)(?:,\s*(wide|large|full))?\](?:,\s*([^\]]*))?\]/g;
+const GALLERY_VIDEO_MARKER_RE = /\[gallery:video\[(\d+)\](?:,\s*([^\]]*))?\]/g;
+
+const bodySceneCaptions = {};
+const bodyGalleryVideoCaptions = {};
+const bodyCaptionRe = /\[scene\[([0-9,\s]+)(?:,\s*(wide|large|full))?\](?:,\s*([^\]]*))?\]/g;
+let captionMatch;
+let sceneMarkerCount = 0;
+while ((captionMatch = bodyCaptionRe.exec(markdownBody)) !== null) {
+  sceneMarkerCount++;
+  const [, rawIndexes = "", , rawCaption = ""] = captionMatch;
+  const caption = cleanCaption(rawCaption);
+  if (caption) {
+    rawIndexes.split(",")
+      .map((v) => Number.parseInt(v.trim(), 10))
+      .filter((v) => Number.isInteger(v) && v >= 0)
+      .forEach((idx) => { bodySceneCaptions[idx] = caption; });
+  }
+}
+
+/* Parse [gallery:video[N]] and [gallery:video[N], "caption"] markers so we can
+   strip them from the body HTML and use their inline captions for gallery items. */
+const galleryVideoRe = /\[gallery:video\[(\d+)\](?:,\s*([^\]]*))?\]/g;
+let galleryVideoMatch;
+let galleryVideoMarkerCount = 0;
+while ((galleryVideoMatch = galleryVideoRe.exec(markdownBody)) !== null) {
+  galleryVideoMarkerCount++;
+  const index = Number.parseInt(galleryVideoMatch[1], 10);
+  const rawCaption = galleryVideoMatch[2];
+  const caption = cleanCaption(rawCaption);
+  if (caption) {
+    bodyGalleryVideoCaptions[index] = caption;
+  }
+}
+
+// Only show gallery if there are scene markers, gallery video markers, or videos in frontmatter
+const hasGalleryContent = sceneMarkerCount > 0 || galleryVideoMarkerCount > 0 || videos.length > 0;
+
+// Remove scene and gallery:video markers from the body HTML so they only appear in the gallery
+let processedHtml = (project.rendered?.html ?? "").replace(SCENE_MARKER_RE, "").replace(GALLERY_VIDEO_MARKER_RE, "");
+
+// Wrap ##### (h5) heading sections in <div class="retro-contribution">
+// This allows markdown files to use "##### Contribution" instead of explicit div wrappers
+processedHtml = processedHtml.replace(/<h5>(.*?)<\/h5>(.*?)(?=<h[1-6]>|<div|<p|<ul|<ol|<blockquote|<pre|<figure|$)/gs, (match, headingText, bodyContent) => {
+  // Trim trailing whitespace from body content
+  const trimmedBody = bodyContent.replace(/\s*$/, '');
+  if (trimmedBody) {
+    return `<div class="retro-contribution"><h5>${headingText}</h5>${trimmedBody}</div>`;
+  }
+  return `<div class="retro-contribution"><h5>${headingText}</h5></div>`;
+});
+
+const bodyHtml = processedHtml;
+
 const mediaItems = [
-  ...scenes.map((src) => ({ kind: "image" as const, src })),
-  ...videos.map((video) => {
+  ...projectScenes.map((s, i) => ({ kind: "image" as const, src: s.image, alt: bodySceneCaptions[i] || s.caption || `${project.data.title} screenshot ${i + 1}` })),
+  ...videos.map((video, i) => {
     const embed = videoEmbedUrl(video.src, video.type);
+    const caption = bodyGalleryVideoCaptions[i] || bodySceneCaptions[i] || video.title;
 
     if (embed) {
       return {
         kind: "embed" as const,
         src: embed,
-        title: video.title ?? `${project.data.title} video`,
+        title: caption ?? `${project.data.title} video`,
       };
     }
 
@@ -78,7 +167,7 @@ const mediaItems = [
       kind: "file" as const,
       src: isExternalUrl(video.src) ? video.src : asset(video.src),
       poster: video.poster ? asset(video.poster) : undefined,
-      title: video.title,
+      title: caption,
     };
   }),
 ];
@@ -157,238 +246,115 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
             <CompactBody
               theme={themeName}
-              class="project-page-content-panel pattern-plate pattern-plate--text-backdrop pattern-plate--huge"
+              class="project-page-content-panel blog-article-body pattern-plate pattern-plate--text-backdrop pattern-plate--huge"
             >
-              <div id="blog-content" set:html={project.rendered?.html ?? ""} />
+              <div id="blog-content" set:html={bodyHtml} />
             </CompactBody>
           </section>
 
           {
-            mediaItems.length > 0 && (
-              <section class="project-page-gallery-plain" aria-label="Project media" data-project-rotator>
-                <div class="project-panel-media">
-                  <div class="project-panel-frame">
-                    <div class="thumb-carousel">
+            hasGalleryContent && (
+              <section class="project-page-gallery-plain" aria-label="Project media">
+                <div class="project-gallery markdown-gallery" data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={baseUrl}>
+                  <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+                    <div class="gallery-thumbnails" data-carousel-track>
                       {mediaItems.map((item, index) => {
-                        const mediaClass = `thumb-carousel-media ${index === 0 ? "active" : ""}`;
-
-                        if (item.kind === "image") {
-                          return (
-                            <img
-                              src={item.src}
-                              alt={`${project.data.title} screenshot ${index + 1}`}
-                              loading="lazy"
-                              decoding="async"
-                              class={`${mediaClass} thumb-carousel-img`}
-                            />
-                          );
-                        }
-
-                        if (item.kind === "embed") {
-                          return (
-                            <iframe
-                              src={item.src}
-                              title={item.title ?? `${project.data.title} video`}
-                              loading="lazy"
-                              referrerpolicy="strict-origin-when-cross-origin"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                              allowfullscreen
-                              class={`${mediaClass} thumb-carousel-frame`}
-                            />
-                          );
-                        }
+                        const titleText = item.kind === "image" ? (item.alt ?? `${project.data.title} screenshot ${index + 1}`) : (item.title ?? `Media ${index + 1}`);
+                        const hasTitleText = Boolean(titleText && titleText.length > 0);
 
                         return (
-                          <video
-                            src={item.src}
-                            poster={item.poster}
-                            controls
-                            preload="metadata"
-                            playsinline
-                            class={`${mediaClass} thumb-carousel-video`}
-                          />
+                          <div class="gallery-project-item">
+                            <button
+                              class="gallery-thumb blog-card pixel-frame blog-inner-image-card"
+                              aria-label={hasTitleText ? `View ${titleText}` : `View media ${index + 1}`}
+                              title={titleText || undefined}
+                              data-thumb-index={0}
+                              data-lightbox-index={index}
+                              data-lightbox-src={item.src}
+                              data-lightbox-kind={item.kind}
+                              data-lightbox-alt={titleText}
+                              data-lightbox-poster={item.kind === "file" ? (item.poster || "") : ""}
+                              style={galleryStyle}
+                            >
+                              <div class="blog-card-image-wrap">
+                                <div class="thumb-carousel">
+                                  {item.kind === "image" && (
+                                    <img
+                                      src={item.src}
+                                      alt={titleText || `Image ${index + 1}`}
+                                      class="thumb-carousel-media thumb-carousel-img active"
+                                      loading="lazy"
+                                      decoding="async"
+                                    />
+                                  )}
+                                  {item.kind === "embed" && (
+                                    <iframe
+                                      src={item.src}
+                                      title={item.title || `Embed ${index + 1}`}
+                                      class="thumb-carousel-media thumb-carousel-frame active"
+                                      loading="lazy"
+                                      allowfullscreen
+                                    />
+                                  )}
+                                  {item.kind === "file" && (
+                                    <video
+                                      src={item.src}
+                                      poster={item.poster}
+                                      class="thumb-carousel-media thumb-carousel-video active"
+                                      controls
+                                      playsinline
+                                      preload="metadata"
+                                    />
+                                  )}
+                                </div>
+                                <div class="thumb-overlay" />
+                              </div>
+                              {hasTitleText && (
+                                <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+                                  <span class="gallery-thumb-desc">{titleText}</span>
+                                </div>
+                              )}
+                            </button>
+                          </div>
                         );
                       })}
                     </div>
-
-                    {/* The overlay is the only way to see a clip or an embed
-                        larger than the frame, and an <iframe> swallows clicks on
-                        the media itself, so the frame carries its own opener. */}
-                    <button
-                      type="button"
-                      class="project-panel-open"
-                      aria-label="Open the project gallery"
-                      data-lightbox-open
-                    >
-                      <Icon
-                        name="Gallery 2"
-                        theme={project.data.theme}
-                        class="project-panel-open-icon"
-                      />
-                    </button>
                   </div>
 
-                  {
-                    mediaItems.length > 1 && (
-                      <div class="card-carousel-controls project-panel-controls">
-                        <button
-                          type="button"
-                          class="card-carousel-arrow icon-button"
-                          aria-label="Previous media"
-                          data-rotator-prev
-                        >
-                          <Icon
-                            name="arrow-left"
-                            theme={project.data.theme}
-                            class="card-carousel-arrow-icon"
-                          />
-                        </button>
-
-                        <div class="card-carousel-dots">
-                          {mediaItems.map((_item, dotIndex) => (
-                            <button
-                              type="button"
-                              class="card-carousel-dot"
-                              aria-label={`Go to slide ${dotIndex + 1}`}
-                              aria-current={dotIndex === 0 ? "true" : "false"}
-                              data-rotator-dot={dotIndex}
-                            >
-                              <span class="card-carousel-dot-icon icon-mode">
-                                <img
-                                  src={asset(`images/Icons/${defaultIconColor}/Circle Base_${defaultIconColor}.webp`)}
-                                  alt=""
-                                  aria-hidden="true"
-                                  decoding="async"
-                                  class="icon-mode-img icon-mode-img--day"
-                                />
-                                <img
-                                  src={asset(`images/Icons/${defaultIconColorNight}/Circle Base_${defaultIconColorNight}.webp`)}
-                                  alt=""
-                                  aria-hidden="true"
-                                  decoding="async"
-                                  class="icon-mode-img icon-mode-img--night"
-                                />
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-
-                        <button
-                          type="button"
-                          class="card-carousel-arrow icon-button"
-                          aria-label="Next media"
-                          data-rotator-next
-                        >
-                          <Icon
-                            name="arrow-right"
-                            theme={project.data.theme}
-                            class="card-carousel-arrow-icon"
-                          />
-                        </button>
-                      </div>
-                    )
-                  }
-                </div>
-
+                  <div class="gallery-panels-container">
                 {/* THE SAME OVERLAY A POST'S GALLERY OPENS.
 
                     One panel per page, holding only this project's media: the
-                    list is read from the rotator the opener belongs to, at the
-                    moment it is opened, so it can never show another gallery's
-                    picture. The stage is filled in by the script — an image, a
-                    <video> or an embed — because this gallery rotates all three
-                    and the blog's panel only ever holds stills. */}
+                    list is read from the thumbnails, at the moment a thumb is
+                    clicked, so it can never show another gallery's picture.
+                    The stage is filled in by the script — an image, a
+                    <video> or an embed — because this gallery contains all three. */}
                 <div
                   class="blog-gallery-lightbox"
                   aria-hidden="true"
-                  data-project-lightbox
+                  data-gallery-lightbox
+                  style={galleryStyle}
                 >
-                  <div class="blog-gallery-lightbox__backdrop" data-lightbox-close />
-
-                  <div
-                    class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium"
-                    role="dialog"
-                    aria-modal="true"
-                    aria-label="Project media preview"
-                  >
-                    <button
-                      type="button"
-                      class="blog-gallery-lightbox__close icon-button"
-                      aria-label="Close media preview"
-                      data-lightbox-close
-                    >
-                      <Icon
-                        name="close"
-                        theme={project.data.theme}
-                        class="blog-gallery-lightbox__close-icon"
-                      />
-                    </button>
-
+                  <div class="blog-gallery-lightbox__backdrop" data-lightbox-close></div>
+                  <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close media preview" data-lightbox-close>
+                    <Icon name="close" theme={themeName} class="blog-gallery-lightbox__close-icon" />
+                  </button>
+                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button" aria-label="Previous media" data-lightbox-prev>
+                    <Icon name="arrow-left" theme={themeName} class="card-carousel-arrow-icon" />
+                  </button>
+                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button" aria-label="Next media" data-lightbox-next>
+                    <Icon name="arrow-right" theme={themeName} class="card-carousel-arrow-icon" />
+                  </button>
+                  <div class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium" role="dialog" aria-modal="true" aria-label="Media preview" style={galleryStyle}>
                     <div class="blog-gallery-lightbox__media">
-                      <button
-                        type="button"
-                        class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button"
-                        aria-label="Previous media"
-                        data-lightbox-prev
-                      >
-                        <Icon
-                          name="arrow-left"
-                          theme={project.data.theme}
-                          class="card-carousel-arrow-icon"
-                        />
-                      </button>
-
                       <div class="blog-gallery-lightbox__stage" data-lightbox-stage />
-
-                      <button
-                        type="button"
-                        class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button"
-                        aria-label="Next media"
-                        data-lightbox-next
-                      >
-                        <Icon
-                          name="arrow-right"
-                          theme={project.data.theme}
-                          class="card-carousel-arrow-icon"
-                        />
-                      </button>
                     </div>
-
                     <div class="blog-gallery-lightbox__meta">
-                      <div
-                        class="blog-gallery-lightbox__dots card-carousel-dots"
-                        aria-label="Media index"
-                      >
-                        {mediaItems.map((_item, dotIndex) => (
-                          <button
-                            type="button"
-                            class="card-carousel-dot"
-                            aria-label={`Show media ${dotIndex + 1}`}
-                            aria-current={dotIndex === 0 ? "true" : "false"}
-                            data-lightbox-dot={dotIndex}
-                          >
-                            <span class="card-carousel-dot-icon icon-mode">
-                              <img
-                                src={asset(`images/Icons/${defaultIconColor}/Circle Base_${defaultIconColor}.webp`)}
-                                alt=""
-                                aria-hidden="true"
-                                decoding="async"
-                                class="icon-mode-img icon-mode-img--day"
-                              />
-                              <img
-                                src={asset(`images/Icons/${defaultIconColorNight}/Circle Base_${defaultIconColorNight}.webp`)}
-                                alt=""
-                                aria-hidden="true"
-                                decoding="async"
-                                class="icon-mode-img icon-mode-img--night"
-                              />
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-
+                      <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Media index"></div>
                       <span class="blog-gallery-lightbox__caption" data-lightbox-caption hidden />
                     </div>
+                  </div>
+                </div>
                   </div>
                 </div>
               </section>
@@ -401,199 +367,205 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 </MyLayout>
 
 <script is:inline>
-  function initProjectSlugRotators() {
-    const rotators = document.querySelectorAll("[data-project-rotator]");
+  (async function () {
+    const { initGalleryEqualHeight } = await import("../../scripts/galleryEqualHeight.js");
+    const { initCardCarousels } = await import("../../scripts/cardCarousel.js");
+    const initMarkdownGalleries = () => {
+      const galleries = document.querySelectorAll(".project-gallery[data-gallery-ready='false']");
+      if (!galleries.length) return;
 
-    rotators.forEach((rotator) => {
-      if (rotator.dataset.rotatorReady === "true") return;
-      rotator.dataset.rotatorReady = "true";
+      galleries.forEach((gallery) => {
+        gallery.dataset.galleryReady = "true";
 
-      const media = [...rotator.querySelectorAll(".thumb-carousel-media")];
-      if (media.length <= 1) return;
+        const thumbs = [...gallery.querySelectorAll(".gallery-thumb[data-lightbox-index]")];
+        const lightbox = gallery.querySelector("[data-gallery-lightbox]");
+        if (!lightbox || !thumbs.length) return;
 
-      const dots = [...rotator.querySelectorAll("[data-rotator-dot]")];
-      const prev = rotator.querySelector("[data-rotator-prev]");
-      const next = rotator.querySelector("[data-rotator-next]");
+        const stage = lightbox.querySelector("[data-lightbox-stage]");
+        const captionEl = lightbox.querySelector("[data-lightbox-caption]");
+        const dotsWrap = lightbox.querySelector(".blog-gallery-lightbox__dots");
+        const closeButtons = lightbox.querySelectorAll("[data-lightbox-close]");
+        const prevBtn = lightbox.querySelector("[data-lightbox-prev]");
+        const nextBtn = lightbox.querySelector("[data-lightbox-next]");
 
-      let activeIndex = 0;
+        const themedColor = gallery.dataset.iconColor || document.documentElement.dataset.iconDay || "Lightblue";
+        const baseUrl = gallery.dataset.siteBaseUrl || "/";
 
-      function syncDots() {
-        dots.forEach((dot, dotIndex) => {
-          dot.setAttribute("aria-current", dotIndex === activeIndex ? "true" : "false");
+        const makeDot = (index) => {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "card-carousel-dot";
+          dot.setAttribute("aria-label", `View media ${index + 1}`);
+
+          const pair = document.createElement("span");
+          pair.className = "card-carousel-dot-icon icon-mode";
+
+          ["day", "night"].forEach((mode) => {
+            const icon = document.createElement("img");
+            icon.src = `${baseUrl}images/Icons/${themedColor}/Circle Base_${themedColor}.webp`;
+            icon.alt = "";
+            icon.setAttribute("aria-hidden", "true");
+            icon.decoding = "async";
+            icon.className = `icon-mode-img icon-mode-img--${mode}`;
+            pair.appendChild(icon);
+          });
+
+          dot.appendChild(pair);
+          dot.addEventListener("click", () => openLightbox(index));
+          return dot;
+        };
+
+        let items = [];
+        let dotButtons = [];
+        let currentIndex = 0;
+
+        /* Build a media list from the thumbnails in this gallery. Each thumb
+           carries data-lightbox-kind ("image", "file", or "embed") so the
+           lightbox stage can render the correct element type. */
+        const itemsFor = (thumb) => {
+          const owner = thumb?.closest(".project-gallery") || gallery;
+
+          return [...owner.querySelectorAll(".gallery-thumb[data-lightbox-index]")].map((node) => ({
+            kind: node.dataset.lightboxKind || "image",
+            src: node.dataset.lightboxSrc,
+            poster: node.dataset.lightboxPoster || "",
+            alt: node.dataset.lightboxAlt || node.getAttribute("aria-label") || "Media preview",
+          }));
+        };
+
+        /* Render one media item into the lightbox stage. Mirrors the blog
+           gallery's render() so videos and embeds work identically. */
+        const render = (index) => {
+          const item = items[index];
+          if (!item || !stage) return;
+
+          let node;
+
+          if (item.kind === "embed") {
+            node = document.createElement("iframe");
+            node.src = item.src;
+            node.title = item.alt || "Media";
+            node.referrerPolicy = "strict-origin-when-cross-origin";
+            node.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+            node.setAttribute("allowfullscreen", "");
+          } else if (item.kind === "file") {
+            node = document.createElement("video");
+            node.src = item.src;
+            if (item.poster) node.poster = item.poster;
+            node.controls = true;
+            node.playsInline = true;
+            node.preload = "metadata";
+          } else {
+            node = document.createElement("img");
+            node.src = item.src;
+            node.alt = item.alt;
+            node.loading = "eager";
+            node.decoding = "async";
+          }
+
+          node.className = "blog-gallery-lightbox__image";
+          stage.replaceChildren(node);
+
+          if (captionEl) {
+            captionEl.textContent = item.alt;
+            captionEl.hidden = !item.alt;
+          }
+
+          dotButtons.forEach((dot, dotIndex) => {
+            dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
+          });
+        };
+
+        const updateLightbox = (index) => {
+          if (!items.length) return;
+
+          const normalizedIndex = ((index % items.length) + items.length) % items.length;
+          currentIndex = normalizedIndex;
+          render(currentIndex);
+        };
+
+        /* One panel on screen at a time: a gallery opened while another panel is
+           still up would otherwise show through behind it. */
+        const closeOtherLightboxes = () => {
+          document.querySelectorAll(".blog-gallery-lightbox.is-open").forEach((other) => {
+            if (other === lightbox) return;
+            other.classList.remove("is-open");
+            other.setAttribute("aria-hidden", "true");
+          });
+        };
+
+        const openLightbox = (index, thumb) => {
+          items = itemsFor(thumb);
+          dotButtons = items.map((_item, dotIndex) => makeDot(dotIndex));
+          if (dotsWrap) {
+            dotsWrap.replaceChildren(...dotButtons);
+          }
+
+          closeOtherLightboxes();
+          lightbox.classList.add("is-open");
+          lightbox.setAttribute("aria-hidden", "false");
+          document.body.classList.add("lightbox-open");
+          updateLightbox(index);
+        };
+
+        const closeLightbox = () => {
+          lightbox.classList.remove("is-open");
+          lightbox.setAttribute("aria-hidden", "true");
+
+          /* Unmount the stage to stop any playing video or embed. */
+          stage?.replaceChildren();
+
+          if (!document.querySelector(".blog-gallery-lightbox.is-open")) {
+            document.body.classList.remove("lightbox-open");
+          }
+        };
+
+        /* The thumbnail's own index inside its strip is what opens it, so the
+           number of galleries above it on the page cannot shift the picture. */
+        thumbs.forEach((thumb) => {
+          thumb.addEventListener("click", (event) => {
+            event.preventDefault();
+            openLightbox(Number(thumb.dataset.lightboxIndex) || 0, thumb);
+          });
         });
-      }
 
-      function show(index) {
-        media[activeIndex].classList.remove("active");
-        activeIndex = ((index % media.length) + media.length) % media.length;
-        media[activeIndex].classList.add("active");
-        syncDots();
-      }
+        closeButtons.forEach((button) => {
+          button.addEventListener("click", closeLightbox);
+        });
 
-      prev?.addEventListener("click", () => show(activeIndex - 1));
-      next?.addEventListener("click", () => show(activeIndex + 1));
-      dots.forEach((dot, dotIndex) => {
-        dot.addEventListener("click", () => show(dotIndex));
+        prevBtn?.addEventListener("click", () => openLightbox(currentIndex - 1));
+        nextBtn?.addEventListener("click", () => openLightbox(currentIndex + 1));
+
+        lightbox.addEventListener("click", (event) => {
+          if (event.target === lightbox || event.target.closest("[data-lightbox-close]")) {
+            closeLightbox();
+          }
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (!lightbox.classList.contains("is-open")) return;
+
+          if (event.key === "Escape") closeLightbox();
+          if (event.key === "ArrowRight") openLightbox(currentIndex + 1);
+          if (event.key === "ArrowLeft") openLightbox(currentIndex - 1);
+        });
       });
+    };
 
-      syncDots();
+    document.addEventListener("astro:page-load", () => {
+      initMarkdownGalleries();
+      initCardCarousels();
+      initGalleryEqualHeight();
     });
-  }
-
-  function initProjectSlugLightboxes() {
-    document.querySelectorAll("[data-project-lightbox]").forEach((lightbox) => {
-      if (lightbox.dataset.lightboxReady === "true") return;
-      lightbox.dataset.lightboxReady = "true";
-
-      const section = lightbox.closest("[data-project-rotator]");
-      if (!section) return;
-
-      /* The list is read from the rotator the opener lives in, at the moment it
-         is opened, never cached at load: this panel can only ever hold this
-         project's media. */
-      const items = [...section.querySelectorAll(".thumb-carousel-media")].map((node) => ({
-        kind: node.tagName === "IFRAME" ? "embed" : node.tagName === "VIDEO" ? "video" : "image",
-        src: node.getAttribute("src") || "",
-        poster: node.getAttribute("poster") || "",
-        label: node.getAttribute("alt") || node.getAttribute("title") || "",
-      }));
-      if (!items.length) return;
-
-      const stage = lightbox.querySelector("[data-lightbox-stage]");
-      const caption = lightbox.querySelector("[data-lightbox-caption]");
-      const dots = [...lightbox.querySelectorAll("[data-lightbox-dot]")];
-      const prev = lightbox.querySelector("[data-lightbox-prev]");
-      const next = lightbox.querySelector("[data-lightbox-next]");
-      const openers = [...section.querySelectorAll("[data-lightbox-open]")];
-
-      let currentIndex = 0;
-
-      /* The frame rotates in place, so the panel opens on whatever is showing
-         rather than always on the first item. */
-      const activeIndex = () => {
-        const index = [...section.querySelectorAll(".thumb-carousel-media")].findIndex((node) =>
-          node.classList.contains("active"),
-        );
-        return index < 0 ? 0 : index;
-      };
-
-      /* One element, three kinds: this gallery rotates stills, clips and embeds,
-         so the stage is built per item instead of being a fixed <img>. */
-      const render = (index) => {
-        const item = items[index];
-        if (!item || !stage) return;
-
-        let node;
-
-        if (item.kind === "embed") {
-          node = document.createElement("iframe");
-          node.src = item.src;
-          node.title = item.label || "Project media";
-          node.referrerPolicy = "strict-origin-when-cross-origin";
-          node.allow =
-            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-          node.setAttribute("allowfullscreen", "");
-        } else if (item.kind === "video") {
-          node = document.createElement("video");
-          node.src = item.src;
-          if (item.poster) node.poster = item.poster;
-          node.controls = true;
-          node.playsInline = true;
-          node.preload = "metadata";
-        } else {
-          node = document.createElement("img");
-          node.src = item.src;
-          node.alt = item.label;
-          node.loading = "eager";
-          node.decoding = "async";
-        }
-
-        node.className = "blog-gallery-lightbox__image";
-        stage.replaceChildren(node);
-
-        if (caption) {
-          caption.textContent = item.label;
-          caption.hidden = !item.label;
-        }
-
-        dots.forEach((dot, dotIndex) => {
-          dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
-        });
-      };
-
-      const show = (index) => {
-        currentIndex = ((index % items.length) + items.length) % items.length;
-        render(currentIndex);
-      };
-
-      const open = (index) => {
-        /* One panel at a time, the same as a post's galleries. */
-        document.querySelectorAll(".blog-gallery-lightbox.is-open").forEach((other) => {
-          if (other === lightbox) return;
-          other.classList.remove("is-open");
-          other.setAttribute("aria-hidden", "true");
-        });
-
-        lightbox.classList.add("is-open");
-        lightbox.setAttribute("aria-hidden", "false");
-        document.body.classList.add("lightbox-open");
-        show(index);
-      };
-
-      const close = () => {
-        lightbox.classList.remove("is-open");
-        lightbox.setAttribute("aria-hidden", "true");
-
-        /* Unmounting the stage is what stops a clip or an embed that was left
-           playing behind the panel. */
-        stage?.replaceChildren();
-
-        if (!document.querySelector(".blog-gallery-lightbox.is-open")) {
-          document.body.classList.remove("lightbox-open");
-        }
-
-        /* The inline frame catches up with the last picture seen, through the
-           rotator's own dots rather than a second copy of its index. */
-        section.querySelector(`[data-rotator-dot="${currentIndex}"]`)?.click();
-      };
-
-      openers.forEach((opener) => {
-        opener.addEventListener("click", () => open(activeIndex()));
-      });
-
-      dots.forEach((dot, dotIndex) => {
-        dot.addEventListener("click", () => show(dotIndex));
-      });
-
-      prev?.addEventListener("click", () => show(currentIndex - 1));
-      next?.addEventListener("click", () => show(currentIndex + 1));
-
-      lightbox.querySelectorAll("[data-lightbox-close]").forEach((button) => {
-        button.addEventListener("click", close);
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (!lightbox.classList.contains("is-open")) return;
-
-        if (event.key === "Escape") close();
-        if (event.key === "ArrowRight") show(currentIndex + 1);
-        if (event.key === "ArrowLeft") show(currentIndex - 1);
-      });
+    document.addEventListener("DOMContentLoaded", () => {
+      initMarkdownGalleries();
+      initCardCarousels();
+      initGalleryEqualHeight();
     });
-  }
-
-  function initProjectSlug() {
-    initProjectSlugRotators();
-    initProjectSlugLightboxes();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initProjectSlug);
-  } else {
-    initProjectSlug();
-  }
-
-  document.addEventListener("astro:after-swap", initProjectSlug);
+    initMarkdownGalleries();
+    initCardCarousels();
+    initGalleryEqualHeight();
+  })();
 </script>
 
 <style>
@@ -715,9 +687,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   :global(.project-page-content-panel .retro-contribution) {
-    border: none !important;
-    border-image: none !important;
-    box-shadow: none !important;
+    /* Inherits the gradient frame from frames.css. */
   }
 
   :global(.project-page-content-panel.compact-body) {
@@ -749,48 +719,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
   .project-page-gallery-plain {
     padding: 0;
-  }
-
-  .project-page-gallery-plain .project-panel-media {
-    max-width: 100%;
-    margin: 0;
-    gap: 0.55rem;
-  }
-
-  /* The frame now carries the cards' banner ramp (patternPlates.css) and the
-     outline that goes with it, so it keeps a band around the picture for that
-     grading to show in. The rotation is pinned to the PADDING box, so it has to
-     be inset by the same amount or the picture would cover the band. */
-  .project-page-gallery-plain .project-panel-frame {
-    aspect-ratio: 4 / 3;
-    padding: 0.5rem;
-  }
-
-  .project-page-gallery-plain .project-panel-frame > :global(.thumb-carousel) {
-    inset: 0.5rem;
-  }
-
-  /* The frame's own opener. An <iframe> swallows clicks on the media it covers,
-     so the corner button is the one trigger that works for every item kind. */
-  .project-panel-open {
-    position: absolute;
-    top: 0.85rem;
-    right: 0.85rem;
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .project-panel-open-icon {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 
   /* The overlay's stage. The blog's panel sizes one <img>; this one is filled by

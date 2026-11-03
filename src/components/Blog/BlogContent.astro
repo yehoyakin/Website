@@ -12,6 +12,7 @@ import { patternForTheme } from "../../config/patterns";
 import { resolveThemeToken } from "../../config/uiDictionary";
 import { asset } from "../../utils/asset";
 import { videoEmbedUrl } from "../../utils/video";
+import "../../styles/portfolio/galleryThumbnailSlide.css";
 
 interface SceneItem {
   image: string;
@@ -30,11 +31,16 @@ interface VideoItem {
   type?: "auto" | "file" | "embed";
 }
 
+type GalleryMediaItem =
+  | { kind: "image"; src: string; alt: string }
+  | { kind: "video"; src: string; poster?: string; title?: string }
+  | { kind: "embed"; src: string; title?: string };
+
 type MarkdownBlock =
   | { type: "paragraph"; text: string }
   | { type: "heading"; level: number; text: string }
   | { type: "image"; src: string; alt: string }
-  | { type: "gallery"; images: Array<{ src: string; alt: string }> }
+  | { type: "gallery"; items: GalleryMediaItem[] }
   | { type: "list"; ordered: boolean; items: string[] }
   | { type: "video"; index: number; size?: string; caption?: string }
   | { type: "background"; index: number };
@@ -606,11 +612,11 @@ const renderInlineMarkdown = (text: string) => {
                           data-lightbox-src={image.src}
                           data-lightbox-alt={titleText || image.alt || `Image ${index + 1}`}
                           style={galleryStyle}
-                        >                              <div
+                        >
+                              <div
                                 class="blog-card-image-wrap relative flex min-h-0 flex-col"
-                                style="aspect-ratio:21/10"
                               >
-                                <div class="thumb-carousel" style="height:100%">
+                                <div class="thumb-carousel">
                                   <img
                                     src={image.src}
                                     alt={titleText || ""}
@@ -636,18 +642,18 @@ const renderInlineMarkdown = (text: string) => {
               <div class="gallery-panels-container">
                 <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox style={galleryStyle}>
                   <div class="blog-gallery-lightbox__backdrop" data-lightbox-close></div>
+                  <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close image preview" data-lightbox-close>
+                    <Icon name="close" theme={theme} class="blog-gallery-lightbox__close-icon" />
+                  </button>
+                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button" aria-label="Previous image" data-lightbox-prev>
+                    <Icon name="arrow-left" theme={theme} class="card-carousel-arrow-icon" />
+                  </button>
+                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button" aria-label="Next image" data-lightbox-next>
+                    <Icon name="arrow-right" theme={theme} class="card-carousel-arrow-icon" />
+                  </button>
                   <div class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium" role="dialog" aria-modal="true" aria-label="Image preview" style={galleryStyle}>
-                    <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close image preview" data-lightbox-close>
-                      <Icon name="close" theme={theme} class="blog-gallery-lightbox__close-icon" />
-                    </button>
                     <div class="blog-gallery-lightbox__media">
-                      <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button" aria-label="Previous image" data-lightbox-prev>
-                        <Icon name="arrow-left" theme={theme} class="card-carousel-arrow-icon" />
-                      </button>
                       <img class="blog-gallery-lightbox__image" src={images[0].src} alt={images[0].alt || "Image preview"} loading="eager" decoding="async" />
-                      <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button" aria-label="Next image" data-lightbox-next>
-                        <Icon name="arrow-right" theme={theme} class="card-carousel-arrow-icon" />
-                      </button>
                     </div>
                     <div class="blog-gallery-lightbox__meta">
                       <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Image index"></div>
@@ -661,31 +667,46 @@ const renderInlineMarkdown = (text: string) => {
         }
 
         if (block.type === "gallery") {
-          const isSingleImageGallery = block.images.length === 1;
+          const items = block.items;
+          const isSingleGallery = items.length === 1;
+          const firstItem = items[0];
 
           return (
-            <div class={`project-gallery markdown-gallery${isSingleImageGallery ? " markdown-gallery--single" : ""}`} data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={siteBaseUrl}>
+            <div class={`project-gallery markdown-gallery${isSingleGallery ? " markdown-gallery--single" : ""}`} data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={siteBaseUrl}>
               <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
                 <div class="gallery-thumbnails" data-carousel-track>
-                  {block.images.map((image, index) => {
-                    const titleText = image.alt?.trim();
+                  {items.map((item, index) => {
+                    const titleText = item.kind === "image" ? item.alt?.trim() : (item.title?.trim() || `Media ${index + 1}`);
                     const hasTitleText = Boolean(titleText && titleText.length > 0);
+
+                    const lightboxSrc = item.kind === "image" ? item.src : item.src;
+                    const lightboxAlt = item.kind === "image" ? item.alt : (item.title || `Media ${index + 1}`);
 
                     return (
                       <div class="gallery-project-item">
                         <button
                           class="gallery-thumb blog-card pixel-frame blog-inner-image-card"
-                          aria-label={hasTitleText ? `View ${titleText}` : `View image ${index + 1}`}
+                          aria-label={hasTitleText ? `View ${titleText}` : `View media ${index + 1}`}
                           title={titleText || undefined}
                           data-thumb-index={0}
                           data-lightbox-index={index}
-                          data-lightbox-src={image.src}
-                          data-lightbox-alt={titleText || image.alt || `Image ${index + 1}`}
+                          data-lightbox-src={lightboxSrc}
+                          data-lightbox-kind={item.kind}
+                          data-lightbox-alt={lightboxAlt}
+                          data-lightbox-poster={item.kind === "video" ? (item.poster || "") : ""}
                           style={galleryStyle}
                         >
                           <div class="blog-card-image-wrap">
                             <div class="thumb-carousel">
-                              <img src={image.src} alt={titleText || `Image ${index + 1}`} class="thumb-carousel-media thumb-carousel-img active" loading="lazy" decoding="async" />
+                              {item.kind === "image" && (
+                                <img src={item.src} alt={titleText || `Image ${index + 1}`} class="thumb-carousel-media thumb-carousel-img active" loading="lazy" decoding="async" />
+                              )}
+                              {item.kind === "video" && (
+                                <video src={item.src} poster={item.poster} class="thumb-carousel-media thumb-carousel-video active" controls playsinline preload="metadata" />
+                              )}
+                              {item.kind === "embed" && (
+                                <iframe src={item.src} title={item.title || `Embed ${index + 1}`} class="thumb-carousel-media thumb-carousel-frame active" loading="lazy" allowfullscreen />
+                              )}
                             </div>
                             <div class="thumb-overlay" />
                           </div>
@@ -704,22 +725,22 @@ const renderInlineMarkdown = (text: string) => {
               <div class="gallery-panels-container">
                 <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox style={galleryStyle}>
                   <div class="blog-gallery-lightbox__backdrop" data-lightbox-close></div>
-                  <div class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium" role="dialog" aria-modal="true" aria-label="Image preview" style={galleryStyle}>
-                    <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close image preview" data-lightbox-close>
-                      <Icon name="close" theme={theme} class="blog-gallery-lightbox__close-icon" />
-                    </button>
+                  <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close media preview" data-lightbox-close>
+                    <Icon name="close" theme={theme} class="blog-gallery-lightbox__close-icon" />
+                  </button>
+                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button" aria-label="Previous media" data-lightbox-prev>
+                    <Icon name="arrow-left" theme={theme} class="card-carousel-arrow-icon" />
+                  </button>
+                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button" aria-label="Next media" data-lightbox-next>
+                    <Icon name="arrow-right" theme={theme} class="card-carousel-arrow-icon" />
+                  </button>
+                  <div class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium" role="dialog" aria-modal="true" aria-label="Media preview" style={galleryStyle}>
                     <div class="blog-gallery-lightbox__media">
-                      <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button" aria-label="Previous image" data-lightbox-prev>
-                        <Icon name="arrow-left" theme={theme} class="card-carousel-arrow-icon" />
-                      </button>
-                      <img class="blog-gallery-lightbox__image" src={block.images[0].src} alt={block.images[0].alt || "Image preview"} loading="eager" decoding="async" />
-                      <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button" aria-label="Next image" data-lightbox-next>
-                        <Icon name="arrow-right" theme={theme} class="card-carousel-arrow-icon" />
-                      </button>
+                      <div class="blog-gallery-lightbox__stage" data-lightbox-stage />
                     </div>
                     <div class="blog-gallery-lightbox__meta">
-                      <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Image index"></div>
-                      {block.images[0].alt && <span class="blog-gallery-lightbox__caption">{block.images[0].alt}</span>}
+                      <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Media index"></div>
+                      <span class="blog-gallery-lightbox__caption" data-lightbox-caption hidden />
                     </div>
                   </div>
                 </div>
@@ -735,7 +756,9 @@ const renderInlineMarkdown = (text: string) => {
 </div>
 
 <script is:inline>
-  (function () {
+  (async function () {
+    const { initGalleryEqualHeight } = await import("../../scripts/galleryEqualHeight.js");
+    const { initCardCarousels } = await import("../../scripts/cardCarousel.js");
     const initMarkdownGalleries = () => {
       const galleries = document.querySelectorAll(".project-gallery[data-gallery-ready='false']");
       if (!galleries.length) return;
@@ -747,15 +770,12 @@ const renderInlineMarkdown = (text: string) => {
         const lightbox = gallery.querySelector("[data-gallery-lightbox]");
         if (!lightbox || !thumbs.length) return;
 
-        const imageEl = lightbox.querySelector(".blog-gallery-lightbox__image");
-        const captionEl = lightbox.querySelector(".blog-gallery-lightbox__caption");
+        const stage = lightbox.querySelector("[data-lightbox-stage]");
+        const captionEl = lightbox.querySelector("[data-lightbox-caption]");
         const dotsWrap = lightbox.querySelector(".blog-gallery-lightbox__dots");
         const closeButtons = lightbox.querySelectorAll("[data-lightbox-close]");
         const prevBtn = lightbox.querySelector("[data-lightbox-prev]");
         const nextBtn = lightbox.querySelector("[data-lightbox-next]");
-
-        /* No image list is kept here: `openLightbox` builds it from the strip
-           the clicked thumbnail lives in (see `imagesFor` below). */
 
         const themedColor = gallery.dataset.iconColor || document.documentElement.dataset.iconDay || "Lightblue";
         const baseUrl = gallery.dataset.siteBaseUrl || "/";
@@ -764,7 +784,7 @@ const renderInlineMarkdown = (text: string) => {
           const dot = document.createElement("button");
           dot.type = "button";
           dot.className = "card-carousel-dot";
-          dot.setAttribute("aria-label", `View image ${index + 1}`);
+          dot.setAttribute("aria-label", `View media ${index + 1}`);
 
           const pair = document.createElement("span");
           pair.className = "card-carousel-dot-icon icon-mode";
@@ -784,47 +804,73 @@ const renderInlineMarkdown = (text: string) => {
           return dot;
         };
 
-        let images = [];
+        let items = [];
         let dotButtons = [];
         let currentIndex = 0;
 
-        /* THE PANEL ONLY EVER HOLDS ITS OWN GALLERY.
-
-           A panel's list is built from the strip the clicked thumbnail belongs
-           to, at the moment of the click — never once at page load and never
-           from the gallery the panel happened to be initialised with. Whatever
-           else is on the page, `closest(".project-gallery")` can only resolve
-           to that thumbnail's own strip, and a list built earlier (before the
-           last image settled, or before a client-side navigation swapped the
-           markup) can never put a neighbouring gallery's picture in the panel. */
-        const imagesFor = (thumb) => {
+        /* Build a media list from the thumbnails in this gallery. Each thumb
+           carries data-lightbox-kind ("image", "video", or "embed") so the
+           lightbox stage can render the correct element type. */
+        const itemsFor = (thumb) => {
           const owner = thumb?.closest(".project-gallery") || gallery;
 
           return [...owner.querySelectorAll(".gallery-thumb[data-lightbox-index]")].map((node) => ({
+            kind: node.dataset.lightboxKind || "image",
             src: node.dataset.lightboxSrc,
-            alt: node.dataset.lightboxAlt || node.getAttribute("aria-label") || "Image preview",
+            poster: node.dataset.lightboxPoster || "",
+            alt: node.dataset.lightboxAlt || node.getAttribute("aria-label") || "Media preview",
           }));
         };
 
-        const updateLightbox = (index) => {
-          if (!images.length) return;
+        /* Render one media item into the lightbox stage. Mirrors the project
+           slug's render() so videos and embeds work identically. */
+        const render = (index) => {
+          const item = items[index];
+          if (!item || !stage) return;
 
-          const normalizedIndex = ((index % images.length) + images.length) % images.length;
-          currentIndex = normalizedIndex;
+          let node;
 
-          const currentImage = images[currentIndex];
-          if (!currentImage || !imageEl) return;
+          if (item.kind === "embed") {
+            node = document.createElement("iframe");
+            node.src = item.src;
+            node.title = item.alt || "Media";
+            node.referrerPolicy = "strict-origin-when-cross-origin";
+            node.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+            node.setAttribute("allowfullscreen", "");
+          } else if (item.kind === "video") {
+            node = document.createElement("video");
+            node.src = item.src;
+            if (item.poster) node.poster = item.poster;
+            node.controls = true;
+            node.playsInline = true;
+            node.preload = "metadata";
+          } else {
+            node = document.createElement("img");
+            node.src = item.src;
+            node.alt = item.alt;
+            node.loading = "eager";
+            node.decoding = "async";
+          }
 
-          imageEl.src = currentImage.src;
-          imageEl.alt = currentImage.alt;
+          node.className = "blog-gallery-lightbox__image";
+          stage.replaceChildren(node);
 
           if (captionEl) {
-            captionEl.textContent = currentImage.alt || "";
+            captionEl.textContent = item.alt;
+            captionEl.hidden = !item.alt;
           }
 
           dotButtons.forEach((dot, dotIndex) => {
-            dot.setAttribute("aria-current", dotIndex === currentIndex ? "true" : "false");
+            dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
           });
+        };
+
+        const updateLightbox = (index) => {
+          if (!items.length) return;
+
+          const normalizedIndex = ((index % items.length) + items.length) % items.length;
+          currentIndex = normalizedIndex;
+          render(currentIndex);
         };
 
         /* One panel on screen at a time: a gallery opened while another panel is
@@ -838,8 +884,8 @@ const renderInlineMarkdown = (text: string) => {
         };
 
         const openLightbox = (index, thumb) => {
-          images = imagesFor(thumb);
-          dotButtons = images.map((_image, dotIndex) => makeDot(dotIndex));
+          items = itemsFor(thumb);
+          dotButtons = items.map((_item, dotIndex) => makeDot(dotIndex));
           if (dotsWrap) {
             dotsWrap.replaceChildren(...dotButtons);
           }
@@ -854,6 +900,9 @@ const renderInlineMarkdown = (text: string) => {
         const closeLightbox = () => {
           lightbox.classList.remove("is-open");
           lightbox.setAttribute("aria-hidden", "true");
+
+          /* Unmount the stage to stop any playing video or embed. */
+          stage?.replaceChildren();
 
           if (!document.querySelector(".blog-gallery-lightbox.is-open")) {
             document.body.classList.remove("lightbox-open");
@@ -913,13 +962,19 @@ const renderInlineMarkdown = (text: string) => {
 
     document.addEventListener("astro:page-load", () => {
       initMarkdownGalleries();
+      initCardCarousels();
       initReveal();
+      initGalleryEqualHeight();
     });
     document.addEventListener("DOMContentLoaded", () => {
       initMarkdownGalleries();
+      initCardCarousels();
       initReveal();
+      initGalleryEqualHeight();
     });
     initMarkdownGalleries();
+    initCardCarousels();
     initReveal();
+    initGalleryEqualHeight();
   })();
 </script>
