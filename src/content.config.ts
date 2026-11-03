@@ -143,8 +143,19 @@ const projects = defineCollection({
         fall back to the cover again. */
     background: z.string(),
 
-    /** Screenshots, in gallery order. A project can be clip-only. */
-    scenes: z.array(z.object({ image: z.string() })).nullish(),
+    /** Screenshots, in gallery order. A project can be clip-only.
+
+        `caption` is the line a post's scene gets: it names what the picture
+        shows, and the gallery prints it under the frame and carries it into
+        the overlay. */
+    scenes: z
+      .array(
+        z.object({
+          image: z.string(),
+          caption: z.string().optional(),
+        }),
+      )
+      .nullish(),
 
     // Optional gallery clips. Same source rules as a blog's `videos`: a path
     // inside public/, a direct video file, a YouTube / Vimeo link, or any
@@ -157,6 +168,7 @@ const projects = defineCollection({
           poster: z.string().optional(),
           title: z.string().optional(),
           type: z.enum(["auto", "file", "embed"]).optional(),
+          caption: z.string().optional(),
         }),
       )
       .nullish(),

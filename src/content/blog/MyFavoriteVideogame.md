@@ -106,6 +106,8 @@ scenes:
     align: "center"
   - image: "images/blog/MyFavoriteVideogame/artBookPages.webp"
     align: "center"
+  - image: "images/blog/MyFavoriteVideogame/earlyMorning.webp"
+    align: "center"
 ---
 
 Once in a while you get to play a game that just "clicks" with you, it is just what you need at a given time, for me that game was...
@@ -180,6 +182,8 @@ Lastly I must mention the incredible use of lightning, time of day and weather, 
 
 The game's narrative begins with one of my favorite story-telling devices, *the story within the story*, in this case represented by a videogame (Earthborn) that our protagonist Sam is playing. Later on we realize that Earthborn's story mirrors our protagonist's journey. Afterwards we are dropped right in the middle of their lives, their past will unfold as we progress through the game. 
 
+[scene[22,23], "Plethora of cool and unique bosses all over this game."]
+
 The plot is very lossesly held together; There is an overarching story but most of the game has TV episode logic to it, lots of self contained stories and some inflection points every now that connect the dots, such as in Samurai Champloo or Space Dandy.
 
 Most of these episodes within the game's chapters are there to give and breathe life into the world and the characters, if you are looking for a heavy plot and straight narrative you'll bounce off this game HARD. If you enjoy piecing together the story and world by paying attention to dialogues, character animations and level design this game is for you.
@@ -193,15 +197,22 @@ Most of these episodes within the game's chapters are there to give and breathe 
 
 I got to play this while lockdowns were still active, but I missed family relatives and my friends (fortune allowed me to spend lockdown with my family), *not sharing the space with people that I loved was wearing me down, until I booted up this game*.
 
-3 years before the game's release, **in 2018 I went abroad to study film-making in Argentina** (eventually dropped out), coincidentally **I travelled eastward (from Chile)**. The day before travelling I accidentally bumped into many important people in my life, and got plenty of encouraging texts as well. That very night, the landlord of the place I would rent in Buenos Aires realized he had sold my spot, and so, I would have to find a new place. For a secluded guy like me it was a bit scary but I had to get my wits about me and manage it, I would be on my own. 
+3 years before the game's release, in 2018 I went abroad to study **film-making** in Argentina, *coincidentally travelling eastward* (from Chile). The day before travelling I accidentally bumped into many important people in my life, and got plenty of encouraging texts as well. That very night, the landlord of the place I would rent in Buenos Aires realized he had sold my spot, and so, I would have to find a new place. For a secluded guy like me it was a bit scary but I had to get my wits about me and manage it, I would be on my own. 
 
-For a whole month I walked through Buenos Aires looking for a place to stay while also attending classes. *Searching for a place to stay was a fight against time as I had very limited cash. During this month whenever I was in trouble or faced with a difficult situation I would recall loved ones, I'd think of how they would react, I'd recall their advice, they kept me safe and sane. At the same time I was fortunate enough to meet many people that accepted me into their home, that offered me food, medicine, a warm bed, asking for nothing in return, with some we were passengers of each other's lives, with others I still keep touch, and yes, there were mean and xenophobic people but I can't remember their faces or recall their actions.
+[scene[19], "No joke, one of the landords I spoke to while looking for a place was smoking pot in his room and it was this thick with smoke."]
 
-And so I finished this game when I missed those I loved the most, and seeing myself in John and Sam, looking for a home in the world hit me hard, specially when seeing myself in so many moments of their journey such as arriving at a cold train stations in the early hours of the morning, cooking with new friends to bond and many heartfelt goodbyes. 
+For a whole month I walked through Buenos Aires looking for a place to stay while also attending classes. Searching for a place to stay was a fight against time as I had very limited cash. 
 
-Eastward's story ends with a bitter ending, memories are lost, and yet, the behavior, the character, the very essence of a person and what's imprinted by loved ones remain, such is life if you ask me!
+*I was fortunate enough to meet many incredible people that accepted me into their home, that offered me food, medicine, a warm bed, asking for nothing in return*, with some we were passengers of each other's lives, with others I still keep touch, and yes, there were mean and xenophobic people but I can't remember their faces or recall their actions.
+
+[scene[29], "This game displays early mornings extremely well."]
+
+And so I finished this game when I missed those I loved the most, and seeing myself in John and Sam, looking for a home in the world hit hard, specially when seeing myself in so many moments of their journey such as arriving at a cold **train stations** in the early hours of the morning, **cooking** with new friends to **bond** and many **heartfelt goodbyes**. 
 
 [scene[24], "Sun light, clouds and good-byes."]
+
+
+# Closing up
 
 Pixpil released an expansion called **Octopia** which is farming sim, I haven't gotten around it yet, but I'm sure it won't dissapoint.
 
