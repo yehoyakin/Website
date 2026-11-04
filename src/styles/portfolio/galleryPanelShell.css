@@ -39,10 +39,16 @@
   padding: clamp(1rem, 2vw, 1.5rem);
   isolation: isolate;
   overflow: hidden;
-  background-color: color-mix(
-    in srgb,
-    rgb(0 0 0 / 0.34) 46%,
-    var(--project-tag-color, var(--plate-tint)) 54%
+  /* The panel wears the active theme as a vertical grade — the assigned accent
+     up top easing down to a dark base — so the enlarged media sits on shaded
+     depth instead of a flat fill. --plate-tint is the day/night-aware form of
+     the theme, so a themed post grades in its own colour and night darkens it. */
+  background-color: color-mix(in srgb, var(--plate-tint) 30%, var(--time-black));
+  background-image: linear-gradient(
+    158deg,
+    color-mix(in srgb, var(--project-tag-color, var(--plate-tint)) 85%, transparent) 0%,
+    color-mix(in srgb, var(--plate-tint) 60%, transparent) 46%,
+    color-mix(in srgb, var(--time-black) 45%, var(--plate-tint)) 100%
   );
   border: 2px solid transparent;
   border-image: linear-gradient(
@@ -84,7 +90,7 @@
   background-image: var(--plate-pattern, none);
   background-size: var(--pattern-size-medium, 512px) var(--pattern-size-medium, 512px);
   background-repeat: repeat;
-  opacity: 0.14;
+  opacity: 0.26;
   mix-blend-mode: screen;
   pointer-events: none;
 }
@@ -235,7 +241,11 @@ html[data-carousel-controls="native"] .blog-gallery-lightbox__dots {
   letter-spacing: normal;
   font-size: 1.92rem;
   opacity: 0.9;
-  color: var(--project-tag-color, var(--time-ink, white));
+  color: color-mix(
+    in srgb,
+    rgb(255 255 255 / 0.9) 80%,
+    var(--project-tag-color, var(--plate-tint)) 20%
+  );
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -309,17 +319,32 @@ body.lightbox-open {
   border: 0;
 }
 
-/* The caption is the same banner a gallery card carries: full width under
-   the picture, only as tall as its text. */
+/* The caption is the same banner a gallery card carries, but INSIDE the overlay
+   it is not its own panel: the card bar / plate its markup classes would give it
+   are stripped so the whole overlay reads as one background (the panel gradient
+   above) with the description laid directly on it. */
 .blog-gallery-lightbox .blog-gallery-lightbox__caption {
   display: block;
   width: 100%;
   box-sizing: border-box;
   padding: 0.85rem 1.25rem;
   font-size: clamp(1rem, 1.6vw, 1.5rem);
-  color: var(--time-ink, white);
+  color: color-mix(
+    in srgb,
+    rgb(255 255 255 / 0.9) 80%,
+    var(--project-tag-color, var(--plate-tint)) 20%
+  );
   opacity: 1;
   -webkit-line-clamp: unset;
+  background: none;
+  isolation: auto;
+  overflow: visible;
+}
+
+/* Drop the plate's drifting texture layers on the overlay description too. */
+.blog-gallery-lightbox .blog-gallery-lightbox__caption::before,
+.blog-gallery-lightbox .blog-gallery-lightbox__caption::after {
+  content: none;
 }
 
 .blog-gallery-lightbox .blog-gallery-lightbox__caption[hidden] {

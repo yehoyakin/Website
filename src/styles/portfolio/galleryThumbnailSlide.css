@@ -52,6 +52,11 @@
 .gallery-thumb-desc {
   display: block;
   margin-top: 0.25rem;
+  /* Centre the gallery caption in its bar on the slugs. The bar is a column
+     flex aligned to the start, so the text has to stretch across it first or
+     `text-align: center` would have no room to centre in. */
+  align-self: stretch;
+  text-align: center;
   color: color-mix(
     in srgb,
     rgb(255 255 255 / 0.9) 80%,
