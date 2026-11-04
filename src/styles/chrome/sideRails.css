@@ -1,13 +1,12 @@
-/* THE RIGHT-EDGE RAIL — one panel, used by both pages that need one.
-
-   The landing's contacts tab and a blog post's links tab are the same control
-   (components/shared/RailPanel.astro + scripts/railPanel.js). This used to be
-   two sets of id rules — #socials-* and #sidebar-* — for markup that differed
-   only in its width and its accent, which is how the two drifted apart.
-
-   Collapsed, only the handle is in view: the panel waits off-canvas, exactly
-   one handle width inside the window. It slides out while the reader is
-   engaged with it and slides back when they are not. */
+/* THE RIGHT-EDGE RAIL — one panel, used by both pages that need one. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/RailPanel.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ContactPanel.astro */
+   /* The landing's contacts tab and a blog post's links tab are the same control */
+   /* (components/shared/RailPanel.astro + scripts/railPanel.js). This used to be */
+   /* two sets of id rules — #socials-* and #sidebar-* — for markup that differed */
+   /* only in its width and its accent, which is how the two drifted apart. */
+   /* Collapsed, only the handle is in view: the panel waits off-canvas, exactly */
+   /* one handle width inside the window. It slides out while the reader is */
+   /* engaged with it and slides back when they are not. */
 
 .rail {
   position: fixed;
@@ -16,12 +15,12 @@
   align-items: flex-start;
   top: 25%;
   right: var(--chrome-gutter);
-  /* THE BOX IS THE HANDLE. The panel is positioned against this box instead of
-     sitting beside the handle in the flex row. Laid out in the row, the pane's
-     left edge landed exactly where the handle ends — one gutter inside the
-     window — so a strip of it showed from behind the tab on every page until
-     it was opened. Off the flow, the panel can clear the window edge on its
-     own. */
+  /* THE BOX IS THE HANDLE. The panel is positioned against this box instead of */
+     /* sitting beside the handle in the flex row. Laid out in the row, the pane's */
+     /* left edge landed exactly where the handle ends — one gutter inside the */
+     /* window — so a strip of it showed from behind the tab on every page until */
+     /* it was opened. Off the flow, the panel can clear the window edge on its */
+     /* own. */
   width: var(--icon-button-size, 2.75rem);
 }
 
@@ -30,8 +29,8 @@
   transition: opacity var(--duration-fast) var(--ease-soft);
 }
 
-/* Out of the way the handle is the control; once the panel is out it gives its
-   place to it, so the rail reads as one piece. */
+/* Out of the way the handle is the control; once the panel is out it gives its */
+   /* place to it, so the rail reads as one piece. */
 .rail.is-open .rail-handle {
   opacity: 0;
   pointer-events: none;
@@ -45,8 +44,8 @@
   max-height: 70dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  /* Parked one gutter past the edge, so the closed panel is entirely outside
-     the window: the handle is the only part of the rail on screen. */
+  /* Parked one gutter past the edge, so the closed panel is entirely outside */
+     /* the window: the handle is the only part of the rail on screen. */
   transform: translateX(var(--chrome-gutter));
   transition: transform var(--duration-base) var(--ease-settle);
 }
@@ -62,9 +61,9 @@
   }
 }
 
-/* PHONES — the handle joins the top-right chrome stack, under the day / night
-   and view toggles, rather than floating at mid-height over the page content.
-   Both panels never share a page, so they share the same slot. */
+/* PHONES — the handle joins the top-right chrome stack, under the day / night */
+   /* and view toggles, rather than floating at mid-height over the page content. */
+   /* Both panels never share a page, so they share the same slot. */
 @media (max-width: 767px) {
   .rail {
     top: calc(
@@ -81,10 +80,10 @@
     max-height: 62dvh;
     padding-right: env(safe-area-inset-right);
   }
-  /* The blog article sits under that handle, so reserve a little room for it:
-     the handle's own width, not its whole panel. The old 3.25rem cost the
-     reading column ~9% of a phone screen for a control that is mostly
-     off-canvas, which is the wrong trade on the screen with the least room. */
+  /* The blog article sits under that handle, so reserve a little room for it: */
+     /* the handle's own width, not its whole panel. The old 3.25rem cost the */
+     /* reading column ~9% of a phone screen for a control that is mostly */
+     /* off-canvas, which is the wrong trade on the screen with the least room. */
   #blog-article-section {
     padding-inline-end: 0.75rem;
   }

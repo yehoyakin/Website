@@ -1,10 +1,10 @@
-/* Carousel index: the row of circles under a strip.
-
-   These used to be squares drawn in CSS (`::before` with a border, a fill and
-   four bevel shadows) — a hand-built imitation of the icon set sitting next to
-   icons that come from the set itself. The index is icon artwork now: one
-   day / night pair per dot, injected by scripts/cardCarousel.js, dimmed when it
-   is not the current slide. */
+/* Carousel index: the row of circles under a strip. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ContactPanel.astro */
+   /* These used to be squares drawn in CSS (`::before` with a border, a fill and */
+   /* four bevel shadows) — a hand-built imitation of the icon set sitting next to */
+   /* icons that come from the set itself. The index is icon artwork now: one */
+   /* day / night pair per dot, injected by scripts/cardCarousel.js, dimmed when it */
+   /* is not the current slide. */
 
 .card-carousel-dots {
   display: flex;
@@ -27,8 +27,8 @@
   touch-action: manipulation;
 }
 
-/* `.icon-mode` supplies the stacking grid for the day / night pair; this only
-   sets the size and the resting state. */
+/* `.icon-mode` supplies the stacking grid for the day / night pair; this only */
+   /* sets the size and the resting state. */
 .card-carousel-dot-icon {
   width: 0.8rem;
   height: 0.8rem;
@@ -46,8 +46,8 @@
   image-rendering: pixelated;
 }
 
-/* The grow is the shared button hover (pixelChrome/controlHover.css); only the
-   resting dim lifts here, so the dot does not scale twice. */
+/* The grow is the shared button hover (pixelChrome/controlHover.css); only the */
+   /* resting dim lifts here, so the dot does not scale twice. */
 .card-carousel-dot:hover .card-carousel-dot-icon,
 .card-carousel-dot:focus-visible .card-carousel-dot-icon {
   opacity: 0.75;

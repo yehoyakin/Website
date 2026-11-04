@@ -1,11 +1,12 @@
 ---
 // Purpose: Component - src/components/Blog/BlogBackgrounds.astro (Dynamic layered backgrounds for posts)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/layoutPrimitives.css
 interface BackgroundLayer {
   image: string;
 }
 
 interface Props {
-  /** Already resolved through utils/asset.ts by the page. */
+  // Already resolved through utils/asset.ts by the page.
   backgrounds: BackgroundLayer[];
   heroImage: string;
   backgroundBlur: number;
@@ -19,9 +20,9 @@ const {
   backgroundOpacity = 1,
 } = Astro.props as Props;
 
-/* Image URLs and opacity are per-post values, so they are handed to CSS as
-   inline custom properties; the layer's visual rules live in
-   styles/foundation/layoutPrimitives.css. */
+// Image URLs and opacity are per-post values, so they are handed to CSS as
+   // inline custom properties; the layer's visual rules live in
+   // styles/foundation/layoutPrimitives.css.
 const layerStyle = (image: string, opacity: number) =>
   [
     `background-image: url('${image}')`,
@@ -52,10 +53,7 @@ const initialOpacity = (index: number, total: number) =>
         />
       ))
     ) : (
-      /* Single hero fallback when no per-section backgrounds are defined.
-         The client script treats an empty backgrounds array as a no-op, so
-         this element is never touched after first paint — it simply keeps the
-         hero image for the lifetime of the page. */
+      /* Single hero fallback when no per-section backgrounds are defined. The client script treats an empty backgrounds array as a no-op, so this element is never touched after first paint — it simply keeps the hero image for the lifetime of the page. */
       <div
         id="dynamic-bg-0"
         data-active="1"

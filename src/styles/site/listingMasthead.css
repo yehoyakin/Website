@@ -1,13 +1,12 @@
-/* LISTING MASTHEAD — the heading block above the blog and portfolio strips.
-
-   Both listings opened with `py-24` (six rem of padding top AND bottom, which
-   is 125px each at the desktop type scale) plus a 4rem spacer. On a 720px-tall
-   laptop that started the first card 400px down the page, so the cards the
-   reader came for sat half outside the window.
-
-   The heading here is chrome, not an article: it is measured in viewport HEIGHT
-   so it gives room back to the cards on exactly the screens that have none,
-   and it keeps its breathing space on a tall screen. */
+/* LISTING MASTHEAD — the heading block above the blog and portfolio strips. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/blog.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio.astro */
+   /* Both listings opened with `py-24` (six rem of padding top AND bottom, which */
+   /* is 125px each at the desktop type scale) plus a 4rem spacer. On a 720px-tall */
+   /* laptop that started the first card 400px down the page, so the cards the */
+   /* reader came for sat half outside the window. */
+   /* The heading here is chrome, not an article: it is measured in viewport HEIGHT */
+   /* so it gives room back to the cards on exactly the screens that have none, */
+   /* and it keeps its breathing space on a tall screen. */
 
 .listing-shell {
   padding-block: clamp(3.5rem, 11dvh, 5.5rem) clamp(0.5rem, 1.6dvh, 1.1rem);
@@ -35,9 +34,9 @@
   }
 }
 
-/* SHORT WINDOWS — a laptop at 720/768px high, where every pixel above the
-   strip comes straight off the cards. The masthead drops to the back link, the
-   title and two lines of intro, and the title steps down one size. */
+/* SHORT WINDOWS — a laptop at 720/768px high, where every pixel above the */
+   /* strip comes straight off the cards. The masthead drops to the back link, the */
+   /* title and two lines of intro, and the title steps down one size. */
 @media (min-width: 768px) and (max-height: 820px) {
   .listing-shell {
     padding-block: 3.25rem 0.35rem;
@@ -45,8 +44,8 @@
   .listing-shell h1 {
     font-size: var(--font-size-2xl);
   }
-  /* The intro paragraph is Body's paragraph margins plus its 1.6 line height;
-     both are reading measure in an article and slack in a masthead. */
+  /* The intro paragraph is Body's paragraph margins plus its 1.6 line height; */
+     /* both are reading measure in an article and slack in a masthead. */
   .listing-shell p {
     margin-top: 0.5rem;
     line-height: 1.35;

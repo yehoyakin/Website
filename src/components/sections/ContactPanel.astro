@@ -1,19 +1,20 @@
 ---
 // Purpose: Section - src/components/sections/ContactPanel.astro (Top-right contact quicklinks)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/linkPanels.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/sideRails.css
 //
 // A rail panel (shared/RailPanel.astro) filled with the site's contact links.
 // It is the same control a blog post uses for its links: one component, one
 // behaviour (scripts/railPanel.js), one stylesheet (chrome/sideRails.css).
-import SocialLink from "../shared/Link.astro";
-import RailPanel from "../shared/RailPanel.astro";
-import { netIconPath } from "../../config/icons";
-import { patternForTheme } from "../../config/patterns";
+import SocialLink from "../shared/Link.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro
+import RailPanel from "../shared/RailPanel.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/RailPanel.astro
+import { netIconPath } from "../../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
+import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
 
-/* This panel is site chrome, not content, so it wears the MODE base colour
-   rather than a theme: `--icon-accent` is the day base colour by day and the
-   night one at night (base/timeColors.css), the same token the unthemed icons
-   are drawn in. A fixed theme here painted the links purple in both modes and
-   on every page it floated over. */
+// This panel is site chrome, not content, so it wears the MODE base colour
+   // rather than a theme: `--icon-accent` is the day base colour by day and the
+   // night one at night (base/timeColors.css), the same token the unthemed icons
+   // are drawn in. A fixed theme here painted the links purple in both modes and
+   // on every page it floated over.
 
 const links = [
   { href: "mailto:joaquinignacio.herrerabriones@email.com", text: "Email", external: false, icon: "email" },
@@ -27,9 +28,7 @@ const links = [
   id="contacts"
   label="Toggle contact links"
   icon="contacts"
-  /* Same plate as a project's links panel (chrome/pixelChrome/linkPanels.css):
-     the pixel frame and the white motif, tinted by the mode base colour, so the
-     panel follows day / night rather than a theme. */
+  /* Same plate as a project's links panel (chrome/pixelChrome/linkPanels.css): the pixel frame and the white motif, tinted by the mode base colour, so the panel follows day / night rather than a theme. */
   style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
   panelClass="links-panel w-56"
 >
@@ -42,9 +41,7 @@ const links = [
           external={link.external}
           icon={link.icon}
           tinted
-          /* The accent, not a named theme: `--icon-accent` is the day colour by
-             day and the night colour at night, so the tiles keep following the
-             mode with the themed tile's white outline. */
+          /* The accent, not a named theme: `--icon-accent` is the day colour by day and the night colour at night, so the tiles keep following the mode with the themed tile's white outline. */
           style="--project-tag-color: var(--icon-accent); --project-tag-color-dark: var(--icon-accent)"
         />
       ))

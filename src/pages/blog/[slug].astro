@@ -1,28 +1,29 @@
 ---
 // Purpose: Page - src/pages/blog/[slug].astro (Blog post template)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/patternPlates.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/linkPanels.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/article/articleMasthead.css
 
-import MyLayout from "../../layouts/MyLayout.astro";
+import MyLayout from "../../layouts/MyLayout.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
 
-import BackLink from "../../components/shared/BackLink.astro";
+import BackLink from "../../components/shared/BackLink.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro
 
-import BlogBackgrounds from "../../components/Blog/BlogBackgrounds.astro";
+import BlogBackgrounds from "../../components/Blog/BlogBackgrounds.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogBackgrounds.astro
 
-import BlogHeader from "../../components/Blog/BlogHeader.astro";
+import BlogHeader from "../../components/Blog/BlogHeader.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro
 
-import BlogContent from "../../components/Blog/BlogContent.astro";
+import BlogContent from "../../components/Blog/BlogContent.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro
 
-import BlogSidebar from "../../components/Blog/BlogSidebar.astro";
+import BlogSidebar from "../../components/Blog/BlogSidebar.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogSidebar.astro
 
-import RailPanel from "../../components/shared/RailPanel.astro";
+import RailPanel from "../../components/shared/RailPanel.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/RailPanel.astro
 
 import { getCollection } from "astro:content";
 
-import { asset, isRemoteUrl } from "../../utils/asset";
-import { videoEmbedUrl } from "../../utils/video";
+import { asset, isRemoteUrl } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
+import { videoEmbedUrl } from "../../utils/video";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/video.ts
 
-import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
 
-import { patternForTheme } from "../../config/patterns";
+import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -289,11 +290,11 @@ const parseMarkdownBlocks = (text: string) => {
       continue;
     }
 
-    /* Gallery video marker: [gallery:video[0]] or [gallery:video[0], "caption"] —
-       adds a video from the frontmatter videos array to the gallery buffer so it
-       appears as a gallery card alongside images. Uses the same embed detection as
-       the project slug so YouTube / Vimeo links become iframe embeds. The optional
-       inline caption (second argument) overrides the frontmatter title. */
+    // Gallery video marker: [gallery:video[0]] or [gallery:video[0], "caption"] —
+       // adds a video from the frontmatter videos array to the gallery buffer so it
+       // appears as a gallery card alongside images. Uses the same embed detection as
+       // the project slug so YouTube / Vimeo links become iframe embeds. The optional
+       // inline caption (second argument) overrides the frontmatter title.
     const galleryVideoMatch = line.match(/^\[gallery:video\[(\d+)\](?:,\s*(.*?))?\]$/);
     if (galleryVideoMatch) {
       flushParagraph();
@@ -321,9 +322,9 @@ const parseMarkdownBlocks = (text: string) => {
       continue;
     }
 
-    /* Uploaded clips and embeds. The parser used to skip these markers, so
-       `[video[0]]` fell through to the paragraph buffer and a post rendered the
-       marker as text instead of the figure — no <video> or <iframe> at all. */
+    // Uploaded clips and embeds. The parser used to skip these markers, so
+       // `[video[0]]` fell through to the paragraph buffer and a post rendered the
+       // marker as text instead of the figure — no <video> or <iframe> at all.
     const videoMatch = line.match(
       /^\[video\[(\d+)(?:,\s*(wide|large|full))?\](?:,\s*(.*?))?\]$/,
     );
@@ -358,9 +359,9 @@ const parseMarkdownBlocks = (text: string) => {
 
 const cards = post.data.cards ?? [];
 
-/* ---------------------------------------------------------
- * Normalize content scenes through asset()
- * --------------------------------------------------------- */
+// ---------------------------------------------------------
+ // Normalize content scenes through asset()
+ // ---------------------------------------------------------
 
 const scenes = Array.isArray(post.data.scenes)
   ? post.data.scenes.map((s) => ({
@@ -369,11 +370,11 @@ const scenes = Array.isArray(post.data.scenes)
     }))
   : [];
 
-/* ---------------------------------------------------------
- * Normalize content videos through asset()
- * Remote links (YouTube, Vimeo, hosted files) are kept as-is;
- * everything else is treated as a path inside public/.
- * --------------------------------------------------------- */
+// ---------------------------------------------------------
+ // Normalize content videos through asset()
+ // Remote links (YouTube, Vimeo, hosted files) are kept as-is;
+ // everything else is treated as a path inside public/.
+ // ---------------------------------------------------------
 
 const resolveMedia = (path: string) => (isRemoteUrl(path) ? path : asset(path));
 
@@ -389,9 +390,9 @@ const videos = Array.isArray(post.data.videos)
     }))
   : [];
 
-/* ---------------------------------------------------------
- * Normalize backgrounds through asset()
- * --------------------------------------------------------- */
+// ---------------------------------------------------------
+ // Normalize backgrounds through asset()
+ // ---------------------------------------------------------
 
 const rawBackgrounds = post.data.backgrounds ?? [];
 
@@ -401,16 +402,16 @@ const backgrounds = Array.isArray(rawBackgrounds)
     }))
   : [];
 
-/* ---------------------------------------------------------
- * Replace [background[x]] markers in rendered body HTML
- * with invisible runtime anchors.
- * --------------------------------------------------------- */
+// ---------------------------------------------------------
+ // Replace [background[x]] markers in rendered body HTML
+ // with invisible runtime anchors.
+ // ---------------------------------------------------------
 
 const bodyBlocks = parseMarkdownBlocks(markdownSource);
 
-/* ---------------------------------------------------------
- * Hero / background settings
- * --------------------------------------------------------- */
+// ---------------------------------------------------------
+ // Hero / background settings
+ // ---------------------------------------------------------
 
 const heroImage = post.data.background ? asset(post.data.background) : "";
 
@@ -420,25 +421,25 @@ const backgroundOpacity = post.data.backgroundOpacity ?? 1;
 
 const backgroundParallax = post.data.backgroundParallax ?? 0.2;
 
-/* ---------------------------------------------------------
- * Theme resolution
- * --------------------------------------------------------- */
+// ---------------------------------------------------------
+ // Theme resolution
+ // ---------------------------------------------------------
 
 const themeName = toThemeName(post.data.theme);
 
 const postDynamicToken = resolveThemeToken(themeName);
 
-/* ---------------------------------------------------------
- * Base URL
- * --------------------------------------------------------- */
+// ---------------------------------------------------------
+ // Base URL
+ // ---------------------------------------------------------
 
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 
-/* ---------------------------------------------------------
- * Preload hero + article backgrounds
- * --------------------------------------------------------- */
+// ---------------------------------------------------------
+ // Preload hero + article backgrounds
+ // ---------------------------------------------------------
 
 const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
   Boolean,
@@ -451,24 +452,22 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
   page="blog"
   preloadImages={imagesToPreload}
 >
-  <!-- -----------------------------------------------------
-       BACK LINK
-       ----------------------------------------------------- -->
+  <!-- ----------------------------------------------------- -->
+  <!-- BACK LINK -->
+  <!-- ----------------------------------------------------- -->
 
   <div class="relative z-30">
     <BackLink href={`${baseUrl}blog/`} text="Back to blog" />
   </div>
 
-  <!-- -----------------------------------------------------
-       BLOG CONTENT
-       ----------------------------------------------------- -->
+  <!-- ----------------------------------------------------- -->
+  <!-- BLOG CONTENT -->
+  <!-- ----------------------------------------------------- -->
 
   <section
     id="blog-article-section"
     class="pattern-plate pattern-plate--medium pattern-plate--ghost relative py-12 md:py-16 px-4 max-w-4xl mx-auto w-full"
-    /* The post's pattern tile is set here so the reading column inside can
-       inherit it: the texture belongs to the post's theme, and this section is
-       the element that already carries that theme's colour. */
+    /* The post's pattern tile is set here so the reading column inside can inherit it: the texture belongs to the post's theme, and this section is the element that already carries that theme's colour. */
     style={`--project-tag-color: ${postDynamicToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`}
   >
     <!-- Background rendering layer -->
@@ -495,27 +494,26 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       </div>
     </div>
 
-    <!-- ---------------------------------------------------
-         End-of-article sentinel
-         --------------------------------------------------- -->
+    <!-- --------------------------------------------------- -->
+    <!-- End-of-article sentinel -->
+    <!-- --------------------------------------------------- -->
 
     <div id="blog-end-sentinel" class="w-full h-1"></div>
   </section>
 
-  <!-- -----------------------------------------------------
-       THAT'S ALL MESSAGE
-       ----------------------------------------------------- -->
+  <!-- ----------------------------------------------------- -->
+  <!-- THAT'S ALL MESSAGE -->
+  <!-- ----------------------------------------------------- -->
 
   <div id="thats-all-msg" class="thats-all-overlay">
     <span class="thats-all-text"> That's all for today folks! </span>
   </div>
 
-  <!-- -----------------------------------------------------
-       FLOATING SIDEBAR
-       ----------------------------------------------------- -->
+  <!-- ----------------------------------------------------- -->
+  <!-- FLOATING SIDEBAR -->
+  <!-- ----------------------------------------------------- -->
 
-  {/* The same rail panel the landing uses for its contacts tab: the handle
-      glyph and the panel's accent are the only things this page decides. */}
+  {/* The same rail panel the landing uses for its contacts tab: the handle glyph and the panel's accent are the only things this page decides. */}
   <RailPanel
     id="links"
     label="Toggle this post's links"
@@ -529,22 +527,18 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
 
   <!-- The overlay's styles live in styles/overlays/articleEndOverlay.css -->
 
-  <!-- -----------------------------------------------------
-       BLOG PAGE CONTROLLERS
-       -----------------------------------------------------
-
-       IMPORTANT:
-
-       data-astro-rerun makes this script execute again when
-       Astro performs a client-side navigation.
-
-       Before creating the new controller we destroy the
-       previous page's controller.
-
-       This prevents old blog pages from leaving scroll,
-       resize, sidebar, or IntersectionObserver listeners
-       behind.
-       ----------------------------------------------------- -->
+  <!-- ----------------------------------------------------- -->
+  <!-- BLOG PAGE CONTROLLERS -->
+  <!-- ----------------------------------------------------- -->
+  <!-- IMPORTANT: -->
+  <!-- data-astro-rerun makes this script execute again when -->
+  <!-- Astro performs a client-side navigation. -->
+  <!-- Before creating the new controller we destroy the -->
+  <!-- previous page's controller. -->
+  <!-- This prevents old blog pages from leaving scroll, -->
+  <!-- resize, sidebar, or IntersectionObserver listeners -->
+  <!-- behind. -->
+  <!-- ----------------------------------------------------- -->
 
   <script
     define:vars={{
@@ -555,9 +549,9 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
     }}
     data-astro-rerun
   >
-    /* =====================================================
-       CLEAN UP PREVIOUS BLOG PAGE
-       ===================================================== */
+    // =====================================================
+       // CLEAN UP PREVIOUS BLOG PAGE
+       // =====================================================
     if (window.__blogPageCleanup) {
       try {
         window.__blogPageCleanup();
@@ -566,9 +560,9 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       }
     }
 
-    /* =====================================================
-       BACKGROUND CONFIGURATION
-       ===================================================== */
+    // =====================================================
+       // BACKGROUND CONFIGURATION
+       // =====================================================
     const currentBackgrounds = Array.isArray(backgrounds)
       ? backgrounds.map((background) => ({
           image: background.image,
@@ -578,35 +572,35 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
     const bgBlur = Number(backgroundBlur ?? 0);
     const parallaxFactor = Number(backgroundParallax ?? 0.2);
 
-    /* =====================================================
-       BACKGROUND STATE
-       ===================================================== */
+    // =====================================================
+       // BACKGROUND STATE
+       // =====================================================
     let markerTops = [];
     let layerRanges = [];
     let resizeFrame = 0;
     let destroyed = false;
 
-    /* =====================================================
-       HELPERS
-       ===================================================== */
+    // =====================================================
+       // HELPERS
+       // =====================================================
     const clamp = (value, min, max) => {
       return Math.min(max, Math.max(min, value));
     };
 
-    /* =====================================================
-       FIND MARKERS
-       =====================================================
-       Each marker is converted into an absolute document
-       position.
-       Example:
-       [background[0]]
-       [background[1]]
-       [background[2]]
-       becomes:
-       marker 0 -> document Y
-       marker 1 -> document Y
-       marker 2 -> document Y
-       ===================================================== */
+    // =====================================================
+       // FIND MARKERS
+       // =====================================================
+       // Each marker is converted into an absolute document
+       // position.
+       // Example:
+       // [background[0]]
+       // [background[1]]
+       // [background[2]]
+       // becomes:
+       // marker 0 -> document Y
+       // marker 1 -> document Y
+       // marker 2 -> document Y
+       // =====================================================
     const getMarkerTops = () => {
       const markers = document.querySelectorAll(".bg-marker");
       if (!markers.length) {
@@ -638,9 +632,9 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
         });
     };
 
-    /* =====================================================
-       CALCULATE EACH BACKGROUND'S PARALLAX RANGE
-       ===================================================== */
+    // =====================================================
+       // CALCULATE EACH BACKGROUND'S PARALLAX RANGE
+       // =====================================================
     const computeLayerRanges = () => {
       const total = currentBackgrounds.length;
       layerRanges = new Array(total).fill(null);
@@ -652,11 +646,8 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
         document.documentElement?.scrollHeight ?? 0,
       );
 
-      /*
-       * No markers:
-       *
-       * Background 0 is used for the whole article.
-       */
+       // No markers:
+       // Background 0 is used for the whole article.
       if (!markerTops.length) {
         layerRanges[0] = {
           start: 0,
@@ -665,22 +656,16 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
         return;
       }
 
-      /*
-       * Each background gets its own segment.
-       *
-       * The first marker for a background determines
-       * where that background starts.
-       *
-       * The next marker belonging to another background
-       * determines where it ends.
-       */
+       // Each background gets its own segment.
+       // The first marker for a background determines
+       // where that background starts.
+       // The next marker belonging to another background
+       // determines where it ends.
       for (let i = 0; i < markerTops.length; i++) {
         const { index, top } = markerTops[i];
 
-        /*
-         * Duplicate markers for the same background
-         * don't reset its range.
-         */
+         // Duplicate markers for the same background
+         // don't reset its range.
         if (layerRanges[index]) {
           continue;
         }
@@ -698,9 +683,9 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       }
     };
 
-    /* =====================================================
-       UPDATE BACKGROUNDS
-       ===================================================== */
+    // =====================================================
+       // UPDATE BACKGROUNDS
+       // =====================================================
     const updateBackgrounds = () => {
       if (destroyed) {
         return;
@@ -709,17 +694,14 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
         return;
       }
 
-      /*
-       * The viewport center is used as the focus point.
-       *
-       * This replaces the old "focus" variable issue and
-       * gives us one consistent coordinate system.
-       */
+       // The viewport center is used as the focus point.
+       // This replaces the old "focus" variable issue and
+       // gives us one consistent coordinate system.
       const centerLine = window.scrollY + window.innerHeight * 0.5;
 
-      /* ---------------------------------------------------
-         Determine active background
-         --------------------------------------------------- */
+      // ---------------------------------------------------
+         // Determine active background
+         // ---------------------------------------------------
       let activeIndex = 0;
       for (let i = 0; i < markerTops.length; i++) {
         if (markerTops[i].top <= centerLine) {
@@ -730,21 +712,19 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       }
       activeIndex = clamp(activeIndex, 0, currentBackgrounds.length - 1);
 
-      /* ---------------------------------------------------
-         Parallax amplitude
-         --------------------------------------------------- */
+      // ---------------------------------------------------
+         // Parallax amplitude
+         // ---------------------------------------------------
       const amplitude = clamp(parallaxFactor, 0, 0.19) * window.innerHeight;
 
-      /* ---------------------------------------------------
-         Calculate offset for one background
-         --------------------------------------------------- */
+      // ---------------------------------------------------
+         // Calculate offset for one background
+         // ---------------------------------------------------
       const offsetForLayer = (index) => {
         const range = layerRanges[index];
 
-        /*
-         * A background without a valid range keeps the
-         * maximum positive offset.
-         */
+         // A background without a valid range keeps the
+         // maximum positive offset.
         if (!range) {
           return amplitude;
         }
@@ -755,17 +735,15 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
           1,
         );
 
-        /*
-         * +A at beginning
-         *  0 in middle
-         * -A at end
-         */
+         // +A at beginning
+         // 0 in middle
+         // -A at end
         return amplitude * (1 - 2 * progress);
       };
 
-      /* ---------------------------------------------------
-         Apply state to current background elements
-         --------------------------------------------------- */
+      // ---------------------------------------------------
+         // Apply state to current background elements
+         // ---------------------------------------------------
       currentBackgrounds.forEach((background, index) => {
         const backgroundElement = document.getElementById(
           `dynamic-bg-${index}`,
@@ -774,14 +752,12 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
           return;
         }
 
-        /*
-         * Set image every update so the element always
-         * belongs to the current page's background data.
-         */
+         // Set image every update so the element always
+         // belongs to the current page's background data.
         backgroundElement.style.backgroundImage = `url("${background.image}")`;
-        /* Blur travels as a custom property, not as an inline `filter`: the
-           block dissolve in base/layout.css animates `filter`, and the
-           animation's final keyframe would otherwise erase an inline value. */
+        // Blur travels as a custom property, not as an inline `filter`: the
+           // block dissolve in base/layout.css animates `filter`, and the
+           // animation's final keyframe would otherwise erase an inline value.
         backgroundElement.style.setProperty("--bg-blur", `${bgBlur * 24}px`);
         backgroundElement.style.transform = `translate3d(0, ${offsetForLayer(index)}px, 0)`;
         const isActive = index === activeIndex;
@@ -790,9 +766,9 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       });
     };
 
-    /* =====================================================
-       MEASURE EVERYTHING
-       ===================================================== */
+    // =====================================================
+       // MEASURE EVERYTHING
+       // =====================================================
     const remeasure = () => {
       if (destroyed) {
         return;
@@ -802,13 +778,13 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       updateBackgrounds();
     };
 
-    /* =====================================================
-       QUEUED MEASUREMENT
-       =====================================================
-       ResizeObserver can fire several times while fonts,
-       images and layout settle.
-       requestAnimationFrame prevents excessive recalculation.
-       ===================================================== */
+    // =====================================================
+       // QUEUED MEASUREMENT
+       // =====================================================
+       // ResizeObserver can fire several times while fonts,
+       // images and layout settle.
+       // requestAnimationFrame prevents excessive recalculation.
+       // =====================================================
     const queueRemeasure = () => {
       if (destroyed) {
         return;
@@ -822,31 +798,31 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       });
     };
 
-    /* =====================================================
-       SCROLL
-       ===================================================== */
+    // =====================================================
+       // SCROLL
+       // =====================================================
     const onScroll = () => {
       updateBackgrounds();
     };
 
-    /* =====================================================
-       RESIZE
-       ===================================================== */
+    // =====================================================
+       // RESIZE
+       // =====================================================
     const onResize = () => {
       queueRemeasure();
     };
 
-    /* =====================================================
-       RESIZE OBSERVER
-       =====================================================
-       `html, body { height: 100% }` (base/rules.css) pins the
-       <body> box to the viewport height, so it never changes
-       size when the article grows. Observing <body> therefore
-       never fires and the measurement taken before the scene
-       images decode is never corrected.
-       Observe the wrappers that actually grow with the article
-       instead, so late layout changes are picked up.
-       ===================================================== */
+    // =====================================================
+       // RESIZE OBSERVER
+       // =====================================================
+       // `html, body { height: 100% }` (base/rules.css) pins the
+       // <body> box to the viewport height, so it never changes
+       // size when the article grows. Observing <body> therefore
+       // never fires and the measurement taken before the scene
+       // images decode is never corrected.
+       // Observe the wrappers that actually grow with the article
+       // instead, so late layout changes are picked up.
+       // =====================================================
     const resizeTargets = [
       document.querySelector("main"),
       document.getElementById("blog-content"),
@@ -861,46 +837,39 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       resizeObserver.observe(document.body);
     }
 
-    /* =====================================================
-       EVENT REGISTRATION
-       ===================================================== */
+    // =====================================================
+       // EVENT REGISTRATION
+       // =====================================================
     window.addEventListener("scroll", onScroll, {
       passive: true,
     });
     window.addEventListener("resize", onResize);
 
-    /* =====================================================
-       INITIAL MEASUREMENT
-       ===================================================== */
+    // =====================================================
+       // INITIAL MEASUREMENT
+       // =====================================================
     remeasure();
 
-    /*
-     * Run another measurement on the next frame.
-     *
-     * This catches layout changes caused by the current
-     * page becoming visible during an Astro transition.
-     */
+     // Run another measurement on the next frame.
+     // This catches layout changes caused by the current
+     // page becoming visible during an Astro transition.
     window.requestAnimationFrame(() => {
       if (!destroyed) {
         remeasure();
       }
     });
 
-    /*
-     * Cold-load safety net.
-     *
-     * On an uncached first load the scene images and webfonts
-     * are still decoding when the script runs, so the article is
-     * far shorter than its final layout. The ResizeObserver above
-     * catches most of the growth, but a font swap can shift marker
-     * positions without changing any observed box, and the last
-     * image to decode can land after the observer's final frame.
-     *
-     * Re-measure once every image has loaded and once the webfonts
-     * are ready so the first load always matches a reload.
-     */
+     // Cold-load safety net.
+     // On an uncached first load the scene images and webfonts
+     // are still decoding when the script runs, so the article is
+     // far shorter than its final layout. The ResizeObserver above
+     // catches most of the growth, but a font swap can shift marker
+     // positions without changing any observed box, and the last
+     // image to decode can land after the observer's final frame.
+     // Re-measure once every image has loaded and once the webfonts
+     // are ready so the first load always matches a reload.
     if (document.readyState === "complete") {
-      /* Script re-ran after load — measure on the next frame. */
+      // Script re-ran after load — measure on the next frame.
       queueRemeasure();
     } else {
       window.addEventListener("load", queueRemeasure, {
@@ -913,17 +882,17 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
           queueRemeasure();
         })
         .catch(() => {
-          /* Font loading API unavailable — the load event covers us. */
+          // Font loading API unavailable — the load event covers us.
         });
     }
 
-    /* The rail panel's own behaviour (hover peek, tap to select, click-away to
-       close) is shared with the landing's contacts tab and lives in
-       scripts/railPanel.js, loaded once by layouts/MyLayout.astro. */
+    // The rail panel's own behaviour (hover peek, tap to select, click-away to
+       // close) is shared with the landing's contacts tab and lives in
+       // scripts/railPanel.js, loaded once by layouts/MyLayout.astro.
 
-    /* =====================================================
-       THAT'S ALL MESSAGE
-       ===================================================== */
+    // =====================================================
+       // THAT'S ALL MESSAGE
+       // =====================================================
     const sentinel = document.getElementById("blog-end-sentinel");
     const thatsAllMessage = document.getElementById("thats-all-msg");
     let thatsAllObserver = null;
@@ -955,47 +924,45 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       thatsAllObserver.observe(sentinel);
     }
 
-    /* =====================================================
-       PAGE CLEANUP
-       ===================================================== */
+    // =====================================================
+       // PAGE CLEANUP
+       // =====================================================
     const cleanup = () => {
       if (destroyed) {
         return;
       }
       destroyed = true;
 
-      /* Cancel queued measurement */
+      // Cancel queued measurement
       if (resizeFrame) {
         window.cancelAnimationFrame(resizeFrame);
         resizeFrame = 0;
       }
 
-      /* Remove background listeners */
+      // Remove background listeners
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
 
-      /* Remove cold-load measurement hooks */
+      // Remove cold-load measurement hooks
       window.removeEventListener("load", queueRemeasure);
 
-      /* Remove ResizeObserver */
+      // Remove ResizeObserver
       resizeObserver.disconnect();
 
-      /* Remove "That's all" observer */
+      // Remove "That's all" observer
       if (thatsAllObserver) {
         thatsAllObserver.disconnect();
         thatsAllObserver = null;
       }
 
-      /* Remove timeout */
+      // Remove timeout
       if (thatsAllTimeout) {
         window.clearTimeout(thatsAllTimeout);
         thatsAllTimeout = 0;
       }
 
-      /*
-       * Clear active state from the page's background
-       * elements before the next page takes over.
-       */
+       // Clear active state from the page's background
+       // elements before the next page takes over.
       currentBackgrounds.forEach((_background, index) => {
         const backgroundElement = document.getElementById(
           `dynamic-bg-${index}`,
@@ -1009,9 +976,9 @@ const imagesToPreload = [heroImage, ...backgrounds.map((b) => b.image)].filter(
       });
     };
 
-    /* =====================================================
-       REGISTER GLOBAL CLEANUP
-       ===================================================== */
+    // =====================================================
+       // REGISTER GLOBAL CLEANUP
+       // =====================================================
     window.__blogPageCleanup = cleanup;
   </script>
 </MyLayout>

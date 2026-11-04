@@ -1,19 +1,19 @@
 /* Shared keyframes: the drifting plate pattern and the reduced-motion opt-out. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogBackgrounds.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro */
 
-/* Scrolling pixel pattern. Each loop travels exactly one tile so the seam is
-   invisible, and the tile steps have their OWN literal-pixel keyframes:
-   Chrome refuses to put an animation on the compositor when the keyframe
-   values read `var()` — it falls back to a main-thread tick that re-records
-   style every frame and visibly stutters while the page scrolls. With a
-   concrete `translate3d` the loop is a pure compositor move: the tile is
-   rastered once and scrolling never touches it.
-   (tileTokens.css: small 128 / normal 256 / medium 512 / huge 1024, plus the
-   1600px ghost-motif step; keep these in step with it.)
-
-   Day drifts up-left; night flips the SAME keyframes with
-   `animation-direction: reverse` (see --plate-drift-direction in
-   chrome/pixelChrome/patternPlates.css), so the motif settles down-right
-   instead — a reversed one-tile loop is just as seamless. */
+/* Scrolling pixel pattern. Each loop travels exactly one tile so the seam is */
+   /* invisible, and the tile steps have their OWN literal-pixel keyframes: */
+   /* Chrome refuses to put an animation on the compositor when the keyframe */
+   /* values read `var()` — it falls back to a main-thread tick that re-records */
+   /* style every frame and visibly stutters while the page scrolls. With a */
+   /* concrete `translate3d` the loop is a pure compositor move: the tile is */
+   /* rastered once and scrolling never touches it. */
+   /* (tileTokens.css: small 128 / normal 256 / medium 512 / huge 1024, plus the */
+   /* 1600px ghost-motif step; keep these in step with it.) */
+   /* Day drifts up-left; night flips the SAME keyframes with */
+   /* `animation-direction: reverse` (see --plate-drift-direction in */
+   /* chrome/pixelChrome/patternPlates.css), so the motif settles down-right */
+   /* instead — a reversed one-tile loop is just as seamless. */
 @keyframes plate-drift-128 {
   from {
     transform: translate3d(0, 0, 0);
@@ -55,17 +55,17 @@
   }
 }
 
-/* SCREEN-PINNED BACKDROP DRIFT — the two body-text layers on the slug pages.
-   They use `background-attachment: fixed` so only one viewport of the repeat is
-   ever painted (no ten-thousand-pixel travelling image, no giant composited
-   layer). A `transform` can't drive those: it reclaims the viewport pin in
-   Chromium and does nothing in Firefox. `background-position` is the one motion
-   that is compatible with the fixed pin — it slides the repeat across the
-   viewport while `fixed` keeps the painted area to a single screen. Each loop
-   travels exactly one tile so the seam is invisible; the two steps match the
-   tiles those layers actually carry (fine card 128, ghost motif 1600).
-   Day drifts up-left; night reverses the SAME keyframes with
-   `animation-direction: reverse`, exactly like the transform loops above. */
+/* SCREEN-PINNED BACKDROP DRIFT — the two body-text layers on the slug pages. */
+   /* They use `background-attachment: fixed` so only one viewport of the repeat is */
+   /* ever painted (no ten-thousand-pixel travelling image, no giant composited */
+   /* layer). A `transform` can't drive those: it reclaims the viewport pin in */
+   /* Chromium and does nothing in Firefox. `background-position` is the one motion */
+   /* that is compatible with the fixed pin — it slides the repeat across the */
+   /* viewport while `fixed` keeps the painted area to a single screen. Each loop */
+   /* travels exactly one tile so the seam is invisible; the two steps match the */
+   /* tiles those layers actually carry (fine card 128, ghost motif 1600). */
+   /* Day drifts up-left; night reverses the SAME keyframes with */
+   /* `animation-direction: reverse`, exactly like the transform loops above. */
 @keyframes plate-bg-drift-128 {
   from {
     background-position: 0 0;

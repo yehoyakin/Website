@@ -1,4 +1,5 @@
 /* Responsive and touch pass; imported last by site.css. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/blog.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 
 @import "touchErgonomics.css";
 @import "phoneTypeScale.css";
@@ -9,9 +10,9 @@
 @import "../chrome/backLink.css";
 @import "phoneLandingHeight.css";
 
-/* Horizontal scroll: scrollbar only appears when content overflows the viewport
-   width. Otherwise the scrollbar is hidden. This ensures the gallery and page
-   content don't show a scrollbar when there's no horizontal overflow. */
+/* Horizontal scroll: scrollbar only appears when content overflows the viewport */
+   /* width. Otherwise the scrollbar is hidden. This ensures the gallery and page */
+   /* content don't show a scrollbar when there's no horizontal overflow. */
 @supports (overflow: hidden) {
   .blog-cards-wrapper,
   .gallery-thumbnails-wrapper,

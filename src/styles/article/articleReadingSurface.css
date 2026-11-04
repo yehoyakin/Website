@@ -1,4 +1,5 @@
 /* Reading surface: black plate, pattern, accent edge, measure, insets. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro */
 
 .blog-article-body {
   position: relative;
@@ -6,15 +7,16 @@
   margin-inline: auto;
   padding: 1.25rem 1rem 1.75rem;
   border: var(--outline-width) solid var(--frame-accent);
-  /* A FLAT accent border, not a border-image ramp: the light-to-dark grade
-     on the border — and on the fill — is the shared screen grade
-     (styles/site/pageLighting.css), painted over the frame like everywhere
-     else. `--frame-accent` resolves in frames.css, imported after this
-     file; custom properties substitute at computed-value time, so the order
-     does not matter. */
-  /* The fill comes from `.pattern-plate`
-     (styles/chrome/pixelChrome/patternPlates.css), like every other plate;
-     the lighting is the shared screen grade (styles/site/pageLighting.css). */
+  /* A FLAT accent border, not a border-image ramp: the light-to-dark grade */
+     /* on the border — and on the fill — is the shared screen grade */
+     /* (styles/site/pageLighting.css): the fill carries it on the plate's own */
+     /* background, and the border ring is graded by the plate's */
+     /* `.screen-grade-ring` wrapper in the page markup. `--frame-accent` */
+     /* resolves in frames.css, imported after this file; custom properties */
+     /* substitute at computed-value time, so the order does not matter. */
+  /* The fill comes from `.pattern-plate` */
+     /* (styles/chrome/pixelChrome/patternPlates.css), like every other plate; */
+     /* the lighting is the shared screen grade (styles/site/pageLighting.css). */
   box-shadow: none;
   isolation: isolate;
 }
@@ -30,10 +32,10 @@
   }
 }
 
-/* PHONES — the surface keeps its inline padding for the copy, and publishes
-   that number so media inside it can give the padding back and run to the
-   panel's edges (styles/portfolio/galleryThumbnailSlide.css). The copy stays
-   inset; the pictures do not. */
+/* PHONES — the surface keeps its inline padding for the copy, and publishes */
+   /* that number so media inside it can give the padding back and run to the */
+   /* panel's edges (styles/portfolio/galleryThumbnailSlide.css). The copy stays */
+   /* inset; the pictures do not. */
 @media (max-width: 767px) {
   .blog-article-body {
     --reading-inset: 1rem;
@@ -46,29 +48,27 @@
   }
 }
 
-/* The long-copy columns - the article body and the project write-up - take
-   the shared PANEL recipe from chrome/pixelChrome/patternPlates.css:
-   the same fill and texture as the links panel on a project page, lit by the
-   shared screen grade. No rule here may give them a tint of their own. */
+/* The long-copy columns - the article body and the project write-up - take */
+   /* the shared PANEL recipe from chrome/pixelChrome/patternPlates.css: */
+   /* the same fill and texture as the links panel on a project page, lit by the */
+   /* shared screen grade. No rule here may give them a tint of their own. */
 
-/* THE ARTICLE'S BODY WEARS THE PROJECT WRITE-UP'S SURFACE.
-
-   Both columns are the same thing — long copy on the ghost page's 95% panel
-   plate — but only the write-up sat on a plain surface. The article also took
-   a 3px accent cap along its top, and its texture ran at the huge tile while
-   the write-up uses one and a half of them. Neither column paints a gradient
-   on its border: the frame is a flat accent line, and the light-to-dark grade
-   on border and fill alike comes from the one shared screen grade
-   (styles/site/pageLighting.css).
-
-   The id keeps these ahead of frames.css, which is imported after the article
-   and frames `.blog-article-body` by class. Opacity is deliberately NOT set:
-   the page's plate group (patternPlates.css) owns it for both columns, so they
-   stay on one value. */
+/* THE ARTICLE'S BODY WEARS THE PROJECT WRITE-UP'S SURFACE. */
+   /* Both columns are the same thing — long copy on the ghost page's 95% panel */
+   /* plate — but only the write-up sat on a plain surface. The article also took */
+   /* a 3px accent cap along its top, and its texture ran at the huge tile while */
+   /* the write-up uses one and a half of them. Neither column paints a gradient */
+   /* on its border: the frame is a flat accent line, and the light-to-dark grade */
+   /* on border and fill alike comes from the one shared screen grade */
+   /* (styles/site/pageLighting.css). */
+   /* The id keeps these ahead of frames.css, which is imported after the article */
+   /* and frames `.blog-article-body` by class. Opacity is deliberately NOT set: */
+   /* the page's plate group (patternPlates.css) owns it for both columns, so they */
+   /* stay on one value. */
 #blog-content.blog-article-body {
-  /* The reading column keeps its flat accent border at the thinnest visible
-     weight; the light-to-dark grade on it is the shared screen grade, exactly
-     like the fill. */
+  /* The reading column keeps its flat accent border at the thinnest visible */
+     /* weight; the light-to-dark grade on it is the shared screen grade, exactly */
+     /* like the fill. */
   border: 1px solid var(--frame-accent);
   border-image: none;
   box-shadow: none;
@@ -77,8 +77,8 @@
     1600px,
     calc(var(--pattern-size-huge, 1024px) * 1.5)
   );
-  /* Keep the loop keyframe in step with this tile (motionCurves.css). The
-     pinned backdrop drifts on background-position, not transform. */
+  /* Keep the loop keyframe in step with this tile (motionCurves.css). The */
+     /* pinned backdrop drifts on background-position, not transform. */
   --plate-drift: plate-bg-drift-1600;
 }
 
@@ -87,11 +87,11 @@
   content: none;
 }
 
-/* Accent edge along the top of the column — a SOLID line, not a ramp: the
-   light-to-dark grade belongs to the shared screen grade
-   (styles/site/pageLighting.css); the cap only marks the panel's top edge
-   with its accent. `::after`, so the plate pattern can keep `::before`
-   (`styles/chrome/pixelChrome/patternPlates.css`). */
+/* Accent edge along the top of the column — a SOLID line, not a ramp: the */
+   /* light-to-dark grade belongs to the shared screen grade */
+   /* (styles/site/pageLighting.css); the cap only marks the panel's top edge */
+   /* with its accent. `::after`, so the plate pattern can keep `::before` */
+   /* (`styles/chrome/pixelChrome/patternPlates.css`). */
 .blog-article-body::after {
   content: "";
   position: absolute;

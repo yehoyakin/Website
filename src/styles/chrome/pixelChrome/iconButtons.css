@@ -1,4 +1,5 @@
 /* Bare icon buttons: one box, one glyph size, one hover lift. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/ModeToggle.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/RailPanel.astro */
 
 .icon-button {
   border: 0;
@@ -16,8 +17,8 @@
   padding: 0;
 }
 
-/* ONE glyph size for every icon control — switch, panel handles, carousel
-   arrows, back-link arrow. Set here, never by utility classes on a button. */
+/* ONE glyph size for every icon control — switch, panel handles, carousel */
+   /* arrows, back-link arrow. Set here, never by utility classes on a button. */
 .mode-toggle-icon,
 .panel-toggle > img,
 .panel-toggle > .icon-mode,
@@ -29,7 +30,7 @@
   height: var(--icon-button-glyph, 1.75rem);
 }
 
-/* The hover lives on the CONTROL, not on a glyph: one shared lift for every
-   button is in pixelChrome/controlHover.css. Keeping it off `> img` is what
-   makes it reach the controls whose glyph is wrapped (the day / night switch
-   and the desktop-view toggle render `.icon-mode` spans). */
+/* The hover lives on the CONTROL, not on a glyph: one shared lift for every */
+   /* button is in pixelChrome/controlHover.css. Keeping it off `> img` is what */
+   /* makes it reach the controls whose glyph is wrapped (the day / night switch */
+   /* and the desktop-view toggle render `.icon-mode` spans). */

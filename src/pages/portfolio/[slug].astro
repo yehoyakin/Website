@@ -1,22 +1,24 @@
 ---
-import MyLayout from "../../layouts/MyLayout.astro";
-import BackLink from "../../components/shared/BackLink.astro";
-import Title from "../../components/UI/Title.astro";
-import Body from "../../components/UI/Body.astro";
-import CompactBody from "../../components/UI/CompactBody.astro";
-import Link from "../../components/shared/Link.astro";
-import Icon from "../../components/shared/Icon.astro";
-import PageBackdrop from "../../components/shared/PageBackdrop.astro";
+// Purpose: Page - src/pages/portfolio/[slug].astro (Project write-up: masthead, gallery, links, reading panel)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryPanelShell.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/patternPlates.css
+import MyLayout from "../../layouts/MyLayout.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
+import BackLink from "../../components/shared/BackLink.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro
+import Title from "../../components/UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
+import Body from "../../components/UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
+import CompactBody from "../../components/UI/CompactBody.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro
+import Link from "../../components/shared/Link.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro
+import Icon from "../../components/shared/Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
+import PageBackdrop from "../../components/shared/PageBackdrop.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro
 
 import { getCollection } from "astro:content";
-import { asset } from "../../utils/asset";
-import { isExternalUrl, videoEmbedUrl } from "../../utils/video";
-import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
-import { patternForTheme } from "../../config/patterns";
-import { defaultIconColor, defaultIconColorNight, iconColorForTheme } from "../../config/icons";
-import "../../styles/portfolio/galleryThumbnailSlide.css";
-import "../../styles/portfolio/galleryPanelShell.css";
-import "../../styles/carousel/carouselLayout.css";
+import { asset } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
+import { isExternalUrl, videoEmbedUrl } from "../../utils/video";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/video.ts
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
+import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
+import { defaultIconColor, defaultIconColorNight, iconColorForTheme } from "../../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
+import "../../styles/portfolio/galleryThumbnailSlide.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css
+import "../../styles/portfolio/galleryPanelShell.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryPanelShell.css
+import "../../styles/carousel/carouselLayout.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css
 
 type ProjectRole =
   | "lead_programmer"
@@ -70,9 +72,7 @@ const scenes = projectScenes.map((s) => s.image);
 const videos = project.data.videos ?? [];
 const projectLinks = project.data.links ?? [];
 
-/**
- * Clean up a caption string: strip quotes (straight or curly), HTML entities, trim.
- */
+ // Clean up a caption string: strip quotes (straight or curly), HTML entities, trim.
 function cleanCaption(raw: string): string {
   return raw
     .replace(/^[\s,]*/, "")
@@ -90,11 +90,9 @@ function cleanCaption(raw: string): string {
     .trim();
 }
 
-/**
- * Extract captions from [scene[N], "caption"] markers in the raw Markdown body
- * so gallery thumbnails can display them, then remove the markers from the body
- * so images only appear in the right-side gallery.
- */
+ // Extract captions from [scene[N], "caption"] markers in the raw Markdown body
+ // so gallery thumbnails can display them, then remove the markers from the body
+ // so images only appear in the right-side gallery.
 const markdownBody = project.body ?? "";
 const SCENE_MARKER_RE = /\[scene\[([0-9,\s]+)(?:,\s*(wide|large|full))?\](?:,\s*([^\]]*))?\]/g;
 const GALLERY_VIDEO_MARKER_RE = /\[gallery:video\[(\d+)\](?:,\s*([^\]]*))?\]/g;
@@ -116,8 +114,8 @@ while ((captionMatch = bodyCaptionRe.exec(markdownBody)) !== null) {
   }
 }
 
-/* Parse [gallery:video[N]] and [gallery:video[N], "caption"] markers so we can
-   strip them from the body HTML and use their inline captions for gallery items. */
+// Parse [gallery:video[N]] and [gallery:video[N], "caption"] markers so we can
+   // strip them from the body HTML and use their inline captions for gallery items.
 const galleryVideoRe = /\[gallery:video\[(\d+)\](?:,\s*([^\]]*))?\]/g;
 let galleryVideoMatch;
 let galleryVideoMarkerCount = 0;
@@ -212,9 +210,9 @@ const videoItem = (i: number, inlineCaption?: string) => {
 
 type MediaItem = NonNullable<ReturnType<typeof sceneItem> | ReturnType<typeof videoItem>>;
 
-/* One gallery per group of markers. Markers on consecutive lines share a
-   gallery; a blank line or any other content starts a new one, the same rule
-   the blog parser uses. */
+// One gallery per group of markers. Markers on consecutive lines share a
+   // gallery; a blank line or any other content starts a new one, the same rule
+   // the blog parser uses.
 const mediaGroups: MediaItem[][] = [];
 {
   let current: MediaItem[] = [];
@@ -250,19 +248,19 @@ const mediaGroups: MediaItem[][] = [];
   }
   flush();
 
-  /* A project with frontmatter videos but no markers still shows them. */
+  // A project with frontmatter videos but no markers still shows them.
   if (!mediaGroups.length && videos.length) {
     mediaGroups.push(videos.map((_, i) => videoItem(i)).filter(Boolean) as MediaItem[]);
   }
 }
 
-/* The page backdrop is the project's OWN artwork. It used to fall back to
-   `cardBackground`, which meant a project that never set a backdrop showed its
-   card art blown up behind the page; `background` is required in the schema
-   now, so the two images can never stand in for each other. */
+// The page backdrop is the project's OWN artwork. It used to fall back to
+   // `cardBackground`, which meant a project that never set a backdrop showed its
+   // card art blown up behind the page; `background` is required in the schema
+   // now, so the two images can never stand in for each other.
 const backgroundImage = asset(project.data.background);
-/* Preload only what this page actually paints: the backdrop and the gallery.
-   The card cover is not shown on a slug, so it is no longer in this list. */
+// Preload only what this page actually paints: the backdrop and the gallery.
+   // The card cover is not shown on a slug, so it is no longer in this list.
 const preloadImages = [
   backgroundImage,
   ...scenes,
@@ -414,16 +412,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                   </div>
                 </section>
 
-                {/* THE SAME OVERLAY A POST'S GALLERY OPENS.
-
-                    Placed outside the gallery container so that position: fixed
-                    is never clipped by an ancestor's overflow, transform, or
-                    stacking context. One panel per page, holding only this
-                    project's media: the list is read from the thumbnails at the
-                    moment a thumb is clicked, so it can never show another
-                    gallery's picture. The stage is filled in by the script —
-                    an image, a <video> or an embed — because this gallery
-                    contains all three. */}
+                {/* THE SAME OVERLAY A POST'S GALLERY OPENS. Placed outside the gallery container so that position: fixed is never clipped by an ancestor's overflow, transform, or stacking context. One panel per page, holding only this project's media: the list is read from the thumbnails at the moment a thumb is clicked, so it can never show another gallery's picture. The stage is filled in by the script — an image, a <video> or an embed — because this gallery contains all three. */}
                 <div class="gallery-panels-container">
                   <div
                     class="blog-gallery-lightbox"
@@ -465,11 +454,11 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 </MyLayout>
 
 <script>
-  /* A bundled (not is:inline) script, so Astro resolves and ships these
-     imports. Inline scripts are copied verbatim, and their relative imports
-     404'd in the browser, which stopped every gallery from opening. */
-  import { initGalleryEqualHeight } from "../../scripts/galleryEqualHeight.js";
-  import { initCardCarousels } from "../../scripts/cardCarousel.js";
+  // A bundled (not is:inline) script, so Astro resolves and ships these
+     // imports. Inline scripts are copied verbatim, and their relative imports
+     // 404'd in the browser, which stopped every gallery from opening.
+  import { initGalleryEqualHeight } from "../../scripts/galleryEqualHeight.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/galleryEqualHeight.js
+  import { initCardCarousels } from "../../scripts/cardCarousel.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/cardCarousel.js
   {
     const initMarkdownGalleries = () => {
       const galleries = document.querySelectorAll(".project-gallery[data-gallery-ready='false']");
@@ -479,8 +468,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
         gallery.dataset.galleryReady = "true";
 
         const thumbs = [...gallery.querySelectorAll(".gallery-thumb[data-lightbox-index]")];
-        /* The lightbox sits outside the gallery container so that position: fixed
-           is never clipped. Find it among the gallery's parent's siblings. */
+        // The lightbox sits outside the gallery container so that position: fixed
+           // is never clipped. Find it among the gallery's parent's siblings.
         const lightbox = (gallery.closest(".project-gallery-group") || gallery).querySelector("[data-gallery-lightbox]");
         if (!lightbox || !thumbs.length) return;
 
@@ -522,9 +511,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
         let dotButtons = [];
         let currentIndex = 0;
 
-        /* Build a media list from the thumbnails in this gallery. Each thumb
-           carries data-lightbox-kind ("image", "file", or "embed") so the
-           lightbox stage can render the correct element type. */
+        // Build a media list from the thumbnails in this gallery. Each thumb
+           // carries data-lightbox-kind ("image", "file", or "embed") so the
+           // lightbox stage can render the correct element type.
         const itemsFor = (thumb) => {
           const owner = thumb?.closest(".project-gallery") || gallery;
 
@@ -536,8 +525,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           }));
         };
 
-        /* Render one media item into the lightbox stage. Mirrors the blog
-           gallery's render() so videos and embeds work identically. */
+        // Render one media item into the lightbox stage. Mirrors the blog
+           // gallery's render() so videos and embeds work identically.
         const render = (index) => {
           const item = items[index];
           if (!item || !stage) return;
@@ -587,8 +576,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           render(currentIndex);
         };
 
-        /* One panel on screen at a time: a gallery opened while another panel is
-           still up would otherwise show through behind it. */
+        // One panel on screen at a time: a gallery opened while another panel is
+           // still up would otherwise show through behind it.
         const closeOtherLightboxes = () => {
           document.querySelectorAll(".blog-gallery-lightbox.is-open").forEach((other) => {
             if (other === lightbox) return;
@@ -604,14 +593,14 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
             dotsWrap.replaceChildren(...dotButtons);
           }
 
-          /* A one-item gallery has nowhere to go: the CSS hides the arrows and
-             the dot index from this flag. */
+          // A one-item gallery has nowhere to go: the CSS hides the arrows and
+             // the dot index from this flag.
           lightbox.dataset.lightboxSingle = items.length <= 1 ? "true" : "false";
 
           closeOtherLightboxes();
-          /* Opened from <body> so no transformed or clipping ancestor (the
-             gallery strip, a plate, a reveal animation) can trap the
-             fixed-position overlay inside the page. */
+          // Opened from <body> so no transformed or clipping ancestor (the
+             // gallery strip, a plate, a reveal animation) can trap the
+             // fixed-position overlay inside the page.
           if (lightbox.parentElement !== document.body) document.body.appendChild(lightbox);
           lightbox.classList.add("is-open");
           lightbox.setAttribute("aria-hidden", "false");
@@ -623,7 +612,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           lightbox.classList.remove("is-open");
           lightbox.setAttribute("aria-hidden", "true");
 
-          /* Unmount the stage to stop any playing video or embed. */
+          // Unmount the stage to stop any playing video or embed.
           stage?.replaceChildren();
 
           if (!document.querySelector(".blog-gallery-lightbox.is-open")) {
@@ -631,8 +620,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           }
         };
 
-        /* The thumbnail's own index inside its strip is what opens it, so the
-           number of galleries above it on the page cannot shift the picture. */
+        // The thumbnail's own index inside its strip is what opens it, so the
+           // number of galleries above it on the page cannot shift the picture.
         thumbs.forEach((thumb) => {
           thumb.addEventListener("click", (event) => {
             event.preventDefault();
@@ -692,7 +681,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
   .project-page-masthead {
     padding: clamp(1rem, 2vw, 1.6rem);
-    margin-bottom: 0.9rem;
     max-width: 64rem;
     margin-inline: auto;
   }
@@ -750,10 +738,10 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   .project-page-links-panel {
-    /* The links panel is a plate, and a plate draws its motif with absolutely
-       positioned layers at `inset: 0` while leaving `position` to its host.
-       Without this they anchored to `.project-page`, so the links texture was
-       sized to the page instead of the panel and spilled out of it. */
+    /* The links panel is a plate, and a plate draws its motif with absolutely */
+       /* positioned layers at `inset: 0` while leaving `position` to its host. */
+       /* Without this they anchored to `.project-page`, so the links texture was */
+       /* sized to the page instead of the panel and spilled out of it. */
     position: relative;
     padding: 1rem;
   }
@@ -774,23 +762,23 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   :global(.project-page-content-panel) {
-    /* A plate's motif is drawn by its `::before` / `::after`, which are
-       absolutely positioned at `inset: 0` — `.pattern-plate` deliberately
-       leaves `position` to its host. This panel had none, so those two layers
-       anchored to the nearest positioned ancestor, `.project-page`, and the
-       write-up's texture painted the WHOLE page (the pattern showing between
-       the panels). Relative here keeps the texture inside the panel's box. */
+    /* A plate's motif is drawn by its `::before` / `::after`, which are */
+       /* absolutely positioned at `inset: 0` — `.pattern-plate` deliberately */
+       /* leaves `position` to its host. This panel had none, so those two layers */
+       /* anchored to the nearest positioned ancestor, `.project-page`, and the */
+       /* write-up's texture painted the WHOLE page (the pattern showing between */
+       /* the panels). Relative here keeps the texture inside the panel's box. */
     position: relative;
     padding: 1rem;
     --plate-pattern-size: max(1600px, calc(var(--pattern-size-huge, 1024px) * 1.5));
-    /* Keep the loop keyframe in step with this tile (motionCurves.css). The
-       pinned backdrop drifts on background-position, not transform. */
+    /* Keep the loop keyframe in step with this tile (motionCurves.css). The */
+       /* pinned backdrop drifts on background-position, not transform. */
     --plate-drift: plate-bg-drift-1600;
     --plate-pattern-opacity: 0.09;
     max-width: none;
-    /* The write-up panel keeps a flat accent border at a hairline — the
-       light-to-dark grade on it is the shared screen grade
-       (styles/site/pageLighting.css), like its fill. */
+    /* The write-up panel keeps a flat accent border at a hairline — the */
+       /* light-to-dark grade on it is the shared screen grade */
+       /* (styles/site/pageLighting.css), like its fill. */
     border: 1px solid var(--frame-accent) !important;
     border-image: none !important;
     outline: none !important;
@@ -803,8 +791,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   :global(.project-page-content-panel .retro-contribution) {
-    /* The content column suppresses the frame recipe so only the panel owns a
-       border. Restore the gradient frame for the contribution sub-panel. */
+    /* The content column suppresses the frame recipe so only the panel owns a */
+       /* border. Restore the gradient frame for the contribution sub-panel. */
     --frame-accent: var(--project-tag-color, var(--time-border));
     --frame-edge-light: color-mix(
       in srgb,
@@ -836,8 +824,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   :global(.project-page-content-panel #blog-content) {
-    /* The content sits inside the panel's border; it does not carry a frame of
-       its own, and neither do the figures nested in it. */
+    /* The content sits inside the panel's border; it does not carry a frame of */
+       /* its own, and neither do the figures nested in it. */
     --frame-bevel: none;
     font-size: inherit;
     line-height: inherit;
@@ -873,9 +861,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     overflow: hidden;
   }
 
-  /* Project slug gallery: full-width cards with images at their natural
-     aspect ratio. Images fill the width with object-fit: contain so the full
-     image is visible without cropping or side deadspace. */
+  /* Project slug gallery: full-width cards with images at their natural */
+     /* aspect ratio. Images fill the width with object-fit: contain so the full */
+     /* image is visible without cropping or side deadspace. */
   .project-page-gallery-plain .gallery-thumbnails {
     --carousel-slide: 100%;
   }
@@ -951,8 +939,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     height: 100% !important;
   }
 
-  /* The overlay's stage. The blog's panel sizes one <img>; this one is filled by
-     the script, so an embed needs its own shape. */
+  /* The overlay's stage. The blog's panel sizes one <img>; this one is filled by */
+     /* the script, so an embed needs its own shape. */
   .blog-gallery-lightbox__stage {
     display: grid;
     place-items: center;
@@ -985,11 +973,11 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       font-size: clamp(1.3rem, 4.6vw, 2rem) !important;
     }
 
-    /* ONE COLUMN. The desktop split (write-up beside the media) left a phone
-       track of ~119px: the write-up panel could not shrink below its own
-       min-content width (~192px), so it spilled out of its track and sat on
-       top of the gallery column instead of beside it. Stacked, each panel gets
-       the whole width, which is the measure the copy reads at on a phone. */
+    /* ONE COLUMN. The desktop split (write-up beside the media) left a phone */
+       /* track of ~119px: the write-up panel could not shrink below its own */
+       /* min-content width (~192px), so it spilled out of its track and sat on */
+       /* top of the gallery column instead of beside it. Stacked, each panel gets */
+       /* the whole width, which is the measure the copy reads at on a phone. */
     .project-page-lower-grid {
       grid-template-columns: minmax(0, 1fr);
       gap: 0.8rem;
@@ -998,8 +986,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     .project-page-left-stack,
     .project-page-gallery-column,
     :global(.project-page-content-panel) {
-      /* Grid items are min-content sized by default; these panels are text and
-         pictures, so they must be allowed to shave down to their track. */
+      /* Grid items are min-content sized by default; these panels are text and */
+         /* pictures, so they must be allowed to shave down to their track. */
       min-width: 0;
     }
 
@@ -1007,15 +995,14 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       gap: 0.65rem;
     }
 
-    /* SLUG GALLERY — the picture sets the card's height.
-
-       The desktop cap (`clamp(11.3rem, 37.8vw, 30.4rem)`) is tuned for a column
-       beside the copy; across a phone's full width it is shorter than the
-       picture, so the media box was a letterbox with the screenshot cropped
-       into a shallow strip. Here the image keeps its own aspect ratio inside a
-       full-width card, captions included, exactly like the write-up's media.
-       A video or an embed has no ratio of its own, so those keep a 16:9
-       window. */
+    /* SLUG GALLERY — the picture sets the card's height. */
+       /* The desktop cap (`clamp(11.3rem, 37.8vw, 30.4rem)`) is tuned for a column */
+       /* beside the copy; across a phone's full width it is shorter than the */
+       /* picture, so the media box was a letterbox with the screenshot cropped */
+       /* into a shallow strip. Here the image keeps its own aspect ratio inside a */
+       /* full-width card, captions included, exactly like the write-up's media. */
+       /* A video or an embed has no ratio of its own, so those keep a 16:9 */
+       /* window. */
     .project-page-gallery-plain .gallery-thumb,
     .project-page-gallery-plain .blog-card {
       height: auto !important;
@@ -1074,20 +1061,20 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     }
 
     :global(.project-page-content-panel.compact-body) {
-      /* The same 16px grid the article's copy reads at; the write-up used to
-         sit a pixel or two above it, which made the two surfaces disagree on
-         exactly the page that shows both. */
+      /* The same 16px grid the article's copy reads at; the write-up used to */
+         /* sit a pixel or two above it, which made the two surfaces disagree on */
+         /* exactly the page that shows both. */
       font-size: 16px !important;
       line-height: 1.5 !important;
-      /* This panel's own inline padding, published so gallery media inside it
-         can run to the panel's edges. */
+      /* This panel's own inline padding, published so gallery media inside it */
+         /* can run to the panel's edges. */
       --reading-inset: 0.9rem;
     }
   }
-  /* The masthead plate is a tint of the project accent, so the tag cannot be
-     the accent too: it takes the reading ink and keeps the theme in its hard
-     shadow. On the near-transparent slug plate that is also what makes it
-     readable in both modes. */
+  /* The masthead plate is a tint of the project accent, so the tag cannot be */
+     /* the accent too: it takes the reading ink and keeps the theme in its hard */
+     /* shadow. On the near-transparent slug plate that is also what makes it */
+     /* readable in both modes. */
   .project-page-tag {
     color: var(--time-ink);
     text-shadow: 1px 2px 0

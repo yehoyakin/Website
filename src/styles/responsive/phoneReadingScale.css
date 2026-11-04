@@ -1,15 +1,16 @@
 /* The article and the portfolio write-up share one prose block (see. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 
 @media (max-width: 767px) {
   #blog-content,
   #blog-content p {
     text-align: left;
   }
-  /* The long-form body reads at the pixel face's own 16px grid. It sat at
-     18px, which on a ~290px column came out at ~34 characters a line — a
-     90-character desktop paragraph reflowed into two and a half screens of
-     very large type. 16px is the floor the face is drawn on, so this is as
-     small as the copy can go and still land on whole pixels. */
+  /* The long-form body reads at the pixel face's own 16px grid. It sat at */
+     /* 18px, which on a ~290px column came out at ~34 characters a line — a */
+     /* 90-character desktop paragraph reflowed into two and a half screens of */
+     /* very large type. 16px is the floor the face is drawn on, so this is as */
+     /* small as the copy can go and still land on whole pixels. */
   .compact-body {
     font-size: 16px;
     line-height: 1.5;

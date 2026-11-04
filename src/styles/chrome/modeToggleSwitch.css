@@ -1,4 +1,5 @@
 /* Day / night switch. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/ModeToggle.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
 
 .mode-toggle {
   position: fixed;
@@ -33,8 +34,8 @@
   outline-offset: 3px;
 }
 
-/* One icon at a time: the cloud means day, the moon means night. Its size is
-   the shared chrome glyph size (pixelChrome/iconButtons.css). */
+/* One icon at a time: the cloud means day, the moon means night. Its size is */
+   /* the shared chrome glyph size (pixelChrome/iconButtons.css). */
 .mode-toggle-icon {
   display: none;
 }
@@ -47,9 +48,9 @@
   display: block;
 }
 
-/* DESKTOP-VIEW REQUEST — the same rail as the day / night switch, one control
-   down. The site lays out for the device by default, so this is the explicit
-   opt-in to the old fixed-width layout (scripts/viewMode.js). */
+/* DESKTOP-VIEW REQUEST — the same rail as the day / night switch, one control */
+   /* down. The site lays out for the device by default, so this is the explicit */
+   /* opt-in to the old fixed-width layout (scripts/viewMode.js). */
 .view-toggle {
   top: calc(
     var(--chrome-gutter) + var(--chrome-control) + var(--chrome-stack-gap)
@@ -57,9 +58,9 @@
   right: var(--chrome-gutter);
 }
 
-/* The glyph names the layout the click GIVES you, like the day / night switch:
-   a laptop means "go desktop", a phone means "go back to mobile". One at a
-   time — both are in the markup, `data-view` picks the pair. */
+/* The glyph names the layout the click GIVES you, like the day / night switch: */
+   /* a laptop means "go desktop", a phone means "go back to mobile". One at a */
+   /* time — both are in the markup, `data-view` picks the pair. */
 .view-toggle-icon {
   display: none;
 }
@@ -69,8 +70,8 @@
   display: inline-grid;
 }
 
-/* Desktop view is a live state, so the control stays visible to undo it and
-   reads as engaged while it is on. */
+/* Desktop view is a live state, so the control stays visible to undo it and */
+   /* reads as engaged while it is on. */
 :root[data-view="desktop"] .view-toggle {
   opacity: 0.7;
 }

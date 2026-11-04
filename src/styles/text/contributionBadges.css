@@ -1,10 +1,10 @@
-/* Contribution block — presented as a listing card.
-
-   In the markdown it is one <div> holding a heading and a list. Here it wears
-   the same chrome as a blog / portfolio card: the same frame, the same
-   near-black tinted plate, a top bar carrying the heading and a body bar for the
-   entries, each marked with the accent tile the prose lists use. Every selector
-   carries the article scope so it outranks the generic prose list rules. */
+/* Contribution block — presented as a listing card. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogBackgrounds.astro */
+   /* In the markdown it is one <div> holding a heading and a list. Here it wears */
+   /* the same chrome as a blog / portfolio card: the same frame, the same */
+   /* near-black tinted plate, a top bar carrying the heading and a body bar for the */
+   /* entries, each marked with the accent tile the prose lists use. Every selector */
+   /* carries the article scope so it outranks the generic prose list rules. */
 
 #blog-content .retro-contribution {
   display: flex;
@@ -76,8 +76,8 @@
   line-height: inherit;
 }
 
-/* The global prose list enhancer injects icon nodes; the contribution card
-   draws its own marker, so hide injected markers in this block only. */
+/* The global prose list enhancer injects icon nodes; the contribution card */
+   /* draws its own marker, so hide injected markers in this block only. */
 #blog-content
   .retro-contribution
   :is(ul, ol)
@@ -153,9 +153,9 @@
   pointer-events: none;
 }
 
-/* The same accent tile the prose lists use, one step down for the bar — the
-   tile a project's links panel draws, so every grouping marker on the site
-   picks up the post's own colour and reads as part of that panel. */
+/* The same accent tile the prose lists use, one step down for the bar — the */
+   /* tile a project's links panel draws, so every grouping marker on the site */
+   /* picks up the post's own colour and reads as part of that panel. */
 #blog-content
   .retro-contribution
   :is(ul, ol)
@@ -192,11 +192,11 @@
   display: inline-flex;
 }
 
-/* Role chip: the project's own accent, like every other mark on the panel.
-   The plate is white carrying a wash of that accent and the label is the
-   near-black carrying the same accent, so the chip reads light on the dark
-   panel; the border is the accent itself. Plain values come first as the
-   fallback, then the mixed ones. */
+/* Role chip: the project's own accent, like every other mark on the panel. */
+   /* The plate is white carrying a wash of that accent and the label is the */
+   /* near-black carrying the same accent, so the chip reads light on the dark */
+   /* panel; the border is the accent itself. Plain values come first as the */
+   /* fallback, then the mixed ones. */
 .project-role {
   --role-accent: var(--project-tag-color, var(--icon-accent));
   padding: 0.45rem 0.85rem;

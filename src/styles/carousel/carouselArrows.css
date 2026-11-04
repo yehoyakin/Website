@@ -1,4 +1,5 @@
 /* Carousel arrows: the control row and its prev / next buttons. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ContactPanel.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/ModeToggle.astro */
 
 /* Controls row (markup built by scripts/cardCarousel.js). */
 .card-carousel-controls {
@@ -14,9 +15,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* The box is still an icon-button tap target, but the plate is gone: no
-     frame, no fill, no bevel. The arrow artwork IS the control, so the strip's
-     navigation does not read as four more buttons under the cards. */
+  /* The box is still an icon-button tap target, but the plate is gone: no */
+     /* frame, no fill, no bevel. The arrow artwork IS the control, so the strip's */
+     /* navigation does not read as four more buttons under the cards. */
   width: var(--icon-button-size, 2.75rem);
   height: var(--icon-button-size, 2.75rem);
   padding: 0;
@@ -30,14 +31,14 @@
   transition: filter var(--duration-fast) var(--ease-soft);
 }
 
-/* Arrow artwork injected by scripts/cardCarousel.js, at the shared glyph size
-   (pixelChrome/iconButtons.css) — this rule only sets how it paints. */
+/* Arrow artwork injected by scripts/cardCarousel.js, at the shared glyph size */
+   /* (pixelChrome/iconButtons.css) — this rule only sets how it paints. */
 .card-carousel-arrow img {
   display: block;
   object-fit: contain;
   image-rendering: pixelated;
 }
 
-/* The arrows wrap, so they are never disabled; hover is the only state, and it
-   is the site-wide button hover (pixelChrome/controlHover.css) — the same grow
-   and shine every other control uses. */
+/* The arrows wrap, so they are never disabled; hover is the only state, and it */
+   /* is the site-wide button hover (pixelChrome/controlHover.css) — the same grow */
+   /* and shine every other control uses. */

@@ -1,22 +1,21 @@
 ---
 // Purpose: Page - src/pages/index.astro (Home / landing)
-import MyLayout from "../layouts/MyLayout.astro";
-import PageCards from "../components/sections/PageCards.astro";
-import ContactPanel from "../components/sections/ContactPanel.astro";
-import HeaderInfo from "../components/sections/InfoHeader.astro";
-import PageBackdrop from "../components/shared/PageBackdrop.astro";
-import { asset } from "../utils/asset";
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/landingFit.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/cards/pageCards.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/responsive/phoneLandingHeight.css
+import MyLayout from "../layouts/MyLayout.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
+import PageCards from "../components/sections/PageCards.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro
+import ContactPanel from "../components/sections/ContactPanel.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ContactPanel.astro
+import HeaderInfo from "../components/sections/InfoHeader.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/InfoHeader.astro
+import PageBackdrop from "../components/shared/PageBackdrop.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro
+import { asset } from "../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
 import type { PageCard, PageCredit } from "../types/page";
 
-/* THE SITE'S PAGES — ONE ENTRY EACH.
-
-   This list is the whole landing. Each object becomes a card (PageCards), and
-   the grid fits as many cards per row as the screen allows, so publishing a new
-   section means adding one object here: no markup, no new component, no second
-   layout to keep in sync. Order is the order the cards are read in.
-
-   `theme` is a name from styles/foundation/designTokens.css — it colours the
-   card's frame, its button, its tag and its pattern plate. */
+// THE SITE'S PAGES — ONE ENTRY EACH.
+   // This list is the whole landing. Each object becomes a card (PageCards), and
+   // the grid fits as many cards per row as the screen allows, so publishing a new
+   // section means adding one object here: no markup, no new component, no second
+   // layout to keep in sync. Order is the order the cards are read in.
+   // `theme` is a name from styles/foundation/designTokens.css — it colours the
+   // card's frame, its button, its tag and its pattern plate.
 const pages: PageCard[] = [
   {
     href: `${import.meta.env.BASE_URL}portfolio/`,
@@ -41,7 +40,7 @@ const pages: PageCard[] = [
   },
 ];
 
-/** Outbound credits shown in the bar under the cards. */
+// Outbound credits shown in the bar under the cards.
 const credits: PageCredit[] = [
   { href: "https://www.deviantart.com/kirokaze/gallery", text: "Pixel-art by Kirokaze" },
   { href: "https://yukipixels.itch.io", text: "Font by Yukipixels" },
@@ -50,9 +49,7 @@ const credits: PageCredit[] = [
 ---
 
 <MyLayout title="Home">
-  {/* SCROLLS AT EVERY SIZE. The landing aims to fit one screen, but a short or
-      very wide viewport falls back to scrolling rather than hiding the cards or
-      the credits, so nothing on this page can become unreachable. */}
+  {/* SCROLLS AT EVERY SIZE. The landing aims to fit one screen, but a short or very wide viewport falls back to scrolling rather than hiding the cards or the credits, so nothing on this page can become unreachable. */}
   <div
     id="landing-viewport"
     class="fixed inset-0 w-full overflow-y-auto bg-[var(--time-page)]"
@@ -63,9 +60,7 @@ const credits: PageCredit[] = [
       night="images/pageBackgrounds/MainNight.webp"
     />
 
-    {/* A column that grows with its content (`min-h-full`, no fixed height and
-        no clipping): the hero keeps its natural size and the card grid takes
-        whatever height is left. */}
+    {/* A column that grows with its content (`min-h-full`, no fixed height and no clipping): the hero keeps its natural size and the card grid takes whatever height is left. */}
     <div
       id="landing-content"
       class="relative z-20 flex min-h-full w-full flex-col pb-3 md:pb-0"

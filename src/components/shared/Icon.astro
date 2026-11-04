@@ -1,5 +1,6 @@
 ---
 // Purpose: Component - src/components/shared/Icon.astro (Pixel icon by name)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/modeIcons.css
 //
 // Usage: <Icon name="Handbag" theme="green" />
 // Resolves public/images/Icons/Green/Handbag_Green.webp — the colour follows the
@@ -14,16 +15,16 @@ import {
   iconPath,
   isIconColor,
   type IconColor,
-} from "../../config/icons";
-import { asset } from "../../utils/asset";
+} from "../../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
+import { asset } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
 
 interface Props {
   name: string;
   class?: string;
   alt?: string;
-  /** Theme name ("green", "orange", …) — picks the matching icon colour. */
+  // Theme name ("green", "orange", …) — picks the matching icon colour.
   theme?: string;
-  /** Explicit icon colour; wins over `theme`. */
+  // Explicit icon colour; wins over `theme`.
   color?: IconColor;
 }
 
@@ -38,9 +39,9 @@ const {
 const explicitColor = color && isIconColor(color) ? color : undefined;
 const hasTheme = typeof theme === "string" && theme.trim() !== "";
 
-/* Unthemed icons are chrome, so they follow the mode: one image per base
-   colour, swapped by the same data-mode attribute as the artwork. Themed icons
-   keep a single file — their colour is the page / card theme. */
+// Unthemed icons are chrome, so they follow the mode: one image per base
+   // colour, swapped by the same data-mode attribute as the artwork. Themed icons
+   // keep a single file — their colour is the page / card theme.
 const modeAware = !explicitColor && !hasTheme;
 
 const iconColor: IconColor = explicitColor ?? iconColorForTheme(theme);

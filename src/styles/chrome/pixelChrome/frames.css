@@ -1,31 +1,28 @@
-/* FRAMES — every surface that is not a button.
+/* FRAMES — every surface that is not a button. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro */
+   /* A flat 4px outline was doing all the framing in the site: cards, panels, */
+   /* article figures, screenshots and video all sat in the same plain colour, so */
+   /* nothing looked like it was built out of pixels — only the buttons did, because */
+   /* they have the lit plate. */
+   /* A frame now carries the same light direction in its BORDER: bright along the */
+   /* top and left, stepping down through the surface colour to a shadow along the */
+   /* bottom and right. It reads as a raised plate in both modes and needs no plate */
+   /* fill of its own. */
+   /* BUTTONS ARE EXEMPT. They keep chrome/pixelChrome/buttons.css — the lit */
+   /* gradient with the bloom across the top edge — which is what tells a control */
+   /* apart from a surface. Anything with `.retro-link`, `.split-card-action`, */
+   /* `.icon-button`, `.mode-toggle`, `.back-link` or the carousel arrows is left */
+   /* alone here. */
 
-   A flat 4px outline was doing all the framing in the site: cards, panels,
-   article figures, screenshots and video all sat in the same plain colour, so
-   nothing looked like it was built out of pixels — only the buttons did, because
-   they have the lit plate.
-
-   A frame now carries the same light direction in its BORDER: bright along the
-   top and left, stepping down through the surface colour to a shadow along the
-   bottom and right. It reads as a raised plate in both modes and needs no plate
-   fill of its own.
-
-   BUTTONS ARE EXEMPT. They keep chrome/pixelChrome/buttons.css — the lit
-   gradient with the bloom across the top edge — which is what tells a control
-   apart from a surface. Anything with `.retro-link`, `.split-card-action`,
-   `.icon-button`, `.mode-toggle`, `.back-link` or the carousel arrows is left
-   alone here. */
-
-/* THE ACCENT, RESOLVED PER FRAME — not at `:root`.
-
-   A custom property that mentions `var(--project-tag-color)` is substituted
-   where it is DECLARED, and the result is what inherits. Declared at `:root`,
-   `--project-tag-color` is the general day / night tint, so every themed card
-   inherited that tint and framed itself in the mode colour instead of its own
-   accent. These are declared on the frame itself, where the host's inline
-   `--project-tag-color` (BlogCard, ProjectGallery, the article masthead, …) is
-   already in scope — a themed surface frames itself in its theme, and an
-   unthemed one still falls back to the day / night tint. */
+/* THE ACCENT, RESOLVED PER FRAME — not at `:root`. */
+   /* A custom property that mentions `var(--project-tag-color)` is substituted */
+   /* where it is DECLARED, and the result is what inherits. Declared at `:root`, */
+   /* `--project-tag-color` is the general day / night tint, so every themed card */
+   /* inherited that tint and framed itself in the mode colour instead of its own */
+   /* accent. These are declared on the frame itself, where the host's inline */
+   /* `--project-tag-color` (BlogCard, ProjectGallery, the article masthead, …) is */
+   /* already in scope — a themed surface frames itself in its theme, and an */
+   /* unthemed one still falls back to the day / night tint. */
 .pixel-frame:not(.retro-link):not(.split-card-action),
 .blog-card,
 .portrait-frame,
@@ -35,8 +32,8 @@
 .thumb-carousel-media,
 #blog-content :is(figure img, video, iframe) {
   --frame-accent: var(--project-tag-color, var(--time-border));
-  /* Also the plain `border:` colour of every surface: it was frozen to the
-     mode tint for the same reason. */
+  /* Also the plain `border:` colour of every surface: it was frozen to the */
+     /* mode tint for the same reason. */
   --outline-color: var(--frame-accent);
   /* Two extra tones per accent: the lit edge and the shaded one. */
   --frame-edge-light: color-mix(
@@ -49,8 +46,8 @@
     var(--frame-accent) 28%,
     var(--time-black)
   );
-  /* Smooth vertical progression: the accent stays readable but the colour is
-     allowed to transition gradually instead of snapping between hard bands. */
+  /* Smooth vertical progression: the accent stays readable but the colour is */
+     /* allowed to transition gradually instead of snapping between hard bands. */
   --frame-bevel: linear-gradient(
     to bottom,
     color-mix(in srgb, var(--frame-accent) 98%, var(--time-white) 2%) 0%,
@@ -60,40 +57,40 @@
   );
 }
 
-/* THE RECIPE. `.pixel-frame` is the site's surface class (panels, plates,
-   cards, the portrait, the rail panel); `.blog-card` is a card that is not
-   always a plate. The long reading column (`.blog-article-body`) is EXEMPT:
-   its border is a FLAT accent line (articleReadingSurface.css), so the
-   light-to-dark grade on it is the ONE shared screen grade
-   (styles/site/pageLighting.css), not a per-element bevel restated down a
-   ten-thousand-pixel column. */
+/* THE RECIPE. `.pixel-frame` is the site's surface class (panels, plates, */
+   /* cards, the portrait, the rail panel); `.blog-card` is a card that is not */
+   /* always a plate. The long reading column (`.blog-article-body`) is EXEMPT: */
+   /* its border is a FLAT accent line (articleReadingSurface.css), so the */
+   /* light-to-dark grade on it is the ONE shared screen grade */
+   /* (styles/site/pageLighting.css), not a per-element bevel restated down a */
+   /* ten-thousand-pixel column. */
 .pixel-frame:not(.retro-link):not(.split-card-action),
 .blog-card,
 .portrait-frame,
 .rail-panel,
 .retro-contribution {
   border-image: var(--frame-bevel) 1;
-  /* The hard inner edge the border image cannot give: one pixel of light along
-     the top and left, one of shadow along the bottom and right. */
+  /* The hard inner edge the border image cannot give: one pixel of light along */
+     /* the top and left, one of shadow along the bottom and right. */
   box-shadow:
     inset 1px 1px 0 0 color-mix(in srgb, var(--frame-edge-light) 75%, transparent),
     inset -1px -1px 0 0 color-mix(in srgb, var(--frame-edge-dark) 75%, transparent);
 }
 
-/* Hover lifts the frame instead of recolouring the border: with a border image
-   the border colour is no longer part of the picture. Plates are exempt — a
-   filter would localise their viewport-pinned screen grade for the hover
-   (styles/site/pageLighting.css). */
+/* Hover lifts the frame instead of recolouring the border: with a border image */
+   /* the border colour is no longer part of the picture. Plates are exempt — a */
+   /* filter would localise their viewport-pinned screen grade for the hover */
+   /* (styles/site/pageLighting.css). */
 .pixel-frame:not(.retro-link):not(.split-card-action):not(.pattern-plate):hover,
 .blog-card:hover,
 .portrait-frame:hover {
   filter: brightness(1.04);
 }
 
-/* IMAGES, VIDEO — the same bevel at control weight, so a screenshot in
-   an article is framed like the panel it sits in rather than by a flat line.
-   <iframe> embeds are excluded: border-image breaks iframe rendering in browsers,
-   making embedded videos invisible. */
+/* IMAGES, VIDEO — the same bevel at control weight, so a screenshot in */
+   /* an article is framed like the panel it sits in rather than by a flat line. */
+   /* <iframe> embeds are excluded: border-image breaks iframe rendering in browsers, */
+   /* making embedded videos invisible. */
 .thumb-carousel-media,
 #blog-content :is(figure img, video) {
   border: var(--control-outline-width) solid transparent;

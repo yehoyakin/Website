@@ -1,4 +1,5 @@
 /* Pixel panels: the tile plate. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro */
 
 .pixel-frame {
   --outline-color: var(--project-tag-color, var(--time-border));
@@ -8,9 +9,9 @@
   --tile-fill: color-mix(in srgb, var(--outline-color) 22%, var(--time-panel));
   position: relative;
   border: var(--outline-width) solid var(--tile-dark);
-  /* Flat fill: the lit-from-above shading (the old radial bloom + dark base)
-     now comes from the ONE shared screen grade
-     (styles/site/pageLighting.css), not a gradient painted per frame. */
+  /* Flat fill: the lit-from-above shading (the old radial bloom + dark base) */
+     /* now comes from the ONE shared screen grade */
+     /* (styles/site/pageLighting.css), not a gradient painted per frame. */
   background-color: var(--tile-fill);
   transition:
     border-color var(--duration-fast) var(--ease-soft),

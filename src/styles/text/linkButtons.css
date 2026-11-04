@@ -1,39 +1,40 @@
 /* Link button component styles. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro */
 
 .retro-link {
-  /* ONE NUMBER FOR THE BOX. 65% of the chrome's icon-button height, less six
-     pixels — 31px at desktop, 20px on phones — and everything else here is
-     derived from it: the glyph, the label, the frame. Height, not padding, sets
-     the box, so a one-word button and a two-word one are the same size. */
+  /* ONE NUMBER FOR THE BOX. 65% of the chrome's icon-button height, less six */
+     /* pixels — 31px at desktop, 20px on phones — and everything else here is */
+     /* derived from it: the glyph, the label, the frame. Height, not padding, sets */
+     /* the box, so a one-word button and a two-word one are the same size. */
   --link-button-height: calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px);
-  /* The pixel frame is drawn thick for panels; at this box size it would be
-     most of the button, so link buttons draw it thin. Both names are set: the
-     plate reads `--control-outline-width`, the thumb row's override reads
-     `--outline-width`. */
+  /* The pixel frame is drawn thick for panels; at this box size it would be */
+     /* most of the button, so link buttons draw it thin. Both names are set: the */
+     /* plate reads `--control-outline-width`, the thumb row's override reads */
+     /* `--outline-width`. */
   --control-outline-width: 2px;
   --outline-width: 2px;
 
   position: relative;
   font-family: var(--retro-font);
-  /* A MINIMUM, not a fixed box: one line of label sits in the control height,
-     and a label that needs a second line grows the button instead of being
-     clipped by it. */
+  /* A MINIMUM, not a fixed box: one line of label sits in the control height, */
+     /* and a label that needs a second line grows the button instead of being */
+     /* clipped by it. */
   height: auto;
   min-height: var(--link-button-height);
   padding-block: 0;
-  /* The box is small now, so the slack around the glyph has to be small too:
-     inline padding and the icon/label gap are cut to match. */
+  /* The box is small now, so the slack around the glyph has to be small too: */
+     /* inline padding and the icon/label gap are cut to match. */
   padding-inline: 0.45rem;
   gap: 0.3rem;
-  /* One step below the last one, with a 6px floor: below that the pixel face
-     stops resolving letters, whatever the box allows. */
+  /* One step below the last one, with a 6px floor: below that the pixel face */
+     /* stops resolving letters, whatever the box allows. */
   font-size: max(6px, calc(var(--font-size-xs) - 14px));
   line-height: 1;
 }
 
-/* The glyph follows the box instead of a fixed rem size, and fills it: at 80%
-   of the button's height the icon reads at the button's own scale rather than
-   floating in padding. */
+/* The glyph follows the box instead of a fixed rem size, and fills it: at 80% */
+   /* of the button's height the icon reads at the button's own scale rather than */
+   /* floating in padding. */
 .retro-link > img,
 .retro-link > .icon-mode,
 .retro-link > svg {

@@ -1,4 +1,5 @@
 /* Long-form prose shared by the article and the project write-up. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 
 #blog-content {
   color: var(--time-ink);
@@ -7,10 +8,10 @@
   text-shadow: var(--text-shadow-drop) 0 var(--time-shadow);
 }
 
-/* CompactBody — the long-form reading size, shared by the article and the
-   project write-up. Both read at ONE size: the project panel's recipe, which is
-   the one that holds up at reading distance, so the post takes it too instead
-   of a fixed 14px. (The project panel re-declares the same numbers on itself.) */
+/* CompactBody — the long-form reading size, shared by the article and the */
+   /* project write-up. Both read at ONE size: the project panel's recipe, which is */
+   /* the one that holds up at reading distance, so the post takes it too instead */
+   /* of a fixed 14px. (The project panel re-declares the same numbers on itself.) */
 .compact-body {
   font-size: clamp(
     calc(0.74rem + 6px),
@@ -36,15 +37,14 @@
   }
 }
 
-/* Lede: the opening paragraph takes the drop cap and otherwise reads at the
-   body size — only its first letter is enlarged.
-
-   The cap is filled like every other magazine opener — with the post's theme,
-   in both modes; the ink is the theme colour, so it never drops to the accent's
-   dark variant after dark. Like the rest of the prose type it is pushed to its
-   own chroma so it pops over the plate: `--lede-cap-fill` is the bright theme
-   tint, and the cap's hard shadow is its dark variant, so it stands out instead
-   of washing into the background. */
+/* Lede: the opening paragraph takes the drop cap and otherwise reads at the */
+   /* body size — only its first letter is enlarged. */
+   /* The cap is filled like every other magazine opener — with the post's theme, */
+   /* in both modes; the ink is the theme colour, so it never drops to the accent's */
+   /* dark variant after dark. Like the rest of the prose type it is pushed to its */
+   /* own chroma so it pops over the plate: `--lede-cap-fill` is the bright theme */
+   /* tint, and the cap's hard shadow is its dark variant, so it stands out instead */
+   /* of washing into the background. */
 #blog-content .blog-lede {
   --lede-cap-fill: var(--project-tag-color, var(--theme-main-day));
   --lede-cap-shadow: color-mix(
@@ -71,25 +71,23 @@
   font-weight: 700;
   color: var(--lede-cap-fill);
   -webkit-text-fill-color: var(--lede-cap-fill);
-  /* Big, bright opener: the theme's own tint plus the dark variant as its hard
-     shadow, so the letter stays legible and stands out by itself over whatever
-     is behind it. */
+  /* Big, bright opener: the theme's own tint plus the dark variant as its hard */
+     /* shadow, so the letter stays legible and stands out by itself over whatever */
+     /* is behind it. */
   text-shadow:
     3px 5px 0 var(--lede-cap-shadow),
     6px 9px 0 color-mix(in srgb, var(--lede-cap-shadow) 44%, var(--time-black));
 }
 
-/* MAGAZINE OPENERS — the first letter of every top-level heading in the copy.
-
-   A post's `#` headings open a movement, so their first character is set as a
-   drop cap: large, floated into the copy below, and filled with the heading's
-   own ink — the theme by day, the theme's dark variant at night, exactly what
-   the rest of the heading uses — inside the same hard white ring.
-
-   The ring is the heading's eight-shadow outline (styles/article/blogArticle.css),
-   repeated here with one change: the step is measured against the cap's own
-   size, so the outline keeps the heading's weight relative to the glyph instead
-   of staying a 1px hairline around a letter 2.6 times larger. */
+/* MAGAZINE OPENERS — the first letter of every top-level heading in the copy. */
+   /* A post's `#` headings open a movement, so their first character is set as a */
+   /* drop cap: large, floated into the copy below, and filled with the heading's */
+   /* own ink — the theme by day, the theme's dark variant at night, exactly what */
+   /* the rest of the heading uses — inside the same hard white ring. */
+   /* The ring is the heading's eight-shadow outline (styles/article/blogArticle.css), */
+   /* repeated here with one change: the step is measured against the cap's own */
+   /* size, so the outline keeps the heading's weight relative to the glyph instead */
+   /* of staying a 1px hairline around a letter 2.6 times larger. */
 #blog-content h1::first-letter {
   float: left;
   margin: 0.04em 0.12em 0 0;
@@ -116,8 +114,8 @@
 
 /* Headings. */
 
-/* Geometry only: the outline cut (fill + ring) is shared with the masthead
-   title in styles/article/blogArticle.css. */
+/* Geometry only: the outline cut (fill + ring) is shared with the masthead */
+   /* title in styles/article/blogArticle.css. */
 #blog-content :is(h1, h2, h3, h4, h5, h6) {
   margin-left: 0;
   margin-right: 0;
@@ -174,13 +172,12 @@
   --heading-fill: var(--time-ink-muted);
 }
 
-/* LISTS — drawn markers, not typed ones.
-
-   A bullet in the pixel face comes out smaller than the copy it labels and sits
-   half a line off the text, which is what made these lists hard to read. So the
-   marker is drawn instead: an accent tile for bullets, a numbered accent chip
-   for ordered lists. Both hang in a fixed gutter, so a wrapped line starts
-   flush with the first line's text instead of sliding back under the marker. */
+/* LISTS — drawn markers, not typed ones. */
+   /* A bullet in the pixel face comes out smaller than the copy it labels and sits */
+   /* half a line off the text, which is what made these lists hard to read. So the */
+   /* marker is drawn instead: an accent tile for bullets, a numbered accent chip */
+   /* for ordered lists. Both hang in a fixed gutter, so a wrapped line starts */
+   /* flush with the first line's text instead of sliding back under the marker. */
 
 #blog-content :where(ul, ol) {
   margin: 0.4rem 0 1.15rem;
@@ -203,8 +200,8 @@
   content: none;
 }
 
-/* Bullet and number markers are both drawn from theme icon assets so the list
-   style is consistent no matter whether the markdown is unordered or ordered. */
+/* Bullet and number markers are both drawn from theme icon assets so the list */
+   /* style is consistent no matter whether the markdown is unordered or ordered. */
 #blog-content .list-bullet-icon,
 #blog-content .list-number-icon {
   position: relative;
@@ -352,10 +349,10 @@
   font-size: inherit;
 }
 
-/* Figures: a SOLID accent border, not the accent ramp they used to paint —
-   the light-to-dark grade belongs to the shared screen grade
-   (styles/site/pageLighting.css); the frame only marks the figure with its
-   accent. The inset bevel shadows below keep the raised edge. */
+/* Figures: a SOLID accent border, not the accent ramp they used to paint — */
+   /* the light-to-dark grade belongs to the shared screen grade */
+   /* (styles/site/pageLighting.css); the frame only marks the figure with its */
+   /* accent. The inset bevel shadows below keep the raised edge. */
 #blog-content figure {
   margin-top: 1.6rem;
   margin-bottom: 1.6rem;
@@ -372,13 +369,12 @@
       color-mix(in srgb, var(--project-tag-color-dark, var(--theme-main-night)) 58%, transparent);
 }
 
-/* PHONES — the long-form type steps down with the column.
-
-   The desktop openers (a ~50px h1, a 40px h2, and drop caps at 2.6em on top of
-   them) are measured against a 950px reading column. On a 290px phone column
-   the same sizes made every heading half a screen and left the copy a narrow
-   ribbon underneath, with a 104px initial letter opening it. One step down
-   here, caps included, so the picture is what leads the page. */
+/* PHONES — the long-form type steps down with the column. */
+   /* The desktop openers (a ~50px h1, a 40px h2, and drop caps at 2.6em on top of */
+   /* them) are measured against a 950px reading column. On a 290px phone column */
+   /* the same sizes made every heading half a screen and left the copy a narrow */
+   /* ribbon underneath, with a 104px initial letter opening it. One step down */
+   /* here, caps included, so the picture is what leads the page. */
 @media (max-width: 767px) {
   #blog-content h1 {
     margin-top: 1.8rem;
@@ -417,6 +413,6 @@
   }
 }
 
-/* The contribution block styles itself as a listing card in
-   text/contributionBadges.css, including its own heading and markers, so no
-   prose exemptions are needed here. */
+/* The contribution block styles itself as a listing card in */
+   /* text/contributionBadges.css, including its own heading and markers, so no */
+   /* prose exemptions are needed here. */

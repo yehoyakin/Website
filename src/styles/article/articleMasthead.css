@@ -1,11 +1,12 @@
 /* Article masthead: accent strip, meta row, title, description. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
 
 .blog-masthead {
   position: relative;
   overflow: hidden;
   padding: 0.9rem 1rem 1rem;
-  /* No fill of its own: the shared pattern plate behind this header supplies
-     the day / night tint (styles/chrome/pixelChrome/patternPlates.css). */
+  /* No fill of its own: the shared pattern plate behind this header supplies */
+     /* the day / night tint (styles/chrome/pixelChrome/patternPlates.css). */
   text-align: left;
 }
 
@@ -21,8 +22,8 @@
   }
 }
 
-/* The animated pattern strip, in the post's accent colour. Scoped to the
-   masthead so it keeps its solid accent fill over the plate's dark default. */
+/* The animated pattern strip, in the post's accent colour. Scoped to the */
+   /* masthead so it keeps its solid accent fill over the plate's dark default. */
 .blog-masthead .blog-masthead-strip {
   position: absolute;
   inset: 0 0 auto 0;
@@ -30,15 +31,14 @@
   background-color: var(--project-tag-color, var(--theme-main-day));
 }
 
-/* THE STRIP IS THE ACCENT, NOT A PLATE.
-
-   The strip is a `.pattern-plate`, so the ghost page's panel rule repaints it
-   like any other surface — and that rule outranks the two-class selector above
-   by one class, which used to land the panel's darkened band across the top
-   edge as a single dark bar. The strip takes the post's accent back, flat:
-   no ramp of its own beyond the shared screen grade, because there is nothing
-   to shade — the texture still runs over it through the plate's two
-   pseudo-elements. */
+/* THE STRIP IS THE ACCENT, NOT A PLATE. */
+   /* The strip is a `.pattern-plate`, so the ghost page's panel rule repaints it */
+   /* like any other surface — and that rule outranks the two-class selector above */
+   /* by one class, which used to land the panel's darkened band across the top */
+   /* edge as a single dark bar. The strip takes the post's accent back, flat: */
+   /* no ramp of its own beyond the shared screen grade, because there is nothing */
+   /* to shade — the texture still runs over it through the plate's two */
+   /* pseudo-elements. */
 :root[data-mode] .blog-masthead .blog-masthead-strip {
   background-color: var(--project-tag-color, var(--theme-main-day));
   background-image: var(--page-lighting, none);
@@ -100,8 +100,8 @@
   );
 }
 
-/* Size only: this is the page's first header, so its accent fill and white
-   ring come from the shared blog-header outline (styles/article/blogArticle.css). */
+/* Size only: this is the page's first header, so its accent fill and white */
+   /* ring come from the shared blog-header outline (styles/article/blogArticle.css). */
 .blog-masthead-title {
   margin-top: 0.35rem;
   font-size: clamp(1.3rem, 2.6vw, 2.2rem);
@@ -120,21 +120,20 @@
   color: var(--time-ink-muted);
 }
 
-/* BLOG HEADER — the card's outline, on the header.
-
-   A card rings itself in white by day and in black after dark (see the title
-   ring in blogCardTile.css), and the header followed the day half of that in
-   both modes: a white ring around a panel that went dark underneath. It now
-   switches with the mode the way the cards do.   The frame recipe has to be
-   switched off, because the shared one (chrome/pixelChrome/frames.css) draws
-   borders with a bevel image, which ignores `border-color` entirely. It is
-   switched off with `border-image-source`, NOT the `border-image` shorthand:
-   the CSS minifier collapses `border-image: none` to an empty declaration, so
-   the bevel stayed on both headers in the built stylesheet. */
-/* `.blog-masthead.pixel-frame` is deliberate: the shared frame recipe in
-   chrome/pixelChrome/frames.css is `.pixel-frame:not(.retro-link):not(...)`,
-   the same weight, and it is imported LAST — the extra class is what keeps
-   this ring, rather than the accent bevel, on the header. */
+/* BLOG HEADER — the card's outline, on the header. */
+   /* A card rings itself in white by day and in black after dark (see the title */
+   /* ring in blogCardTile.css), and the header followed the day half of that in */
+   /* both modes: a white ring around a panel that went dark underneath. It now */
+   /* switches with the mode the way the cards do.   The frame recipe has to be */
+   /* switched off, because the shared one (chrome/pixelChrome/frames.css) draws */
+   /* borders with a bevel image, which ignores `border-color` entirely. It is */
+   /* switched off with `border-image-source`, NOT the `border-image` shorthand: */
+   /* the CSS minifier collapses `border-image: none` to an empty declaration, so */
+   /* the bevel stayed on both headers in the built stylesheet. */
+/* `.blog-masthead.pixel-frame` is deliberate: the shared frame recipe in */
+   /* chrome/pixelChrome/frames.css is `.pixel-frame:not(.retro-link):not(...)`, */
+   /* the same weight, and it is imported LAST — the extra class is what keeps */
+   /* this ring, rather than the accent bevel, on the header. */
 :root[data-mode] .blog-masthead.pixel-frame {
   border-image-source: none !important;
   border-color: var(--time-white) !important;
@@ -144,12 +143,11 @@
   border-color: var(--time-black) !important;
 }
 
-/* THE PROJECT HEADER — the same outline switch as the post header's.
-
-   `.project-page-masthead` wears the same `.pixel-frame`, so it followed the
-   frame recipe's bevel in both modes while the post header it now matches
-   switches white by day and black after dark. `border-image: none` is what lets
-   `border-color` paint, exactly as on `.blog-masthead` above. */
+/* THE PROJECT HEADER — the same outline switch as the post header's. */
+   /* `.project-page-masthead` wears the same `.pixel-frame`, so it followed the */
+   /* frame recipe's bevel in both modes while the post header it now matches */
+   /* switches white by day and black after dark. `border-image: none` is what lets */
+   /* `border-color` paint, exactly as on `.blog-masthead` above. */
 :root[data-mode] .project-page-masthead.pixel-frame {
   border-image-source: none !important;
   border-color: var(--time-white) !important;
@@ -159,9 +157,9 @@
   border-color: var(--time-black) !important;
 }
 
-/* INK — the page ink, on the card plate the header now shares with the bars of
-   the cards that lead here (see the panel rule in
-   chrome/pixelChrome/patternPlates.css): dark surface, so white copy. */
+/* INK — the page ink, on the card plate the header now shares with the bars of */
+   /* the cards that lead here (see the panel rule in */
+   /* chrome/pixelChrome/patternPlates.css): dark surface, so white copy. */
 :root[data-mode] .blog-masthead {
   --header-ink: var(--time-ink);
 }
@@ -182,10 +180,10 @@
   background: var(--header-ink);
 }
 
-/* The title is painted by `--heading-fill` (styles/article/blogArticle.css),
-   which is declared on the title itself — so the tokens are re-declared here,
-   at a weight that outranks it. White letters with the accent's dark variant as
-   the hard ring: on an accent-filled header that is the readable pairing. */
+/* The title is painted by `--heading-fill` (styles/article/blogArticle.css), */
+   /* which is declared on the title itself — so the tokens are re-declared here, */
+   /* at a weight that outranks it. White letters with the accent's dark variant as */
+   /* the hard ring: on an accent-filled header that is the readable pairing. */
 :root[data-mode] .blog-masthead .blog-masthead-title {
   --heading-fill: var(--time-white);
   --heading-ring: var(--project-tag-color-dark, var(--theme-main-night));

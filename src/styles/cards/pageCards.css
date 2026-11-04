@@ -1,18 +1,16 @@
-/* Landing page cards: the blog card, one step wider.
-
-   These wore the old split-landing tile (`.split-card`), a half-screen panel
-   with its copy laid over its artwork. They are normal cards now — the same
-   anatomy as the blog and portfolio listings (meta bar, artwork, copy bar) —
-   only wider, because a landing card is a destination rather than an item in a
-   strip.
-
-   Two layouts, one markup:
-
-     PHONE     the card is the screen. Artwork at a fixed 16:10, copy under it,
-               page scrolls naturally — the way a phone site behaves.
-     TABLET+   the card keeps the size a card has (its width sets its height);
-               it is only squeezed when the room left under the hero is
-               smaller than the card, so the credits stay on screen. */
+/* Landing page cards: the blog card, one step wider. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro */
+   /* These wore the old split-landing tile (`.split-card`), a half-screen panel */
+   /* with its copy laid over its artwork. They are normal cards now — the same */
+   /* anatomy as the blog and portfolio listings (meta bar, artwork, copy bar) — */
+   /* only wider, because a landing card is a destination rather than an item in a */
+   /* strip. */
+   /* Two layouts, one markup: */
+     /* PHONE     the card is the screen. Artwork at a fixed 16:10, copy under it, */
+               /* page scrolls naturally — the way a phone site behaves. */
+     /* TABLET+   the card keeps the size a card has (its width sets its height); */
+               /* it is only squeezed when the room left under the hero is */
+               /* smaller than the card, so the credits stay on screen. */
 
 .page-cards {
   display: flex;
@@ -29,13 +27,12 @@
   flex: 1 1 auto;
 }
 
-/* A CARD IS AS WIDE AS THE ROW ALLOWS, NOT 32rem OR NOTHING.
-
-   Below the tablet breakpoint every card was pinned to the full width, so a
-   window narrower than two 32rem cards stacked them one per row however much
-   room there was. The row now wraps on a 20rem basis — two cards share the row
-   from about 41rem up — and the 32rem maximum keeps the desktop row the size it
-   always was. */
+/* A CARD IS AS WIDE AS THE ROW ALLOWS, NOT 32rem OR NOTHING. */
+   /* Below the tablet breakpoint every card was pinned to the full width, so a */
+   /* window narrower than two 32rem cards stacked them one per row however much */
+   /* room there was. The row now wraps on a 20rem basis — two cards share the row */
+   /* from about 41rem up — and the 32rem maximum keeps the desktop row the size it */
+   /* always was. */
 .page-cards > li {
   display: flex;
   flex: 1 1 min(100%, 20rem);
@@ -47,13 +44,12 @@
 
 @media (min-width: 40rem) {
   .page-cards {
-    /* A ROW OF CARDS, NOT A FILLED PANEL.
-
-       Each card keeps its own size (50dvh tall, natural width) — nothing is
-       stretched to fill the remaining room. `align-items: flex-start` keeps
-       each card at its natural height; the row is centred in the column with
-       `align-content: center` so there is no dead space above or below the
-       cards when there are only two of them. */
+    /* A ROW OF CARDS, NOT A FILLED PANEL. */
+       /* Each card keeps its own size (50dvh tall, natural width) — nothing is */
+       /* stretched to fill the remaining room. `align-items: flex-start` keeps */
+       /* each card at its natural height; the row is centred in the column with */
+       /* `align-content: center` so there is no dead space above or below the */
+       /* cards when there are only two of them. */
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -65,9 +61,9 @@
     min-height: 0;
   }
   .page-cards > li {
-    /* Tablet and up: the same 20rem basis, growing to the desktop width and no
-       further, so two or three cards share the row instead of one waiting for
-       the window to reach 32rem. */
+    /* Tablet and up: the same 20rem basis, growing to the desktop width and no */
+       /* further, so two or three cards share the row instead of one waiting for */
+       /* the window to reach 32rem. */
     flex: 1 1 20rem;
     width: auto;
     max-width: 32rem;
@@ -90,9 +86,9 @@
   border-color: var(--outline-color-hover);
 }
 
-/* Landing page cards match the blog card height exactly (50dvh) inside a
-   container of natural width. Cards are compact, not stretched to fill the
-   remaining viewport space. */
+/* Landing page cards match the blog card height exactly (50dvh) inside a */
+   /* container of natural width. Cards are compact, not stretched to fill the */
+   /* remaining viewport space. */
 @media (min-width: 40rem) {
   .page-card {
     height: 44dvh;
@@ -100,11 +96,11 @@
   }
 }
 
-/* ARTWORK. On a phone it is a picture with a shape of its own; on a row it is
-   the part that gives when the window is too short for the card. */
+/* ARTWORK. On a phone it is a picture with a shape of its own; on a row it is */
+   /* the part that gives when the window is too short for the card. */
 .page-card .blog-card-image-wrap {
-  /* 16:10 is the picture's own shape; it may still give a little when the card
-     hits its height cap, and it stops giving at 5rem. */
+  /* 16:10 is the picture's own shape; it may still give a little when the card */
+     /* hits its height cap, and it stops giving at 5rem. */
   flex: 1 1 auto;
   min-height: 5rem;
   aspect-ratio: 16 / 10;
@@ -135,8 +131,8 @@
   overflow-wrap: break-word;
 }
 
-/* A landing card's description is a sentence, so it gets no paragraph margins
-   and no more than two lines: extra lines come out of the picture. */
+/* A landing card's description is a sentence, so it gets no paragraph margins */
+   /* and no more than two lines: extra lines come out of the picture. */
 .page-card .blog-card-desc {
   margin: 0.25rem 0 0;
   color: color-mix(
@@ -178,9 +174,9 @@
   color: var(--time-black);
 }
 
-/* THE ACTION TILE — the site's shared pixel button (`.split-card-action`),
-   whose base cut used to live with the retired split tile. Declared here, ahead
-   of the pixel-chrome files that light it, so the cascade order is unchanged. */
+/* THE ACTION TILE — the site's shared pixel button (`.split-card-action`), */
+   /* whose base cut used to live with the retired split tile. Declared here, ahead */
+   /* of the pixel-chrome files that light it, so the cascade order is unchanged. */
 .split-card-action {
   display: inline-flex;
   margin-top: 0.8rem;
@@ -212,13 +208,12 @@
   max-width: 100%;
 }
 
-/* CREDITS ROW — one line when it fits, more when it does not.
-
-   It used to be `nowrap` with `overflow-x: auto` as the escape hatch, and that
-   does not work for a CENTRED flex row: when the content is wider than the box
-   it spills past BOTH edges, and the left overflow cannot be scrolled to — so
-   the first and last credit came out cut in half on any window narrower than
-   the three buttons. Wrapping keeps every credit whole instead. */
+/* CREDITS ROW — one line when it fits, more when it does not. */
+   /* It used to be `nowrap` with `overflow-x: auto` as the escape hatch, and that */
+   /* does not work for a CENTRED flex row: when the content is wider than the box */
+   /* it spills past BOTH edges, and the left overflow cannot be scrolled to — so */
+   /* the first and last credit came out cut in half on any window narrower than */
+   /* the three buttons. Wrapping keeps every credit whole instead. */
 .landing-credits-row {
   display: flex;
   flex-wrap: wrap;

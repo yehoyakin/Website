@@ -1,12 +1,14 @@
 ---
-import "../styles/site.css";
+// Purpose: Layout - src/layouts/MyLayout.astro (Shell around every page: head, theme stamps, styles entry)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/modeToggleSwitch.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/controlHover.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/iconButtons.css
+import "../styles/site.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site.css
 import { ClientRouter } from "astro:transitions";
-import { toThemeName, toThemeToken } from "../config/uiDictionary";
-import { asset } from "../utils/asset";
-import ModeToggle from "../components/shared/ModeToggle.astro";
-import Icon from "../components/shared/Icon.astro";
-import { defaultIconColor, defaultIconColorNight } from "../config/icons";
-import { CUSTOM_CAROUSEL_CONTROLS } from "../config/carousel";
+import { toThemeName, toThemeToken } from "../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
+import { asset } from "../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
+import ModeToggle from "../components/shared/ModeToggle.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/ModeToggle.astro
+import Icon from "../components/shared/Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
+import { defaultIconColor, defaultIconColorNight } from "../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
+import { CUSTOM_CAROUSEL_CONTROLS } from "../config/carousel";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/carousel.ts
 
 const { title = "JoacoDev", theme, page } = Astro.props;
 
@@ -29,27 +31,14 @@ const themeAttribute =
 >
   <head>
     <meta charset="UTF-8" />
-    {/* ONE LAYOUT, EVERY SCREEN — laid out at the device's real width.
-
-        This used to be `width=1280, shrink-to-fit=yes`, which laid every page
-        out at desktop width on a phone and scaled the whole thing down. That
-        made the site unreadable on mobile AND disabled the phone rules the
-        stylesheets are full of: a fixed layout width means `max-width`
-        queries never match, so styles/responsive/, the 768px gallery and card
-        widths and the split-card block at 900px were all dead code.
-
-        `viewport-fit=cover` is what makes the env(safe-area-inset-*) values
-        used by the chrome rails and panels resolve on iOS. */}
+    {/* ONE LAYOUT, EVERY SCREEN — laid out at the device's real width. This used to be `width=1280, shrink-to-fit=yes`, which laid every page out at desktop width on a phone and scaled the whole thing down. That made the site unreadable on mobile AND disabled the phone rules the stylesheets are full of: a fixed layout width means `max-width` queries never match, so styles/responsive/, the 768px gallery and card widths and the split-card block at 900px were all dead code. `viewport-fit=cover` is what makes the env(safe-area-inset-*) values used by the chrome rails and panels resolve on iOS. */}
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>{title}</title>
 
-    {/* Apply the day / night choice before first paint so the page never
-        flashes the other mode. A stored choice wins; a first visit follows the
-        OS colour-scheme preference. Kept in sync with scripts/modeToggle.js
-        (resolveMode). */}
+    {/* Apply the day / night choice before first paint so the page never flashes the other mode. A stored choice wins; a first visit follows the OS colour-scheme preference. Kept in sync with scripts/modeToggle.js (resolveMode). */}
     <script is:inline>
       try {
         var storedMode = localStorage.getItem("time-mode");
@@ -60,11 +49,11 @@ const themeAttribute =
               ? "night"
               : "day";
 
-        /* THE DESKTOP-VIEW REQUEST is applied here too, before first paint.
-           The site lays out for the device by default; swapping the viewport
-           meta is what makes a phone lay it out at 1280px and scale it, so a
-           visitor who asked for the desktop layout never sees the mobile one
-           first. Kept in sync with scripts/viewMode.js. */
+        // THE DESKTOP-VIEW REQUEST is applied here too, before first paint.
+           // The site lays out for the device by default; swapping the viewport
+           // meta is what makes a phone lay it out at 1280px and scale it, so a
+           // visitor who asked for the desktop layout never sees the mobile one
+           // first. Kept in sync with scripts/viewMode.js.
         var desktopView = false;
         try {
           desktopView = localStorage.getItem("site-view") === "desktop";
@@ -88,8 +77,7 @@ const themeAttribute =
       }
     </script>
 
-    {/* Favicons live in public/ and are prefixed with BASE_URL so they resolve
-        under the configured base path (see astro.config.mjs). */}
+    {/* Favicons live in public/ and are prefixed with BASE_URL so they resolve under the configured base path (see astro.config.mjs). */}
     <link rel="icon" type="image/svg+xml" href={asset("favicon.svg")} />
     <link rel="icon" type="image/x-icon" href={asset("favicon.ico")} sizes="32x32" />
     <link rel="apple-touch-icon" href={asset("apple-touch-icon.png")} />
@@ -103,9 +91,7 @@ const themeAttribute =
   >
     <ModeToggle />
 
-    {/* DESKTOP-VIEW REQUEST — the site adapts to the screen by default; this is
-        the explicit opt-in to the old fixed-width desktop layout, one control
-        down the same chrome rail as the day / night switch. */}
+    {/* DESKTOP-VIEW REQUEST — the site adapts to the screen by default; this is the explicit opt-in to the old fixed-width desktop layout, one control down the same chrome rail as the day / night switch. */}
     <button
       id="view-toggle"
       class="mode-toggle view-toggle icon-button"
@@ -114,9 +100,7 @@ const themeAttribute =
       aria-pressed="false"
       title="Switch to desktop view"
     >
-      {/* One glyph per direction, both in the markup and swapped by
-          `data-view` (styles/chrome/modeToggleSwitch.css): a laptop means
-          "go desktop", a phone means "go back to mobile". */}
+      {/* One glyph per direction, both in the markup and swapped by `data-view` (styles/chrome/modeToggleSwitch.css): a laptop means "go desktop", a phone means "go back to mobile". */}
       <Icon name="laptop" class="chrome-icon view-toggle-icon view-toggle-icon--laptop" />
       <Icon name="phone" class="chrome-icon view-toggle-icon view-toggle-icon--phone" />
     </button>
@@ -135,14 +119,13 @@ const themeAttribute =
     </main>
 
     {
-      /* Imported inside a script tag so Astro bundles it — a `src="/src/..."`
-        reference is left untouched and 404s in a static build. */
+      /* Imported inside a script tag so Astro bundles it — a `src="/src/..."` reference is left untouched and 404s in a static build. */
     }
     <script>
-      import "../scripts/railPanel.js";
-      import "../scripts/modeToggle.js";
-      import "../scripts/viewMode.js";
-      import "../scripts/patternTransition.js";
+      import "../scripts/railPanel.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/railPanel.js
+      import "../scripts/modeToggle.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/modeToggle.js
+      import "../scripts/viewMode.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/viewMode.js
+      import "../scripts/patternTransition.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/patternTransition.js
     </script>
   </body>
 </html>

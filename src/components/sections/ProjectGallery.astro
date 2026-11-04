@@ -1,9 +1,11 @@
 ---
-import { asset } from "../../utils/asset";
-import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
-import { patternForTheme } from "../../config/patterns";
-import Title from "../UI/Title.astro";
-import Body from "../UI/Body.astro";
+// Purpose: Component - src/components/sections/ProjectGallery.astro (Project cards on the portfolio listing)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/blogCard/blogCardTile.css
+import { asset } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
+import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
+import Title from "../UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
+import Body from "../UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
 
 interface Props {
   projects: {
@@ -89,10 +91,10 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 </div>
 
 <script>
-  import { initCardCarousels } from "../../scripts/cardCarousel.js";
+  import { initCardCarousels } from "../../scripts/cardCarousel.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/cardCarousel.js
 
-  /* The strip is server-rendered above; build its controls on load. The module
-     registers its own `astro:page-load` listener, so client-side navigations
-     back to the listing rebuild them too. */
+  // The strip is server-rendered above; build its controls on load. The module
+     // registers its own `astro:page-load` listener, so client-side navigations
+     // back to the listing rebuild them too.
   initCardCarousels();
 </script>

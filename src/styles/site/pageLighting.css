@@ -1,71 +1,67 @@
-/* PAGE LIGHTING — ONE SCREEN GRADIENT, NOT ONE PER PANEL.
+/* PAGE LIGHTING — ONE SCREEN GRADIENT, NOT ONE PER PANEL. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro */
+   /* Every plate used to paint its own lit-from-above ramp: a light band along */
+   /* its top edge stepping down to a dark base at its bottom, restated per panel */
+   /* (the plain plate, the text backdrop, the ghost fills, the pixel frame). A */
+   /* long reading column repainted that gradient over ten thousand pixels, and a */
+   /* page of cards painted it once per card. */
+   /* The ramp is ONE screen-positioned pass, but it no longer floats over the */
+   /* page in a single overlay — an overlay grades everything under it, buttons */
+   /* and copy and pictures included. Each `.pattern-plate` paints the ramp as */
+   /* its own background layer instead, pinned to the viewport with */
+   /* `background-attachment: fixed`, so the plate's fill — and the pattern */
+   /* layers that blend over it — is graded by its position on the screen while */
+   /* everything painted ON a plate (headings, copy, figures, media) is never */
+   /* touched by it. The chrome controls (the back link, the buttons, the rails) */
+   /* sit on no plate at all, so they keep their own button lighting. Scrolling */
+   /* never repaints the ramp — the same one-viewport economy the pinned pattern */
+   /* layers get — and the grade still reads as one light falling over the whole */
+   /* page. */
+   /* THE BORDER RING. A plate's own background paints UNDER its border, and the */
+   /* plate clips its children to the padding box, so nothing inside a plate can */
+   /* reach its border ring. The flat-accent frames that want the screen grade — */
+   /* the reading column and the write-up's 1px accent line, the mastheads' 4px */
+   /* outline — sit in a `.screen-grade-ring` wrapper whose `::before` paints the */
+   /* same viewport-pinned ramp over the ring alone: a mask limits the pass to */
+   /* the ring's width, so the border is graded at full strength while the */
+   /* content stays untouched. (The bevel frames — cards, panels, media — keep */
+   /* their own per-element light-from-above border image; the screen pass over */
+   /* a 300px card was invisible.) */
+   /* THEME COLOURS. A page that assigns a theme (every blog post and project */
+   /* page stamps `data-theme="--theme-{name}"` on <html> — see MyLayout) paints */
+   /* the SAME ramp in that theme, one hard-coded entry per theme below: the */
+   /* theme's main colour lights the top of the screen, and its dark shade (the */
+   /* plate shadow colour) pushed toward black falls over the bottom. The stop */
+   /* positions never move between the neutral and themed ramps, so the shape — */
+   /* and its smoothness — is identical; only the hues change. Pages without a */
+   /* theme, or with a theme name that has no entry here, keep the neutral day / */
+   /* night ramps above. */
+   /* THE RAMP COLOURS ARE LITERAL RGB(A) STOPS, not custom-property pointers. */
+   /* A custom property whose value references another custom property resolves */
+   /* those references on the element that DECLARES it — a pointer stamped on a */
+   /* descendant (or lost to a stale client-side page) silently invalidates the */
+   /* whole ramp. Literal stops need nothing but `data-theme`, which this site */
+   /* already keys its font sets off, so the ramp and the fonts can never */
+   /* disagree. */
 
-   Every plate used to paint its own lit-from-above ramp: a light band along
-   its top edge stepping down to a dark base at its bottom, restated per panel
-   (the plain plate, the text backdrop, the ghost fills, the pixel frame). A
-   long reading column repainted that gradient over ten thousand pixels, and a
-   page of cards painted it once per card.
-
-   The ramp is ONE screen-positioned pass, but it no longer floats over the
-   page in a single overlay — an overlay grades everything under it, buttons
-   and copy and pictures included. Each `.pattern-plate` paints the ramp as
-   its own background layer instead, pinned to the viewport with
-   `background-attachment: fixed`, so the plate's fill — and the pattern
-   layers that blend over it — is graded by its position on the screen while
-   everything painted ON a plate (headings, copy, figures, media) is never
-   touched by it. The chrome controls (the back link, the buttons, the rails)
-   sit on no plate at all, so they keep their own button lighting. Scrolling
-   never repaints the ramp — the same one-viewport economy the pinned pattern
-   layers get — and the grade still reads as one light falling over the whole
-   page.
-
-   THE BORDER RING. A plate's own background paints UNDER its border, and the
-   plate clips its children to the padding box, so nothing inside a plate can
-   reach its border ring. The flat-accent frames that want the screen grade —
-   the reading column and the write-up's 1px accent line, the mastheads' 4px
-   outline — sit in a `.screen-grade-ring` wrapper whose `::before` paints the
-   same viewport-pinned ramp over the ring alone: a mask limits the pass to
-   the ring's width, so the border is graded at full strength while the
-   content stays untouched. (The bevel frames — cards, panels, media — keep
-   their own per-element light-from-above border image; the screen pass over
-   a 300px card was invisible.)
-
-   THEME COLOURS. A page that assigns a theme (every blog post and project
-   page stamps `data-theme="--theme-{name}"` on <html> — see MyLayout) paints
-   the SAME ramp in that theme, one hard-coded entry per theme below: the
-   theme's main colour lights the top of the screen, and its dark shade (the
-   plate shadow colour) pushed toward black falls over the bottom. The stop
-   positions never move between the neutral and themed ramps, so the shape —
-   and its smoothness — is identical; only the hues change. Pages without a
-   theme, or with a theme name that has no entry here, keep the neutral day /
-   night ramps above.
-
-   THE RAMP COLOURS ARE LITERAL RGB(A) STOPS, not custom-property pointers.
-   A custom property whose value references another custom property resolves
-   those references on the element that DECLARES it — a pointer stamped on a
-   descendant (or lost to a stale client-side page) silently invalidates the
-   whole ramp. Literal stops need nothing but `data-theme`, which this site
-   already keys its font sets off, so the ramp and the fonts can never
-   disagree. */
-
-/* THE PLATE PASS — every patterned surface carries the ramp as its own
-   viewport-pinned background layer, so the fill (and the pattern pseudos
-   blending over it) is graded by the plate's position on the screen while
-   its content stays untouched. Plates that deliberately opt out note why
-   where they do (the rail panel, which slides on a transform). */
+/* THE PLATE PASS — every patterned surface carries the ramp as its own */
+   /* viewport-pinned background layer, so the fill (and the pattern pseudos */
+   /* blending over it) is graded by the plate's position on the screen while */
+   /* its content stays untouched. Plates that deliberately opt out note why */
+   /* where they do (the rail panel, which slides on a transform). */
 .pattern-plate {
   background-image: var(--page-lighting, none);
   background-attachment: fixed;
 }
 
-/* THE RING PASS — for the flat-accent frames the plate itself cannot grade
-   (its background paints under its own border, and its overflow clip stops
-   every child at the padding edge). A wrapper around the frame paints the
-   same screen-sampled ramp over the ring alone. */
+/* THE RING PASS — for the flat-accent frames the plate itself cannot grade */
+   /* (its background paints under its own border, and its overflow clip stops */
+   /* every child at the padding edge). A wrapper around the frame paints the */
+   /* same screen-sampled ramp over the ring alone. */
 .screen-grade-ring {
   position: relative;
-  /* The mastheads ring two pixels above the outline weight
-     (blogArticle.css); the reading columns ring at a hairline. */
+  /* The mastheads ring two pixels above the outline weight */
+     /* (blogArticle.css); the reading columns ring at a hairline. */
   --screen-grade-ring-width: calc(var(--outline-width, 2px) + 2px);
 }
 
@@ -73,17 +69,17 @@
   --screen-grade-ring-width: 1px;
 }
 
-/* The wrapper owns the plate's position on the page; the plate must fill it
-   exactly, so the wrapper's box IS the plate's border box and the mask below
-   sits on the ring. */
+/* The wrapper owns the plate's position on the page; the plate must fill it */
+   /* exactly, so the wrapper's box IS the plate's border box and the mask below */
+   /* sits on the ring. */
 .screen-grade-ring > * {
   width: 100%;
   margin: 0;
 }
 
-/* One viewport-pinned pass, revealed only along the plate's border ring:
-   two opaque rectangles, the second inset by the ring's width on every
-   side, excluded from the first. */
+/* One viewport-pinned pass, revealed only along the plate's border ring: */
+   /* two opaque rectangles, the second inset by the ring's width on every */
+   /* side, excluded from the first. */
 .screen-grade-ring::before {
   content: "";
   position: absolute;
@@ -126,9 +122,9 @@
   margin-bottom: 0.9rem;
 }
 
-/* Day: a clear lift at the top edge, fading to neutral through the middle,
-   with a soft dark fall over the bottom fifth — the same shape the plates'
-   day ramp had (a 42% accent top stepping down to 16% at the base). */
+/* Day: a clear lift at the top edge, fading to neutral through the middle, */
+   /* with a soft dark fall over the bottom fifth — the same shape the plates' */
+   /* day ramp had (a 42% accent top stepping down to 16% at the base). */
 :root:not([data-mode="night"]) {
   --page-lighting: linear-gradient(
     180deg,
@@ -139,8 +135,8 @@
   );
 }
 
-/* Night: a smaller lift (the surfaces are a step darker already) and a
-   stronger fall, matching the night plates' ramp plus their extra black pass. */
+/* Night: a smaller lift (the surfaces are a step darker already) and a */
+   /* stronger fall, matching the night plates' ramp plus their extra black pass. */
 :root[data-mode="night"] {
   --page-lighting: linear-gradient(
     180deg,
@@ -151,12 +147,12 @@
   );
 }
 
-/* THEMED RAMPS — one entry per theme token in foundation/designTokens.css.
-   Day: the theme's main colour at 36% (its plate had 42% accent at the top),
-   fading out by 55%, then the theme's DARK shade at 40% strength over 26%
-   alpha for the bottom fall — darker than the neutral day ramp's plain 10%
-   black, with the theme's hue kept visible. Night: 26% lift and a 35%-strength
-   24% fall, matching the neutral night ramp's weight on darker surfaces. */
+/* THEMED RAMPS — one entry per theme token in foundation/designTokens.css. */
+   /* Day: the theme's main colour at 36% (its plate had 42% accent at the top), */
+   /* fading out by 55%, then the theme's DARK shade at 40% strength over 26% */
+   /* alpha for the bottom fall — darker than the neutral day ramp's plain 10% */
+   /* black, with the theme's hue kept visible. Night: 26% lift and a 35%-strength */
+   /* 24% fall, matching the neutral night ramp's weight on darker surfaces. */
 
 /* Orange — tile orange / plate shadow. */
 :root[data-theme="--theme-orange"]:not([data-mode="night"]) {

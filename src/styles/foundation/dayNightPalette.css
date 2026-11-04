@@ -1,4 +1,5 @@
 /* Day / night colours. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
 
 :root {
   /* The two time colours. */
@@ -9,8 +10,8 @@
   --time-surface: rgb(9 9 11 / 0.75);
   --time-panel: rgba(0, 0, 243, 0);
   --time-ink: rgb(255, 255, 255);
-  /* Keep mode switching simple: derive the host colour from its active theme,
-     never from a hardcoded white or black overlay. */
+  /* Keep mode switching simple: derive the host colour from its active theme, */
+     /* never from a hardcoded white or black overlay. */
   --time-ink-muted: color-mix(
     in srgb,
     var(--time-white) 55%,
@@ -19,9 +20,9 @@
   --time-border: rgb(255 255 255 / 0.7);
   --time-highlight: var(--time-white);
   --time-scrim: rgb(9 9 11 / 0.85);
-  /* The general tint: the default accent for anything without a theme, and the
-     fallback tint for pattern plates. A themed host overrides it through its
-     own --project-tag-color. */
+  /* The general tint: the default accent for anything without a theme, and the */
+     /* fallback tint for pattern plates. A themed host overrides it through its */
+     /* own --project-tag-color. */
   --plate-tint: var(--project-tag-color, var(--theme-main-day));
   /* Opaque button plate: use the host accent directly instead of mixing in white or black. */
   --time-button-fill: var(--project-tag-color, var(--theme-main-day));
@@ -47,9 +48,9 @@
   --time-surface: rgb(10 16 24 / 0.74);
   --time-panel: rgb(11 17 25 / 0.96);
   --time-ink: rgb(226, 234, 242);
-  /* Muted ink is NOT redefined here on purpose: the host rule below owns it,
-     and a night value declared on :root would win over that rule and freeze the
-     tint back to the root accent. */
+  /* Muted ink is NOT redefined here on purpose: the host rule below owns it, */
+     /* and a night value declared on :root would win over that rule and freeze the */
+     /* tint back to the root accent. */
   --time-border: rgb(154 184 219 / 0.55);
   --time-highlight: rgb(233 242 255 / 0.94);
   --time-scrim: rgb(3 7 12 / 0.88);
@@ -60,15 +61,14 @@
   --icon-accent: var(--project-tag-color-dark, var(--theme-main-night));
 }
 
-/* Muted ink, re-derived on every host that carries an accent.
-
-   A var() inside a custom property is substituted where the property is
-   DECLARED, not where it is used — so a definition on :root is computed once
-   with the root accent and inherited as that fixed colour, which is why cards
-   were reading the day / night tint instead of their own. Declaring it again on
-   the elements that set --project-tag-color computes it per host: a project
-   card tints with its project, a post's copy with its theme, and unthemed
-   chrome falls back to the general tint. */
+/* Muted ink, re-derived on every host that carries an accent. */
+   /* A var() inside a custom property is substituted where the property is */
+   /* DECLARED, not where it is used — so a definition on :root is computed once */
+   /* with the root accent and inherited as that fixed colour, which is why cards */
+   /* were reading the day / night tint instead of their own. Declaring it again on */
+   /* the elements that set --project-tag-color computes it per host: a project */
+   /* card tints with its project, a post's copy with its theme, and unthemed */
+   /* chrome falls back to the general tint. */
 :is(
   .pixel-frame,
   .theme-color,

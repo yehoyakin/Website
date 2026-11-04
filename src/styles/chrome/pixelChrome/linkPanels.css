@@ -1,16 +1,15 @@
-/* THE LINKS PANEL — one look for every panel that is nothing but links.
-
-   The recipe comes from the project write-up's links panel
-   (pages/portfolio/[slug].astro): a small plate on the pixel frame, then a row
-   of compact chip buttons that wraps. The landing's contacts tab and a post's
-   links tab are the same control (components/shared/RailPanel.astro), so they
-   wear that recipe instead of each painting its own background.
-
-   Both hosts already carry `.pixel-frame` and `.pattern-plate--small`; this
-   adds the padding, the chip row and the button type scale. `position:
-   relative` keeps the plate's motif inside the panel's own box — a plate draws
-   it with absolutely positioned `::before` / `::after` layers at `inset: 0`,
-   and `.pattern-plate` deliberately leaves positioning to its host. */
+/* THE LINKS PANEL — one look for every panel that is nothing but links. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogSidebar.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/RailPanel.astro */
+   /* The recipe comes from the project write-up's links panel */
+   /* (pages/portfolio/[slug].astro): a small plate on the pixel frame, then a row */
+   /* of compact chip buttons that wraps. The landing's contacts tab and a post's */
+   /* links tab are the same control (components/shared/RailPanel.astro), so they */
+   /* wear that recipe instead of each painting its own background. */
+   /* Both hosts already carry `.pixel-frame` and `.pattern-plate--small`; this */
+   /* adds the padding, the chip row and the button type scale. `position: */
+   /* relative` keeps the plate's motif inside the panel's own box — a plate draws */
+   /* it with absolutely positioned `::before` / `::after` layers at `inset: 0`, */
+   /* and `.pattern-plate` deliberately leaves positioning to its host. */
 
 .links-panel {
  position: relative;
@@ -25,8 +24,8 @@
   gap: 0.35rem;
 }
 
-/* The project panel's button size: control-height tiles, tighter tracking than
-   the default button, and left-aligned so stacked icons line up. */
+/* The project panel's button size: control-height tiles, tighter tracking than */
+   /* the default button, and left-aligned so stacked icons line up. */
 .links-panel .links-panel-links .retro-link {
   min-height: 2rem;
   font-size: clamp(0.7rem, 0.9vw, 0.86rem);
@@ -34,12 +33,11 @@
   justify-content: flex-start;
 }
 
-/* A LONG LABEL WRAPS INSTEAD OF WIDENING THE PANEL.
-
-   The chip row wraps, but each chip refused to shrink and kept its label on one
-   line, so a label longer than the panel pushed the panel's content wider
-   instead of taking a second line. The chips shrink with the row now and their
-   labels wrap; the box is a minimum height, so it grows a line at a time. */
+/* A LONG LABEL WRAPS INSTEAD OF WIDENING THE PANEL. */
+   /* The chip row wraps, but each chip refused to shrink and kept its label on one */
+   /* line, so a label longer than the panel pushed the panel's content wider */
+   /* instead of taking a second line. The chips shrink with the row now and their */
+   /* labels wrap; the box is a minimum height, so it grows a line at a time. */
 .links-panel .links-panel-links .retro-link,
 .project-page-links .retro-link {
   flex: 0 1 auto;
@@ -50,10 +48,10 @@
   white-space: normal;
 }
 
-/* The blog post's links panel is one plate of the post's own theme, so its
-   buttons must take that accent the same way the project write-up's links
-   panel does — the same themed tile, with the white outline and white type,
-   in both day and night. */
+/* The blog post's links panel is one plate of the post's own theme, so its */
+   /* buttons must take that accent the same way the project write-up's links */
+   /* panel does — the same themed tile, with the white outline and white type, */
+   /* in both day and night. */
 :root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link) {
   --link-tile: var(--project-tag-color, var(--theme-main-day));
   --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
@@ -79,8 +77,8 @@
   color: var(--time-white);
 }
 
-/* The press is a darker tile, not a white one: the border and the type stay
-   white so the control keeps its outline and its label in both modes. */
+/* The press is a darker tile, not a white one: the border and the type stay */
+   /* white so the control keeps its outline and its label in both modes. */
 :root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link):hover,
 :root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link):focus-visible {
   --tile-fill: var(--link-tile-dark);
@@ -90,13 +88,12 @@
   color: var(--time-white);
 }
 
-/* A TALL LINKS PANEL SCROLLS INSIDE ITSELF.
-
-   The plate's motif is drawn by `::before` / `::after` layers at `inset: 0`.
-   Those are sized to the SCROLLPORT, not to the scrolled content, so a panel
-   that scrolled its own content showed the texture only down to the first
-   viewport's worth and left the rest bare. The panel now holds still and the
-   list scrolls inside it: one scrollbar, and texture edge to edge. */
+/* A TALL LINKS PANEL SCROLLS INSIDE ITSELF. */
+   /* The plate's motif is drawn by `::before` / `::after` layers at `inset: 0`. */
+   /* Those are sized to the SCROLLPORT, not to the scrolled content, so a panel */
+   /* that scrolled its own content showed the texture only down to the first */
+   /* viewport's worth and left the rest bare. The panel now holds still and the */
+   /* list scrolls inside it: one scrollbar, and texture edge to edge. */
 .links-panel--scroll {
   overflow: hidden;
 }
@@ -114,8 +111,8 @@
   padding-right: 0.45rem;
 }
 
-/* The post's links panel scrolls through its own list, so the buttons keep
-   their one scrollbar and never catch the page's. */
+/* The post's links panel scrolls through its own list, so the buttons keep */
+   /* their one scrollbar and never catch the page's. */
 .links-panel--scroll .links-panel-links {
   overflow-y: auto;
   overflow-x: hidden;
@@ -125,8 +122,8 @@
   min-width: 0;
 }
 
-/* The post's merged list: one column of full-width buttons, so labels that
-   now carry the game's name line up instead of wrapping into ragged rows. */
+/* The post's merged list: one column of full-width buttons, so labels that */
+   /* now carry the game's name line up instead of wrapping into ragged rows. */
 .links-panel .links-panel-links--merged {
   flex-direction: column;
   align-items: stretch;

@@ -1,8 +1,9 @@
 /* Back link: mode plate, chrome-rail position, phone sizing. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro */
 
 .back-link {
-  /* Chrome rail: top-left corner, on the same gutter as the right-hand
-     switch and contact rail. */
+  /* Chrome rail: top-left corner, on the same gutter as the right-hand */
+     /* switch and contact rail. */
   position: fixed;
   top: var(--chrome-gutter);
   left: var(--chrome-gutter);
@@ -10,29 +11,29 @@
   /* Site chrome, not page content: it follows the mode base colours. */
   display: inline-flex;
   align-items: center;
-  /* Same control scale as the shared link button: 65% of an icon button's
-     height less six pixels, a thin frame, and a label one step down. */
+  /* Same control scale as the shared link button: 65% of an icon button's */
+     /* height less six pixels, a thin frame, and a label one step down. */
   --back-link-height: calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px);
   --control-outline-width: 2px;
   /* The phone block below draws its frame from `--outline-width`. */
   --outline-width: 2px;
-  /* MODE PLATE, NEVER A THEME ONE. These used to read the inherited
-     --project-tag-color, which on a blog post or a project page is that page's
-     accent (set on the article section / the project wrapper this control sits
-     inside), so the back link painted itself red, green or pink on exactly the
-     pages that theme themselves. The chrome floats over every page and has to
-     read as chrome everywhere, so its plate is built from the mode base
-     colours: white by day, black at night, whatever it is nested in. */
+  /* MODE PLATE, NEVER A THEME ONE. These used to read the inherited */
+     /* --project-tag-color, which on a blog post or a project page is that page's */
+     /* accent (set on the article section / the project wrapper this control sits */
+     /* inside), so the back link painted itself red, green or pink on exactly the */
+     /* pages that theme themselves. The chrome floats over every page and has to */
+     /* read as chrome everywhere, so its plate is built from the mode base */
+     /* colours: white by day, black at night, whatever it is nested in. */
   --button-fill: var(--theme-main-day);
   --button-fill-strong: var(--theme-main-day);
   --button-label-color: contrast-color(var(--button-fill));
   --button-label-shadow: color-mix(in srgb, var(--time-shadow) 82%, var(--button-fill));
-  /* Fixed: the label is `nowrap`, so it can never need a second line and this
-     rule needs no growth. */
+  /* Fixed: the label is `nowrap`, so it can never need a second line and this */
+     /* rule needs no growth. */
   height: var(--back-link-height);
   padding: 0 0.5rem;
-  /* Not `1`: the pixel face draws outside its em box, and a line box that is
-     exactly the font size cuts the glyph. */
+  /* Not `1`: the pixel face draws outside its em box, and a line box that is */
+     /* exactly the font size cuts the glyph. */
   line-height: 1.4;
   border: var(--control-outline-width) solid var(--button-fill-strong);
   background-color: var(--button-fill);
@@ -42,9 +43,9 @@
   text-shadow: 2px 2px 0 var(--button-label-shadow);
 }
 
-/* Night plate: the dark base colour, same recipe as the day one above. The
-   lighting bands (chrome/pixelChrome/tileTokens.css) were already resolved at
-   `:root`, so they follow the mode on their own. */
+/* Night plate: the dark base colour, same recipe as the day one above. The */
+   /* lighting bands (chrome/pixelChrome/tileTokens.css) were already resolved at */
+   /* `:root`, so they follow the mode on their own. */
 :root[data-mode="night"] .back-link {
   --button-fill: var(--theme-main-night);
   --button-fill-strong: var(--theme-main-night);
@@ -52,15 +53,15 @@
   --button-label-shadow: color-mix(in srgb, var(--time-shadow) 82%, var(--button-fill));
 }
 
-/* The label is the control's, not a paragraph's: `a.back-link` has to outrank
-   the `.text-base` type role, which is declared later in the cascade and set
-   this label one whole step larger than the buttons beside it. */
+/* The label is the control's, not a paragraph's: `a.back-link` has to outrank */
+   /* the `.text-base` type role, which is declared later in the cascade and set */
+   /* this label one whole step larger than the buttons beside it. */
 a.back-link {
   font-size: max(6px, calc(var(--font-size-base) - 20px));
 }
 
-/* The glyph shrinks with the box: at the chrome glyph size it would sit on the
-   frame of a button that is no longer icon-height. */
+/* The glyph shrinks with the box: at the chrome glyph size it would sit on the */
+   /* frame of a button that is no longer icon-height. */
 a.back-link .chrome-icon {
   width: calc(var(--back-link-height) * 0.75);
   height: calc(var(--back-link-height) * 0.75);
@@ -71,8 +72,8 @@ a.back-link span {
   gap: 0.3rem;
 }
 
-/* The rail panels (contacts, blog links) are positioned in
-   styles/chrome/sideRails.css, on the same gutter as this control. */
+/* The rail panels (contacts, blog links) are positioned in */
+   /* styles/chrome/sideRails.css, on the same gutter as this control. */
 
 /* PHONES — back link. */
 

@@ -1,4 +1,5 @@
 /* Card carousels: one slide per view, snapping, peek, end spacers. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 
 .blog-cards-wrapper,
 .gallery-thumbnails-wrapper {
@@ -16,14 +17,13 @@
   height: 0;
 }
 
-/* THE NATIVE-SCROLLER FALLBACK — driven by one switch.
-
-   `src/config/carousel.ts` renders `data-carousel-controls` on <html>:
-   "custom" builds the arrows and dot index and hides the browser scrollbar;
-   "native" builds nothing and makes the scrollbar the navigation. These
-   selectors are keyed to the root attribute so they outrank every per-strip
-   rule elsewhere — including the markdown-gallery block that used to force its
-   scrollbar visible even while the custom controls were showing. */
+/* THE NATIVE-SCROLLER FALLBACK — driven by one switch. */
+   /* `src/config/carousel.ts` renders `data-carousel-controls` on <html>: */
+   /* "custom" builds the arrows and dot index and hides the browser scrollbar; */
+   /* "native" builds nothing and makes the scrollbar the navigation. These */
+   /* selectors are keyed to the root attribute so they outrank every per-strip */
+   /* rule elsewhere — including the markdown-gallery block that used to force its */
+   /* scrollbar visible even while the custom controls were showing. */
 html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper) {
   scrollbar-width: auto;
   scrollbar-color: color-mix(in srgb, var(--time-ink, #fff) 30%, transparent) transparent;
@@ -66,8 +66,8 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   justify-content: flex-start;
 }
 
-/* Slide width (--carousel-slide) is defined once in foundation/designTokens.css,
-   so both carousels read alike. */
+/* Slide width (--carousel-slide) is defined once in foundation/designTokens.css, */
+   /* so both carousels read alike. */
 
 /* Spacers let the first and last slide centre like the middle ones. */
 .blog-cards-scroll::before,
@@ -94,18 +94,17 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   width: 100% !important;
 }
 
-/* Markdown galleries inside blog/project slugs control their own card width
-   through the slide variable or the single-gallery clamp — the 100% rule above
-   would override those widths. galleryThumbnailSlide.css sets the clamp with
-   !important so it wins here. */
+/* Markdown galleries inside blog/project slugs control their own card width */
+   /* through the slide variable or the single-gallery clamp — the 100% rule above */
+   /* would override those widths. galleryThumbnailSlide.css sets the clamp with */
+   /* !important so it wins here. */
 
-/* CARD HEIGHT — half the screen.
-
-   A listing card is an entry in a strip, not a poster. Left to its own content
-   it was 500px tall on a laptop, which put the second half of the card and the
-   strip's controls under the fold. `50dvh` is half the window at every size
-   (360px at 720, 450 at 900, 540 at 1080) and the copy below is packed to fit
-   inside it — the PICTURE is what gives when the card is short. */
+/* CARD HEIGHT — half the screen. */
+   /* A listing card is an entry in a strip, not a poster. Left to its own content */
+   /* it was 500px tall on a laptop, which put the second half of the card and the */
+   /* strip's controls under the fold. `50dvh` is half the window at every size */
+   /* (360px at 720, 450 at 900, 540 at 1080) and the copy below is packed to fit */
+   /* inside it — the PICTURE is what gives when the card is short. */
 .blog-card-item .blog-card,
 .gallery-project-item .blog-card {
   height: var(--listing-card-height);
@@ -122,8 +121,8 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
 .blog-card-item .blog-card-image-wrap,
 .gallery-project-item .blog-card-image-wrap {
   flex: 1 1 auto;
-  /* The shared card floors the artwork at 4-14rem; in a capped card that floor
-     would push the copy out of the bottom. */
+  /* The shared card floors the artwork at 4-14rem; in a capped card that floor */
+     /* would push the copy out of the bottom. */
   min-height: 0;
 }
 
@@ -143,8 +142,8 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   line-height: 1.15;
 }
 
-/* A card-level description: two lines at most, and no paragraph margins.
-   Extra lines come out of the picture, not out of the card. */
+/* A card-level description: two lines at most, and no paragraph margins. */
+   /* Extra lines come out of the picture, not out of the card. */
 .blog-card-item .blog-card-desc,
 .gallery-project-item .blog-card-desc {
   margin-top: 0.2rem;
@@ -163,14 +162,13 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   line-height: 1.25;
 }
 
-/* PHONES — the card sizes itself instead of taking half the screen.
-
-   `50dvh` is half a phone window for a card that is only ~86vw wide, and the
-   artwork is inset (contain) inside whatever height is left. On a 390x844
-   phone that made the picture box 303x281 for a 16:9 cover: ~100px of empty
-   plate above and below every card. Half a screen is the right card for a
-   landscape window; on a portrait phone the card takes the landing card's
-   shape instead — meta bar, a 16:10 picture, copy — and its height follows. */
+/* PHONES — the card sizes itself instead of taking half the screen. */
+   /* `50dvh` is half a phone window for a card that is only ~86vw wide, and the */
+   /* artwork is inset (contain) inside whatever height is left. On a 390x844 */
+   /* phone that made the picture box 303x281 for a 16:9 cover: ~100px of empty */
+   /* plate above and below every card. Half a screen is the right card for a */
+   /* landscape window; on a portrait phone the card takes the landing card's */
+   /* shape instead — meta bar, a 16:10 picture, copy — and its height follows. */
 @media (max-width: 767px) {
   .blog-cards-scroll .blog-card-item .blog-card,
   .project-gallery:not(.markdown-gallery) .gallery-project-item .blog-card {

@@ -1,25 +1,26 @@
 ---
 // Purpose: Component - src/components/shared/RailPanel.astro (The one right-edge rail panel)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/frames.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/linkPanels.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/patternPlates.css
 //
 // The landing's contacts tab and a blog post's links tab are the same control,
 // so they are the same component: a handle pinned to the chrome gutter and a
 // panel that waits off-canvas. Behaviour lives in scripts/railPanel.js, styles
 // in chrome/sideRails.css, and the two callers only supply what differs — the
 // glyph, the box width/padding and the accent.
-import Icon from "./Icon.astro";
+import Icon from "./Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
 
 interface Props {
-  /** Unique per page: the panel is `${id}-panel` (aria-controls points at it). */
+  // Unique per page: the panel is `${id}-panel` (aria-controls points at it).
   id: string;
-  /** Accessible name of the handle. */
+  // Accessible name of the handle.
   label: string;
-  /** Glyph name from the shared registry. */
+  // Glyph name from the shared registry.
   icon: string;
-  /** Theme for the glyph only; the panel keeps whatever accent `style` sets. */
+  // Theme for the glyph only; the panel keeps whatever accent `style` sets.
   theme?: string;
-  /** Panel box classes (width, padding, backdrop) — the parts that differ. */
+  // Panel box classes (width, padding, backdrop) — the parts that differ.
   panelClass?: string;
-  /** Accent token and plate pattern; custom properties inherit into the panel. */
+  // Accent token and plate pattern; custom properties inherit into the panel.
   style?: string;
 }
 

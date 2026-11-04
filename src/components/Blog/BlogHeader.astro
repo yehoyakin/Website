@@ -1,9 +1,10 @@
 ---
 // Purpose: Component - src/components/Blog/BlogHeader.astro (Blog post header: title, date, description)
-import Title from "../UI/Title.astro";
-import Body from "../UI/Body.astro";
-import Icon from "../shared/Icon.astro";
-import { patternForTheme } from "../../config/patterns";
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/article/articleMasthead.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/patternPlates.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/linkPanels.css
+import Title from "../UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
+import Body from "../UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
+import Icon from "../shared/Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
+import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
 
 interface Props {
   title: string;
@@ -14,9 +15,9 @@ interface Props {
 
 const { title, description, date, theme = "orange" } = Astro.props as Props;
 
-/* The masthead wears the post's pattern at MID size: a card-sized tile behind
-   a title would compete with the letters, and the reading column below
-   already carries the huge one. The accent strip keeps its own small tile. */
+// The masthead wears the post's pattern at MID size: a card-sized tile behind
+   // a title would compete with the letters, and the reading column below
+   // already carries the huge one. The accent strip keeps its own small tile.
 const panelStyle = `--plate-pattern: url('${patternForTheme(theme)}')`;
 ---
 

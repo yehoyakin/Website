@@ -1,6 +1,7 @@
-/* The pressed backdrop uses a bottom-right contact shadow: a solid dark-grey
-   duplicate sits under and slightly to the right of the glyph for a tighter,
-   more directional cast without the harsh black punch. */
+/* The pressed backdrop uses a bottom-right contact shadow: a solid dark-grey */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro */
+   /* duplicate sits under and slightly to the right of the glyph for a tighter, */
+   /* more directional cast without the harsh black punch. */
 .readable-text:not(:is(h1, h2, h3)) {
   text-shadow: var(--text-shadow-drop) 0 var(--time-shadow);
 }

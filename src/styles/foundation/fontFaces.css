@@ -1,4 +1,5 @@
 /* Pixel Operator — the canonical pixel font. */
+/* Used by: file:///C:\Users\UsuarioCompuElite\Documents\ForkRepositories\Website/src/styles/foundation/foundation.css, file:///C:\Users\UsuarioCompuElite\Documents\ForkRepositories\Website/src/styles/foundation/fontFamilyTokens.css */
 @font-face {
   font-family: "Pixel Operator";
   src: url("../../fonts/PixelOperator.ttf") format("truetype");

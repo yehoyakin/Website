@@ -1,26 +1,24 @@
 ---
 // Purpose: Component - src/components/sections/BlogCard.astro (Card for blog posts and projects)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/blogCard/blogCardTile.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/cards/pageCards.css
 import type { BlogPost } from "../../types/blog";
 import type { ProjectEntry } from "../../types/project";
-import Title from "../UI/Title.astro";
-import Body from "../UI/Body.astro";
-import Icon from "../shared/Icon.astro";
-import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
-import { patternForTheme } from "../../config/patterns";
-import { asset } from "../../utils/asset";
+import Title from "../UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
+import Body from "../UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
+import Icon from "../shared/Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
+import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
+import { asset } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
 
-/* ONE CARD, TWO COLLECTIONS
-   -------------------------
-   A post and a project carry the same things a card needs: a title, a
-   one-line description, an image and a theme. The portfolio therefore reuses
-   this component instead of keeping a card of its own, so both listings are
-   literally the same markup and cannot drift apart again.
-
-   The two differences live in the meta line and the destination:
-
-     blog post  date + calendar glyph, links to the article
-     project    its engine / tool tag, links to its first store page
-*/
+// ONE CARD, TWO COLLECTIONS
+   // -------------------------
+   // A post and a project carry the same things a card needs: a title, a
+   // one-line description, an image and a theme. The portfolio therefore reuses
+   // this component instead of keeping a card of its own, so both listings are
+   // literally the same markup and cannot drift apart again.
+   // The two differences live in the meta line and the destination:
+     // blog post  date + calendar glyph, links to the article
+     // project    its engine / tool tag, links to its first store page
 type Props = {
   post?: BlogPost;
   project?: ProjectEntry;
@@ -55,14 +53,14 @@ const title = post ? post.data.title : project!.data.title;
 const description = post ? post.data.description : project!.data.description;
 const hasDescription = Boolean(description && description.trim().length > 0);
 
-/* Without a destination (a project with no links) the card renders as a plain
-   block: nothing that is not clickable should wear the link hover. */
+// Without a destination (a project with no links) the card renders as a plain
+   // block: nothing that is not clickable should wear the link hover.
 const Tag = (href ? "a" : "div") as any;
 const external = href ? isExternal(href) : false;
 
-/* The card's scrolling texture, in the entry's own theme colour. Declared on
-   the root so both bars inherit it; the drawing lives in
-   styles/chrome/pixelChrome.css under `.pattern-plate`. */
+// The card's scrolling texture, in the entry's own theme colour. Declared on
+   // the root so both bars inherit it; the drawing lives in
+   // styles/chrome/pixelChrome.css under `.pattern-plate`.
 const cardStyle = [
   `--project-tag-color: ${dynamicToken}`,
   `--project-tag-color-dark: var(--theme-${themeName}-dark)`,

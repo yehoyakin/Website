@@ -1,19 +1,20 @@
 ---
 // Purpose: Component - src/components/UI/Title.astro (UI Title component)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/pixelTypeHierarchy.css
 import {
   getThemeConfig,
   resolveThemeToken,
   toThemeName,
   toThemeToken,
-} from "../../config/uiDictionary";
+} from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
 
 interface Props {
   class?: string;
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   outline?: boolean;
-  /** Theme name — controls font, color and transition. Any string works. */
+  // Theme name — controls font, color and transition. Any string works.
   theme?: string;
-  /** Add subtle text shadow for readability against blurred backgrounds. */
+  // Add subtle text shadow for readability against blurred backgrounds.
   shadow?: boolean;
 }
 

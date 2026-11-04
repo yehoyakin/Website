@@ -1,4 +1,5 @@
 /* Scroll-reveal: figures start hidden, fade in on scroll. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
 .scene-reveal {
   opacity: 0;
   transform: translateY(2rem);

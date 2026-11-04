@@ -1,13 +1,13 @@
 /* Phone type scale: the font-size-* step that shrinks the whole page. */
+/* Used by: file:///C:\Users\UsuarioCompuElite\Documents\ForkRepositories\Website/src/styles/responsive/responsive.css */
 
-/* PHONE TYPE — one step down from the desktop scale.
-
-   These were LARGER than the desktop roles, not smaller: the phone pass had
-   been tuned upward to match the chrome, which left 17px card copy and a 39px
-   page title on a 390px screen — the type ran the width of the window and the
-   pictures had no room to lead. The phone scale now sits one step under the
-   desktop one, with the root at 16px so every rem-sized gap, bar and control
-   steps down with it. */
+/* PHONE TYPE — one step down from the desktop scale. */
+   /* These were LARGER than the desktop roles, not smaller: the phone pass had */
+   /* been tuned upward to match the chrome, which left 17px card copy and a 39px */
+   /* page title on a 390px screen — the type ran the width of the window and the */
+   /* pictures had no room to lead. The phone scale now sits one step under the */
+   /* desktop one, with the root at 16px so every rem-sized gap, bar and control */
+   /* steps down with it. */
 @media (max-width: 767px) {
   html:root {
     --font-size-xs: 0.75rem; /* 12px. */

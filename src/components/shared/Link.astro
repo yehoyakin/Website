@@ -1,8 +1,9 @@
 ---
 // Purpose: Component - src/components/shared/Link.astro (Retro link button)
-import Icon from "./Icon.astro";
-import { netIconForUrl } from "../../config/icons";
-import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/article/articleMasthead.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/linkPanels.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/tintedButtons.css
+import Icon from "./Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
+import { netIconForUrl } from "../../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
+import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
 
 interface Props {
   href: string;
@@ -10,15 +11,13 @@ interface Props {
   external?: boolean;
   class?: string;
   style?: string;
-  /** Icon name from the shared registry, e.g. "Handbag". */
+  // Icon name from the shared registry, e.g. "Handbag".
   icon?: string;
-  /** Theme name — picks the icon colour that matches the card/page. */
+  // Theme name — picks the icon colour that matches the card/page.
   theme?: string;
-  /**
-   * Take the themed tile — accent fill, white outline — when the host has no
-   * theme of its own and paints the accent through `style` instead (the
-   * landing's contacts panel). `theme` does the same thing by naming one.
-   */
+   // Take the themed tile — accent fill, white outline — when the host has no
+   // theme of its own and paints the accent through `style` instead (the
+   // landing's contacts panel). `theme` does the same thing by naming one.
   tinted?: boolean;
 }
 
@@ -41,15 +40,15 @@ const resolvedIcon = icon ?? netIconForUrl(href);
 
 const alignment = resolvedIcon ? "justify-start" : "justify-center";
 
-/* The button must take the host's contextual accent when placed in a themed
-   card or panel, while still accepting an explicit theme override when a link
-   is used outside that context. */
+// The button must take the host's contextual accent when placed in a themed
+   // card or panel, while still accepting an explicit theme override when a link
+   // is used outside that context.
 const themeName = theme ? toThemeName(theme) : undefined;
 const themeToken = themeName ? resolveThemeToken(themeName) : undefined;
 const linkThemeMode = theme ? (themeName ?? "tinted") : (tinted ? "tinted" : undefined);
 const hasExplicitThemeColor = style?.includes("--project-tag-color") || false;
-/* The button always carries the host's theme so its tile, border and type
-   stay on the accent — day/night never touches it. */
+// The button always carries the host's theme so its tile, border and type
+   // stay on the accent — day/night never touches it.
 const inlineThemeStyle = [
   `--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --data-link-theme: ${linkThemeMode ?? "tinted"};`,
   style,

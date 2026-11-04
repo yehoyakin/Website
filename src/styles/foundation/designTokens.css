@@ -1,4 +1,5 @@
 /* Contribution font sizing — one :root rule of its own, next to the tokens. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ContactPanel.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro */
 :root {
   --contribution-font-size: 1em;
   --contribution-heading-size: 1em;
@@ -7,9 +8,9 @@
 
 /* Day theme colours — one per pixel-icon colour in public/images/Icons/. */
 :root {
-  /* The general tint: the mode base colours every unthemed accent, glyph and
-     button mixes from. Currently the red theme — change these two values to
-     reskin the chrome, and nothing else needs touching. */
+  /* The general tint: the mode base colours every unthemed accent, glyph and */
+     /* button mixes from. Currently the red theme — change these two values to */
+     /* reskin the chrome, and nothing else needs touching. */
   --theme-main-day: var(--theme-white);
   --theme-main-night: var(--theme-black);
 
@@ -53,9 +54,9 @@
   --ui-muted: rgb(161 161 170);
   --ui-invert: rgb(255 255 255);
 
-  /* Project tag / accent colour system. A themed host (card, article, panel)
-     sets its own --project-tag-color and keeps it; with no theme this is the
-     general day / night tint, so unthemed chrome follows the mode. */
+  /* Project tag / accent colour system. A themed host (card, article, panel) */
+     /* sets its own --project-tag-color and keeps it; with no theme this is the */
+     /* general day / night tint, so unthemed chrome follows the mode. */
   --project-tag-color: var(--plate-tint);
   --accent-bold: var(--project-tag-color);
   --accent-italic: var(--project-tag-color);
@@ -69,12 +70,12 @@
   }
 }
 
-/* Font shadow-drop — the cast offset shared by EVERY body / bold / italic
-   glyph. `--text-shadow-drop` is the single tight contact drop the body text
-   (and the near layer of the accent bold/italic) all use; `--text-shadow-drop-
-   far` is the short second step only the coloured accent emphasis adds. These
-   live in one place so the drop is identical across the board — change these
-   two values to retune every font shadow at once. */
+/* Font shadow-drop — the cast offset shared by EVERY body / bold / italic */
+   /* glyph. `--text-shadow-drop` is the single tight contact drop the body text */
+   /* (and the near layer of the accent bold/italic) all use; `--text-shadow-drop- */
+   /* far` is the short second step only the coloured accent emphasis adds. These */
+   /* live in one place so the drop is identical across the board — change these */
+   /* two values to retune every font shadow at once. */
 :root {
   --text-shadow-drop: 1px 1px;
   --text-shadow-drop-far: 2px 3px;

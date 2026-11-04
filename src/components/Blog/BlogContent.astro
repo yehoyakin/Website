@@ -1,18 +1,19 @@
 ---
 // Purpose: Component - src/components/Blog/BlogContent.astro (Render post body and scene images)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryPanelShell.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css
 
-import CompactBody from "../UI/CompactBody.astro";
-import Icon from "../shared/Icon.astro";
+import CompactBody from "../UI/CompactBody.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro
+import Icon from "../shared/Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
 import {
   defaultIconColor,
   defaultIconColorNight,
   iconColorForTheme,
-} from "../../config/icons";
-import { patternForTheme } from "../../config/patterns";
-import { resolveThemeToken } from "../../config/uiDictionary";
-import { asset } from "../../utils/asset";
-import { videoEmbedUrl } from "../../utils/video";
-import "../../styles/portfolio/galleryThumbnailSlide.css";
+} from "../../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
+import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
+import { resolveThemeToken } from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
+import { asset } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
+import { videoEmbedUrl } from "../../utils/video";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/video.ts
+import "../../styles/portfolio/galleryThumbnailSlide.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css
 
 interface SceneItem {
   image: string;
@@ -62,18 +63,16 @@ const siteBaseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 
-/* The lede: the post's opening paragraph, i.e. the first paragraph block that
-   actually has words in it — a [background[x]] marker wraps in its own empty
-   paragraph and must not take the treat. `blog-lede` is what gives it the
-   drop cap; see styles/article/articleProse.css. */
+// The lede: the post's opening paragraph, i.e. the first paragraph block that
+   // actually has words in it — a [background[x]] marker wraps in its own empty
+   // paragraph and must not take the treat. `blog-lede` is what gives it the
+   // drop cap; see styles/article/articleProse.css.
 const ledeIndex = blocks.findIndex(
   (block) => block.type === "paragraph" && block.text.trim().length > 0,
 );
 
-/**
- * Replace [scene[x]] and [scene[x,y,z]] markers with image blocks.
- * SAFE for BOTH raw paths and asset() resolved paths.
- */
+ // Replace [scene[x]] and [scene[x,y,z]] markers with image blocks.
+ // SAFE for BOTH raw paths and asset() resolved paths.
 const getAspectClass = (size?: SceneItem["size"]) => {
   switch (size) {
     case "16:9":
@@ -104,19 +103,17 @@ const getSceneSizeClass = (size?: string) => {
       return "max-w-[90vw]";
     case "full":
       return "max-w-[95vw]";
-    /* Default is the READING COLUMN, not a viewport fraction: 60vw made a
-       picture 768px wide beside 976px of text on a desktop, and only 234px
-       wide beside 278px of text on a phone — an image narrower than the
-       paragraph it belongs to, at every size. The column is the measure the
-       figure is part of, so that is the width it takes. */
+    // Default is the READING COLUMN, not a viewport fraction: 60vw made a
+       // picture 768px wide beside 976px of text on a desktop, and only 234px
+       // wide beside 278px of text on a phone — an image narrower than the
+       // paragraph it belongs to, at every size. The column is the measure the
+       // figure is part of, so that is the width it takes.
     default:
       return "max-w-full";
   }
 };
 
-/**
- * Clean up a caption string: strip quotes (straight or curly), HTML entities, trim.
- */
+ // Clean up a caption string: strip quotes (straight or curly), HTML entities, trim.
 const cleanCaption = (raw: string): string => {
   return raw
     .replace(/^[\s,]*/, "")
@@ -195,14 +192,11 @@ const renderScene = (
   `;
 };
 
-/**
- * Match scene markers in rendered HTML.
- * Handles: [scene[0]], [scene[0,1,2]], [scene[0, wide]], [scene[0], "caption"]
- * Works regardless of quote type (straight, curly, HTML entities).
- *
- * Pattern: [scene[indexes, optional_size], optional_caption_text]
- * We capture everything after the inner ] as the raw caption text.
- */
+ // Match scene markers in rendered HTML.
+ // Handles: [scene[0]], [scene[0,1,2]], [scene[0, wide]], [scene[0], "caption"]
+ // Works regardless of quote type (straight, curly, HTML entities).
+ // Pattern: [scene[indexes, optional_size], optional_caption_text]
+ // We capture everything after the inner ] as the raw caption text.
 const SCENE_MARKER_RE =
   /\[scene\[([0-9,\s]+)(?:,\s*(wide|large|full))?\](?:,\s*([^\]]*))?\]/g;
 
@@ -222,9 +216,7 @@ const parseSceneMarker = (match: string) => {
   return { indexes, caption, size: sizeToken || undefined };
 };
 
-/**
- * Replace [video[x]] and [video[x, "caption"]] markers with video blocks.
- */
+ // Replace [video[x]] and [video[x, "caption"]] markers with video blocks.
 const getVideoAspectClass = (size: VideoItem["size"]) => {
   switch (size) {
     case "4:3":
@@ -249,7 +241,7 @@ const renderVideo = (
   if (!video?.src) return "";
 
   const align = (video.align ?? "center").toLowerCase();
-  /* `||` (not `??`): an empty marker caption falls back to `caption:`. */
+  // `||` (not `??`): an empty marker caption falls back to `caption:`.
   const captionText = cleanCaption(captionOverride || video.caption || "");
   const embedUrl = videoEmbedUrl(video.src, video.type);
   const aspectClass = getVideoAspectClass(video.size);
@@ -272,11 +264,9 @@ const renderVideo = (
       break;
   }
 
-  /*
-   * The aspect ratio lives on an inner box so the caption stays
-   * outside of it. Embeds always need a ratio; files keep their
-   * natural one unless `size` asks otherwise.
-   */
+   // The aspect ratio lives on an inner box so the caption stays
+   // outside of it. Embeds always need a ratio; files keep their
+   // natural one unless `size` asks otherwise.
   const hasFixedAspect =
     Boolean(embedUrl) || Boolean(video.size && video.size !== "auto");
   const frameClass = hasFixedAspect
@@ -320,10 +310,8 @@ const renderVideo = (
   `;
 };
 
-/**
- * Match video markers in rendered HTML.
- * Handles: [video[0]], [video[0, wide]], [video[0], "caption"]
- */
+ // Match video markers in rendered HTML.
+ // Handles: [video[0]], [video[0, wide]], [video[0], "caption"]
 const VIDEO_MARKER_RE =
   /\[video\[(\d+)(?:,\s*(wide|large|full))?\](?:,\s*([^\]]*))?\]/g;
 
@@ -422,18 +410,14 @@ const sceneHtml =
         return `<div class="${groupClass}">${groupedScenes}</div>${groupCaptionMarkup}`;
       })
     : videoHtml;
-/*
- * Every post opens with a [background[x]] marker on its own line, which markdown
- * wraps in a <p>. Two reasons to unwrap those:
- *
- *   - the wrapper added a full paragraph gap for an invisible anchor;
- *   - it made the marker the article's first <p>, so the lede treatment
- *     (and the drop cap on it) landed on an empty paragraph instead of the
- *     opening sentence.
- *
- * The span itself stays: scripts in pages/blog/[slug].astro measure its
- * position to drive the background crossfade.
- */
+ // Every post opens with a [background[x]] marker on its own line, which markdown
+ // wraps in a <p>. Two reasons to unwrap those:
+ // - the wrapper added a full paragraph gap for an invisible anchor;
+ // - it made the marker the article's first <p>, so the lede treatment
+ // (and the drop cap on it) landed on an empty paragraph instead of the
+ // opening sentence.
+ // The span itself stays: scripts in pages/blog/[slug].astro measure its
+ // position to drive the background crossfade.
 const renderInlineMarkdown = (text: string) => {
   const inlinePattern = /(\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|_[^_]+_|`[^`]+`)/g;
   const parts: Array<{ type: "text" | "strong" | "em" | "code"; value: string }> = [];
@@ -470,23 +454,12 @@ const renderInlineMarkdown = (text: string) => {
 
 ---
 
-{/* Reading surface. The frame, plate and padding live in
-       styles/article/blogArticle.css (`#blog-content`), which is also where
-       the prose typography is: one file owns how an article reads.
-
-       `pattern-plate--huge` carries the post's texture across the column: the
-       biggest tile on the site, scrolling at about half the card speed and at a
-       seventh of their opacity, so it registers as a surface and never as
-       movement behind the words. The tile URL comes from the page, which owns
-       the post's theme. */}
+{/* Reading surface. The frame, plate and padding live in styles/article/blogArticle.css (`#blog-content`), which is also where the prose typography is: one file owns how an article reads. `pattern-plate--huge` carries the post's texture across the column: the biggest tile on the site, scrolling at about half the card speed and at a seventh of their opacity, so it registers as a surface and never as movement behind the words. The tile URL comes from the page, which owns the post's theme. */}
 <div
   class="blog-article-body pattern-plate pattern-plate--text-backdrop pattern-plate--huge"
   id="blog-content"
 >
-  {/* Long-form body: Body.astro is sized for short copy and drops under the
-      16px the pixel face needs, so the article's text is rendered through
-      CompactBody instead. No theme prop — the section already carries the
-      post's accent and the body must inherit it. */}
+  {/* Long-form body: Body.astro is sized for short copy and drops under the 16px the pixel face needs, so the article's text is rendered through CompactBody instead. No theme prop — the section already carries the post's accent and the body must inherit it. */}
   <CompactBody>
     <div>
       {blocks.map((block, blockIndex) => {
@@ -579,8 +552,7 @@ const renderInlineMarkdown = (text: string) => {
         }
 
         if (block.type === "video") {
-          /* Same markup the marker replacement has always produced — the frame,
-             the aspect box and the caption come from renderVideo. */
+          /* Same markup the marker replacement has always produced — the frame, the aspect box and the caption come from renderVideo. */
           return (
             <Fragment
               set:html={renderVideo(block.index, block.size, block.caption)}
@@ -756,11 +728,11 @@ const renderInlineMarkdown = (text: string) => {
 </div>
 
 <script>
-  /* A bundled (not is:inline) script, so Astro resolves and ships these
-     imports. Inline scripts are copied verbatim, and their relative imports
-     404'd in the browser, which stopped every gallery from opening. */
-  import { initGalleryEqualHeight } from "../../scripts/galleryEqualHeight.js";
-  import { initCardCarousels } from "../../scripts/cardCarousel.js";
+  // A bundled (not is:inline) script, so Astro resolves and ships these
+     // imports. Inline scripts are copied verbatim, and their relative imports
+     // 404'd in the browser, which stopped every gallery from opening.
+  import { initGalleryEqualHeight } from "../../scripts/galleryEqualHeight.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/galleryEqualHeight.js
+  import { initCardCarousels } from "../../scripts/cardCarousel.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/cardCarousel.js
   {
     const initMarkdownGalleries = () => {
       const galleries = document.querySelectorAll(".project-gallery[data-gallery-ready='false']");
@@ -811,9 +783,9 @@ const renderInlineMarkdown = (text: string) => {
         let dotButtons = [];
         let currentIndex = 0;
 
-        /* Build a media list from the thumbnails in this gallery. Each thumb
-           carries data-lightbox-kind ("image", "video", or "embed") so the
-           lightbox stage can render the correct element type. */
+        // Build a media list from the thumbnails in this gallery. Each thumb
+           // carries data-lightbox-kind ("image", "video", or "embed") so the
+           // lightbox stage can render the correct element type.
         const itemsFor = (thumb) => {
           const owner = thumb?.closest(".project-gallery") || gallery;
 
@@ -825,8 +797,8 @@ const renderInlineMarkdown = (text: string) => {
           }));
         };
 
-        /* Render one media item into the lightbox stage. Mirrors the project
-           slug's render() so videos and embeds work identically. */
+        // Render one media item into the lightbox stage. Mirrors the project
+           // slug's render() so videos and embeds work identically.
         const render = (index) => {
           const item = items[index];
           if (!item || !stage) return;
@@ -876,8 +848,8 @@ const renderInlineMarkdown = (text: string) => {
           render(currentIndex);
         };
 
-        /* One panel on screen at a time: a gallery opened while another panel is
-           still up would otherwise show through behind it. */
+        // One panel on screen at a time: a gallery opened while another panel is
+           // still up would otherwise show through behind it.
         const closeOtherLightboxes = () => {
           document.querySelectorAll(".blog-gallery-lightbox.is-open").forEach((other) => {
             if (other === lightbox) return;
@@ -893,14 +865,14 @@ const renderInlineMarkdown = (text: string) => {
             dotsWrap.replaceChildren(...dotButtons);
           }
 
-          /* A one-item gallery has nowhere to go: the CSS hides the arrows and
-             the dot index from this flag. */
+          // A one-item gallery has nowhere to go: the CSS hides the arrows and
+             // the dot index from this flag.
           lightbox.dataset.lightboxSingle = items.length <= 1 ? "true" : "false";
 
           closeOtherLightboxes();
-          /* Opened from <body> so no transformed or clipping ancestor (the
-             gallery strip, a plate, a reveal animation) can trap the
-             fixed-position overlay inside the page. */
+          // Opened from <body> so no transformed or clipping ancestor (the
+             // gallery strip, a plate, a reveal animation) can trap the
+             // fixed-position overlay inside the page.
           if (lightbox.parentElement !== document.body) document.body.appendChild(lightbox);
           lightbox.classList.add("is-open");
           lightbox.setAttribute("aria-hidden", "false");
@@ -912,7 +884,7 @@ const renderInlineMarkdown = (text: string) => {
           lightbox.classList.remove("is-open");
           lightbox.setAttribute("aria-hidden", "true");
 
-          /* Unmount the stage to stop any playing video or embed. */
+          // Unmount the stage to stop any playing video or embed.
           stage?.replaceChildren();
 
           if (!document.querySelector(".blog-gallery-lightbox.is-open")) {
@@ -920,8 +892,8 @@ const renderInlineMarkdown = (text: string) => {
           }
         };
 
-        /* The thumbnail's own index inside its strip is what opens it, so the
-           number of galleries above it on the page cannot shift the picture. */
+        // The thumbnail's own index inside its strip is what opens it, so the
+           // number of galleries above it on the page cannot shift the picture.
         thumbs.forEach((thumb) => {
           thumb.addEventListener("click", (event) => {
             event.preventDefault();

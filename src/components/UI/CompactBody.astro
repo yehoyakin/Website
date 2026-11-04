@@ -1,5 +1,6 @@
 ---
 // Purpose: Component - src/components/UI/CompactBody.astro (Long-form reading body)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/fluidTypeScale.css
 //
 // Body.astro is for SHORT copy: a card description, a header subtitle, a one-line
 // label. It is sized with `text-sm sm:text-base`, which on a phone resolves to
@@ -19,13 +20,13 @@ import {
   resolveThemeToken,
   toThemeName,
   toThemeToken,
-} from "../../config/uiDictionary";
+} from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
 
 interface Props {
   class?: string;
-  /** Theme name — controls font and colour. Any string works. */
+  // Theme name — controls font and colour. Any string works.
   theme?: string;
-  /** Add subtle text shadow for readability against blurred backgrounds. */
+  // Add subtle text shadow for readability against blurred backgrounds.
   shadow?: boolean;
 }
 

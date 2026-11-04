@@ -1,5 +1,6 @@
 ---
 // Purpose: Component - src/components/shared/ModeToggle.astro (Day / night switch)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/modeToggleSwitch.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/iconButtons.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css
 //
 // Pinned to the top-right corner of every page by MyLayout.astro, on the same
 // gutter as the back link and the contact rail (--chrome-gutter, tokens.css).
@@ -12,8 +13,8 @@
 // deleted — so the switch borrows the two SKY icons it does ship: `weather` for
 // day, `cloud` for night. Behaviour lives in scripts/modeToggle.js; colours in
 // styles/chrome/modeToggleSwitch.css + styles/foundation/dayNightPalette.css.
-import Icon from "./Icon.astro";
-import { defaultIconColor, defaultIconColorNight } from "../../config/icons";
+import Icon from "./Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
+import { defaultIconColor, defaultIconColorNight } from "../../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
 
 // The switch does NOT follow a page theme: it is the control that changes the
 // mode, so it wears that mode's base colour. Both base colours are assigned in

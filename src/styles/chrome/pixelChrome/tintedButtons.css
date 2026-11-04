@@ -1,4 +1,5 @@
 /* Per-theme tinted button plates. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
 
 .retro-link.pixel-frame,
 .split-card-action {
@@ -47,21 +48,19 @@
   color: var(--button-label-color);
 }
 
-/* THEMED BUTTONS — the host's accent, in either mode.
-
-   Everything above substitutes `var(--project-tag-color)` where it is
-   DECLARED, and the lighting gradient is declared at `:root`
-   (chrome/pixelChrome/tileTokens.css). So the gradient was computed once with
-   the mode tint and inherited as a fixed picture: every button in the site lit
-   white by day and black at night, even inside a red project or a themed card.
-
-   A button that carries an explicit theme (`data-link-theme`, set by
-   shared/Link.astro and the landing cards) re-declares that recipe ON the
-   button, where its own inline `--project-tag-color` is in scope, and opts out
-   of   the mode swaps above entirely: the same tile in day and night, a white
-   pixel border, and white type over it. Unthemed buttons — the credits row, the
-   contacts panel, the back link — keep following day / night, and the back link
-   is excluded outright above so no theme can ever reach the chrome. */
+/* THEMED BUTTONS — the host's accent, in either mode. */
+   /* Everything above substitutes `var(--project-tag-color)` where it is */
+   /* DECLARED, and the lighting gradient is declared at `:root` */
+   /* (chrome/pixelChrome/tileTokens.css). So the gradient was computed once with */
+   /* the mode tint and inherited as a fixed picture: every button in the site lit */
+   /* white by day and black at night, even inside a red project or a themed card. */
+   /* A button that carries an explicit theme (`data-link-theme`, set by */
+   /* shared/Link.astro and the landing cards) re-declares that recipe ON the */
+   /* button, where its own inline `--project-tag-color` is in scope, and opts out */
+   /* of   the mode swaps above entirely: the same tile in day and night, a white */
+   /* pixel border, and white type over it. Unthemed buttons — the credits row, the */
+   /* contacts panel, the back link — keep following day / night, and the back link */
+   /* is excluded outright above so no theme can ever reach the chrome. */
 :root[data-mode] :is(.retro-link.pixel-frame, .split-card-action):not(.back-link)[data-link-theme] {
   --link-tile: var(--project-tag-color, var(--theme-main-day));
   --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
@@ -87,8 +86,8 @@
   color: var(--time-white);
 }
 
-/* The press is a darker tile, not a white one: the border and the type stay
-   white so the control keeps its outline and its label in both modes. */
+/* The press is a darker tile, not a white one: the border and the type stay */
+   /* white so the control keeps its outline and its label in both modes. */
 :root[data-mode] :is(.retro-link.pixel-frame, .split-card-action):not(.back-link)[data-link-theme]:hover,
 :root[data-mode] :is(.retro-link.pixel-frame, .split-card-action):not(.back-link)[data-link-theme]:focus-visible {
   --tile-fill: var(--link-tile-dark);

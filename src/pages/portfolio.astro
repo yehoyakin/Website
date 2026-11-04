@@ -1,14 +1,15 @@
 ---
 // Purpose: Page - src/pages/portfolio.astro (Portfolio listing)
-import MyLayout from "../layouts/MyLayout.astro";
-import Title from "../components/UI/Title.astro";
-import Body from "../components/UI/Body.astro";
-import BackLink from "../components/shared/BackLink.astro";
-import ProjectGallery from "../components/sections/ProjectGallery.astro";
-import PageBackdrop from "../components/shared/PageBackdrop.astro";
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/listingMasthead.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/blogCard/blogCardTile.css
+import MyLayout from "../layouts/MyLayout.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
+import Title from "../components/UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
+import Body from "../components/UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
+import BackLink from "../components/shared/BackLink.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro
+import ProjectGallery from "../components/sections/ProjectGallery.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro
+import PageBackdrop from "../components/shared/PageBackdrop.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro
 
 import { getCollection } from "astro:content";
-import { asset } from "../utils/asset";
+import { asset } from "../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
 
 const rawProjects = await getCollection("projects");
 
@@ -28,11 +29,7 @@ const imagesToPreload = [bgDay, bgNight, ...cardPreviews];
 ---
 
 <MyLayout title="Portfolio | JoacoDev" preloadImages={imagesToPreload}>
-  {/* `relative` (not `absolute inset-0`): the page box has to grow with the
-      content so the project band below can run to its real bottom edge. No
-      `overflow-x-hidden` here either — the band is wider than this box so it
-      can reach past the layout gutter to the viewport edges; `main` above
-      already clips that overflow. */}
+  {/* `relative` (not `absolute inset-0`): the page box has to grow with the content so the project band below can run to its real bottom edge. No `overflow-x-hidden` here either — the band is wider than this box so it can reach past the layout gutter to the viewport edges; `main` above already clips that overflow. */}
   <div
     class="relative w-full min-h-screen bg-[var(--time-page)]"
   >

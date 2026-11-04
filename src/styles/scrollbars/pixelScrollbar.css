@@ -1,4 +1,5 @@
 /* Retro scrollbar detailing for overflowing widget containers. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogSidebar.astro */
 
 .retro-scrollbar::-webkit-scrollbar {
   width: 0.25rem;

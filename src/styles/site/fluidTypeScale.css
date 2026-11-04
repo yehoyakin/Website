@@ -1,6 +1,7 @@
-/* Fluid type scale: one clamp set for the whole site, plus the element map.
-   Reduced by ~1px across the board to bring the page back slightly tighter while
-   keeping the same ratios. */
+/* Fluid type scale: one clamp set for the whole site, plus the element map. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro */
+   /* Reduced by ~1px across the board to bring the page back slightly tighter while */
+   /* keeping the same ratios. */
 :root {
   --font-size-xs: clamp(0.8125rem, 0.75rem + 0.3vw, 1rem);
   --font-size-sm: clamp(0.9375rem, 0.875rem + 0.4vw, 1.1875rem);

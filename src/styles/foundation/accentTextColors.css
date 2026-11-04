@@ -1,10 +1,10 @@
-/* Theme-aware bold / italic (works anywhere .theme-color is applied).
-
-   To make the emphasis pop at a glance we push the two glyphs to their own
-   chroma: bold takes the theme's bright tint at full strength, italics take
-   the near-white, and both get a hard shadow the DARKER variant of their own
-   colour (not the mode shadow). Only the ink in bold/italic changes — the
-   surrounding copy keeps the accent wash from the rest of the prose rules. */
+/* Theme-aware bold / italic (works anywhere .theme-color is applied). */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro */
+   /* To make the emphasis pop at a glance we push the two glyphs to their own */
+   /* chroma: bold takes the theme's bright tint at full strength, italics take */
+   /* the near-white, and both get a hard shadow the DARKER variant of their own */
+   /* colour (not the mode shadow). Only the ink in bold/italic changes — the */
+   /* surrounding copy keeps the accent wash from the rest of the prose rules. */
 .theme-color {
   --accent-bold: color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 74%, white);
   --accent-bold-shadow: color-mix(in srgb, var(--project-tag-color-dark, var(--theme-main-night)) 56%, var(--time-black));
@@ -73,16 +73,15 @@
       );
 }
 
-/* ACCENT TYPE IS STILL TYPE — no animation, no box.
-
-   Bold and italic used to be `display: inline-block` with a looping vertical
-   bob (`accent-bob-slow` / `accent-bob-quick`). A plain transform does not move
-   a line box, but an inline-block's box DOES grow when its content is scaled,
-   so every burst pushed the whole line down and back up — the "line jump" —
-   and a coloured word could be bumped onto the next line while its box was
-   wide. Both are gone: the emphasis keeps its accent paint and its hard
-   shadow, nothing else. `display` is deliberately left alone, so these stay
-   ordinary inline words that wrap exactly like the text around them. */
+/* ACCENT TYPE IS STILL TYPE — no animation, no box. */
+   /* Bold and italic used to be `display: inline-block` with a looping vertical */
+   /* bob (`accent-bob-slow` / `accent-bob-quick`). A plain transform does not move */
+   /* a line box, but an inline-block's box DOES grow when its content is scaled, */
+   /* so every burst pushed the whole line down and back up — the "line jump" — */
+   /* and a coloured word could be bumped onto the next line while its box was */
+   /* wide. Both are gone: the emphasis keeps its accent paint and its hard */
+   /* shadow, nothing else. `display` is deliberately left alone, so these stay */
+   /* ordinary inline words that wrap exactly like the text around them. */
 
 :is(.theme-color, #blog-content) :is(strong, b) {
   background: none;

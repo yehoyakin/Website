@@ -1,23 +1,22 @@
 ---
 // Purpose: Component - src/components/UI/Body.astro (UI Body / paragraph styling)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/fluidTypeScale.css
 import {
   getThemeConfig,
   resolveThemeToken,
   toThemeName,
   toThemeToken,
-} from "../../config/uiDictionary";
+} from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
 
 interface Props {
   class?: string;
-  /** Theme name — controls font, color and transition. Any string works. */
+  // Theme name — controls font, color and transition. Any string works.
   theme?: string;
-  /**
-   * Readability shadow. ON by default: body copy sits over artwork as often as
-   * over a flat tile, and the two-layer shadow in
-   * styles/foundation/pixelTypeHierarchy.css keeps white text legible on the
-   * bright patches without ringing the letters. Pass `shadow={false}` on a dark
-   * plate where it is not wanted.
-   */
+   // Readability shadow. ON by default: body copy sits over artwork as often as
+   // over a flat tile, and the two-layer shadow in
+   // styles/foundation/pixelTypeHierarchy.css keeps white text legible on the
+   // bright patches without ringing the letters. Pass `shadow={false}` on a dark
+   // plate where it is not wanted.
   shadow?: boolean;
 }
 

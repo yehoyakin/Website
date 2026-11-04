@@ -1,4 +1,5 @@
 /* Tile chrome tokens: outline weights, the icon-button box, pattern tile sizes. */
+/* Used by: file:///C:\Users\UsuarioCompuElite\Documents\ForkRepositories\Website/src/styles/chrome/pixelChrome.css, file:///C:\Users\UsuarioCompuElite\Documents\ForkRepositories\Website/src/styles/chrome/pixelChrome/patternPlates.css, file:///C:\Users\UsuarioCompuElite\Documents\ForkRepositories\Website/src/styles/chrome/pixelChrome/tintedButtons.css */
 
 :root {
   /* Two weights: panels stay chunky, controls read thin. */
@@ -6,24 +7,23 @@
   --tile-bevel: 2px;
   --control-outline-width: 1px;
   --control-bevel: 1px;
-  /* One box for every bare icon control in the site chrome — the switch, the
-     contact / sidebar handles, the carousel arrows. It follows the chrome
-     control token, so they all step down together on phones. */
+  /* One box for every bare icon control in the site chrome — the switch, the */
+     /* contact / sidebar handles, the carousel arrows. It follows the chrome */
+     /* control token, so they all step down together on phones. */
   --icon-button-size: var(--chrome-control);
-  /* One glyph inside that box, so every one of them carries the same artwork
-     at the same size. Inline icons (card meta, titles) are NOT this size. */
+  /* One glyph inside that box, so every one of them carries the same artwork */
+     /* at the same size. Inline icons (card meta, titles) are NOT this size. */
   --icon-button-glyph: 1.75rem;
   /* The plate fill: near-black, tinted with the host's own accent. */
   --plate-fill-dark: rgb(0 0 0 / 0.92);
-  /* Lit-from-above plate, shaded like the icon artwork does it: a strong
-     overlight across the top edge that steps down through a few discrete tones
-     to a dark base. Hard stops, not a smooth fade — the icon set is banded, so
-     a softly-fading button reads as a different material beside it.
-
-     Every button wears it (links, card actions, the back link); cards and
-     panels keep their own tile fill. `--tile-light` / `--tile-dark` are set by
-     the themed plates, so a themed button lights in its own accent and an
-     unthemed one lights in white / black. */
+  /* Lit-from-above plate, shaded like the icon artwork does it: a strong */
+     /* overlight across the top edge that steps down through a few discrete tones */
+     /* to a dark base. Hard stops, not a smooth fade — the icon set is banded, so */
+     /* a softly-fading button reads as a different material beside it. */
+     /* Every button wears it (links, card actions, the back link); cards and */
+     /* panels keep their own tile fill. `--tile-light` / `--tile-dark` are set by */
+     /* the themed plates, so a themed button lights in its own accent and an */
+     /* unthemed one lights in white / black. */
   --button-lighting: linear-gradient(
     to bottom,
     color-mix(
@@ -83,14 +83,13 @@
 }
 
 
-/* PHONES: the same outlines at half weight.
-
-   4px is one pixel-art step at a desktop viewing distance; on a phone the
-   pixels are physically smaller but the frame is not, so every card, panel,
-   masthead and figure wore a band that read as a heavy stroke around a small
-   surface. Halving both weights keeps the same proportions on the small
-   screen: panels at 2px, images and media at 1px. Buttons keep their own
-   `--outline-width` (they set it locally), so the controls read unchanged. */
+/* PHONES: the same outlines at half weight. */
+   /* 4px is one pixel-art step at a desktop viewing distance; on a phone the */
+   /* pixels are physically smaller but the frame is not, so every card, panel, */
+   /* masthead and figure wore a band that read as a heavy stroke around a small */
+   /* surface. Halving both weights keeps the same proportions on the small */
+   /* screen: panels at 2px, images and media at 1px. Buttons keep their own */
+   /* `--outline-width` (they set it locally), so the controls read unchanged. */
 @media (max-width: 767px) {
   :root {
     --outline-width: 1px;

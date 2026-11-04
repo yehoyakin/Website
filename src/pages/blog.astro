@@ -1,13 +1,14 @@
 ---
 // Purpose: Page - src/pages/blog.astro (Blog listing)
-import MyLayout from "../layouts/MyLayout.astro";
-import Title from "../components/UI/Title.astro";
-import Body from "../components/UI/Body.astro";
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/blogCard/blogCardStrip.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/fluidTypeScale.css
+import MyLayout from "../layouts/MyLayout.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
+import Title from "../components/UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
+import Body from "../components/UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
 import { getCollection } from "astro:content";
 import type { BlogPost } from "../types/blog";
-import BlogCard from "../components/sections/BlogCard.astro";
-import BackLink from "../components/shared/BackLink.astro";
-import PageBackdrop from "../components/shared/PageBackdrop.astro";
+import BlogCard from "../components/sections/BlogCard.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro
+import BackLink from "../components/shared/BackLink.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro
+import PageBackdrop from "../components/shared/PageBackdrop.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro
 
 const posts = (await getCollection("blog")) as BlogPost[];
 
@@ -55,8 +56,7 @@ const sortedPosts = posts.sort(
       <div class="listing-gap"></div>
 
       {
-        /* On phones this becomes a one-card-at-a-time carousel (see
-          styles/responsive/responsive.css + scripts/cardCarousel.js). */
+        /* On phones this becomes a one-card-at-a-time carousel (see styles/responsive/responsive.css + scripts/cardCarousel.js). */
       }
       <div
         class="blog-cards-wrapper"
@@ -78,11 +78,11 @@ const sortedPosts = posts.sort(
   </div>
 
   <script>
-    import { initCardCarousels } from "../scripts/cardCarousel.js";
+    import { initCardCarousels } from "../scripts/cardCarousel.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/cardCarousel.js
 
-    /* The strip is server-rendered above; build its controls on load. The
-       module registers its own `astro:page-load` listener, so client-side
-       navigations back to the listing rebuild them too. */
+    // The strip is server-rendered above; build its controls on load. The
+       // module registers its own `astro:page-load` listener, so client-side
+       // navigations back to the listing rebuild them too.
     initCardCarousels();
   </script>
 </MyLayout>

@@ -1,6 +1,7 @@
 ---
 // Purpose: Component - src/components/Blog/BlogSidebar.astro (Sidebar content for blog pages)
-import Link from "../shared/Link.astro";
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/linkPanels.css
+import Link from "../shared/Link.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro
 
 interface CardItem {
   href?: string;
@@ -12,14 +13,14 @@ interface CardItem {
   links?: {
     href: string;
     text?: string;
-    /** Icon name from the shared registry, e.g. "Handbag". */
+    // Icon name from the shared registry, e.g. "Handbag".
     icon?: string;
   }[];
 }
 
 interface Props {
   cards: CardItem[];
-  /** Theme name — picks the icon colour that matches the post. */
+  // Theme name — picks the icon colour that matches the post.
   theme?: string;
 }
 
@@ -35,12 +36,11 @@ const isExternal = (url?: string) =>
 const resolve = (path: string) =>
   isExternal(path) ? path : `${base}${path.replace(/^\/+/, "")}`;
 
-/* ONE CONTINUOUS LIST.
-
-   Every card's buttons sit in a single list on the one plate. Each card's
-   title is the separator above its buttons, so the buttons keep their own
-   short labels ("Steam"). A card with only a top-level `href` becomes one
-   button under its title. */
+// ONE CONTINUOUS LIST.
+   // Every card's buttons sit in a single list on the one plate. Each card's
+   // title is the separator above its buttons, so the buttons keep their own
+   // short labels ("Steam"). A card with only a top-level `href` becomes one
+   // button under its title.
 const groups = cards
   .map((card) => {
     const title = card.title?.trim() || "";
@@ -55,9 +55,7 @@ const groups = cards
 ---
 
 {
-  /* No scroll frame of its own: this sits inside the rail panel
-     (components/shared/RailPanel.astro), which already caps its height and
-     scrolls. A second `overflow-y: auto` here gave the panel two scrollbars. */
+  /* No scroll frame of its own: this sits inside the rail panel (components/shared/RailPanel.astro), which already caps its height and scrolls. A second `overflow-y: auto` here gave the panel two scrollbars. */
 }
 <aside class="relative z-20 w-full retro-scrollbar">
   <div class="links-panel-links links-panel-links--merged">

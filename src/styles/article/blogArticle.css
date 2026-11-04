@@ -1,4 +1,5 @@
 /* Blog article: masthead, surface, prose, figures. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 
 @import "articleMasthead.css";
 @import "articleReadingSurface.css";
@@ -6,15 +7,14 @@
 @import "articleFigures.css";
 @import "sceneReveal.css";
 
-/* ARTICLE COLOUR PASS — nothing inside a post reads grey.
-
-   Muted ink is tinted globally now (see foundation/dayNightPalette.css); what is
-   scoped here are the article's frames: hairlines and washes are white carrying
-   a heavy wash of the post's own accent. */
-/* `.blog-article-body`, not `#blog-content`: the id is the body on a post but
-   the div INSIDE the write-up panel on a project page, where this border width
-   (Tailwind's preflight makes every element `border-style: solid`) drew a plain
-   ink-coloured frame around the whole write-up. */
+/* ARTICLE COLOUR PASS — nothing inside a post reads grey. */
+   /* Muted ink is tinted globally now (see foundation/dayNightPalette.css); what is */
+   /* scoped here are the article's frames: hairlines and washes are white carrying */
+   /* a heavy wash of the post's own accent. */
+/* `.blog-article-body`, not `#blog-content`: the id is the body on a post but */
+   /* the div INSIDE the write-up panel on a project page, where this border width */
+   /* (Tailwind's preflight makes every element `border-style: solid`) drew a plain */
+   /* ink-coloured frame around the whole write-up. */
 :is(.blog-masthead, .blog-article-body) {
   --time-border: color-mix(
     in srgb,
@@ -35,13 +35,12 @@
   border-width: calc(var(--outline-width) + 2px);
 }
 
-/* BLOG HEADERS — the Title.astro outline cut, driven by two knobs.
-
-   `--heading-fill` paints the glyph, `--heading-ring` draws its hard edge: the
-   ring is eight text-shadows one pixel step apart, so the outline sits on the
-   same grid as the type instead of blurring. The first header (the masthead
-   title) is filled with the post's accent and ringed in white; every heading
-   under it is the inverse — white letters, accent ring. */
+/* BLOG HEADERS — the Title.astro outline cut, driven by two knobs. */
+   /* `--heading-fill` paints the glyph, `--heading-ring` draws its hard edge: the */
+   /* ring is eight text-shadows one pixel step apart, so the outline sits on the */
+   /* same grid as the type instead of blurring. The first header (the masthead */
+   /* title) is filled with the post's accent and ringed in white; every heading */
+   /* under it is the inverse — white letters, accent ring. */
 #blog-content :is(h1, h2, h3, h4, h5, h6),
 .blog-masthead-title {
   --heading-step: max(1px, calc(1em / 16));
@@ -63,16 +62,15 @@
     var(--heading-step) var(--heading-step) 0 var(--heading-ring);
 }
 
-/* HEADINGS INSIDE THE COPY — the same two knobs, set per mode.
-
-   A heading written in the post body is painted in the post's accent IN BOTH
-   MODES — the theme colour is the ink, so it does not drop to the accent's dark
-   variant after dark. Only the ring switches: white by day, black at night, the
-   same outline switch a card's title makes (blogCardTile.css).
-   Only `#blog-content` is targeted: the masthead title above it is a
-   white-on-accent cut (see styles/article/articleMasthead.css) and must not
-   follow the copy. These outrank the base heading rule above and the h5/h6
-   muted fill in articleProse.css, so every level takes the theme. */
+/* HEADINGS INSIDE THE COPY — the same two knobs, set per mode. */
+   /* A heading written in the post body is painted in the post's accent IN BOTH */
+   /* MODES — the theme colour is the ink, so it does not drop to the accent's dark */
+   /* variant after dark. Only the ring switches: white by day, black at night, the */
+   /* same outline switch a card's title makes (blogCardTile.css). */
+   /* Only `#blog-content` is targeted: the masthead title above it is a */
+   /* white-on-accent cut (see styles/article/articleMasthead.css) and must not */
+   /* follow the copy. These outrank the base heading rule above and the h5/h6 */
+   /* muted fill in articleProse.css, so every level takes the theme. */
 :root:not([data-mode="night"]) #blog-content :is(h1, h2, h3, h4, h5, h6) {
   --heading-fill: var(--project-tag-color, var(--theme-main-day));
   --heading-ring: var(--time-white);
