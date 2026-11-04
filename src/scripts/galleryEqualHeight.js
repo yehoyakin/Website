@@ -1,39 +1,105 @@
 /**
  * Gallery equal height.
  *
- * For multi-image blog slug galleries (`.markdown-gallery` without
+ * For multi-media galleries (`.markdown-gallery` without
  * `.markdown-gallery--single`), removes the fixed aspect-ratio constraint and
- * sets every card's image area to the height of the tallest rendered image or
- * video, so there is no letterboxing dead space.
+ * sets every card's media area to the height of the tallest media, so there is
+ * no letterboxing dead space.
  *
- * Works with both `<img>` and `<video>` elements inside `.thumb-carousel`.
+ * Handles all three gallery kinds in ONE up-front pass at load, not lazily when
+ * a card is scrolled into focus:
+ *   - `<img>`   : forced to decode (`.load()`), measured from naturalWidth/Height.
+ *   - `<video>` : forced to fetch metadata, measured from videoWidth/Height
+ *                 (`loadedmetadata` fires for `preload="metadata"`; the old
+ *                 `loadeddata` wait never resolved until playback, which left
+ *                 the whole gallery undetermined until the reader reached it).
+ *   - `<iframe>`: embeds (YouTube etc.) are cross-origin, so they expose no
+ *                 intrinsic size; they are assumed a fixed 16:9 ratio and are
+ *                 NOT force-loaded — the height is reserved from the ratio.
+ *
+ * Any media that fails or stalls past a short timeout falls back to a known
+ * ratio instead of blocking the pass, so the gallery is always measured once,
+ * at load, for every card — embed-only and mixed included.
  */
 
+/* Standard video-embed ratio (YouTube, Vimeo). Used for every gallery `<iframe>`
+   because a cross-origin embed cannot be measured. Overridable per card with
+   `data-media-aspect="W/H"` on the media element for non-16:9 embeds. */
+const EMBED_ASPECT = 16 / 9;
+
+/* Per-item media dimensions are only needed for videos that never decoded and
+   images that never loaded; a short timeout keeps the up-front pass from
+   hanging on a broken/stalled asset. */
+const MEDIA_TIMEOUT_MS = 3500;
+
 /**
- * Wait for all images and videos in a gallery to finish loading, then return
- * the list of media elements.
+ * Read a media element's width/height aspect ratio, or null if it has no usable
+ * intrinsic size yet. Embeds return the assumed (or `data-media-aspect`) ratio.
+ */
+function aspectOf(el) {
+  if (el.tagName === "VIDEO") {
+    return el.videoWidth > 0 && el.videoHeight > 0
+      ? el.videoWidth / el.videoHeight
+      : null;
+  }
+  if (el.tagName === "IMG") {
+    return el.naturalWidth > 0 && el.naturalHeight > 0
+      ? el.naturalWidth / el.naturalHeight
+      : null;
+  }
+  if (el.tagName === "IFRAME") {
+    const a = el.dataset && el.dataset.mediaAspect;
+    if (a) {
+      const parts = String(a).split("/").map(Number);
+      if (parts.length === 2 && parts[0] > 0 && parts[1] > 0) {
+        return parts[0] / parts[1];
+      }
+    }
+    return EMBED_ASPECT;
+  }
+  return null;
+}
+
+/**
+ * Force the images and videos in a gallery to expose their dimensions, then
+ * resolve. Embeds are intentionally left out — their ratio is assumed, so they
+ * never need to load for the measurement.
  */
 function waitForMedia(gallery) {
-  const images = Array.from(gallery.querySelectorAll(".thumb-carousel-img"));
-  const videos = Array.from(gallery.querySelectorAll(".thumb-carousel-video"));
-  const media = [...images, ...videos];
+  const media = Array.from(
+    gallery.querySelectorAll(".thumb-carousel-img, .thumb-carousel-video")
+  );
 
   return Promise.all(
     media.map((el) => {
-      if (el.tagName === "VIDEO") {
-        if (el.readyState >= 1) return Promise.resolve();
-        return new Promise((resolve) => {
-          el.addEventListener("loadeddata", resolve, { once: true });
-          el.load();
-        });
-      } else {
-        // img
-        if (el.complete && el.naturalHeight > 0) return Promise.resolve();
-        return new Promise((resolve, reject) => {
-          el.addEventListener("load", resolve, { once: true });
-          el.addEventListener("error", reject, { once: true });
-        });
-      }
+      // Already measurable — nothing to wait for.
+      if (aspectOf(el)) return Promise.resolve();
+
+      const settled = new Promise((resolve) => {
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          resolve();
+        };
+        if (el.tagName === "VIDEO") {
+          // `loadedmetadata` is the event that actually fires for
+          // preload="metadata"; `loadeddata` is a backup for streams that jump
+          // straight to current data. `error` resolves too so a broken clip
+          // can never stall the whole gallery.
+          el.addEventListener("loadedmetadata", finish, { once: true });
+          el.addEventListener("loadeddata", finish, { once: true });
+          el.addEventListener("error", finish, { once: true });
+          try {
+            el.load();
+          } catch (e) {}
+        } else {
+          el.addEventListener("load", finish, { once: true });
+          el.addEventListener("error", finish, { once: true });
+        }
+        window.setTimeout(finish, MEDIA_TIMEOUT_MS);
+      });
+      return settled;
     })
   ).then(() => media);
 }
@@ -53,7 +119,11 @@ function equalizeGallery(gallery) {
   if (gallery.dataset.equalHeightReady === "true") return;
 
   const items = gallery.querySelectorAll(".gallery-project-item");
-  if (items.length <= 1) return;
+  if (items.length <= 1) {
+    // Nothing to equalize; allow a later pass to re-check if items appear.
+    gallery.dataset.equalHeightScheduled = "false";
+    return;
+  }
 
   // Collect all media elements, wraps, carousel wrappers, and cards across the gallery
   const allMedia = [];
@@ -62,7 +132,9 @@ function equalizeGallery(gallery) {
   const cards = [];
 
   items.forEach((item) => {
-    const media = item.querySelector(".thumb-carousel-img, .thumb-carousel-video");
+    const media = item.querySelector(
+      ".thumb-carousel-img, .thumb-carousel-video, .thumb-carousel-frame"
+    );
     const wrap = item.querySelector(".blog-card-image-wrap");
     const carouselWrapper = item.querySelector(".thumb-carousel-media");
     const card = item.querySelector(".gallery-thumb");
@@ -72,10 +144,14 @@ function equalizeGallery(gallery) {
     if (card) cards.push(card);
   });
 
-  if (allMedia.length === 0) return;
+  if (allMedia.length === 0) {
+    // No media at all (not even an embed); permit a future retry.
+    gallery.dataset.equalHeightScheduled = "false";
+    return;
+  }
 
-  // STEP 1: Remove all CSS constraints so images render at their natural size
-  // Clear themed backgrounds so no dead space color shows behind images
+  // STEP 1: Remove all CSS constraints so media render at their natural size
+  // Clear themed backgrounds so no dead space color shows behind media
   wraps.forEach((wrap) => {
     wrap.style.setProperty("aspect-ratio", "unset", "important");
     wrap.style.setProperty("height", "auto", "important");
@@ -83,8 +159,11 @@ function equalizeGallery(gallery) {
     wrap.style.background = "transparent";
   });
 
-  // Switch all media to object-fit: cover so they fill the wrap without dead space
+  // Switch images and videos to object-fit: cover so they fill the wrap without
+  // dead space. Embeds (iframes) are left alone — they already stretch to the
+  // wrap box, and `object-fit` does not apply to them.
   allMedia.forEach((el) => {
+    if (el.tagName === "IFRAME") return;
     el.style.objectFit = "cover";
     el.style.background = "transparent";
   });
@@ -97,9 +176,9 @@ function equalizeGallery(gallery) {
   // STEP 2: Force a reflow so the browser recalculates layout without constraints
   void gallery.offsetHeight;
 
-  // STEP 3: Now measure each image's actual rendered height in its card
-  // The image width is determined by the card width. The height is determined
-  // by the image's natural aspect ratio since aspect-ratio is now unset.
+  // STEP 3: Now measure each media's ideal height in its card. The width is set
+  // by the card; the height follows the media's own aspect ratio (natural for
+  // images, decoded for videos, assumed for embeds) since aspect-ratio is unset.
   let maxHeight = 0;
   allMedia.forEach((el) => {
     const wrap = el.closest(".blog-card-image-wrap");
@@ -108,26 +187,19 @@ function equalizeGallery(gallery) {
     const wrapWidth = wrap.getBoundingClientRect().width;
     if (wrapWidth < 1) return;
 
-    // Use natural dimensions for images, video dimensions for videos
-    let naturalWidth, naturalHeight;
-    if (el.tagName === "VIDEO") {
-      naturalWidth = el.videoWidth;
-      naturalHeight = el.videoHeight;
-    } else {
-      naturalWidth = el.naturalWidth;
-      naturalHeight = el.naturalHeight;
-    }
-
-    if (!naturalWidth || !naturalHeight) return;
-
-    // Calculate the height this image should have to fill the wrap width
-    // without letterboxing, based on its natural aspect ratio
-    const aspectRatio = naturalWidth / naturalHeight;
-    const idealHeight = wrapWidth / aspectRatio;
+    // Embeds always yield a ratio; images/videos fall back to the assumed ratio
+    // only if they never decoded, so the up-front pass is never blocked.
+    const ratio = aspectOf(el) || EMBED_ASPECT;
+    const idealHeight = wrapWidth / ratio;
     if (idealHeight > maxHeight) maxHeight = idealHeight;
   });
 
-  if (maxHeight < 1) return;
+  if (maxHeight < 1) {
+    // No media had decoded dimensions yet — this pass measured nothing, so
+    // release the schedule lock and let a later pass try again (once).
+    gallery.dataset.equalHeightScheduled = "false";
+    return;
+  }
 
   // STEP 4: Apply the equal height to all image wraps
   wraps.forEach((wrap) => {
@@ -165,27 +237,33 @@ export function initGalleryEqualHeight(root = document) {
 
   galleries.forEach((gallery) => {
     if (gallery.dataset.equalHeightReady === "true") return;
+    // A gallery is measured exactly once. This init runs from several
+    // redundant entry points (the module's own `astro:page-load` plus each
+    // page's `astro:page-load` / `DOMContentLoaded` / immediate call), and
+    // without this lock every one of them re-armed `waitForMedia` and re-ran
+    // the whole measure-and-apply pass. The flag is released inside
+    // `equalizeGallery` whenever a pass can succeed nothing (nothing loaded
+    // yet), so a later trigger can still try — but only ever one run at a time.
+    if (gallery.dataset.equalHeightScheduled === "true") return;
 
-    // Check if media is already loaded
-    const images = Array.from(gallery.querySelectorAll(".thumb-carousel-img"));
-    const videos = Array.from(gallery.querySelectorAll(".thumb-carousel-video"));
-    const allLoaded =
-      images.every((img) => img.complete && img.naturalHeight > 0) &&
-      videos.every((v) => v.readyState >= 1);
+    gallery.dataset.equalHeightScheduled = "true";
 
-    if (allLoaded) {
-      // Media already loaded — measure after a frame so layout is settled
+    // Decide whether we can measure right now. Images need their natural size
+    // and videos need decoded metadata; embeds always have a usable ratio, so
+    // they never make us wait. If anything still needs loading, force it and
+    // equalize as soon as it resolves (or times out) — still all at load.
+    const measurable = Array.from(
+      gallery.querySelectorAll(".thumb-carousel-img, .thumb-carousel-video")
+    ).every((el) => aspectOf(el) !== null);
+
+    if (measurable) {
+      // Media already sized — measure after a frame so layout is settled.
       requestAnimationFrame(() => equalizeGallery(gallery));
     } else {
-      // Wait for media to load
-      waitForMedia(gallery)
-        .then(() => {
-          requestAnimationFrame(() => equalizeGallery(gallery));
-        })
-        .catch(() => {
-          // On error, still try to equalize with whatever is available
-          requestAnimationFrame(() => equalizeGallery(gallery));
-        });
+      // Wait for media to expose dimensions, then run the single pass.
+      waitForMedia(gallery).then(() => {
+        requestAnimationFrame(() => equalizeGallery(gallery));
+      });
     }
   });
 }
