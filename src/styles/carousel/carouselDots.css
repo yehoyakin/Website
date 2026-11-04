@@ -39,7 +39,7 @@
 
 /* UNSELECTED — the row's resting state: the plate is there but recessed, so the */
    /* current slide is the one that reads at full strength. */
-:root[data-mode] .gallery-index-btn[aria-current="false"] {
+:root[data-mode] .card-carousel-dot[aria-current="false"] {
   opacity: 0.55;
 }
 
@@ -49,7 +49,7 @@
    /* buttons.css is four longhand insets: a plain author declaration at this */
    /* specificity would replace the whole list and lose the bevel. The two */
    /* declarations below carry it along. */
-:root[data-mode] .gallery-index-btn[aria-current="true"] {
+:root[data-mode] .card-carousel-dot[aria-current="true"] {
   opacity: 1;
   box-shadow:
     inset 0 0 0 2px var(--time-white),
@@ -61,8 +61,8 @@
 
 /* A pointer over an entry lifts it to full strength, so the row answers the */
    /* hover before it answers the current slide. */
-:root[data-mode] .gallery-index-btn[aria-current="false"]:hover,
-:root[data-mode] .gallery-index-btn[aria-current="false"]:focus-visible {
+:root[data-mode] .card-carousel-dot[aria-current="false"]:hover,
+:root[data-mode] .card-carousel-dot[aria-current="false"]:focus-visible {
   opacity: 0.85;
 }
 

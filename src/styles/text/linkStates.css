@@ -31,16 +31,13 @@
 .retro-link:hover,
 .retro-link:focus,
 .retro-card:hover,
-.retro-card:focus,
-.split-card-action:hover,
-.split-card-action:focus {
+.retro-card:focus {
   transform: scale(1.03);
   filter: brightness(1.08);
 }
 
 /* Active / pressed. */
 .retro-link:active,
-.retro-card:active,
-.split-card-action:active {
+.retro-card:active {
   transform: translateY(-4px);
 }

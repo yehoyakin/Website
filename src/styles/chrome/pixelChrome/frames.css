@@ -10,7 +10,7 @@
    /* fill of its own. */
    /* BUTTONS ARE EXEMPT. They keep chrome/pixelChrome/buttons.css — the lit */
    /* gradient with the bloom across the top edge — which is what tells a control */
-   /* apart from a surface. Anything with `.retro-link`, `.split-card-action`, */
+   /* apart from a surface. Anything with `.retro-link`, */
    /* `.icon-button`, `.mode-toggle`, `.back-link` or the carousel arrows is left */
    /* alone here. */
 
@@ -23,7 +23,7 @@
    /* `--project-tag-color` (BlogCard, ProjectGallery, the article masthead, …) is */
    /* already in scope — a themed surface frames itself in its theme, and an */
    /* unthemed one still falls back to the day / night tint. */
-.pixel-frame:not(.retro-link):not(.split-card-action),
+.pixel-frame:not(.retro-link),
 .retro-card,
 .portrait-frame,
 .rail-panel,
@@ -64,7 +64,7 @@
    /* light-to-dark grade on it is the ONE shared screen grade */
    /* (styles/site/pageLighting.css), not a per-element bevel restated down a */
    /* ten-thousand-pixel column. */
-.pixel-frame:not(.retro-link):not(.split-card-action),
+.pixel-frame:not(.retro-link),
 .retro-card,
 .portrait-frame,
 .rail-panel,
@@ -81,7 +81,7 @@
    /* the border colour is no longer part of the picture. Plates are exempt — a */
    /* filter would localise their viewport-pinned screen grade for the hover */
    /* (styles/site/pageLighting.css). */
-.pixel-frame:not(.retro-link):not(.split-card-action):not(.pattern-plate):hover,
+.pixel-frame:not(.retro-link):not(.pattern-plate):hover,
 .retro-card:hover,
 .portrait-frame:hover {
   filter: brightness(1.04);

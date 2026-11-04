@@ -11,14 +11,13 @@
    /* button (tinted plates deepen, panels brighten) — this only adds the motion */
    /* and the light. */
 
-/* `.retro-link.pixel-frame` / `.split-card-action` are listed with their full */
+/* `.retro-link.pixel-frame` is listed with its full */
    /* class chain so this transition outranks the one in buttons.css: without it the */
    /* button kept only its colour transition and the grow snapped into place. The */
    /* colour properties come along so those hovers stay smooth. */
 .retro-link,
 .retro-link.pixel-frame,
 .back-link,
-.split-card-action,
 .icon-button,
 .mode-toggle,
 .view-toggle,
@@ -38,8 +37,6 @@
 .retro-link:focus-visible,
 .back-link:hover,
 .back-link:focus-visible,
-.split-card-action:hover,
-.split-card-action:focus-visible,
 .icon-button:hover,
 .icon-button:focus-visible,
 .mode-toggle:hover,
@@ -60,7 +57,6 @@
 @media (prefers-reduced-motion: reduce) {
   .retro-link,
   .back-link,
-  .split-card-action,
   .icon-button,
   .mode-toggle,
   .view-toggle,
@@ -72,8 +68,6 @@
   .retro-link:focus-visible,
   .back-link:hover,
   .back-link:focus-visible,
-  .split-card-action:hover,
-  .split-card-action:focus-visible,
   .icon-button:hover,
   .icon-button:focus-visible,
   .mode-toggle:hover,

@@ -1,7 +1,6 @@
 /* A lit tile: radial bloom under the top edge over a sinking fill. */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
-.retro-link.pixel-frame,
-.split-card-action {
+.retro-link.pixel-frame {
   --outline-color: var(--project-tag-color, var(--theme-main-day));
   --outline-color-hover: var(--outline-color);
   --tile-light: var(--project-tag-color, var(--theme-main-day));
@@ -35,14 +34,12 @@
     border-color var(--duration-fast) var(--ease-soft);
 }
 
-.split-card-action,
 .retro-link.pixel-frame {
   color: var(--button-label-color);
   text-shadow: 2px 2px 0 var(--button-label-shadow);
 }
 
 @supports (color: contrast-color(red)) {
-  .split-card-action,
   .retro-link.pixel-frame {
     --button-label-color: contrast-color(var(--tile-fill));
     color: var(--button-label-color);
@@ -50,8 +47,7 @@
 }
 
 /* Hover: the theme always drives the fill and the text contrast. */
-.retro-link.pixel-frame:hover,
-.split-card-action:hover {
+.retro-link.pixel-frame:hover {
   --button-label-color: contrast-color(var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day))));
   background-color: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
   border-color: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
@@ -66,7 +62,6 @@
    /* control's scale). The frame is clipped with the fill, which is what a */
    /* pixel-art corner looks like: the outline simply stops at the step. */
 .retro-link.pixel-frame,
-.split-card-action,
 .back-link {
   /* One step and a half of the bevel: at the control size the icon set's own */
      /* corner step, and still legible on a 20px phone button. */
@@ -88,8 +83,7 @@
 }
 
 /* Glyphs inside a tile need their own edge for the hover flip. */
-.retro-link.pixel-frame > img,
-.split-card-action > img {
+.retro-link.pixel-frame > img {
   transition: filter var(--duration-fast) var(--ease-soft);
 }
 

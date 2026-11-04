@@ -3,8 +3,7 @@
 
 @supports (color: hsl(from red h s l)) {
   .pixel-frame,
-  .retro-link.pixel-frame,
-  .split-card-action {
+  .retro-link.pixel-frame {
     --chrome-tile-cap: 44;
     --tile-dark: hsl(
       from color-mix(in srgb, var(--outline-color) 45%, var(--time-black)) h s

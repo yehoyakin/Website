@@ -128,7 +128,7 @@
   #landing-content .retro-card--landing .retro-card-desc {
     margin-top: 0.25rem;
   }
-  #landing-content .page-card-action {
+  #landing-content .retro-card--landing .retro-link {
     margin-top: 0.6rem;
     padding: 0.4rem 0.8rem;
   }

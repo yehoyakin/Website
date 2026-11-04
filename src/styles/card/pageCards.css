@@ -137,54 +137,12 @@
 /* A landing card's description is a sentence: the two-line clamp, size and */
    /* mix come with the shared short-card block in card/retroCard.css. */
 
-/* The card's call to action sits on the copy bar as the site's lit tile. */
-.retro-card--landing .page-card-action {
-  display: inline-flex;
-  align-items: center;
+/* The card's call to action is the site's shared themed button (`.retro-link
+   /* .pixel-frame` + `data-link-theme`); its look and press come from
+   /* chrome/pixelChrome/buttons.css and tintedButtons.css. Only its placement
+   /* on the copy bar is landing-specific. */
+.retro-card--landing .retro-link {
   margin-top: 0.65rem;
-  font-size: clamp(0.62rem, 0.85vw, 0.76rem);
-  letter-spacing: 0.12em;
-  padding: 0.38rem 0.72rem;
-  height: fit-content;
-  min-height: 0;
-  padding-block: 0;
-  color: var(--time-white);
-  text-shadow: 2px 2px 0 var(--time-shadow);
-}
-
-.retro-card--landing .page-card-action > span {
-  text-shadow: 2px 2px 0 var(--time-shadow);
-}
-
-/* Hovering the card lights the action too, so the tile reads as the target. */
-.retro-card--landing:hover .page-card-action {
-  background-color: color-mix(in srgb, var(--outline-color) 85%, white);
-  border-color: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
-  color: var(--time-black);
-}
-
-/* THE ACTION TILE — the site's shared pixel button (`.split-card-action`), */
-   /* whose base cut used to live with the retired split tile. Declared here, ahead */
-   /* of the pixel-chrome files that light it, so the cascade order is unchanged. */
-.split-card-action {
-  display: inline-flex;
-  margin-top: 0.8rem;
-  padding: 0.55rem 1rem;
-  font-family: var(--retro-font);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  transition:
-    background 0.15s var(--ease-soft),
-    color 0.15s var(--ease-soft),
-    transform var(--duration-press) var(--ease-press);
-  height: fit-content;
-  min-height: 0;
-  padding-block: 0;
-}
-
-.retro-card--landing .page-card-action {
-  height: fit-content;
-  min-height: 0;
 }
 
 /* CREDITS ROW — one line when it fits, more when it does not. */

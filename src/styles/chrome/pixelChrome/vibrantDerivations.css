@@ -3,13 +3,11 @@
 
 @supports (color: hsl(from red h s l)) {
   .pixel-frame,
-  .retro-link.pixel-frame,
-  .split-card-action {
+  .retro-link.pixel-frame {
     --tile-light: hsl(from var(--outline-color) h s min(calc(l + 18), 90));
     --outline-color-hover: hsl(from var(--outline-color) h s min(calc(l + 14), 86));
   }
-  .retro-link.pixel-frame:hover,
-  .split-card-action:hover {
+  .retro-link.pixel-frame:hover {
     background-color: hsl(from var(--outline-color) h s min(calc(l + 14), 84));
     border-color: hsl(from var(--outline-color) h s min(calc(l + 20), 88));
   }

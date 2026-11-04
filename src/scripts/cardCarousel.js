@@ -97,7 +97,7 @@ function initStrip(scroller) {
   const makeArrow = (label, glyph) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = `card-carousel-arrow gallery-nav-btn ${NAV_BUTTON}`;
+    button.className = `card-carousel-arrow ${NAV_BUTTON}`;
     button.setAttribute("data-link-theme", "");
     button.setAttribute("aria-label", label);
     button.textContent = glyph;
@@ -110,7 +110,7 @@ function initStrip(scroller) {
   const next = makeArrow("Next slide", "\u25BA");
 
   const indexWrap = document.createElement("div");
-  indexWrap.className = "card-carousel-dots gallery-index";
+  indexWrap.className = "card-carousel-dots";
 
   // -1 rather than 0: it makes the first `sync()` write the initial state
   // instead of early-returning as if nothing had changed.
@@ -122,7 +122,7 @@ function initStrip(scroller) {
   const dots = items.map((_item, index) => {
     const square = document.createElement("button");
     square.type = "button";
-    square.className = `card-carousel-dot gallery-index-btn ${NAV_BUTTON}`;
+    square.className = `card-carousel-dot ${NAV_BUTTON}`;
     square.setAttribute("data-link-theme", "");
     square.setAttribute("aria-label", `Go to slide ${index + 1}`);
     square.textContent = String(index + 1);

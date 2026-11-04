@@ -1,8 +1,7 @@
 /* Per-theme tinted button plates. */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
 
-.retro-link.pixel-frame,
-.split-card-action {
+.retro-link.pixel-frame {
   --plate-base: var(--project-tag-color, var(--theme-main-day));
   /* Day and night both route through the active theme token. */
   --tile-fill: var(--project-tag-color, var(--theme-main-day));
@@ -14,8 +13,7 @@
   color: var(--button-label-color);
 }
 
-:root[data-mode="night"] .retro-link.pixel-frame,
-:root[data-mode="night"] .split-card-action {
+:root[data-mode="night"] .retro-link.pixel-frame {
   --tile-fill: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-night)));
   --tile-light: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-night)));
   --tile-dark: var(--project-tag-color, var(--project-tag-color-dark, var(--theme-main-night)));
@@ -27,9 +25,7 @@
 
 /* Hover routes entirely through the active theme darker variant. */
 .retro-link.pixel-frame:hover,
-.retro-link.pixel-frame:focus-visible,
-.split-card-action:hover,
-.split-card-action:focus-visible {
+.retro-link.pixel-frame:focus-visible {
   --tile-fill: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
   --button-label-color: contrast-color(var(--tile-fill));
   background-color: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
@@ -38,9 +34,7 @@
 }
 
 :root[data-mode="night"] .retro-link.pixel-frame:hover,
-:root[data-mode="night"] .retro-link.pixel-frame:focus-visible,
-:root[data-mode="night"] .split-card-action:hover,
-:root[data-mode="night"] .split-card-action:focus-visible {
+:root[data-mode="night"] .retro-link.pixel-frame:focus-visible {
   --tile-fill: var(--project-tag-color, var(--project-tag-color-dark, var(--theme-main-night)));
   --button-label-color: contrast-color(var(--tile-fill));
   background-color: var(--project-tag-color, var(--project-tag-color-dark, var(--theme-main-night)));
@@ -65,7 +59,7 @@
    /* on the element (chrome/backLink.css) rather than being excluded here: an */
    /* ancestor's accent cannot override a custom property the control sets on */
    /* itself. */
-:root[data-mode] :is(.retro-link.pixel-frame, .split-card-action)[data-link-theme] {
+:root[data-mode] .retro-link.pixel-frame[data-link-theme] {
   --link-tile: var(--project-tag-color, var(--theme-main-day));
   --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
   --tile-fill: var(--link-tile);
@@ -92,8 +86,8 @@
 
 /* The press is a darker tile, not a white one: the border and the type stay */
    /* white so the control keeps its outline and its label in both modes. */
-:root[data-mode] :is(.retro-link.pixel-frame, .split-card-action)[data-link-theme]:hover,
-:root[data-mode] :is(.retro-link.pixel-frame, .split-card-action)[data-link-theme]:focus-visible {
+:root[data-mode] .retro-link.pixel-frame[data-link-theme]:hover,
+:root[data-mode] .retro-link.pixel-frame[data-link-theme]:focus-visible {
   --tile-fill: var(--link-tile-dark);
   --button-label-color: var(--time-white);
   background-color: var(--link-tile-dark);

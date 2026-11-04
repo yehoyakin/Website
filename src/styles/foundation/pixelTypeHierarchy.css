@@ -76,12 +76,10 @@ body {
 /* Bold cut. */
 
 button,
-.retro-link,
-.split-card-action {
+.retro-link {
   text-shadow: none;
 }
 
-.split-card-action > span,
 button > span:not(.pixel-highlight) {
   text-shadow:
     var(--pixel-step) 0 0 currentColor,
