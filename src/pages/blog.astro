@@ -56,7 +56,7 @@ const cardCovers = sortedPosts.map((post) => post.data.cardBackground).filter(Bo
         </Title>
 
         <Body theme="purple" class="mt-2 max-w-2xl mx-auto" shadow={true}>
-          Thoughts on my favorite art.
+          Thoughts on my favorite art. Click on the cards for more details!
         </Body>
       </div>
 
@@ -65,9 +65,11 @@ const cardCovers = sortedPosts.map((post) => post.data.cardBackground).filter(Bo
       {
         /* On phones this becomes a one-card-at-a-time carousel (see styles/responsive/responsive.css + scripts/cardCarousel.js). */
       }
+      {/* `data-carousel-nav="on"` is this strip's own switch — see scripts/cardCarousel.js. It builds the arrow + numbered navigator and hides the browser's scrollbar for this strip (styles/carousel/carouselLayout.css). Set it to "off" to hand the strip back to the native scrollbar. */}
       <div
         class="blog-cards-wrapper"
         data-carousel
+        data-carousel-nav="on"
         data-carousel-item=".blog-card-item"
         data-carousel-label="Blog posts"
       >

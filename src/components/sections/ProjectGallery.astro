@@ -22,9 +22,11 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 ---
 
 <div id="project-gallery" class="project-gallery">
+  {/* `data-carousel-nav="on"` is this strip's own switch — see scripts/cardCarousel.js. It builds the arrow + numbered navigator and hides the browser's scrollbar for this strip (styles/carousel/carouselLayout.css). Set it to "off" to hand the strip back to the native scrollbar. */}
   <div
     class="gallery-thumbnails-wrapper"
     data-carousel
+    data-carousel-nav="on"
     data-carousel-item=".gallery-project-item"
     data-carousel-label="Projects"
   >

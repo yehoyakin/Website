@@ -1,8 +1,23 @@
 /* Carousel arrows: the control row and its prev / next buttons. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ContactPanel.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/ModeToggle.astro */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carousel.css */
+   /* THE ARROWS ARE BUTTONS NOW. They used to be bare glyph targets — no frame, */
+   /* no fill, no bevel — holding pixel-art arrow artwork, and the old CSS said so */
+   /* out loud ("the arrow artwork IS the control"). The navigator is built from */
+   /* the site's own themed gradient button instead (`retro-link pixel-frame`, the */
+   /* recipe the Link panels use, plus `data-link-theme`), and the direction is */
+   /* text: ◄ and ► drawn in the pixel face, so the row reads as one family with */
+   /* the numbered index beside it. Everything the plate needs is declared in */
+   /* pixelChrome/buttons.css, tintedButtons.css and text/linkButtons.css; this */
+   /* file only lays the controls out and gives the arrows a square box. */
 
-/* Controls row (markup built by scripts/cardCarousel.js). */
+/* Controls row (markup built by scripts/cardCarousel.js): arrow, index, arrow. */
+   /* ONE TOKEN FOR THE WHOLE NAVIGATOR lives here too, so the numbered index */
+   /* (carouselDots.css) reads the identical box: 65% of the chrome's icon-button */
+   /* height less six pixels — the Link-panel button's own measure */
+   /* (text/linkButtons.css), so the navigator sits at the scale of the controls */
+   /* around it. */
 .card-carousel-controls {
+  --gallery-nav-size: calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,30 +30,27 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* The box is still an icon-button tap target, but the plate is gone: no */
-     /* frame, no fill, no bevel. The arrow artwork IS the control, so the strip's */
-     /* navigation does not read as four more buttons under the cards. */
-  width: var(--icon-button-size, 2.75rem);
-  height: var(--icon-button-size, 2.75rem);
-  padding: 0;
-  border: 0;
-  background: none;
-  box-shadow: none;
-  color: var(--time-button-ink);
+  /* Both edges are set, not an `aspect-ratio`: the glyph is laid out in a */
+     /* fallback face when the pixel font has no arrow, and that face's own */
+     /* ascent/descent would otherwise grow the content box to nearly twice the */
+     /* square — an arrow twice the height of the index it belongs to. */
+  inline-size: var(--gallery-nav-size);
+  block-size: var(--gallery-nav-size);
+  /* The label is a fraction of the box, so the arrow fills its square at every */
+     /* size instead of being sized by the reading scale. */
+  font-size: calc(var(--gallery-nav-size) * 0.62);
   line-height: 1;
   cursor: pointer;
   touch-action: manipulation;
-  transition: filter var(--duration-fast) var(--ease-soft);
 }
 
-/* Arrow artwork injected by scripts/cardCarousel.js, at the shared glyph size */
-   /* (pixelChrome/iconButtons.css) — this rule only sets how it paints. */
-.card-carousel-arrow img {
-  display: block;
-  object-fit: contain;
-  image-rendering: pixelated;
+/* PHONES — one smaller step, the row and its squares together. */
+@media (max-width: 767px) {
+  .card-carousel-controls {
+    --gallery-nav-size: 1.25rem;
+  }
 }
 
-/* The arrows wrap, so they are never disabled; hover is the only state, and it */
-   /* is the site-wide button hover (pixelChrome/controlHover.css) — the same grow */
-   /* and shine every other control uses. */
+/* Hover, focus and the grow are the site-wide button states */
+   /* (pixelChrome/controlHover.css and text/linkStates.css) — the same grow and */
+   /* shine every other control uses, and this file must not re-declare them. */

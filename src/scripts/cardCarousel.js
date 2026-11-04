@@ -22,8 +22,6 @@
  *   </div>
  */
 
-import { CUSTOM_CAROUSEL_CONTROLS } from "../config/carousel";
-
 /* Motion settings. `SCROLL_DURATION` is deliberately in the same range as the
    site's other transitions — native `behavior: "smooth"` picks its own,
    browser-defined duration, which is what made the arrows feel sluggish. */
@@ -54,20 +52,37 @@ function initStrip(scroller) {
 
   scroller.dataset.carouselReady = "true";
 
-  /* Native-scroller mode. The single switch in src/config/carousel.ts turns
-     the custom navigator off site-wide: no arrows, no dot index — the browser
-     scrollbar handles the strip, so leaving the rest of this builder out is
-     what keeps a dead control from ever being created. */
-  if (!CUSTOM_CAROUSEL_CONTROLS) return;
-
-  /* A one-slide strip has nowhere to go. Arrows and the dot index would be
-     dead controls on a single-item gallery, so no control row is built at
-     all; the strip keeps its native scroll and snap behaviour. */
+  /* A one-slide strip has nowhere to go — no arrows and no single index square */
+     /* would say anything, so the builder stops here and the strip keeps its */
+     /* native scroll / snap behaviour. */
   if (items.length === 1) return;
 
-  /* ---------------------------------------------------------
-   * Controls
-   * --------------------------------------------------------- */
+  /* PER-GALLERY NAVIGATOR SWITCH. */
+     /* Whether a strip gets an on-page navigator is no longer decided by the */
+     /* site-wide `CUSTOM_CAROUSEL_CONTROLS` flag: each gallery opts in with */
+     /* `data-carousel-nav="on"` on its own `[data-carousel]` strip. Every */
+     /* gallery on the site sets it — the blog and portfolio listings */
+     /* (blog.astro, ProjectGallery.astro) and the slug galleries */
+     /* (BlogContent.astro, portfolio/[slug].astro) alike. Strips that never ask */
+     /* (the landing) build nothing and keep the browser's own scrollbar exactly */
+     /* as before. To drop the arrows and the numbered index from a gallery */
+     /* later, change its attribute to `"off"` (or remove it). */
+  if (scroller.dataset.carouselNav !== "on") return;
+
+  /* Once a strip has the on-page navigator its own scrollbar is redundant; */
+     /* `has-carousel-nav` hides just this strip's bar */
+     /* (styles/carousel/carouselLayout.css), leaving every opt-out strip on the */
+     /* site-wide native scrollbar. */
+  scroller.classList.add("has-carousel-nav");
+
+  /* ------------------------------------------------------------------ */
+  /* Controls — prev / next and the numbered index. Each one is the site's */
+  /* own themed gradient button (`.retro-link.pixel-frame` plus */
+  /* `data-link-theme`), lit from the gallery's inherited */
+  /* `--project-tag-color`, so the navigator reads as the same control as */
+  /* the Link panels. No icon artwork: the arrow and the position are text, */
+  /* drawn in the pixel face like any other button label. */
+  /* ------------------------------------------------------------------ */
 
   const controls = document.createElement("div");
   controls.className = "card-carousel-controls";
@@ -77,111 +92,46 @@ function initStrip(scroller) {
     scroller.dataset.carouselLabel || "Carousel navigation",
   );
 
-  // Pixel-art arrows from the shared set rather than text glyphs. Text arrows
-  // render with whatever font ends up applied, which the pixel themes turn into
-  // odd or missing shapes; the artwork is the same everywhere.
-  //
-  // These are the set's framed Triangle glyphs — the same artwork
-  // config/icons.ts resolves for `arrow-left` / `arrow-right` (that module
-  // reads the filesystem at build time, so it cannot be imported here). The
-  // generated `Arrow *` files are gone.
-  // Resolved against BASE_URL because these files live in public/.
-  const ARROW_FILE = { prev: "Triangle Left", next: "Triangle Right" };
+  const NAV_BUTTON = "retro-link pixel-frame";
 
-  // The index's circles, from the same set: one filled circle per slide, dimmed
-  // unless it is the current one (styles/carousel/carouselDots.css).
-  const DOT_FILE = "Circle Base";
-
-  /* The two base colours come from the page (MyLayout renders them from
-     config/icons.ts, which reads tokens.css), so the glyphs are drawn in the
-     day and night main colours instead of a fixed folder. Both are rendered
-     and CSS shows one — the same swap the mode-toggle icon uses. */
-  const dayColor =
-    scroller.closest("[data-icon-color]")?.dataset.iconColor ||
-    document.documentElement.dataset.iconDay ||
-    "Lightblue";
-
-  const nightColor =
-    scroller.closest("[data-icon-color]")?.dataset.iconColor ||
-    document.documentElement.dataset.iconNight ||
-    "Blue";
-
-  const ICON_FOLDER = {
-    day: dayColor,
-    night: nightColor,
-  };
-
-  const makeArrow = (label, direction) => {
+  const makeArrow = (label, glyph) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "card-carousel-arrow icon-button";
+    button.className = `card-carousel-arrow gallery-nav-btn ${NAV_BUTTON}`;
+    button.setAttribute("data-link-theme", "");
     button.setAttribute("aria-label", label);
-
-    const pair = document.createElement("span");
-    pair.className = "icon-mode card-carousel-arrow-icon";
-
-    ["day", "night"].forEach((mode) => {
-      const folder = ICON_FOLDER[mode];
-      const icon = document.createElement("img");
-      icon.src = encodeURI(
-        `${import.meta.env.BASE_URL}images/Icons/${folder}/${ARROW_FILE[direction]}_${folder}.webp`,
-      );
-      icon.alt = "";
-      icon.setAttribute("aria-hidden", "true");
-      icon.decoding = "async";
-      icon.className = `icon-mode-img icon-mode-img--${mode}`;
-      pair.appendChild(icon);
-    });
-
-    button.appendChild(pair);
-
+    button.textContent = glyph;
     return button;
   };
 
-  const prev = makeArrow("Previous slide", "prev");
-  const next = makeArrow("Next slide", "next");
+  // Black pointing triangles as text — the same left / right reading the pixel
+  // arrow set carried, but drawn by the button's own face instead of an image.
+  const prev = makeArrow("Previous slide", "\u25C4");
+  const next = makeArrow("Next slide", "\u25BA");
 
-  const dotsWrap = document.createElement("div");
-  dotsWrap.className = "card-carousel-dots";
+  const indexWrap = document.createElement("div");
+  indexWrap.className = "card-carousel-dots gallery-index";
 
-  // -1 rather than 0: it makes the first `sync()` write the initial dot state
+  // -1 rather than 0: it makes the first `sync()` write the initial state
   // instead of early-returning as if nothing had changed.
   let current = -1;
 
-  /* One circle per slide, as a day / night pair like every other icon: the
-     stylesheet picks the mode, so only one file per dot is ever fetched. */
-  const makeDotIcon = () => {
-    const pair = document.createElement("span");
-    pair.className = "card-carousel-dot-icon icon-mode";
-
-    ["day", "night"].forEach((mode) => {
-      const folder = ICON_FOLDER[mode];
-      const icon = document.createElement("img");
-      icon.src = encodeURI(
-        `${import.meta.env.BASE_URL}images/Icons/${folder}/${DOT_FILE}_${folder}.webp`,
-      );
-      icon.alt = "";
-      icon.setAttribute("aria-hidden", "true");
-      icon.decoding = "async";
-      icon.className = `icon-mode-img icon-mode-img--${mode}`;
-      pair.appendChild(icon);
-    });
-
-    return pair;
-  };
-
+  /* One numbered square per slide. The 1-based position is the label, so the */
+     /* index displays the content order; `aria-current` (set in `sync()`) is the */
+     /* selected display. */
   const dots = items.map((_item, index) => {
-    const dot = document.createElement("button");
-    dot.type = "button";
-    dot.className = "card-carousel-dot";
-    dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
-    dot.appendChild(makeDotIcon());
-    dot.addEventListener("click", () => goTo(index));
-    dotsWrap.appendChild(dot);
-    return dot;
+    const square = document.createElement("button");
+    square.type = "button";
+    square.className = `card-carousel-dot gallery-index-btn ${NAV_BUTTON}`;
+    square.setAttribute("data-link-theme", "");
+    square.setAttribute("aria-label", `Go to slide ${index + 1}`);
+    square.textContent = String(index + 1);
+    square.addEventListener("click", () => goTo(index));
+    indexWrap.appendChild(square);
+    return square;
   });
 
-  controls.append(prev, dotsWrap, next);
+  controls.append(prev, indexWrap, next);
 
   // Sits right after the strip, before any expandable panels.
   scroller.insertAdjacentElement("afterend", controls);

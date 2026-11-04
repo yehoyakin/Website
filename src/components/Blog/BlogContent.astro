@@ -3,7 +3,6 @@
 // See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryPanelShell.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css
 
 import CompactBody from "../UI/CompactBody.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro
-import Icon from "../shared/Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
 import {
   defaultIconColor,
   defaultIconColorNight,
@@ -14,6 +13,10 @@ import { resolveThemeToken } from "../../config/uiDictionary";  // file:///C:/Us
 import { asset } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
 import { videoEmbedUrl } from "../../utils/video";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/video.ts
 import "../../styles/portfolio/galleryThumbnailSlide.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css
+// The whole carousel sheet, not just its layout: this component's galleries opt
+   // in to the built navigator (arrows + numbered index), and that artwork is
+   // carouselArrows.css / carouselDots.css — both pulled in by carousel.css.
+import "../../styles/carousel/carousel.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carousel.css
 
 interface SceneItem {
   image: string;
@@ -563,12 +566,11 @@ const renderInlineMarkdown = (text: string) => {
 
         if (block.type === "image") {
           const images = [{ src: block.src, alt: block.alt || "" }];
-          const firstTitleText = images[0].alt?.trim();
-          const hasTitleText = Boolean(firstTitleText && firstTitleText.length > 0);
 
           return (
             <div class="project-gallery markdown-gallery markdown-gallery--single" data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={siteBaseUrl}>
-              <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+              {/* `data-carousel-nav="on"` is this gallery's own switch — see scripts/cardCarousel.js. Set it to "off" to hand the strip back to the browser's scrollbar. A one-slide strip builds nothing either way: the script stops before it. */}
+              <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-nav="on" data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
                 <div class="gallery-thumbnails" data-carousel-track>
                   {images.map((image, index) => {
                     const titleText = image.alt?.trim();
@@ -612,24 +614,11 @@ const renderInlineMarkdown = (text: string) => {
               </div>
 
               <div class="gallery-panels-container">
-                <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox data-lightbox-single="true" style={galleryStyle}>
-                  <div class="blog-gallery-lightbox__backdrop" data-lightbox-close></div>
-                  <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close image preview" data-lightbox-close>
-                    <Icon name="close" theme={theme} class="blog-gallery-lightbox__close-icon" />
-                  </button>
-                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button" aria-label="Previous image" data-lightbox-prev>
-                    <Icon name="arrow-left" theme={theme} class="card-carousel-arrow-icon" />
-                  </button>
-                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button" aria-label="Next image" data-lightbox-next>
-                    <Icon name="arrow-right" theme={theme} class="card-carousel-arrow-icon" />
-                  </button>
-                  <div class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium" role="dialog" aria-modal="true" aria-label="Image preview" style={galleryStyle}>
+                <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox style={galleryStyle}>
+                  <div class="blog-gallery-lightbox__backdrop"></div>
+                  <div class="blog-gallery-lightbox__panel" role="dialog" aria-modal="true" aria-label="Image preview" style={galleryStyle}>
                     <div class="blog-gallery-lightbox__media">
                       <img class="blog-gallery-lightbox__image" src={images[0].src} alt={images[0].alt || "Image preview"} loading="eager" decoding="async" />
-                    </div>
-                    <div class="blog-gallery-lightbox__meta">
-                      <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Image index"></div>
-                      {hasTitleText && <span class="blog-gallery-lightbox__caption blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">{firstTitleText}</span>}
                     </div>
                   </div>
                 </div>
@@ -645,7 +634,8 @@ const renderInlineMarkdown = (text: string) => {
 
           return (
             <div class={`project-gallery markdown-gallery${isSingleGallery ? " markdown-gallery--single" : ""}`} data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={siteBaseUrl}>
-              <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+              {/* `data-carousel-nav="on"` is this gallery's own switch — see scripts/cardCarousel.js. Set it to "off" to hand the strip back to the browser's scrollbar. */}
+              <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-nav="on" data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
                 <div class="gallery-thumbnails" data-carousel-track>
                   {items.map((item, index) => {
                     const titleText = item.kind === "image" ? item.alt?.trim() : (item.title?.trim() || `Media ${index + 1}`);
@@ -695,24 +685,11 @@ const renderInlineMarkdown = (text: string) => {
               </div>
 
               <div class="gallery-panels-container">
-                <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox data-lightbox-single={isSingleGallery} style={galleryStyle}>
-                  <div class="blog-gallery-lightbox__backdrop" data-lightbox-close></div>
-                  <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close media preview" data-lightbox-close>
-                    <Icon name="close" theme={theme} class="blog-gallery-lightbox__close-icon" />
-                  </button>
-                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button" aria-label="Previous media" data-lightbox-prev>
-                    <Icon name="arrow-left" theme={theme} class="card-carousel-arrow-icon" />
-                  </button>
-                  <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button" aria-label="Next media" data-lightbox-next>
-                    <Icon name="arrow-right" theme={theme} class="card-carousel-arrow-icon" />
-                  </button>
-                  <div class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium" role="dialog" aria-modal="true" aria-label="Media preview" style={galleryStyle}>
+                <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox style={galleryStyle}>
+                  <div class="blog-gallery-lightbox__backdrop"></div>
+                  <div class="blog-gallery-lightbox__panel" role="dialog" aria-modal="true" aria-label="Media preview" style={galleryStyle}>
                     <div class="blog-gallery-lightbox__media">
                       <div class="blog-gallery-lightbox__stage" data-lightbox-stage />
-                    </div>
-                    <div class="blog-gallery-lightbox__meta">
-                      <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Media index"></div>
-                      <span class="blog-gallery-lightbox__caption blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small" data-lightbox-caption hidden />
                     </div>
                   </div>
                 </div>
@@ -747,41 +724,8 @@ const renderInlineMarkdown = (text: string) => {
         if (!lightbox || !thumbs.length) return;
 
         const stage = lightbox.querySelector("[data-lightbox-stage]");
-        const captionEl = lightbox.querySelector("[data-lightbox-caption]");
-        const dotsWrap = lightbox.querySelector(".blog-gallery-lightbox__dots");
-        const closeButtons = lightbox.querySelectorAll("[data-lightbox-close]");
-        const prevBtn = lightbox.querySelector("[data-lightbox-prev]");
-        const nextBtn = lightbox.querySelector("[data-lightbox-next]");
-
-        const themedColor = gallery.dataset.iconColor || document.documentElement.dataset.iconDay || "Lightblue";
-        const baseUrl = gallery.dataset.siteBaseUrl || "/";
-
-        const makeDot = (index) => {
-          const dot = document.createElement("button");
-          dot.type = "button";
-          dot.className = "card-carousel-dot";
-          dot.setAttribute("aria-label", `View media ${index + 1}`);
-
-          const pair = document.createElement("span");
-          pair.className = "card-carousel-dot-icon icon-mode";
-
-          ["day", "night"].forEach((mode) => {
-            const icon = document.createElement("img");
-            icon.src = `${baseUrl}images/Icons/${themedColor}/Circle Base_${themedColor}.webp`;
-            icon.alt = "";
-            icon.setAttribute("aria-hidden", "true");
-            icon.decoding = "async";
-            icon.className = `icon-mode-img icon-mode-img--${mode}`;
-            pair.appendChild(icon);
-          });
-
-          dot.appendChild(pair);
-          dot.addEventListener("click", () => openLightbox(index));
-          return dot;
-        };
 
         let items = [];
-        let dotButtons = [];
         let currentIndex = 0;
 
         // Build a media list from the thumbnails in this gallery. Each thumb
@@ -830,15 +774,6 @@ const renderInlineMarkdown = (text: string) => {
 
           node.className = "blog-gallery-lightbox__image";
           stage.replaceChildren(node);
-
-          if (captionEl) {
-            captionEl.textContent = item.alt;
-            captionEl.hidden = !item.alt;
-          }
-
-          dotButtons.forEach((dot, dotIndex) => {
-            dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
-          });
         };
 
         const updateLightbox = (index) => {
@@ -861,15 +796,6 @@ const renderInlineMarkdown = (text: string) => {
 
         const openLightbox = (index, thumb) => {
           items = itemsFor(thumb);
-          dotButtons = items.map((_item, dotIndex) => makeDot(dotIndex));
-          if (dotsWrap) {
-            dotsWrap.replaceChildren(...dotButtons);
-          }
-
-          // A one-item gallery has nowhere to go: the CSS hides the arrows and
-             // the dot index from this flag.
-          lightbox.dataset.lightboxSingle = items.length <= 1 ? "true" : "false";
-
           closeOtherLightboxes();
           // Opened from <body> so no transformed or clipping ancestor (the
              // gallery strip, a plate, a reveal animation) can trap the
@@ -902,18 +828,9 @@ const renderInlineMarkdown = (text: string) => {
           });
         });
 
-        closeButtons.forEach((button) => {
-          button.addEventListener("click", closeLightbox);
-        });
-
-        prevBtn?.addEventListener("click", () => openLightbox(currentIndex - 1));
-        nextBtn?.addEventListener("click", () => openLightbox(currentIndex + 1));
-
-        lightbox.addEventListener("click", (event) => {
-          if (event.target === lightbox || event.target.closest("[data-lightbox-close]")) {
-            closeLightbox();
-          }
-        });
+        // The overlay is image-only: any click anywhere on it — the media or the
+           // dimmed surround — closes it. There is no panel, caption or close button.
+        lightbox.addEventListener("click", () => closeLightbox());
 
         document.addEventListener("keydown", (event) => {
           if (!lightbox.classList.contains("is-open")) return;

@@ -7,7 +7,6 @@ import Title from "../../components/UI/Title.astro";  // file:///C:/Users/Usuari
 import Body from "../../components/UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
 import CompactBody from "../../components/UI/CompactBody.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro
 import Link from "../../components/shared/Link.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro
-import Icon from "../../components/shared/Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
 import PageBackdrop from "../../components/shared/PageBackdrop.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro
 
 import { getCollection } from "astro:content";
@@ -18,7 +17,10 @@ import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/Us
 import { defaultIconColor, defaultIconColorNight, iconColorForTheme } from "../../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
 import "../../styles/portfolio/galleryThumbnailSlide.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css
 import "../../styles/portfolio/galleryPanelShell.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryPanelShell.css
-import "../../styles/carousel/carouselLayout.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css
+// The whole carousel sheet, not just its layout: this page's galleries opt in to
+   // the built navigator (arrows + numbered index), and that artwork is
+   // carouselArrows.css / carouselDots.css — both pulled in by carousel.css.
+import "../../styles/carousel/carousel.css";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carousel.css
 
 type ProjectRole =
   | "lead_programmer"
@@ -349,7 +351,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
               <div class="project-gallery-group">
                 <section class="project-page-gallery-plain" aria-label="Project media">
                   <div class={`project-gallery markdown-gallery${mediaItems.length === 1 ? " markdown-gallery--single" : ""}`} data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={baseUrl}>
-                    <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+                    {/* `data-carousel-nav="on"` is this gallery's own switch — see scripts/cardCarousel.js. Set it to "off" to hand the strip back to the browser's scrollbar. */}
+                    <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-nav="on" data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
                       <div class="gallery-thumbnails" data-carousel-track>
                         {mediaItems.map((item, index) => {
                           const titleText = item.kind === "image" ? (item.alt ?? `${project.data.title} screenshot ${index + 1}`) : (item.title ?? `Media ${index + 1}`);
@@ -421,26 +424,12 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                     class="blog-gallery-lightbox"
                     aria-hidden="true"
                     data-gallery-lightbox
-                    data-lightbox-single={mediaItems.length === 1}
                     style={galleryStyle}
                   >
-                    <div class="blog-gallery-lightbox__backdrop" data-lightbox-close></div>
-                    <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close media preview" data-lightbox-close>
-                      <Icon name="close" theme={themeName} class="blog-gallery-lightbox__close-icon" />
-                    </button>
-                    <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--prev icon-button" aria-label="Previous media" data-lightbox-prev>
-                      <Icon name="arrow-left" theme={themeName} class="card-carousel-arrow-icon" />
-                    </button>
-                    <button type="button" class="blog-gallery-lightbox__nav blog-gallery-lightbox__nav--next icon-button" aria-label="Next media" data-lightbox-next>
-                      <Icon name="arrow-right" theme={themeName} class="card-carousel-arrow-icon" />
-                    </button>
-                    <div class="blog-gallery-lightbox__panel pattern-plate pattern-plate--medium" role="dialog" aria-modal="true" aria-label="Media preview" style={galleryStyle}>
+                    <div class="blog-gallery-lightbox__backdrop"></div>
+                    <div class="blog-gallery-lightbox__panel" role="dialog" aria-modal="true" aria-label="Media preview" style={galleryStyle}>
                       <div class="blog-gallery-lightbox__media">
                         <div class="blog-gallery-lightbox__stage" data-lightbox-stage />
-                      </div>
-                      <div class="blog-gallery-lightbox__meta">
-                        <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Media index"></div>
-                        <span class="blog-gallery-lightbox__caption blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small" data-lightbox-caption hidden />
                       </div>
                     </div>
                   </div>
@@ -477,41 +466,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
         if (!lightbox || !thumbs.length) return;
 
         const stage = lightbox.querySelector("[data-lightbox-stage]");
-        const captionEl = lightbox.querySelector("[data-lightbox-caption]");
-        const dotsWrap = lightbox.querySelector(".blog-gallery-lightbox__dots");
-        const closeButtons = lightbox.querySelectorAll("[data-lightbox-close]");
-        const prevBtn = lightbox.querySelector("[data-lightbox-prev]");
-        const nextBtn = lightbox.querySelector("[data-lightbox-next]");
-
-        const themedColor = gallery.dataset.iconColor || document.documentElement.dataset.iconDay || "Lightblue";
-        const baseUrl = gallery.dataset.siteBaseUrl || "/";
-
-        const makeDot = (index) => {
-          const dot = document.createElement("button");
-          dot.type = "button";
-          dot.className = "card-carousel-dot";
-          dot.setAttribute("aria-label", `View media ${index + 1}`);
-
-          const pair = document.createElement("span");
-          pair.className = "card-carousel-dot-icon icon-mode";
-
-          ["day", "night"].forEach((mode) => {
-            const icon = document.createElement("img");
-            icon.src = `${baseUrl}images/Icons/${themedColor}/Circle Base_${themedColor}.webp`;
-            icon.alt = "";
-            icon.setAttribute("aria-hidden", "true");
-            icon.decoding = "async";
-            icon.className = `icon-mode-img icon-mode-img--${mode}`;
-            pair.appendChild(icon);
-          });
-
-          dot.appendChild(pair);
-          dot.addEventListener("click", () => openLightbox(index));
-          return dot;
-        };
 
         let items = [];
-        let dotButtons = [];
         let currentIndex = 0;
 
         // Build a media list from the thumbnails in this gallery. Each thumb
@@ -560,15 +516,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
           node.className = "blog-gallery-lightbox__image";
           stage.replaceChildren(node);
-
-          if (captionEl) {
-            captionEl.textContent = item.alt;
-            captionEl.hidden = !item.alt;
-          }
-
-          dotButtons.forEach((dot, dotIndex) => {
-            dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
-          });
         };
 
         const updateLightbox = (index) => {
@@ -591,15 +538,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
         const openLightbox = (index, thumb) => {
           items = itemsFor(thumb);
-          dotButtons = items.map((_item, dotIndex) => makeDot(dotIndex));
-          if (dotsWrap) {
-            dotsWrap.replaceChildren(...dotButtons);
-          }
-
-          // A one-item gallery has nowhere to go: the CSS hides the arrows and
-             // the dot index from this flag.
-          lightbox.dataset.lightboxSingle = items.length <= 1 ? "true" : "false";
-
           closeOtherLightboxes();
           // Opened from <body> so no transformed or clipping ancestor (the
              // gallery strip, a plate, a reveal animation) can trap the
@@ -632,18 +570,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           });
         });
 
-        closeButtons.forEach((button) => {
-          button.addEventListener("click", closeLightbox);
-        });
-
-        prevBtn?.addEventListener("click", () => openLightbox(currentIndex - 1));
-        nextBtn?.addEventListener("click", () => openLightbox(currentIndex + 1));
-
-        lightbox.addEventListener("click", (event) => {
-          if (event.target === lightbox || event.target.closest("[data-lightbox-close]")) {
-            closeLightbox();
-          }
-        });
+        // The overlay is image-only: any click anywhere on it — the media or the
+           // dimmed surround — closes it. There is no panel, caption or close button.
+        lightbox.addEventListener("click", () => closeLightbox());
 
         document.addEventListener("keydown", (event) => {
           if (!lightbox.classList.contains("is-open")) return;
@@ -899,10 +828,40 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     max-width: 100% !important;
     max-height: var(--gallery-media-max-height) !important;
     overflow: hidden;
-    flex: 0 0 auto !important;
+    /* flex 1 1 auto, not 0 0 auto: the media box grows to swallow any card
+       height the equal-height pass has left over, so the caption banner is
+       always pushed flush to the card's bottom edge — exactly the behaviour a
+       post's gallery gets from `html body .markdown-gallery:not(--single)
+       .blog-card-image-wrap` in styles/portfolio/galleryThumbnailSlide.css.
+       With 0 0 auto the short-caption cards floated a gap under the banner and
+       the long-caption cards overflowed it. The box can shrink too (min-height
+       0), so a caption taller than the room allotted still fits. */
+    flex: 1 1 auto !important;
     min-height: 0 !important;
     width: 100% !important;
     height: auto !important;
+  }
+
+  .project-page-gallery-plain .markdown-gallery--single .blog-card-image-wrap {
+    /* THE SAME LIFT FOR A ONE-SLIDE GALLERY. The card above is pinned to */
+    /* `--gallery-card-height`, but the media box below it was capped at */
+    /* `--gallery-media-max-height` — a cap only the equal-height pass could */
+    /* outgrow, and a single-item gallery never runs that pass. The few pixels */
+    /* of leftover card fell UNDER the caption banner, so the banner floated */
+    /* above the card's bottom edge. With the cap lifted the media box grows to */
+    /* the card's full leftover height (flex 1 1 auto above) and lands the */
+    /* banner flush with the base, exactly like the multi-image strip below. */
+    max-height: none !important;
+  }
+
+  .project-page-gallery-plain .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap {
+    /* Lift the media cap in a multi-image strip so the box is free to grow to */
+    /* the card's full leftover height. That growth is what lands every caption */
+    /* banner on the bottom edge together — a post's gallery does the same with */
+    /* `max-height: none` in styles/portfolio/galleryThumbnailSlide.css. Left at */
+    /* var(--gallery-media-max-height), a short caption could only swell the box */
+    /* to the media's own maximum and still floated a few pixels above the base. */
+    max-height: none !important;
   }
 
   .project-page-gallery-plain .blog-card-info-bar {
@@ -957,13 +916,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     border: 0;
   }
 
-  .project-page-gallery-plain .card-carousel-arrow-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
+  /* The arrow / index artwork this page used to size is gone: the navigator is */
+     /* built from the site's themed buttons, and their sizes come with them */
+     /* (styles/carousel/carouselArrows.css, carouselDots.css). */
 
   @media (max-width: 767px) {
     .project-page-shell {
