@@ -70,9 +70,10 @@
    the page's plate group (patternPlates.css) owns it for both columns, so they
    stay on one value. */
 #blog-content.blog-article-body {
-  /* No frame: the copy sits ON the plate, not inside a box. `border: 0` also
-     leaves the frame's border image nothing to paint on. */
-  border: 0;
+  /* The reading column keeps the shared gradient frame from frames.css, at the
+     thinnest visible weight. */
+  border: 1px solid transparent;
+  border-image: var(--frame-bevel) 1;
   box-shadow: none;
   /* The write-up's texture step: one and a half huge tiles. */
   --plate-pattern-size: max(

@@ -22,6 +22,8 @@
  *   </div>
  */
 
+import { CUSTOM_CAROUSEL_CONTROLS } from "../config/carousel";
+
 /* Motion settings. `SCROLL_DURATION` is deliberately in the same range as the
    site's other transitions — native `behavior: "smooth"` picks its own,
    browser-defined duration, which is what made the arrows feel sluggish. */
@@ -48,10 +50,20 @@ function initStrip(scroller) {
 
   const items = getItems();
 
-  // A single card has nothing to rotate through.
-  if (items.length <= 1) return;
+  if (items.length < 1) return;
 
   scroller.dataset.carouselReady = "true";
+
+  /* Native-scroller mode. The single switch in src/config/carousel.ts turns
+     the custom navigator off site-wide: no arrows, no dot index — the browser
+     scrollbar handles the strip, so leaving the rest of this builder out is
+     what keeps a dead control from ever being created. */
+  if (!CUSTOM_CAROUSEL_CONTROLS) return;
+
+  /* A one-slide strip has nowhere to go. Arrows and the dot index would be
+     dead controls on a single-item gallery, so no control row is built at
+     all; the strip keeps its native scroll and snap behaviour. */
+  if (items.length === 1) return;
 
   /* ---------------------------------------------------------
    * Controls

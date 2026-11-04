@@ -22,7 +22,7 @@ cards:
     actionText: "Buy it here"
     backgroundImage: ""
     links:
-      - icon: "Handbag"
+      - icon: "images/PixelNetIcons/round square/steam112.webp"
         href: "https://store.steampowered.com/app/2131650/METAL_GEAR_SOLID_3_Snake_Eater__Master_Collection_Version/"
         text: "Steam"
 
@@ -32,13 +32,13 @@ cards:
     actionText: "Belmont's Curse"
     backgroundImage: ""
     links:
-      - icon: "Handbag"
+      - icon: "images/PixelNetIcons/round square/steam112.webp"
         href: "https://store.steampowered.com/app/4231820/Castlevania_Belmonts_Curse/"
         text: "Belmont's Curse - Steam"
-      - icon: "Handbag"
+      - icon: "images/PixelNetIcons/round square/steam112.webp"
         href: "https://store.steampowered.com/app/2369900/Castlevania_Dominus_Collection/"
         text: "Order of Ecclesia - Steam"
-      - icon: "Handbag"
+      - icon: "images/PixelNetIcons/round square/steam112.webp"
         href: "https://store.steampowered.com/app/234080/Castlevania_Lords_of_Shadow__Ultimate_Edition/"
         text: "Lords of Shadow - Steam"
 

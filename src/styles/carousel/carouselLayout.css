@@ -16,6 +16,43 @@
   height: 0;
 }
 
+/* THE NATIVE-SCROLLER FALLBACK — driven by one switch.
+
+   `src/config/carousel.ts` renders `data-carousel-controls` on <html>:
+   "custom" builds the arrows and dot index and hides the browser scrollbar;
+   "native" builds nothing and makes the scrollbar the navigation. These
+   selectors are keyed to the root attribute so they outrank every per-strip
+   rule elsewhere — including the markdown-gallery block that used to force its
+   scrollbar visible even while the custom controls were showing. */
+html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper) {
+  scrollbar-width: auto;
+  scrollbar-color: color-mix(in srgb, var(--time-ink, #fff) 30%, transparent) transparent;
+}
+
+html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper)::-webkit-scrollbar {
+  display: block;
+  height: 0.625rem;
+}
+
+html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper)::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper)::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--time-ink, #fff) 30%, transparent);
+}
+
+/* Custom mode, the default: no native scrollbar anywhere. */
+html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper)::-webkit-scrollbar {
+  display: none;
+  height: 0;
+}
+
 /* Set by scripts/cardCarousel.js while an arrow-driven scroll is running. */
 .is-carousel-animating {
   scroll-snap-type: none;
@@ -64,10 +101,15 @@
   scroll-snap-stop: always;
 }
 
-/* The gallery thumbnail sets its own vw width, so this one needs !important. */
+/* The gallery thumbnail fills its carousel slide. */
 .gallery-thumb {
   width: 100% !important;
 }
+
+/* Markdown galleries inside blog/project slugs control their own card width
+   through the slide variable or the single-gallery clamp — the 100% rule above
+   would override those widths. galleryThumbnailSlide.css sets the clamp with
+   !important so it wins here. */
 
 .thumb-links {
   max-width: 100%;

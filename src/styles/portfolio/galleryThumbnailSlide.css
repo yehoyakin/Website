@@ -12,7 +12,7 @@
    hover. This class only turns the <button> into one and fixes its width in the
    horizontal strip. */
 .gallery-thumb {
-  width: clamp(240px, 34vw, 420px);
+  width: clamp(180px, 26vw, 300px);
   padding: 0;
   text-align: left;
   cursor: pointer;
@@ -108,42 +108,67 @@
 .thumb-carousel-video {
   object-fit: contain;
   object-position: center;
-  background: color-mix(
-    in srgb,
-    var(--thumb-theme-color, var(--project-tag-color, var(--plate-tint))) 18%,
-    var(--time-page)
-  );
+  /* Letterboxing stays black so the bars around a contained picture never
+     pick up the project's accent. */
+  background: var(--time-black, #000);
 }
 
 .markdown-gallery .gallery-thumb {
-  width: 100%;
+  width: min(100%, max(542px, 77vw)) !important;
+  max-width: min(100%, max(542px, 77vw)) !important;
+  height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
 }
 
-/* Blog slug inline galleries: every card in a multi-item strip keeps the same
-   height, even when some cards have a caption bar and others do not.
-   The card has a minimum height so the description bar sits at a consistent
-   position; the image area fills the remaining space, showing letterbox bars
-   for small images so the card still reaches the minimum height. */
+/* Multi-image markdown galleries: each item in the strip takes the same fixed
+   width as a blog listing card so long descriptions wrap and raise the bottom
+   banner instead of widening the card. All cards have the same total height so
+   the bottom banner reaches down to align every card's base. */
 .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
   display: flex;
   align-items: stretch;
+  width: min(100%, max(542px, 77vw));
+  max-width: min(100%, max(542px, 77vw));
+  flex: 0 0 min(100%, max(542px, 77vw));
+  height: clamp(11.3rem, 37.8vw, 30.4rem);
 }
 
 .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .blog-card,
 .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .gallery-thumb {
   display: flex !important;
   flex-direction: column !important;
-  height: auto !important;
-  max-height: clamp(20rem, 50dvh, 36rem) !important;
-  min-height: clamp(12rem, 30dvh, 20rem) !important;
+  height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+  max-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+  min-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
 }
 
-.markdown-gallery:not(.markdown-gallery--single)
-  .gallery-project-item
-  .gallery-thumb
-  .blog-card-image-wrap {
-  flex: 1 1 auto;
+/* For markdown galleries, the carousel and image flow naturally instead of
+   being absolutely positioned. Images display at their natural aspect ratio,
+   filling the full width with no side deadspace. Max-height keeps images
+   proportional to the blog listing page's card sizing. */
+.markdown-gallery .gallery-thumb .blog-card-image-wrap {
+  flex: 0 0 auto;
+  position: relative !important;
   min-height: 0;
+  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  width: 100%;
+  overflow: hidden;
+}
+
+.markdown-gallery .gallery-thumb .blog-card-image-wrap .thumb-carousel {
+  position: relative !important;
+  inset: auto !important;
+  height: auto;
+}
+
+.markdown-gallery .gallery-thumb .blog-card-image-wrap .thumb-carousel-media {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: clamp(7rem, 31.5vw, 24.5rem) !important;
+  min-height: 1rem;
+  display: block;
+  opacity: 1;
 }
 
 /* INLINE GALLERIES — the project write-up's media frame.
@@ -173,22 +198,21 @@
 .markdown-gallery .blog-inner-image-card .blog-card-image-wrap,
 .markdown-gallery .gallery-project-item .gallery-thumb .blog-card-image-wrap {
   background: transparent;
+  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  overflow: hidden;
 }
 
 .markdown-gallery .blog-inner-image-card .thumb-carousel,
 .markdown-gallery .gallery-project-item .gallery-thumb .thumb-carousel {
-  height: 100%;
+  height: auto;
 }
 
 .markdown-gallery .blog-card-image-wrap .thumb-carousel-media {
-  height: 100%;
-  /* The letterbox: the accent at low strength over the page, the same tint the
-     project panel's `.thumb-carousel-img` paints behind a contained picture. */
-  background: color-mix(
-    in srgb,
-    var(--project-tag-color, var(--icon-accent)) 18%,
-    var(--time-page)
-  );
+  height: 100% !important;
+  max-height: clamp(7rem, 31.5vw, 24.5rem) !important;
+  /* The letterbox stays black, matching every other gallery picture. */
+  background: var(--time-black, #000);
+  object-fit: contain !important;
 }
 
 /* Iframes in multi-image blog galleries need absolute positioning. */
@@ -210,17 +234,28 @@
 }
 
 .blog-inner-image-card {
-  width: min(100%, 42rem);
-  max-width: 100%;
+  width: min(100%, clamp(310px, 44vw, 500px));
+  max-width: clamp(310px, 44vw, 500px);
+  height: clamp(11.3rem, 37.8vw, 30.4rem);
   margin-inline: auto;
+}
+
+/* When blog-inner-image-card sits inside a markdown gallery, the gallery's own
+   width rules (the carousel slide or the single-gallery clamp) control the card.
+   The standalone 42rem width would otherwise stretch the card to the full reading
+   column and defeat the listing-page consistency. */
+.markdown-gallery .blog-inner-image-card {
+  width: auto;
+  max-width: none;
 }
 
 .blog-inner-image-card .blog-card-image-wrap {
   min-height: 0;
+  max-height: clamp(7rem, 31.5vw, 24.5rem);
   height: auto;
   background: transparent;
   overflow: hidden;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
 }
 
 .blog-inner-image-card .thumb-carousel {
@@ -236,6 +271,7 @@
   inset: auto;
   width: 100%;
   height: auto;
+  max-height: clamp(7rem, 31.5vw, 24.5rem);
   max-width: 100%;
   display: block;
   object-fit: contain;
@@ -258,7 +294,29 @@
 
 @media (max-width: 767px) {
   .blog-inner-image-card {
-    width: min(100%, 28rem);
+    width: min(100%, 35rem);
+    max-width: min(100%, 35rem);
+  }
+
+  .markdown-gallery .blog-inner-image-card {
+    width: auto;
+    max-width: none;
+  }
+
+  .markdown-gallery .gallery-thumb {
+    width: min(100%, 35rem) !important;
+    max-width: min(100%, 35rem) !important;
+  }
+
+  .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
+    width: min(100%, 35rem);
+    max-width: min(100%, 35rem);
+    flex: 0 0 min(100%, 35rem);
+  }
+
+  .markdown-gallery--single .gallery-thumb {
+    width: min(100%, 35rem);
+    max-width: min(100%, 35rem);
   }
 }
 
@@ -283,7 +341,7 @@
 
 .markdown-gallery--single .gallery-project-item {
   width: 100%;
-  max-width: 100%;
+  max-width: none;
   flex: 0 0 100%;
 }
 
@@ -291,21 +349,24 @@
 .markdown-gallery--single .gallery-project-item .gallery-thumb {
   display: flex !important;
   flex-direction: column !important;
-  height: auto !important;
-  max-height: clamp(20rem, 50dvh, 36rem) !important;
-  min-height: clamp(12rem, 30dvh, 20rem) !important;
+  height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+  max-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+  min-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
 }
 
 .markdown-gallery--single .gallery-thumb {
-  width: min(100%, 46rem);
+  width: clamp(310px, 44vw, 500px);
+  max-width: clamp(310px, 44vw, 500px);
+  height: clamp(11.3rem, 37.8vw, 30.4rem);
   margin-inline: auto;
 }
 
 .markdown-gallery--single .blog-card-image-wrap {
   background: transparent;
   min-height: 0;
-  height: auto;
-  flex: 1 1 auto;
+  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  flex: 0 0 auto;
+  overflow: hidden;
 }
 
 .markdown-gallery--single .thumb-overlay {
@@ -320,6 +381,7 @@
 .markdown-gallery--single .thumb-carousel-img,
 .markdown-gallery--single .thumb-carousel-video {
   object-position: center;
+  max-height: clamp(7rem, 31.5vw, 24.5rem);
 }
 
 /* Iframes in single-image blog galleries also need absolute positioning. */
@@ -340,10 +402,13 @@
 
 .markdown-gallery .blog-card-info-bar,
 .markdown-gallery--single .blog-card-info-bar {
-  min-height: clamp(3.5rem, 5vw, 4.75rem);
+  min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding-block: 0.85rem;
+  flex-wrap: wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* POST GALLERY CAPTIONS — body size, and inside their bar.
@@ -360,8 +425,10 @@
    already has `min-height: 0`, is what gives way when the card is short. */
 .markdown-gallery .gallery-thumb .blog-card-bar,
 .markdown-gallery .gallery-thumb .blog-card-info-bar {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .markdown-gallery .gallery-thumb-desc,
@@ -382,11 +449,7 @@
   border: 0 !important;
   border-image: none !important;
   box-shadow: none !important;
-  background: color-mix(
-    in srgb,
-    var(--thumb-theme-color, var(--project-tag-color, var(--plate-tint))) 18%,
-    var(--time-page)
-  );
+  background: var(--time-black, #000);
 }
 
 /* The slide zooms and brightens on hover. */
@@ -417,4 +480,249 @@
 
 .gallery-thumb:hover .thumb-overlay {
   opacity: 0.4;
+}
+
+/* GALLERY WIDTH CAPS — shared by blog posts and project pages.
+
+   A single-item gallery shrink-wraps its picture: as wide as the image is,
+   never wider than half the viewport. A multi-item gallery (a carousel) is
+   as wide as its column. The `html body` prefix and !important are
+   needed to outrank the project page's scoped !important sizing. */
+html body .markdown-gallery.markdown-gallery--single {
+  width: fit-content !important;
+  max-width: min(100%, 50vw) !important;
+  margin-inline: auto;
+}
+
+html body .markdown-gallery.markdown-gallery--single .gallery-project-item,
+html body .markdown-gallery.markdown-gallery--single .gallery-thumb,
+html body .markdown-gallery.markdown-gallery--single .blog-card {
+  flex: 0 0 auto !important;
+  width: fit-content !important;
+  max-width: min(100%, 50vw) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+html body .markdown-gallery.markdown-gallery--single .blog-card-image-wrap,
+html body .markdown-gallery.markdown-gallery--single .thumb-carousel {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+html body .markdown-gallery.markdown-gallery--single .thumb-carousel-img {
+  width: auto !important;
+  max-width: min(100%, 50vw) !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+/* Videos and embeds have no intrinsic width to shrink to, so a single one
+   takes the full cap with a 16:9 frame. */
+html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, .thumb-carousel-video),
+html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, .thumb-carousel-video) :is(.gallery-project-item, .gallery-thumb, .blog-card, .blog-card-image-wrap, .thumb-carousel) {
+  width: min(100%, 50vw) !important;
+}
+
+html body .markdown-gallery.markdown-gallery--single .thumb-carousel:has(.thumb-carousel-frame, .thumb-carousel-video) {
+  aspect-ratio: 16 / 9;
+}
+
+html body .markdown-gallery.markdown-gallery--single .thumb-carousel-video {
+  width: 100% !important;
+  max-height: none !important;
+}
+
+/* A single embed or clip fills the 16:9 frame above.
+
+   `.thumb-carousel-media` is deliberately `position: relative; height: auto`;
+   for an image that means "take your natural aspect ratio", which is what the
+   single-image rule wants. An <iframe> has no natural ratio, so `height: auto`
+   fell back to the UA default of 150px: the card was 16:9 but the YouTube
+   player only occupied a 150px-tall strip of it, and the player letterboxed its
+   own video inside that strip — the postage-stamp player on a black field.
+   Project pages papered over this with a scoped rule on their own gallery
+   wrapper; a post has no such wrapper, so the fill belongs here. */
+html body
+  .markdown-gallery.markdown-gallery--single
+  .thumb-carousel-media:is(.thumb-carousel-frame, .thumb-carousel-video) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) {
+  max-width: 100% !important;
+  margin-inline: auto;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item,
+html body .markdown-gallery:not(.markdown-gallery--single) .gallery-thumb,
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Multi-item galleries: cards are as tall as their media plus caption instead
+   of a fixed height, so a narrower card no longer leaves a tall empty banner.
+   Cards in one strip still stretch to the tallest so their bases line up. */
+html body .markdown-gallery:not(.markdown-gallery--single) .gallery-thumbnails {
+  align-items: stretch !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
+  height: auto !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .gallery-thumb,
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap,
+html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel:has(.thumb-carousel-frame, .thumb-carousel-video) {
+  aspect-ratio: 16 / 9;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-info-bar {
+  flex: 1 1 auto !important;
+}
+
+/* Multi-item galleries: the media box is 30% shorter than the old
+   clamp(7rem, 31.5vw, 24.5rem) and the whole picture is shown (contain),
+   letterboxed on black. */
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap,
+html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel {
+  height: clamp(4.9rem, 22.05vw, 17.15rem) !important;
+  aspect-ratio: auto !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel-media {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+
+/* The banner never covers the picture: the media box keeps its full height
+   (no flex shrinking, no clipping by the card), the banner stacks below it,
+   and the card and strip grow to fit both instead of being capped. Applies to
+   every markdown gallery, single or multiple. */
+html body .markdown-gallery .gallery-thumbnails,
+html body .markdown-gallery .gallery-project-item {
+  height: auto !important;
+  max-height: none !important;
+}
+
+html body .markdown-gallery .gallery-thumb,
+html body .markdown-gallery .blog-card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+html body .markdown-gallery .blog-card-image-wrap {
+  flex-shrink: 0 !important;
+  position: relative !important;
+}
+
+html body .markdown-gallery .blog-card-info-bar {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  margin-top: 0 !important;
+  flex-shrink: 0;
+}
+
+/* Multi-item galleries: the banner is only as tall as its caption, and the
+   media box takes any extra card height (cards in a strip match the tallest),
+   so spare space goes to the picture instead of to an empty banner. The
+   clamp() below is the media box's minimum, not a fixed size. */
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-info-bar {
+  flex: 0 0 auto !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: clamp(4.9rem, 22.05vw, 17.15rem) !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap .thumb-carousel {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap .thumb-carousel-media {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* DEADSPACE — no see-through gaps around a gallery picture.
+
+   A contained picture leaves bars wherever its shape differs from the box,
+   and a card stretched to its tallest neighbour leaves room above the banner.
+   Both used to be transparent, so the page's pattern showed through. They are
+   painted black in every mode and every theme so the bars never compete with
+   the picture. The picture is centred in the box both ways. */
+html body .markdown-gallery {
+  --gallery-deadspace: var(--time-black, #000);
+}
+
+html body .markdown-gallery .gallery-thumb.blog-card,
+html body .markdown-gallery .blog-card-image-wrap,
+html body .markdown-gallery .thumb-carousel,
+html body .markdown-gallery .thumb-carousel-media {
+  background: var(--gallery-deadspace) !important;
+  background-image: none !important;
+}
+
+html body .markdown-gallery .thumb-carousel {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+html body .markdown-gallery .thumb-carousel-media {
+  object-fit: contain !important;
+  object-position: center !important;
+  margin: auto !important;
+}
+
+/* The gallery card draws the only frame. The shared media frame in
+   chrome/pixelChrome/frames.css adds a second border and an inset light /
+   shadow edge to every picture; inside a gallery that reads as stray
+   horizontal and vertical lines across the black letterbox. */
+html body .project-gallery .thumb-carousel-media {
+  border: 0 !important;
+  border-image: none !important;
+  box-shadow: none !important;
+}
+
+/* The enlarged view letterboxes the same way. */
+.blog-gallery-lightbox .blog-gallery-lightbox__image {
+  background: var(--time-black, #000);
+  object-position: center;
 }

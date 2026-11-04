@@ -27,37 +27,46 @@ cards:
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/3014650/45_PARABELLUM_BLOODHOUND__Cyberpunk_Active_Time_Action/"
       text: "Steam"
+
 - tag: ""
   title: "The Big Catch"
   description: ""
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/2146290/The_Big_Catch/"
       text: "Steam"
+    - icon: "Handbag"
+      href: "https://www.thebigcatchgame.com"
+      text: "Official Website"
+      
 - tag: ""
   title: "Sword Hero"
   description: ""
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/1739080/Sword_Hero/"
       text: "Steam"
-    - icon: "Radio"
+    - icon: "images/PixelNetIcons/round square/youtube112.webp"
       href: "https://www.youtube.com/@forestwaregames"
       text: "Developer’s YouTube Channel"
+    - icon: "images/PixelNetIcons/round square/twitter112.webp"
+      href: "https://x.com/FoW_Games"
+      text: "X Profile"     
+
 - tag: ""
   title: "ROGUE FLIGHT"
   description: ""
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/2784620/ROGUE_FLIGHT/"
       text: "Steam"
 - tag: ""
@@ -66,7 +75,7 @@ cards:
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/3159750/Grindset_TV/"
       text: "Steam"
 - tag: ""
@@ -75,7 +84,7 @@ cards:
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/3327430/Carcass_Clad/"
       text: "Steam"
 - tag: ""
@@ -84,7 +93,7 @@ cards:
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/2871520/Deep_Dish_Dungeon/"
       text: "Steam"
 - tag: ""
@@ -93,16 +102,24 @@ cards:
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/2522120/Airframe_Ultra/"
       text: "Steam"
+    - icon: "Handbag"
+      href: "https://www.gog.com/es/game/airframe_ultra"
+      text: "GOG"
+    - icon: "Internet"
+      href: "https://www.akuparagames.com/game/airframe-ultra/"
+      text: "Official Website"
+
+      
 - tag: ""
   title: "G String"
   description: ""
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/1224600/G_String/"
       text: "Steam"
 - tag: ""
@@ -111,9 +128,19 @@ cards:
   actionText: "Open store"
   backgroundImage: ""
   links:
-    - icon: "Handbag"
+    - icon: "images/PixelNetIcons/round square/steam112.webp"
       href: "https://store.steampowered.com/app/2063390/VA_Proxy/"
       text: "Steam"
+    - icon: "images/PixelNetIcons/round square/patreon112.webp"
+      href: "https://www.patreon.com/KHAYYYAM"
+      text: "Support the Dev! - KHAYYAM"
+    - icon: "images/PixelNetIcons/round square/patreon112.webp"
+      href: "https://www.patreon.com/PyroLith"
+      text: "Support the Dev! - PyroLith"
+      
+
+  
+  
 
 scenes:
   - image: "images/blog/GamesThatCaughtMyEyeIn2026/parabellumVenue.webp"
@@ -146,7 +173,15 @@ scenes:
   - image: "images/blog/GamesThatCaughtMyEyeIn2026/vaproxyDuel.webp"
   - image: "images/blog/GamesThatCaughtMyEyeIn2026/vaproxyCitadel.webp"
   - image: "images/blog/GamesThatCaughtMyEyeIn2026/vaproxyCave.webp"
-  - image: "images/blog/GamesThatCaughtMyEyeIn2026/backdropWings.webp"
+  - image: "images/blog/GamesThatCaughtMyEyeIn2026/swordheroFishing.webp"
+  - image: "images/blog/GamesThatCaughtMyEyeIn2026/swordheroWound.webp"
+  - image: "images/blog/GamesThatCaughtMyEyeIn2026/swordheroMerchant.webp"
+  - image: "images/blog/GamesThatCaughtMyEyeIn2026/swordheroInventory.webp"
+  - image: "images/blog/GamesThatCaughtMyEyeIn2026/vaproxyChurch.webp"
+  - image: "images/blog/GamesThatCaughtMyEyeIn2026/vaproxyDialogue.webp"
+  - image: "images/blog/GamesThatCaughtMyEyeIn2026/vaproxyChained.webp"
+  - image: "images/blog/GamesThatCaughtMyEyeIn2026/vaproxyAura.webp"
+
 ---
 
 I constantly find myself having a harder time enjoying most popular video games, and not for lack of trying. *Vampire Survivors, Clair Obscure 33, Balatro, Peak, I tried, but they are just not for me at all*, same with most AAA productions. Thankfully, diversity is a strength in the video game industry, so here are games that have caught my attention and why…
@@ -204,7 +239,7 @@ And *somehow, even though Sword Hero screams of Dark Fantasy, I can’t help but
 
   <li>Action limb-based combat.</li>
 
-  <li>Smart AI | Environmental interaction</li>
+  <li>Smart AI | Environmental interaction | Npc routines and grieveing system</li>
 
   <li>Equipment | Inventory |Trading system</li>
 
@@ -213,8 +248,11 @@ And *somehow, even though Sword Hero screams of Dark Fantasy, I can’t help but
 This will surely be a monumental love letter to **old-school role-playing games** that I hope gets released eventually. The developer uploads blogs on development, plans, and details. I say let him cook!
 
 [scene[6], "Minimal, stylized HUD."]
-[scene[7], "Class system, typical melee, ranged and mage."]
-[scene[8], "Colorful scenery for a dark fantasy game is a welcome change, I'm also a fan of the game's lightning and kind of greasy camera lens shader."]
+[scene[8], "Big fan of the game's lightning and kind of greasy camera lens shader."]
+[scene[30], "Fishing mini-game."]
+[scene[31], "Limb-damage system ala **Metal Gear Solid 3: Snake Eater**."]
+[scene[32], "Crazy merchants rocking out some cool outfits."]
+[scene[33], "Inventory with quickslots and tabs (as every rpg should have, tabs!!!)."]
 
 # ROGUE FLIGHT
 
@@ -304,13 +342,17 @@ A fast-paced **third person action** game set in a desolated land, filled with r
 
 </ul>
 
-I got to know this thanks to Youtube Shorts of all things, the color palette and shading caught my eye, and then the combat did the rest of the work to lure me in.
+I got to know this thanks to *Youtube Shorts* of all things, the color palette and shading caught my eye, and then the combat did the rest of the work to lure me in.
 It’s been quite some time in development, but good things take time.
 
 [scene[27], "Flashy responsive combat."]
 [scene[28], "Melee and ranged combat."]
 [scene[29], "A massive world to explore."]
+[scene[34], "Even robots need faith."]
+[scene[35], "Seems there'll be a cinematic dialogue system."]
+[scene[36], "Chained giants with cities built around them, or was the city there first?."]
+[scene[37], "The protagonist aura farming."]
 
 ## And so…
 
-All the games that caught my interest are either indie or very, very close to AA, in big part thanks to engines and the democratization of game development. That’s the beauty of games: there are all kinds of flavors for different palates. Thankfully, I found a whole course meal; the bad part is the chefs are still halfway through the process. The good part is the time and love I see when I get a peek of the ingredients through the kitchen window is strong, and the smell is so fierce it’s ingrained in my brain. So I say let them cook!
+All the games that caught my interest are either **indie** or very, very close to **AA**, in big part thanks to engines and the democratization of game development. That’s the beauty of games: there are all kinds of flavors for different palates. Thankfully, I found a whole course meal; the bad part is the chefs are still halfway through the process. The good part is the time and love I see when I get a peek of the ingredients through the kitchen window is strong, and the smell is so fierce it’s ingrained in my brain. So I say let them cook!

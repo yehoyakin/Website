@@ -8,7 +8,7 @@
 
    The effect lives on the CONTROL now, so it lands on plate buttons and bare
    icon buttons alike and no wrapper can hide it. Same numbers everywhere:
-   scale 1.06, brightness 1.3, saturate 1.2. Hover colour still belongs to each
+   a 2px lift, brightness 1.3, saturate 1.2. Hover colour still belongs to each
    button (tinted plates deepen, panels brighten) — this only adds the motion
    and the light. */
 
@@ -56,6 +56,7 @@
 .card-carousel-dot:focus-visible {
   /* The idle shake yields to the hover instead of fighting it for `transform`. */
   animation: none;
+  /* A centred grow plus a gamma bump — no vertical shift. */
   transform: scale(1.06);
   filter: brightness(1.3) saturate(1.2);
 }

@@ -31,18 +31,16 @@
   padding: 0;
 }
 
-.markdown-gallery .gallery-thumbnails {
-  justify-content: flex-start;
-  padding: 0;
-}
-
 .markdown-gallery .gallery-thumbnails::before,
 .markdown-gallery .gallery-thumbnails::after {
   display: none;
 }
 
-.markdown-gallery .gallery-thumbnails::before,
-.markdown-gallery .gallery-thumbnails::after {
-  display: none;
+/* Make markdown gallery items scroll horizontally with proper sizing */
+.markdown-gallery .gallery-project-item {
+  flex: 0 0 auto;
+  width: auto;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
 

@@ -77,17 +77,12 @@ const sortedPosts = posts.sort(
     </section>
   </div>
 
-  <script is:inline>
-    (async function () {
-      const { initCardCarousels } = await import("../scripts/cardCarousel.js");
+  <script>
+    import { initCardCarousels } from "../scripts/cardCarousel.js";
 
-      document.addEventListener("astro:page-load", () => {
-        initCardCarousels();
-      });
-      document.addEventListener("DOMContentLoaded", () => {
-        initCardCarousels();
-      });
-      initCardCarousels();
-    })();
+    /* The strip is server-rendered above; build its controls on load. The
+       module registers its own `astro:page-load` listener, so client-side
+       navigations back to the listing rebuild them too. */
+    initCardCarousels();
   </script>
 </MyLayout>

@@ -82,7 +82,7 @@
 .blog-gallery-lightbox__panel {
   position: relative;
   z-index: 1;
-  width: min(92vw, 1100px);
+  width: min(92vw, 1375px);
   height: min(88vh, 900px);
   display: flex;
   flex-direction: column;
@@ -122,6 +122,11 @@
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
 }
 
+/* Single-image/video lightbox: panel is 50% wider so the image takes more space. */
+.blog-gallery-lightbox[data-lightbox-single="true"] .blog-gallery-lightbox__panel {
+  width: min(92vw, 1650px);
+}
+
 .blog-gallery-lightbox__panel::before {
   content: "";
   position: absolute;
@@ -151,7 +156,7 @@
 .blog-gallery-lightbox__close {
   position: absolute;
   top: calc(50% - (min(88vh, 900px) / 2));
-  right: calc(50% - (min(92vw, 1100px) / 2));
+  right: calc(50% - (min(92vw, 1375px) / 2));
   width: var(--icon-button-size, 2.75rem);
   height: var(--icon-button-size, 2.75rem);
   padding: 0;
@@ -185,16 +190,50 @@
 .blog-gallery-lightbox__image {
   display: block;
   width: 100%;
-  max-height: min(95vh, 1100px);
+  max-height: clamp(7rem, 31.5vw, 24.5rem);
   object-fit: contain;
-  background: rgba(15, 15, 17, 0.8);
+  background: var(--time-black, #000);
+}
+
+/* Single-image/video lightbox: same max-height as gallery images. */
+.blog-gallery-lightbox[data-lightbox-single="true"] .blog-gallery-lightbox__image {
+  max-height: clamp(7rem, 31.5vw, 24.5rem);
+}
+
+/* Single-image/video lightbox: position buttons for wider panel. */
+.blog-gallery-lightbox[data-lightbox-single="true"] .blog-gallery-lightbox__close {
+  right: calc(50% - (min(92vw, 1650px) / 2));
+}
+
+/* One item has nowhere to navigate, so the enlarged view drops the arrows and
+   the dot index instead of showing controls that cannot do anything. */
+.blog-gallery-lightbox[data-lightbox-single="true"] .blog-gallery-lightbox__nav,
+.blog-gallery-lightbox[data-lightbox-single="true"] .blog-gallery-lightbox__dots {
+  display: none;
+}
+
+/* Native-scroller mode: the switch in src/config/carousel.ts turns off every
+   custom navigator, the enlarged view included. Only the strip's scrollbar is
+   left to move through the media. */
+html[data-carousel-controls="native"] .blog-gallery-lightbox__nav,
+html[data-carousel-controls="native"] .blog-gallery-lightbox__dots {
+  display: none;
 }
 
 /* Iframes in the lightbox need full sizing — the image max-height breaks
-   embedded video players (YouTube, Vimeo) by squishing them to a thin bar. */
-.blog-gallery-lightbox__stage iframe.blog-gallery-lightbox__image {
-  max-height: none;
+   embedded video players (YouTube, Vimeo) by squishing them to a thin bar.
+   They cannot use `object-fit`, so instead they are sized from both stage
+   dimensions and keep their 16:9 shape: as tall as the stage allows, and no
+   wider than it. Filling the stage outright would squash the player. */
+.blog-gallery-lightbox__stage {
+  container-type: size;
+}
+
+.blog-gallery-lightbox .blog-gallery-lightbox__stage iframe.blog-gallery-lightbox__image {
+  width: min(100cqw, calc(100cqh * 16 / 9));
   height: auto;
+  max-width: 100%;
+  max-height: 100%;
   aspect-ratio: 16 / 9;
   border: 0;
 }
@@ -218,11 +257,11 @@
 }
 
 .blog-gallery-lightbox__nav--prev {
-  left: calc(50% - (min(92vw, 1100px) / 2));
+  left: calc(50% - (min(92vw, 1375px) / 2));
 }
 
 .blog-gallery-lightbox__nav--next {
-  right: calc(50% - (min(92vw, 1100px) / 2));
+  right: calc(50% - (min(92vw, 1375px) / 2));
 }
 
 .blog-gallery-lightbox__meta {
@@ -282,4 +321,58 @@ body.lightbox-open {
   .blog-gallery-lightbox__nav--next {
     right: calc(50% - (min(94vw, 100%) / 2));
   }
+}
+
+/* ENLARGED VIEW — the picture fills the panel above its caption banner.
+
+   The old cap (clamp(7rem, 31.5vw, 24.5rem)) kept the enlarged image the size
+   of the card it came from. The stage now takes every pixel of the panel the
+   banner does not need, and the media is contained so nothing is cropped. */
+.blog-gallery-lightbox .blog-gallery-lightbox__media,
+.blog-gallery-lightbox .blog-gallery-lightbox__stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  /* An explicit, bounded row is what lets the picture's `height: 100%` and
+     `max-height: 100%` resolve. With the implicit auto row a tall image sized
+     itself from the panel width, grew past the media box and painted over the
+     caption banner below it. */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+  overflow: hidden;
+}
+
+.blog-gallery-lightbox .blog-gallery-lightbox__image,
+.blog-gallery-lightbox[data-lightbox-single="true"] .blog-gallery-lightbox__image {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.blog-gallery-lightbox iframe.blog-gallery-lightbox__image {
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: 100%;
+  border: 0;
+}
+
+/* The caption is the same banner a gallery card carries: full width under
+   the picture, only as tall as its text. */
+.blog-gallery-lightbox .blog-gallery-lightbox__caption {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.85rem 1.25rem;
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  color: var(--time-ink, white);
+  opacity: 1;
+  -webkit-line-clamp: unset;
+}
+
+.blog-gallery-lightbox .blog-gallery-lightbox__caption[hidden] {
+  display: none;
 }

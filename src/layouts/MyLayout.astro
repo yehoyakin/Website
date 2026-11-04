@@ -6,6 +6,7 @@ import { asset } from "../utils/asset";
 import ModeToggle from "../components/shared/ModeToggle.astro";
 import Icon from "../components/shared/Icon.astro";
 import { defaultIconColor, defaultIconColorNight } from "../config/icons";
+import { CUSTOM_CAROUSEL_CONTROLS } from "../config/carousel";
 
 const { title = "JoacoDev", theme, page } = Astro.props;
 
@@ -24,6 +25,7 @@ const themeAttribute =
   data-page={page}
   data-icon-day={defaultIconColor}
   data-icon-night={defaultIconColorNight}
+  data-carousel-controls={CUSTOM_CAROUSEL_CONTROLS ? "custom" : "native"}
 >
   <head>
     <meta charset="UTF-8" />

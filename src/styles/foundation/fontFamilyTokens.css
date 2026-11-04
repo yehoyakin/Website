@@ -18,6 +18,14 @@
 
 html {
   font-family: var(--font-body) !important;
+  /* Grayscale antialiasing, stated on the root as well as the <body> class.
+     OLED panels have no RGB stripe, so Windows ClearType's subpixel pass turns
+     every vertical stem into a colour fringe, which reads as soft text. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Bold Pixels ships one real face per cut; without this, a requested 500/600
+     is faked by smearing the 400 outline outward. Use the declared face. */
+  font-synthesis-weight: none;
 }
 
 body {

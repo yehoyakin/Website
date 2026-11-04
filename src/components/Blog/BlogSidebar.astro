@@ -1,6 +1,6 @@
 ---
 // Purpose: Component - src/components/Blog/BlogSidebar.astro (Sidebar content for blog pages)
-import LinkCard from "../sections/LinkCard.astro";
+import Link from "../shared/Link.astro";
 
 interface CardItem {
   href?: string;
@@ -24,6 +24,34 @@ interface Props {
 }
 
 const { cards = [], theme } = Astro.props as Props;
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const isExternal = (url?: string) =>
+  !!url && (url.startsWith("http://") || url.startsWith("https://"));
+
+const resolve = (path: string) =>
+  isExternal(path) ? path : `${base}${path.replace(/^\/+/, "")}`;
+
+/* ONE CONTINUOUS LIST.
+
+   Every card's buttons sit in a single list on the one plate. Each card's
+   title is the separator above its buttons, so the buttons keep their own
+   short labels ("Steam"). A card with only a top-level `href` becomes one
+   button under its title. */
+const groups = cards
+  .map((card) => {
+    const title = card.title?.trim() || "";
+    const buttons = card.links?.length
+      ? card.links.map((link) => ({ href: link.href, text: link.text?.trim() || "Open", icon: link.icon }))
+      : card.href
+        ? [{ href: card.href, text: card.actionText?.trim() || "Open", icon: undefined }]
+        : [];
+    return { title, buttons };
+  })
+  .filter((group) => group.buttons.length > 0);
 ---
 
 {
@@ -32,21 +60,27 @@ const { cards = [], theme } = Astro.props as Props;
      scrolls. A second `overflow-y: auto` here gave the panel two scrollbars. */
 }
 <aside class="relative z-20 w-full retro-scrollbar">
-  {
-    cards.map((card) => (
-      <div class="links-panel-group w-full overflow-hidden">
-        <LinkCard
-          href={card.href}
-          links={card.links}
-          theme={theme}
-          tag={card.tag}
-          title={card.title}
-          description={card.description}
-          actionText={card.actionText}
-          backgroundImage={card.backgroundImage}
-          class="h-auto"
-        />
-      </div>
-    ))
-  }
+  <div class="links-panel-links links-panel-links--merged">
+    {
+      /* Each card's title heads its buttons, so the list reads by subject. */
+      groups.map((group) => (
+        <>
+          {group.title && (
+            <div class="links-panel-separator" role="heading" aria-level="3">
+              <span class="links-panel-separator__text">{group.title}</span>
+            </div>
+          )}
+          {group.buttons.map((button) => (
+            <Link
+              href={resolve(button.href)}
+              text={button.text}
+              icon={button.icon}
+              theme={theme}
+              external={isExternal(button.href)}
+            />
+          ))}
+        </>
+      ))
+    }
+  </div>
 </aside>

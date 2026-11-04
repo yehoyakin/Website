@@ -640,7 +640,7 @@ const renderInlineMarkdown = (text: string) => {
               </div>
 
               <div class="gallery-panels-container">
-                <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox style={galleryStyle}>
+                <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox data-lightbox-single="true" style={galleryStyle}>
                   <div class="blog-gallery-lightbox__backdrop" data-lightbox-close></div>
                   <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close image preview" data-lightbox-close>
                     <Icon name="close" theme={theme} class="blog-gallery-lightbox__close-icon" />
@@ -657,7 +657,7 @@ const renderInlineMarkdown = (text: string) => {
                     </div>
                     <div class="blog-gallery-lightbox__meta">
                       <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Image index"></div>
-                      {hasTitleText && <span class="blog-gallery-lightbox__caption">{firstTitleText}</span>}
+                      {hasTitleText && <span class="blog-gallery-lightbox__caption blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">{firstTitleText}</span>}
                     </div>
                   </div>
                 </div>
@@ -723,7 +723,7 @@ const renderInlineMarkdown = (text: string) => {
               </div>
 
               <div class="gallery-panels-container">
-                <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox style={galleryStyle}>
+                <div class="blog-gallery-lightbox" aria-hidden="true" data-gallery-lightbox data-lightbox-single={isSingleGallery} style={galleryStyle}>
                   <div class="blog-gallery-lightbox__backdrop" data-lightbox-close></div>
                   <button type="button" class="blog-gallery-lightbox__close icon-button" aria-label="Close media preview" data-lightbox-close>
                     <Icon name="close" theme={theme} class="blog-gallery-lightbox__close-icon" />
@@ -740,7 +740,7 @@ const renderInlineMarkdown = (text: string) => {
                     </div>
                     <div class="blog-gallery-lightbox__meta">
                       <div class="blog-gallery-lightbox__dots card-carousel-dots" aria-label="Media index"></div>
-                      <span class="blog-gallery-lightbox__caption" data-lightbox-caption hidden />
+                      <span class="blog-gallery-lightbox__caption blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small" data-lightbox-caption hidden />
                     </div>
                   </div>
                 </div>
@@ -755,10 +755,13 @@ const renderInlineMarkdown = (text: string) => {
   </CompactBody>
 </div>
 
-<script is:inline>
-  (async function () {
-    const { initGalleryEqualHeight } = await import("../../scripts/galleryEqualHeight.js");
-    const { initCardCarousels } = await import("../../scripts/cardCarousel.js");
+<script>
+  /* A bundled (not is:inline) script, so Astro resolves and ships these
+     imports. Inline scripts are copied verbatim, and their relative imports
+     404'd in the browser, which stopped every gallery from opening. */
+  import { initGalleryEqualHeight } from "../../scripts/galleryEqualHeight.js";
+  import { initCardCarousels } from "../../scripts/cardCarousel.js";
+  {
     const initMarkdownGalleries = () => {
       const galleries = document.querySelectorAll(".project-gallery[data-gallery-ready='false']");
       if (!galleries.length) return;
@@ -890,7 +893,15 @@ const renderInlineMarkdown = (text: string) => {
             dotsWrap.replaceChildren(...dotButtons);
           }
 
+          /* A one-item gallery has nowhere to go: the CSS hides the arrows and
+             the dot index from this flag. */
+          lightbox.dataset.lightboxSingle = items.length <= 1 ? "true" : "false";
+
           closeOtherLightboxes();
+          /* Opened from <body> so no transformed or clipping ancestor (the
+             gallery strip, a plate, a reveal animation) can trap the
+             fixed-position overlay inside the page. */
+          if (lightbox.parentElement !== document.body) document.body.appendChild(lightbox);
           lightbox.classList.add("is-open");
           lightbox.setAttribute("aria-hidden", "false");
           document.body.classList.add("lightbox-open");
@@ -976,5 +987,5 @@ const renderInlineMarkdown = (text: string) => {
     initCardCarousels();
     initReveal();
     initGalleryEqualHeight();
-  })();
+  }
 </script>

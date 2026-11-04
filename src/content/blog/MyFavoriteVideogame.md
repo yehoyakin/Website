@@ -21,7 +21,7 @@ cards:
     actionText: "Open store"
     backgroundImage: ""
     links:
-      - icon: "Handbag"
+      - icon: "images/PixelNetIcons/round square/steam112.webp"
         href: "https://store.steampowered.com/app/977880/Eastward"
         text: "Steam"
       - icon: "Handbag"
@@ -46,6 +46,8 @@ cards:
       - icon: "Document"
         href: "https://www.lostincult.co.uk/eastward"
         text: "Lost in Cult book"
+
+  
 
 scenes:
   - image: "images/blog/MyFavoriteVideogame/potcrockGate.webp"
@@ -108,20 +110,27 @@ scenes:
     align: "center"
   - image: "images/blog/MyFavoriteVideogame/earlyMorning.webp"
     align: "center"
+
+videos:
+  - src: "https://www.youtube.com/watch?v=ZwU4uAUV18c"
+    align: "center"
+    size: "16:9"
+    title: "Eastward - intro cinematic"
+    caption: "Intro cinematic animated by Souviens Ten-Zan Studio."
+
 ---
 
 Once in a while you get to play a game that just "clicks" with you, it is just what you need at a given time, for me that game was...
 
 [background[0]]
 
-[scene[16]]
+[scene[16]
 
 Developed by **Pixpil** and published by **Chucklefish**, the first trailer of this adventure game looked like it was ready to entertain me, feast my eyes, ears and pull at my heartstrings. 
 
 When booting the game we are presented with a hand-drawn cinematic. In it, characters are introduced in a quick succession of clips, the tone is set from the very beginning of the experience, this is a *game about adventure, friendship, loss, love and trains!*
 
-[scene[0], "One of many train stations, love the Ghibli-eske look of this one."]
-[scene[26], "Intro cinematic animated by Souviens Ten-Zan Studio."]
+[gallery:video[0]]
 
 ## Gameplay
 
@@ -137,7 +146,7 @@ The gameplay loop consists of the following chain of 3 events:
 
 The game's *main mechanic is the control of our two protagonists*, the ever happy **Sam and John** our silent gruffy father figure(great George Michael Song btw!). During gameplay John will deliver brute force, while Sam will be handy whenever we want to avoid conflict and danger. They can be controlled together or separately which opens up lots of fun and interesting level design, puzzles and combat.
 
-The game's structure is that of chapters, which is required, given the storyline, this may upset completionists but to me it was a breath of fresh air given the boom of open world games at that time.
+The game's structure is that of chapters, which is required, given the storyline, this may upset completionists but to me, it was a breath of fresh air given the boom of open world games at that time.
 
 [scene[6],"John and Sam will have plenty of city life and roaming."]
 [scene[21],"Incredible detail on escenary, such as signs, billboards, every building is unique."]
@@ -148,7 +157,9 @@ There is a cooking mechanic in which 3 ingredients of different types are combin
 
 Cooking is a big part of the narrative, as it is an activity that brings people together, it is a way to show love and fill the belly of course!
 
-[scene[7,8], "Some food in the game is only attainable at certain stores."]
+
+[scene[7], "Plethora of ingredients all over, get them in stores, during exploration or form enemy drops!"]
+[scene[8], "Quick mini-game, get a match and the food effects are increased."]
 
 ### Earthborn
 
@@ -188,6 +199,7 @@ The plot is very lossesly held together; There is an overarching story but most 
 
 Most of these episodes within the game's chapters are there to give and breathe life into the world and the characters, if you are looking for a heavy plot and straight narrative you'll bounce off this game HARD. If you enjoy piecing together the story and world by paying attention to dialogues, character animations and level design this game is for you.
 
+[scene[0], "One of many train stations, love the Ghibli-eske look of this one."]
 [scene[1], "The in-game sunset give me a nostalgic mood that's hard to achieve in most games."]
 
 
@@ -209,7 +221,7 @@ For a whole month I walked through Buenos Aires looking for a place to stay whil
 
 And so I finished this game when I missed those I loved the most, and seeing myself in John and Sam, looking for a home in the world hit hard, specially when seeing myself in so many moments of their journey such as arriving at a cold **train stations** in the early hours of the morning, **cooking** with new friends to **bond** and many **heartfelt goodbyes**. 
 
-[scene[24], "Sun light, clouds and good-byes."]
+[scene[24], "City, friends, sunlight, clouds and heartfelt good-byes."]
 
 
 # Closing up

@@ -13,8 +13,9 @@
    and `.pattern-plate` deliberately leaves positioning to its host. */
 
 .links-panel {
-  position: relative;
-  padding: 1rem;
+ position: relative;
+ padding: 1rem;
+ overflow-x: hidden;
 }
 
 .links-panel .links-panel-links {
@@ -113,6 +114,7 @@
 .links-panel--scroll > :where(aside, div) {
   max-height: calc(70vh - 2rem);
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
   padding-right: 0.45rem;
@@ -122,8 +124,64 @@
    their one scrollbar and never catch the page's. */
 .links-panel--scroll .links-panel-links {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .links-panel--scroll .links-panel-links .retro-link {
   flex: 0 1 auto;
   min-width: 0;
+}
+
+/* The post's merged list: one column of full-width buttons, so labels that
+   now carry the game's name line up instead of wrapping into ragged rows. */
+.links-panel .links-panel-links--merged {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.links-panel .links-panel-links--merged .retro-link {
+  width: 100%;
+}
+
+/* More room in the post's links panel, and a themed rule between subjects. */
+.links-panel.links-panel--scroll {
+  padding: 1.5rem 1.25rem;
+}
+
+.links-panel .links-panel-links--merged {
+  gap: 0.6rem;
+  padding: 0.25rem 0.35rem;
+}
+
+.links-panel .links-panel-separator {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  margin: 0.9rem 0 0.15rem;
+  color: var(--time-white);
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.links-panel .links-panel-separator:first-child {
+  margin-top: 0;
+}
+
+/* The themed rule runs from the end of the title to the panel's edge. */
+.links-panel .links-panel-separator::after {
+  content: "";
+  flex: 1 1 1.5rem;
+  min-width: 1.5rem;
+  border-top: 2px solid
+    color-mix(in srgb, var(--project-tag-color, var(--time-border)) 70%, var(--time-white));
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--project-tag-color-dark, var(--time-black)) 80%, transparent);
+}
+
+.links-panel .links-panel-separator__text {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
