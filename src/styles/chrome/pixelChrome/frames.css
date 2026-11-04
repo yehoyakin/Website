@@ -51,7 +51,7 @@
   --frame-bevel: linear-gradient(
     to bottom,
     color-mix(in srgb, var(--frame-accent) 98%, var(--time-white) 2%) 0%,
-    var(--frame-accent) 12%,
+    var(--frame-accent) 16%,
     color-mix(in srgb, var(--frame-accent) 72%, var(--time-black) 28%) 58%,
     color-mix(in srgb, var(--frame-accent) 45%, var(--time-black) 55%) 100%
   );
