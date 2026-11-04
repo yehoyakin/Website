@@ -1,5 +1,5 @@
 ---
-title: "My favorite videogame"
+title: "Eastward my beloved"
 theme: "yellow"
 description: "Warmth | Coziness | Fun"
 date: 08/21/2026
@@ -221,7 +221,7 @@ For a whole month I walked through Buenos Aires looking for a place to stay whil
 
 And so I finished this game when I missed those I loved the most, and seeing myself in John and Sam, looking for a home in the world hit hard, specially when seeing myself in so many moments of their journey such as arriving at a cold **train stations** in the early hours of the morning, **cooking** with new friends to **bond** and many **heartfelt goodbyes**. 
 
-[scene[24], "City, friends, sunlight, clouds and heartfelt good-byes."]
+[scene[24], "City, friends, sunlight, clouds and heartfelt goodbyes."]
 
 
 # Closing up
@@ -232,7 +232,7 @@ Last year I bought the behind the scenes book of the game, it is a great read, f
 
 [scene[27,28], "Me with my super happy expression (no expression)"]
 
-Check the link's panel for different Eastward related info, but beware, sadly the game runs very very bad on high resolution devices, my OLED monitor with 240hz and a 4090 get stuttered like crazy, sadly, but a reduction of resolution will help a bit, I just wish it had proper support.
+Check the link's panel for different Eastward related info, but beware, sadly the game **runs bad and stutters in high resolution devices**, my OLED monitor with 240hz and a 4090 get stuttered like crazy, but a reduction of resolution will help a bit, I *just wish it had proper 4k support*.
 
 
 

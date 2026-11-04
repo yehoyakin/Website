@@ -1,7 +1,7 @@
 ---
 title: "Right track at the right time"
 theme: "green"
-description: "Music | Mood | Videogame"
+description: "Music | Mood | Video-game"
 date: 10/18/2026
 cardBackground: "images/blog/RightTrackAtTheRightTime/ocarinaSong.webp"
 backgrounds:
