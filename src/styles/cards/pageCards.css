@@ -224,10 +224,11 @@
   max-width: 100%;
 }
 
+/* The credit chips are ordinary buttons: the shared recipe's type scale */
+   /* (text-xs) stays in place — the old 6px override just made them read as */
+   /* something other than the buttons they sit beside. Tighter padding only. */
 .landing-credits-row .retro-link {
   flex: 0 0 auto;
   padding-inline: 0.5rem;
-  font-size: clamp(6px, 0.9vw, 0.3rem);
-  letter-spacing: 0.06em;
   white-space: nowrap;
 }

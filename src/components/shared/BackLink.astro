@@ -19,20 +19,24 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 const resolvedHref = href || baseUrl;
 
 // Site chrome, not page content: the control follows the mode base colours
-   // the same way the day / night switch does. The plate comes from
-   // --time-button-fill / --time-button-ink, and the arrow is left unthemed so
-   // Icon.astro renders its day / night pair.
+   // the same way the day / night switch does. It wears the SAME button recipe
+   // as every other control (`retro-link pixel-frame` plus the empty
+   // `data-link-theme`, the look shared/Link.astro and the carousel's
+   // navigator buttons carry); chrome/pixelChrome/backLink.css feeds the mode
+   // base pair into that recipe's tile vars, so no page theme can reach the
+   // chrome. The arrow is left unthemed so Icon.astro renders its day / night
+   // pair.
    // Position is NOT a utility here: `.back-link` fixes itself to the shared
    // chrome gutter, stacked under the day / night switch (base/responsive.css),
    // so this control, that switch and the contact rail all sit on one column.
+   // No hover utilities either: chrome/pixelChrome/controlHover.css gives
+   // every button the one grow-and-shine hover.
 const classes = [
-  "back-link text-base uppercase tracking-wider",
-  "transition-all duration-75 ease-[var(--ease-press)]",
-  "hover:scale-[1.03] hover:brightness-110",
+  "back-link retro-link pixel-frame text-base uppercase tracking-wider",
 ].join(" ");
 ---
 
-<a href={resolvedHref} class={classes}>
+<a href={resolvedHref} class={classes} data-link-theme="">
   {/* The arrow is the set's framed Triangle artwork; the label is text. Its size is the shared chrome glyph size (chrome/pixelChrome/iconButtons.css). */}
   <span class="flex items-center gap-2">
     <Icon name="arrow-left" class="chrome-icon" />

@@ -46,13 +46,21 @@ const alignment = resolvedIcon ? "justify-start" : "justify-center";
 const themeName = theme ? toThemeName(theme) : undefined;
 const themeToken = themeName ? resolveThemeToken(themeName) : undefined;
 const linkThemeMode = theme ? (themeName ?? "tinted") : (tinted ? "tinted" : undefined);
-const hasExplicitThemeColor = style?.includes("--project-tag-color") || false;
-// The button always carries the host's theme so its tile, border and type
-   // stay on the accent — day/night never touches it.
+// ONE BUTTON VISUAL EVERYWHERE. The themed-tile recipe (chrome/pixelChrome/
+   // tintedButtons.css) is keyed to the `data-link-theme` attribute, so EVERY
+   // link carries it — named when a theme was asked for, empty otherwise, in
+   // which case the tile just inherits the host's `--project-tag-color` (the
+   // carousel's navigator buttons set the same empty attribute). The theme
+   // vars are only emitted when they name a real theme: an inline
+   // `--project-tag-color: undefined` is not a fallback, it is an invalid
+   // value that blanks the whole plate — which is how the credits row lost
+   // its buttons.
 const inlineThemeStyle = [
-  `--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --data-link-theme: ${linkThemeMode ?? "tinted"};`,
+  themeToken
+    ? `--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark);`
+    : "",
   style,
-].filter(Boolean).join("; ");
+].filter(Boolean).join("; ") || undefined;
 
 const classes = [
   "retro-link pixel-frame group relative overflow-hidden flex items-center gap-2",
@@ -72,7 +80,7 @@ const classes = [
   rel={external ? "noopener noreferrer" : undefined}
   class={classes}
   style={inlineThemeStyle}
-  data-link-theme={linkThemeMode}
+  data-link-theme={linkThemeMode ?? ""}
 >
   {
     resolvedIcon && (

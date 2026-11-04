@@ -51,8 +51,10 @@
 /* The blog post's links panel is one plate of the post's own theme, so its */
    /* buttons must take that accent the same way the project write-up's links */
    /* panel does — the same themed tile, with the white outline and white type, */
-   /* in both day and night. */
-:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link) {
+   /* in both day and night. (The identical recipe keyed to `data-link-theme` */
+   /* lives in chrome/pixelChrome/tintedButtons.css; this restates it for the */
+   /* panel chips so they read alike whether or not they name a theme.) */
+:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link) {
   --link-tile: var(--project-tag-color, var(--theme-main-day));
   --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
   --tile-fill: var(--link-tile);
@@ -79,8 +81,8 @@
 
 /* The press is a darker tile, not a white one: the border and the type stay */
    /* white so the control keeps its outline and its label in both modes. */
-:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link):hover,
-:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):not(.back-link):focus-visible {
+:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):hover,
+:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):focus-visible {
   --tile-fill: var(--link-tile-dark);
   --button-label-color: var(--time-white);
   background-color: var(--link-tile-dark);
