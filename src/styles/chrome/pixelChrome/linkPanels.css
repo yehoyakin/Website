@@ -1,10 +1,10 @@
 /* THE LINKS PANEL — one look for every panel that is nothing but links. */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogSidebar.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/RailPanel.astro */
-   /* The recipe comes from the project write-up's links panel */
-   /* (pages/portfolio/[slug].astro): a small plate on the pixel frame, then a row */
-   /* of compact chip buttons that wraps. The landing's contacts tab and a post's */
-   /* links tab are the same control (components/shared/RailPanel.astro), so they */
-   /* wear that recipe instead of each painting its own background. */
+   /* The recipe for the panel itself — a small plate on the pixel frame, then a
+   /* row of compact chip buttons that wraps — lives here once: the project
+   /* write-up (pages/portfolio/[slug].astro), the landing's contacts tab and a
+   /* post's links tab (components/shared/RailPanel.astro) all wear it. The
+   /* chips' look is the shared themed tile (tintedButtons.css). */
    /* Both hosts already carry `.pixel-frame` and `.pattern-plate--small`; this */
    /* adds the padding, the chip row and the button type scale. `position: */
    /* relative` keeps the plate's motif inside the panel's own box — a plate draws */
@@ -38,8 +38,7 @@
    /* line, so a label longer than the panel pushed the panel's content wider */
    /* instead of taking a second line. The chips shrink with the row now and their */
    /* labels wrap; the box is a minimum height, so it grows a line at a time. */
-.links-panel .links-panel-links .retro-link,
-.project-page-links .retro-link {
+.links-panel .links-panel-links .retro-link {
   flex: 0 1 auto;
   max-width: 100%;
   height: auto;
@@ -48,47 +47,10 @@
   white-space: normal;
 }
 
-/* The blog post's links panel is one plate of the post's own theme, so its */
-   /* buttons must take that accent the same way the project write-up's links */
-   /* panel does — the same themed tile, with the white outline and white type, */
-   /* in both day and night. (The identical recipe keyed to `data-link-theme` */
-   /* lives in chrome/pixelChrome/tintedButtons.css; this restates it for the */
-   /* panel chips so they read alike whether or not they name a theme.) */
-:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link) {
-  --link-tile: var(--project-tag-color, var(--theme-main-day));
-  --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
-  --tile-fill: var(--link-tile);
-  --tile-light: var(--link-tile);
-  --tile-dark: var(--link-tile-dark);
-  --button-label-color: var(--time-white);
-  --button-label-shadow: color-mix(
-    in srgb,
-    var(--time-black) 70%,
-    var(--link-tile-dark)
-  );
-  /* The banded recipe, built from the post's theme instead of the mode tint. */
-  --button-lighting: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--link-tile) 96%, var(--time-white) 4%) 0%,
-    var(--link-tile) 16%,
-    color-mix(in srgb, var(--link-tile) 76%, var(--link-tile-dark) 24%) 56%,
-    color-mix(in srgb, var(--link-tile) 44%, var(--link-tile-dark) 56%) 100%
-  );
-  background-color: var(--link-tile);
-  border-color: var(--time-white);
-  color: var(--time-white);
-}
-
-/* The press is a darker tile, not a white one: the border and the type stay */
-   /* white so the control keeps its outline and its label in both modes. */
-:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):hover,
-:root[data-mode] :is(.links-panel .links-panel-links .retro-link, .project-page-links .retro-link):focus-visible {
-  --tile-fill: var(--link-tile-dark);
-  --button-label-color: var(--time-white);
-  background-color: var(--link-tile-dark);
-  border-color: var(--time-white);
-  color: var(--time-white);
-}
+/* The chips are themed tiles like every other link button on the site: their
+   /* white outline and banded gradient come from the single `data-link-theme`
+   /* recipe in chrome/pixelChrome/tintedButtons.css, which Link.astro always
+   /* emits. There is no second recipe here — the panel only sets the box. */
 
 /* A TALL LINKS PANEL SCROLLS INSIDE ITSELF. */
    /* The plate's motif is drawn by `::before` / `::after` layers at `inset: 0`. */
@@ -105,7 +67,7 @@
 }
 
 .links-panel--scroll > :where(aside, div) {
-  max-height: calc(70vh - 2rem);
+  max-height: calc(var(--rail-panel-max-height, 70vh) - 2rem);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;

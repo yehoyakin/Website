@@ -321,8 +321,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
         <div class="project-page-lower-grid">
           <section class="project-page-left-stack">
-            <section class="project-page-links-panel pixel-frame pattern-plate pattern-plate--small">
-              <div class="project-page-links">
+            <section class="links-panel pixel-frame pattern-plate pattern-plate--small">
+              <div class="links-panel-links">
                 {projectLinks.map((link, index) => (
                   <Link
                     href={link.href}
@@ -670,30 +670,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     text-shadow: 1px 2px 0 var(--time-shadow);
   }
 
-  .project-page-links-panel {
-    /* The links panel is a plate, and a plate draws its motif with absolutely */
-       /* positioned layers at `inset: 0` while leaving `position` to its host. */
-       /* Without this they anchored to `.project-page`, so the links texture was */
-       /* sized to the page instead of the panel and spilled out of it. */
-    position: relative;
-    padding: 1rem;
-  }
-
-  .project-page-links {
-    margin-top: 0.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.35rem;
-  }
-
-  .project-page-links :global(.retro-link) {
-    min-height: 2rem;
-    font-size: clamp(0.7rem, 0.9vw, 0.86rem);
-    letter-spacing: 0.09em;
-    justify-content: flex-start;
-  }
-
   :global(.project-page-content-panel) {
     /* A plate's motif is drawn by its `::before` / `::after`, which are */
        /* absolutely positioned at `inset: 0` — `.pattern-plate` deliberately */
@@ -1003,18 +979,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       margin-top: 0.35rem;
     }
 
-    .project-page-links,
     .project-page-roles {
       margin-top: 0.6rem;
       gap: 0.4rem;
-    }
-
-    .project-page-links-panel {
-      padding: 0.95rem;
-    }
-
-    .project-page-links :global(.retro-link) {
-      min-height: 1.95rem;
     }
 
     :global(.project-page-content-panel) {

@@ -22,7 +22,6 @@
 .icon-button,
 .mode-toggle,
 .view-toggle,
-.panel-toggle,
 .card-carousel-arrow,
 .card-carousel-dot {
   transform-origin: center center;
@@ -47,8 +46,6 @@
 .mode-toggle:focus-visible,
 .view-toggle:hover,
 .view-toggle:focus-visible,
-.panel-toggle:hover,
-.panel-toggle:focus-visible,
 .card-carousel-arrow:hover,
 .card-carousel-arrow:focus-visible,
 .card-carousel-dot:hover,
@@ -67,7 +64,6 @@
   .icon-button,
   .mode-toggle,
   .view-toggle,
-  .panel-toggle,
   .card-carousel-arrow,
   .card-carousel-dot {
     transition: none;
@@ -84,8 +80,6 @@
   .mode-toggle:focus-visible,
   .view-toggle:hover,
   .view-toggle:focus-visible,
-  .panel-toggle:hover,
-  .panel-toggle:focus-visible,
   .card-carousel-arrow:hover,
   .card-carousel-arrow:focus-visible,
   .card-carousel-dot:hover,

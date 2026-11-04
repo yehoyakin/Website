@@ -8,6 +8,14 @@
    /* one handle width inside the window. It slides out while the reader is */
    /* engaged with it and slides back when they are not. */
 
+:root {
+  /* One cap shared by the rail itself and the list that scrolls inside it */
+  /* (chrome/pixelChrome/linkPanels.css). The second line wins on browsers */
+  /* that know dvh; the first is the fallback. */
+  --rail-panel-max-height: 70vh;
+  --rail-panel-max-height: 70dvh;
+}
+
 .rail {
   position: fixed;
   z-index: 50;
@@ -24,8 +32,17 @@
   width: var(--icon-button-size, 2.75rem);
 }
 
+/* The handle is the site's bare icon button: the shared box from
+/* chrome/pixelChrome/iconButtons.css (`icon-button` supplies the sizing and the
+/* hairless border), plus the flat transparent look that used to ride on a
+/* leash of utility classes in the markup. */
 .rail-handle {
   flex: 0 0 auto;
+  background: transparent;
+  color: var(--time-ink);
+  cursor: pointer;
+  user-select: none;
+  outline: none;
   transition: opacity var(--duration-fast) var(--ease-soft);
 }
 
@@ -40,8 +57,7 @@
   position: absolute;
   top: 0;
   left: 100%;
-  max-height: 70vh;
-  max-height: 70dvh;
+  max-height: var(--rail-panel-max-height, 70vh);
   overflow-y: auto;
   overscroll-behavior: contain;
   /* Parked one gutter past the edge, so the closed panel is entirely outside */
@@ -65,6 +81,12 @@
    /* and view toggles, rather than floating at mid-height over the page content. */
    /* Both panels never share a page, so they share the same slot. */
 @media (max-width: 767px) {
+  :root {
+    /* A phone screen can't give the panel 70 of its own height and still show
+    /* a readable page behind it; the rail's cap steps down once, here. */
+    --rail-panel-max-height: 62vh;
+    --rail-panel-max-height: 62dvh;
+  }
   .rail {
     top: calc(
       var(--chrome-gutter) + (var(--chrome-control) + var(--chrome-stack-gap)) * 2
@@ -76,8 +98,7 @@
   }
   .rail-panel {
     width: min(82vw, 19rem);
-    max-height: 62vh;
-    max-height: 62dvh;
+    max-height: var(--rail-panel-max-height, 62vh);
     padding-right: env(safe-area-inset-right);
   }
   /* The blog article sits under that handle, so reserve a little room for it: */

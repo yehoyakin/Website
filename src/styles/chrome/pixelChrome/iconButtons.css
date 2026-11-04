@@ -1,13 +1,13 @@
 /* Bare icon buttons: one box, one glyph size, one hover lift. */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/ModeToggle.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/RailPanel.astro */
 
-.icon-button {
-  border: 0;
-}
-
+/* The bare box: a centred square, hairless, no filler. Every control that is
+/* nothing but a glyph (the rail's handle, the day / night switch) takes it
+/* from `.icon-button`; the carousel arrow keeps its own smaller box from
+/* carouselArrows.css but shares the border reset. */
+.icon-button,
 .mode-toggle,
-.card-carousel-arrow,
-.panel-toggle {
+.card-carousel-arrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -15,13 +15,12 @@
   width: var(--icon-button-size, 2.75rem);
   height: var(--icon-button-size, 2.75rem);
   padding: 0;
+  border: 0;
 }
 
-/* ONE glyph size for every icon control — switch, panel handles, carousel */
+/* ONE glyph size for every icon control — switch, rail handle, carousel */
    /* arrows, back-link arrow. Set here, never by utility classes on a button. */
 .mode-toggle-icon,
-.panel-toggle > img,
-.panel-toggle > .icon-mode,
 .card-carousel-arrow img,
 .card-carousel-arrow .card-carousel-arrow-icon,
 .card-carousel-arrow .icon-mode,
