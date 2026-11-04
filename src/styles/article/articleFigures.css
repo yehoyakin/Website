@@ -48,6 +48,6 @@
   letter-spacing: normal;
   font-style: normal;
   font-weight: 400;
-  text-shadow: 2px 3px 0 var(--time-shadow);
+  text-shadow: var(--text-shadow-drop) 0 var(--time-shadow);
 }
 

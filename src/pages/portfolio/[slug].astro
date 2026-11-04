@@ -280,7 +280,11 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   : `${import.meta.env.BASE_URL}/`;
 ---
 
-<MyLayout title={`${project.data.title} | Portfolio`} preloadImages={preloadImages}>
+<MyLayout
+  title={`${project.data.title} | Portfolio`}
+  theme={themeName}
+  preloadImages={preloadImages}
+>
   <div class="relative w-full min-h-screen bg-[var(--time-page)]">
     <PageBackdrop
       day={project.data.background}
@@ -779,11 +783,16 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     position: relative;
     padding: 1rem;
     --plate-pattern-size: max(1600px, calc(var(--pattern-size-huge, 1024px) * 1.5));
+    /* Keep the loop keyframe in step with this tile (motionCurves.css). The
+       pinned backdrop drifts on background-position, not transform. */
+    --plate-drift: plate-bg-drift-1600;
     --plate-pattern-opacity: 0.09;
     max-width: none;
-    /* The write-up panel keeps the shared gradient frame, at a hairline. */
-    border: 1px solid transparent !important;
-    border-image: var(--frame-bevel) 1 !important;
+    /* The write-up panel keeps a flat accent border at a hairline — the
+       light-to-dark grade on it is the shared screen grade
+       (styles/site/pageLighting.css), like its fill. */
+    border: 1px solid var(--frame-accent) !important;
+    border-image: none !important;
     outline: none !important;
     box-shadow: none !important;
   }
@@ -879,7 +888,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
   .project-page-gallery-plain .gallery-thumb {
     width: 100% !important;
-    height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+    height: var(--gallery-card-height) !important;
     box-sizing: border-box;
   }
 
@@ -888,15 +897,15 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     max-width: 100% !important;
     box-sizing: border-box;
     overflow: hidden;
-    height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
-    max-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
-    min-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+    height: var(--gallery-card-height) !important;
+    max-height: var(--gallery-card-height) !important;
+    min-height: var(--gallery-card-height) !important;
     width: 100% !important;
   }
 
   .project-page-gallery-plain .blog-card-image-wrap {
     max-width: 100% !important;
-    max-height: clamp(7rem, 31.5vw, 24.5rem) !important;
+    max-height: var(--gallery-media-max-height) !important;
     overflow: hidden;
     flex: 0 0 auto !important;
     min-height: 0 !important;
@@ -921,7 +930,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
   .project-page-gallery-plain .blog-card-image-wrap img {
     max-width: 100% !important;
-    max-height: clamp(7rem, 31.5vw, 24.5rem) !important;
+    max-height: var(--gallery-media-max-height) !important;
     width: 100% !important;
     height: auto !important;
     object-fit: contain !important;
@@ -934,7 +943,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
   .project-page-gallery-plain .thumb-carousel-media {
     object-fit: contain !important;
-    max-height: clamp(7rem, 31.5vw, 24.5rem) !important;
+    max-height: var(--gallery-media-max-height) !important;
     height: auto !important;
   }
 
@@ -1023,7 +1032,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
         .thumb-carousel-frame,
         .thumb-carousel-video
       ) {
-      aspect-ratio: 16 / 9;
+      aspect-ratio: var(--embed-aspect-ratio);
     }
 
     .project-page-gallery-plain .blog-card-image-wrap img,

@@ -20,16 +20,17 @@
 .theme-color b {
   color: var(--accent-bold);
   text-shadow:
-    2px 3px 0 var(--accent-bold-shadow),
-    4px 6px 0 color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
+    var(--text-shadow-drop) 0 var(--accent-bold-shadow),
+    var(--text-shadow-drop-far) 0
+      color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
 }
 
 .theme-color em,
 .theme-color i {
   color: var(--accent-italic-fill);
   text-shadow:
-    2px 3px 0 var(--accent-italic-shadow),
-    4px 6px 0
+    var(--text-shadow-drop) 0 var(--accent-italic-shadow),
+    var(--text-shadow-drop-far) 0
       color-mix(
         in srgb,
         var(--accent-italic-shadow) 58%,
@@ -54,54 +55,17 @@
 #blog-content b {
   color: var(--accent-bold);
   text-shadow:
-    2px 3px 0 var(--accent-bold-shadow),
-    4px 6px 0 color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
+    var(--text-shadow-drop) 0 var(--accent-bold-shadow),
+    var(--text-shadow-drop-far) 0
+      color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
 }
 
 #blog-content em,
 #blog-content i {
   color: var(--accent-italic-fill);
   text-shadow:
-    2px 3px 0 var(--accent-italic-shadow),
-    4px 6px 0
-      color-mix(
-        in srgb,
-        var(--accent-italic-shadow) 58%,
-        var(--project-tag-color-dark, var(--theme-main-night))
-      );
-}
-
-/* Project panel write-up (portfolio). */
-
-.project-panel-body {
-  --accent-bold: color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 74%, white);
-  --accent-bold-shadow: color-mix(in srgb, var(--project-tag-color-dark, var(--theme-main-night)) 56%, var(--time-black));
-  --accent-italic-fill: color-mix(in srgb, white 88%, var(--project-tag-color, var(--theme-orange)) 12%);
-  --accent-italic-shadow: color-mix(
-    in srgb,
-    var(--project-tag-color, var(--theme-orange)) 66%,
-    var(--project-tag-color-dark, var(--theme-main-night)) 34%
-  );
-}
-
-.project-panel-body strong,
-.project-panel-body b,
-.project-panel-body .retro-contribution strong,
-.project-panel-body .retro-contribution b {
-  color: var(--accent-bold);
-  text-shadow:
-    2px 3px 0 var(--accent-bold-shadow),
-    4px 6px 0 color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
-}
-
-.project-panel-body em,
-.project-panel-body i,
-.project-panel-body .retro-contribution em,
-.project-panel-body .retro-contribution i {
-  color: var(--accent-italic-fill);
-  text-shadow:
-    2px 3px 0 var(--accent-italic-shadow),
-    4px 6px 0
+    var(--text-shadow-drop) 0 var(--accent-italic-shadow),
+    var(--text-shadow-drop-far) 0
       color-mix(
         in srgb,
         var(--accent-italic-shadow) 58%,
@@ -120,22 +84,23 @@
    shadow, nothing else. `display` is deliberately left alone, so these stay
    ordinary inline words that wrap exactly like the text around them. */
 
-:is(.theme-color, #blog-content, .project-panel-body) :is(strong, b) {
+:is(.theme-color, #blog-content) :is(strong, b) {
   background: none;
   color: var(--accent-bold);
   -webkit-text-fill-color: initial;
   text-shadow:
-    2px 3px 0 var(--accent-bold-shadow),
-    4px 6px 0 color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
+    var(--text-shadow-drop) 0 var(--accent-bold-shadow),
+    var(--text-shadow-drop-far) 0
+      color-mix(in srgb, var(--accent-bold-shadow) 44%, var(--time-black));
 }
 
-:is(.theme-color, #blog-content, .project-panel-body) :is(em, i) {
+:is(.theme-color, #blog-content) :is(em, i) {
   background: none;
   color: var(--accent-italic-fill);
   -webkit-text-fill-color: initial;
   text-shadow:
-    2px 3px 0 var(--accent-italic-shadow),
-    4px 6px 0
+    var(--text-shadow-drop) 0 var(--accent-italic-shadow),
+    var(--text-shadow-drop-far) 0
       color-mix(
         in srgb,
         var(--accent-italic-shadow) 58%,

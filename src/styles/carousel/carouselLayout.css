@@ -66,20 +66,8 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   justify-content: flex-start;
 }
 
-/* Slide width: the strip minus the peek, capped on wide screens.
-
-   The cap is 24rem (about 500px at the desktop type scale), not 36rem: at the
-   old cap a listing card was 750px wide on a laptop, which is a card that fills
-   the window instead of a card in a strip. At 24rem two and a half of them sit
-   in a laptop width, so the strip reads as a listing. */
-.blog-cards-scroll {
-  --carousel-slide: min(100% - 3rem, 24rem);
-}
-
-/* Same slide width as the blog strip, so both carousels read alike. */
-.gallery-thumbnails {
-  --carousel-slide: min(100% - 3rem, 24rem);
-}
+/* Slide width (--carousel-slide) is defined once in foundation/designTokens.css,
+   so both carousels read alike. */
 
 /* Spacers let the first and last slide centre like the middle ones. */
 .blog-cards-scroll::before,
@@ -111,10 +99,6 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
    would override those widths. galleryThumbnailSlide.css sets the clamp with
    !important so it wins here. */
 
-.thumb-links {
-  max-width: 100%;
-}
-
 /* CARD HEIGHT — half the screen.
 
    A listing card is an entry in a strip, not a poster. Left to its own content
@@ -124,8 +108,8 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
    inside it — the PICTURE is what gives when the card is short. */
 .blog-card-item .blog-card,
 .gallery-project-item .blog-card {
-  height: 50dvh;
-  max-height: 50dvh;
+  height: var(--listing-card-height);
+  max-height: var(--listing-card-height);
 }
 
 .markdown-gallery .gallery-project-item .blog-card,

@@ -15,4 +15,4 @@
  * `data-carousel-controls` attribute rendered by `layouts/MyLayout.astro`
  * (whether the stylesheet hides the native scrollbar or shows it).
  */
-export const CUSTOM_CAROUSEL_CONTROLS = true;
+export const CUSTOM_CAROUSEL_CONTROLS = false;

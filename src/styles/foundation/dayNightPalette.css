@@ -73,8 +73,7 @@
   .pixel-frame,
   .theme-color,
   .blog-masthead,
-  #blog-content,
-  .project-panel-body
+  #blog-content
 ) {
   --time-ink-muted: color-mix(
     in srgb,

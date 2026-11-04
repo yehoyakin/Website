@@ -6,7 +6,7 @@
    entries, each marked with the accent tile the prose lists use. Every selector
    carries the article scope so it outranks the generic prose list rules. */
 
-:is(#blog-content, .project-panel-body) .retro-contribution {
+#blog-content .retro-contribution {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -24,7 +24,7 @@
 }
 
 /* Top bar: the block's title, where a card puts its date or engine tag. */
-:is(#blog-content, .project-panel-body) .retro-contribution :is(h2, h3, h4, h5) {
+#blog-content .retro-contribution :is(h2, h3, h4, h5) {
   margin: 0;
   padding: 0.7rem 1.15rem;
   border-left: 0;
@@ -51,13 +51,13 @@
 }
 
 /* Body bar: the entries, inset like a card's copy. */
-:is(#blog-content, .project-panel-body) .retro-contribution :is(ul, ol) {
+#blog-content .retro-contribution :is(ul, ol) {
   margin: 0;
   padding: 1rem 1.15rem 1.15rem;
   list-style: none;
 }
 
-:is(#blog-content, .project-panel-body) .retro-contribution :is(ul, ol) > li {
+#blog-content .retro-contribution :is(ul, ol) > li {
   position: relative;
   margin-bottom: 0.55rem;
   padding-left: 1.15rem;
@@ -67,7 +67,7 @@
   font-size: var(--contribution-font-size, 1em);
 }
 
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution
   :is(ul, ol)
   > li
@@ -78,7 +78,7 @@
 
 /* The global prose list enhancer injects icon nodes; the contribution card
    draws its own marker, so hide injected markers in this block only. */
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution
   :is(ul, ol)
   > li
@@ -87,7 +87,7 @@
 }
 
 /* Blog listing variant: ordered lists should keep their number icons. */
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution--listing
   ol
   > li {
@@ -97,14 +97,14 @@
   padding-left: 0;
 }
 
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution--listing
   ol
   > li::before {
   content: none;
 }
 
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution--listing
   ol
   > li
@@ -116,14 +116,14 @@
   margin-top: 0.12em;
 }
 
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution
   :is(ul, ol)
   > li:last-child {
   margin-bottom: 0;
 }
 
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution
   :is(ul, ol)
   > li + li {
@@ -132,7 +132,7 @@
 }
 
 /* Divider fades at both ends and is brighter at center. */
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution
   :is(ul, ol)
   > li + li::after {
@@ -156,7 +156,7 @@
 /* The same accent tile the prose lists use, one step down for the bar — the
    tile a project's links panel draws, so every grouping marker on the site
    picks up the post's own colour and reads as part of that panel. */
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution
   :is(ul, ol)
   > li::before {
@@ -177,14 +177,14 @@
 }
 
 /* Ordered listing rows: use number icons ONLY (no square marker overlap). */
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution--listing
   ol
   > li::before {
   content: none;
 }
 
-:is(#blog-content, .project-panel-body)
+#blog-content
   .retro-contribution--listing
   ol
   > li

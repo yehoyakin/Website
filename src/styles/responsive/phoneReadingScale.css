@@ -1,8 +1,8 @@
 /* The article and the portfolio write-up share one prose block (see. */
 
 @media (max-width: 767px) {
-  :is(#blog-content, .project-panel-body),
-  :is(#blog-content, .project-panel-body) p {
+  #blog-content,
+  #blog-content p {
     text-align: left;
   }
   /* The long-form body reads at the pixel face's own 16px grid. It sat at
@@ -14,7 +14,7 @@
     font-size: 16px;
     line-height: 1.5;
   }
-  :is(#blog-content, .project-panel-body) p {
+  #blog-content p {
     margin-top: 0;
     margin-bottom: 0.9rem;
   }

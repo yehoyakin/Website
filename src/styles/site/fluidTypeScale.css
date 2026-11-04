@@ -30,8 +30,7 @@ h2,
   line-height: 1.2;
 }
 
-h3,
-.text-2xl {
+h3 {
   font-size: var(--font-size-2xl);
   line-height: 1.3;
 }

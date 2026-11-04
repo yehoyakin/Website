@@ -47,24 +47,8 @@
   text-shadow: 1px 2px 0 var(--time-shadow);
 }
 
-/* Copy bar: the same two type roles as a blog card, in the page ink. */
-.gallery-thumb-title {
-  display: block;
-  color: var(--time-ink);
-  font-size: clamp(1.9rem, 3.2vw, 3.8rem);
-  font-weight: 700;
-  line-height: 1.2;
-  word-break: break-word;
-  transition: color var(--duration-fast) var(--ease-soft);
-}
-
-/* The card's own accent on hover / focus, exactly like a blog card title (the
-   ring that goes with an accent fill is in blogCard/blogCardTile.css). */
-.gallery-thumb:hover .gallery-thumb-title,
-.gallery-thumb:focus-visible .gallery-thumb-title {
-  color: var(--project-tag-color, var(--theme-orange));
-}
-
+/* Copy bar: the description role, in the page ink (the title itself wears the
+   blog-card title cut in blogCard/blogCardTile.css). */
 .gallery-thumb-desc {
   display: block;
   margin-top: 0.25rem;
@@ -114,9 +98,9 @@
 }
 
 .markdown-gallery .gallery-thumb {
-  width: min(100%, max(542px, 77vw)) !important;
-  max-width: min(100%, max(542px, 77vw)) !important;
-  height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+  width: min(100%, var(--gallery-slide-width-md)) !important;
+  max-width: min(100%, var(--gallery-slide-width-md)) !important;
+  height: var(--gallery-card-height) !important;
 }
 
 /* Multi-image markdown galleries: each item in the strip takes the same fixed
@@ -126,19 +110,19 @@
 .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
   display: flex;
   align-items: stretch;
-  width: min(100%, max(542px, 77vw));
-  max-width: min(100%, max(542px, 77vw));
-  flex: 0 0 min(100%, max(542px, 77vw));
-  height: clamp(11.3rem, 37.8vw, 30.4rem);
+  width: min(100%, var(--gallery-slide-width-md));
+  max-width: min(100%, var(--gallery-slide-width-md));
+  flex: 0 0 min(100%, var(--gallery-slide-width-md));
+  height: var(--gallery-card-height);
 }
 
 .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .blog-card,
 .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .gallery-thumb {
   display: flex !important;
   flex-direction: column !important;
-  height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
-  max-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
-  min-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+  height: var(--gallery-card-height) !important;
+  max-height: var(--gallery-card-height) !important;
+  min-height: var(--gallery-card-height) !important;
 }
 
 /* For markdown galleries, the carousel and image flow naturally instead of
@@ -149,7 +133,7 @@
   flex: 0 0 auto;
   position: relative !important;
   min-height: 0;
-  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  max-height: var(--gallery-media-max-height);
   width: 100%;
   overflow: hidden;
 }
@@ -165,7 +149,7 @@
   inset: auto !important;
   width: 100% !important;
   height: auto !important;
-  max-height: clamp(7rem, 31.5vw, 24.5rem) !important;
+  max-height: var(--gallery-media-max-height) !important;
   min-height: 1rem;
   display: block;
   opacity: 1;
@@ -175,7 +159,7 @@
 
    A post's galleries keep their own behaviour (the grid, and the lightbox
    behind every image), but the picture now sits in the same window a project's
-   screenshots do (styles/portfolio/galleryPanelContent.css): the accent border
+   screenshots do: the accent border
    one step darker than the panel, the 21:10 box, and the image contained on the
    theme-tinted letterbox instead of on a card plate. Selectors outrank
    chrome/pixelChrome/frames.css, which frames every `.blog-card` by class. */
@@ -198,7 +182,7 @@
 .markdown-gallery .blog-inner-image-card .blog-card-image-wrap,
 .markdown-gallery .gallery-project-item .gallery-thumb .blog-card-image-wrap {
   background: transparent;
-  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  max-height: var(--gallery-media-max-height);
   overflow: hidden;
 }
 
@@ -209,7 +193,7 @@
 
 .markdown-gallery .blog-card-image-wrap .thumb-carousel-media {
   height: 100% !important;
-  max-height: clamp(7rem, 31.5vw, 24.5rem) !important;
+  max-height: var(--gallery-media-max-height) !important;
   /* The letterbox stays black, matching every other gallery picture. */
   background: var(--time-black, #000);
   object-fit: contain !important;
@@ -234,9 +218,9 @@
 }
 
 .blog-inner-image-card {
-  width: min(100%, clamp(310px, 44vw, 500px));
-  max-width: clamp(310px, 44vw, 500px);
-  height: clamp(11.3rem, 37.8vw, 30.4rem);
+  width: min(100%, var(--gallery-blog-card-width));
+  max-width: var(--gallery-blog-card-width);
+  height: var(--gallery-card-height);
   margin-inline: auto;
 }
 
@@ -251,7 +235,7 @@
 
 .blog-inner-image-card .blog-card-image-wrap {
   min-height: 0;
-  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  max-height: var(--gallery-media-max-height);
   height: auto;
   background: transparent;
   overflow: hidden;
@@ -271,7 +255,7 @@
   inset: auto;
   width: 100%;
   height: auto;
-  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  max-height: var(--gallery-media-max-height);
   max-width: 100%;
   display: block;
   object-fit: contain;
@@ -294,8 +278,8 @@
 
 @media (max-width: 767px) {
   .blog-inner-image-card {
-    width: min(100%, 35rem);
-    max-width: min(100%, 35rem);
+    width: var(--gallery-phone-max-width);
+    max-width: var(--gallery-phone-max-width);
   }
 
   .markdown-gallery .blog-inner-image-card {
@@ -304,19 +288,19 @@
   }
 
   .markdown-gallery .gallery-thumb {
-    width: min(100%, 35rem) !important;
-    max-width: min(100%, 35rem) !important;
+    width: var(--gallery-phone-max-width) !important;
+    max-width: var(--gallery-phone-max-width) !important;
   }
 
   .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
-    width: min(100%, 35rem);
-    max-width: min(100%, 35rem);
-    flex: 0 0 min(100%, 35rem);
+    width: var(--gallery-phone-max-width);
+    max-width: var(--gallery-phone-max-width);
+    flex: 0 0 var(--gallery-phone-max-width);
   }
 
   .markdown-gallery--single .gallery-thumb {
-    width: min(100%, 35rem);
-    max-width: min(100%, 35rem);
+    width: var(--gallery-phone-max-width);
+    max-width: var(--gallery-phone-max-width);
   }
 }
 
@@ -349,22 +333,22 @@
 .markdown-gallery--single .gallery-project-item .gallery-thumb {
   display: flex !important;
   flex-direction: column !important;
-  height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
-  max-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
-  min-height: clamp(11.3rem, 37.8vw, 30.4rem) !important;
+  height: var(--gallery-card-height) !important;
+  max-height: var(--gallery-card-height) !important;
+  min-height: var(--gallery-card-height) !important;
 }
 
 .markdown-gallery--single .gallery-thumb {
-  width: clamp(310px, 44vw, 500px);
-  max-width: clamp(310px, 44vw, 500px);
-  height: clamp(11.3rem, 37.8vw, 30.4rem);
+  width: var(--gallery-blog-card-width);
+  max-width: var(--gallery-blog-card-width);
+  height: var(--gallery-card-height);
   margin-inline: auto;
 }
 
 .markdown-gallery--single .blog-card-image-wrap {
   background: transparent;
   min-height: 0;
-  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  max-height: var(--gallery-media-max-height);
   flex: 0 0 auto;
   overflow: hidden;
 }
@@ -381,7 +365,7 @@
 .markdown-gallery--single .thumb-carousel-img,
 .markdown-gallery--single .thumb-carousel-video {
   object-position: center;
-  max-height: clamp(7rem, 31.5vw, 24.5rem);
+  max-height: var(--gallery-media-max-height);
 }
 
 /* Iframes in single-image blog galleries also need absolute positioning. */
@@ -528,7 +512,7 @@ html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, 
 }
 
 html body .markdown-gallery.markdown-gallery--single .thumb-carousel:has(.thumb-carousel-frame, .thumb-carousel-video) {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: var(--embed-aspect-ratio);
 }
 
 html body .markdown-gallery.markdown-gallery--single .thumb-carousel-video {
@@ -595,7 +579,7 @@ html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel {
 }
 
 html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel:has(.thumb-carousel-frame, .thumb-carousel-video) {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: var(--embed-aspect-ratio);
 }
 
 html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-info-bar {
@@ -603,11 +587,11 @@ html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-info-bar {
 }
 
 /* Multi-item galleries: the media box is 30% shorter than the old
-   clamp(7rem, 31.5vw, 24.5rem) and the whole picture is shown (contain),
+   var(--gallery-media-max-height) and the whole picture is shown (contain),
    letterboxed on black. */
 html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap,
 html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel {
-  height: clamp(4.9rem, 22.05vw, 17.15rem) !important;
+  height: var(--gallery-media-min-height) !important;
   aspect-ratio: auto !important;
 }
 
@@ -662,7 +646,7 @@ html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-info-bar {
 html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap {
   flex: 1 1 auto !important;
   height: auto !important;
-  min-height: clamp(4.9rem, 22.05vw, 17.15rem) !important;
+  min-height: var(--gallery-media-min-height) !important;
   display: flex !important;
   flex-direction: column !important;
 }
@@ -778,7 +762,7 @@ html body .project-gallery .thumb-carousel-media {
     max-width: 100% !important;
   }
 
-  /* The picture sets the frame's height here. `clamp(7rem, 31.5vw, 24.5rem)`
+  /* The picture sets the frame's height here. `var(--gallery-media-max-height)`
      is 403px beside a 952px column on a desktop and 123px beside a 290px one
      on a phone, so a contained picture was left with black bars on all four
      sides of a box twice its height. */

@@ -1,34 +1,20 @@
 /* Reading surface: black plate, pattern, accent edge, measure, insets. */
 
-.blog-article-body,
-.project-panel-body {
+.blog-article-body {
   position: relative;
   max-width: 46rem;
   margin-inline: auto;
   padding: 1.25rem 1rem 1.75rem;
-  border: var(--outline-width) solid transparent;
-  border-image: linear-gradient(
-    to bottom,
-    color-mix(
-      in srgb,
-      var(--project-tag-color, var(--theme-main-day)) 92%,
-      var(--project-tag-color-dark, var(--theme-main-night)) 8%
-    )
-      0%,
-    var(--project-tag-color, var(--theme-main-day)) 18%,
-    color-mix(
-      in srgb,
-      var(--project-tag-color, var(--theme-main-day)) 78%,
-      var(--project-tag-color-dark, var(--theme-main-night)) 22%
-    )
-      58%,
-    var(--project-tag-color-dark, var(--theme-main-night)) 100%
-  )
-    1;
-  /* Fill and tint gradient both come from `.pattern-plate`
-     (styles/chrome/pixelChrome/patternPlates.css), like every other plate —
-     nothing here may reset `background-image`, or the reading surface would be
-     the one panel left ungraded. */
+  border: var(--outline-width) solid var(--frame-accent);
+  /* A FLAT accent border, not a border-image ramp: the light-to-dark grade
+     on the border — and on the fill — is the shared screen grade
+     (styles/site/pageLighting.css), painted over the frame like everywhere
+     else. `--frame-accent` resolves in frames.css, imported after this
+     file; custom properties substitute at computed-value time, so the order
+     does not matter. */
+  /* The fill comes from `.pattern-plate`
+     (styles/chrome/pixelChrome/patternPlates.css), like every other plate;
+     the lighting is the shared screen grade (styles/site/pageLighting.css). */
   box-shadow: none;
   isolation: isolate;
 }
@@ -39,8 +25,7 @@
 }
 
 @media (min-width: 768px) {
-  .blog-article-body,
-  .project-panel-body {
+  .blog-article-body {
     padding: 1.75rem 1.75rem 2.25rem;
   }
 }
@@ -50,47 +35,51 @@
    panel's edges (styles/portfolio/galleryThumbnailSlide.css). The copy stays
    inset; the pictures do not. */
 @media (max-width: 767px) {
-  .blog-article-body,
-  .project-panel-body {
+  .blog-article-body {
     --reading-inset: 1rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .blog-article-body,
-  .project-panel-body {
+  .blog-article-body {
     padding: 2rem 2.25rem 2.5rem;
   }
 }
 
 /* The long-copy columns - the article body and the project write-up - take
    the shared PANEL recipe from chrome/pixelChrome/patternPlates.css:
-   the same fill, banding and texture as the links panel on a project
-   page. No rule here may give them a tint of their own. */
+   the same fill and texture as the links panel on a project page, lit by the
+   shared screen grade. No rule here may give them a tint of their own. */
 
 /* THE ARTICLE'S BODY WEARS THE PROJECT WRITE-UP'S SURFACE.
 
    Both columns are the same thing — long copy on the ghost page's 95% panel
    plate — but only the write-up sat on a plain surface. The article also took
-   the site's frame recipe (the border image and inset bevel in
-   chrome/pixelChrome/frames.css) plus a 3px accent cap along its top, and its
-   texture ran at the huge tile while the write-up uses one and a half of them.
+   a 3px accent cap along its top, and its texture ran at the huge tile while
+   the write-up uses one and a half of them. Neither column paints a gradient
+   on its border: the frame is a flat accent line, and the light-to-dark grade
+   on border and fill alike comes from the one shared screen grade
+   (styles/site/pageLighting.css).
 
    The id keeps these ahead of frames.css, which is imported after the article
    and frames `.blog-article-body` by class. Opacity is deliberately NOT set:
    the page's plate group (patternPlates.css) owns it for both columns, so they
    stay on one value. */
 #blog-content.blog-article-body {
-  /* The reading column keeps the shared gradient frame from frames.css, at the
-     thinnest visible weight. */
-  border: 1px solid transparent;
-  border-image: var(--frame-bevel) 1;
+  /* The reading column keeps its flat accent border at the thinnest visible
+     weight; the light-to-dark grade on it is the shared screen grade, exactly
+     like the fill. */
+  border: 1px solid var(--frame-accent);
+  border-image: none;
   box-shadow: none;
   /* The write-up's texture step: one and a half huge tiles. */
   --plate-pattern-size: max(
     1600px,
     calc(var(--pattern-size-huge, 1024px) * 1.5)
   );
+  /* Keep the loop keyframe in step with this tile (motionCurves.css). The
+     pinned backdrop drifts on background-position, not transform. */
+  --plate-drift: plate-bg-drift-1600;
 }
 
 /* The accent cap belongs to the framed column; the write-up has none. */
@@ -98,31 +87,17 @@
   content: none;
 }
 
-/* Accent edge along the top of the column. `::after`, so the plate pattern can
-   keep `::before` (`styles/chrome/pixelChrome/patternPlates.css`). */
-.blog-article-body::after,
-.project-panel-body::after {
+/* Accent edge along the top of the column — a SOLID line, not a ramp: the
+   light-to-dark grade belongs to the shared screen grade
+   (styles/site/pageLighting.css); the cap only marks the panel's top edge
+   with its accent. `::after`, so the plate pattern can keep `::before`
+   (`styles/chrome/pixelChrome/patternPlates.css`). */
+.blog-article-body::after {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
   height: 3px;
   z-index: 1;
-  background: linear-gradient(
-    to bottom,
-    color-mix(
-      in srgb,
-      var(--project-tag-color, var(--theme-main-day)) 92%,
-      var(--project-tag-color-dark, var(--theme-main-night)) 8%
-    )
-      0%,
-    var(--project-tag-color, var(--theme-main-day)) 18%,
-    color-mix(
-      in srgb,
-      var(--project-tag-color, var(--theme-main-day)) 78%,
-      var(--project-tag-color-dark, var(--theme-main-night)) 22%
-    )
-      58%,
-    var(--project-tag-color-dark, var(--theme-main-night)) 100%
-  );
+  background: var(--project-tag-color, var(--theme-main-day));
   pointer-events: none;
 }

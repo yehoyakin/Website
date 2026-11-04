@@ -30,7 +30,9 @@
     var(--project-tag-color, var(--plate-tint)) 72%,
     rgb(0 0 0 / 0.18)
   );
-  background-image: none;
+  /* The bar is a small plate: the shared screen grade rides on its
+     background (pageLighting.css) instead of a per-bar gradient. */
+  background-image: var(--page-lighting, none);
   transition: background-color var(--duration-base) var(--ease-soft);
 }
 
@@ -128,17 +130,14 @@
 
 .blog-card .blog-card-date,
 .blog-card .blog-card-desc,
-.blog-card .gallery-thumb-title,
 .blog-card .gallery-thumb-desc {
-  text-shadow: 2px 3px 0 var(--time-shadow);
+  text-shadow: var(--text-shadow-drop) 0 var(--time-shadow);
 }
 
-/* Accent fill: the project tag always, and a card title once it turns accent on
-   hover / focus — the same in both card families. (A blog card title is accent
-   all the time; see the card-title cut below.) */
-.blog-card .thumb-tag,
-.blog-card:hover .gallery-thumb-title,
-.blog-card:focus-visible .gallery-thumb-title {
+/* Accent fill: the project tag always carries the card's accent, so it needs no
+   shadow. (A blog card title is accent all the time; see the card-title cut
+   below.) */
+.blog-card .thumb-tag {
   text-shadow: none;
 }
 

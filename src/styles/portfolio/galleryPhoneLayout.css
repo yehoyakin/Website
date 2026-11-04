@@ -8,42 +8,11 @@
   .gallery-thumb {
     width: 72vw !important;
   }
-  .thumb-links {
-    max-width: 72vw;
-  }
-  .gallery-thumb-title {
-    font-size: clamp(1.8rem, 7vw, 2.5rem);
-  }
   .gallery-thumb-desc {
     font-size: clamp(0.78rem, 2.65vw, 1.2rem);
   }
   .thumb-tag {
     font-size: clamp(0.6rem, 1.8vw, 0.75rem);
-  }
-  /* Body and screenshots STACK. `.project-panel-layout` is a two-column grid
-     on desktop (write-up + media); at phone width two columns leave about
-     150px each, which is not a reading measure for 16px pixel type. One
-     column keeps the write-up full width, with the screenshots under it. */
-  .project-panel-layout,
-  .project-panel-layout--solo {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.65rem;
-  }
-  /* The media frame keeps a landscape ratio, but 16:10 is needlessly tall on a
-     phone where the column is only ~350px wide. */
-  .project-panel-frame {
-    aspect-ratio: 16 / 9;
-  }
-  .project-panel-body {
-    max-width: 100%;
-  }
-  .collapse-btn {
-    width: 3rem;
-    height: 3rem;
-  }
-  .collapse-btn svg {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 }
 
@@ -51,38 +20,11 @@
   .gallery-thumb {
     width: 86vw !important;
   }
-  .thumb-links {
-    max-width: 86vw;
-  }
-  .gallery-thumb-title {
-    font-size: clamp(1.5rem, 6.2vw, 2.2rem);
-  }
   .gallery-thumb-desc {
     font-size: clamp(0.74rem, 2.4vw, 1rem);
   }
-  /* A full-width 16:9 frame is only ~180px tall on the smallest phones; the
-     screenshot is still the biggest thing in the panel, so let it breathe. */
-  .project-panel-frame {
-    aspect-ratio: 16 / 10;
-  }
   .thumb-tag {
     font-size: 0.7rem;
-  }
-  .collapse-btn {
-    width: 3.25rem;
-    height: 3.25rem;
-    top: -1.25rem;
-  }
-  .collapse-btn svg {
-    width: 1.625rem;
-    height: 1.625rem;
-  }
-  .thumb-links {
-    gap: 0.3rem;
-  }
-  .thumb-links .retro-link {
-    font-size: max(6px, calc(var(--font-size-xs) - 14px)) !important;
-    padding: 0 0.4rem !important;
   }
 }
 
@@ -95,9 +37,6 @@
     transition: none !important;
   }
   .gallery-project-item {
-    transition: none !important;
-  }
-  .gallery-card-panel.panel-hover-preview {
     transition: none !important;
   }
 }

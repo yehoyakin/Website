@@ -34,14 +34,14 @@
 
    The strip is a `.pattern-plate`, so the ghost page's panel rule repaints it
    like any other surface — and that rule outranks the two-class selector above
-   by one class. On the accent-filled header its darkened band (the panel
-   gradient ramps from a 73% accent mix down to a 28% one) landed across the top
-   edge as a single dark bar. The strip takes the post's accent back, flat: no
-   gradient, because there is nothing to shade — the texture still runs over it
-   through the plate's two pseudo-elements. */
+   by one class, which used to land the panel's darkened band across the top
+   edge as a single dark bar. The strip takes the post's accent back, flat:
+   no ramp of its own beyond the shared screen grade, because there is nothing
+   to shade — the texture still runs over it through the plate's two
+   pseudo-elements. */
 :root[data-mode] .blog-masthead .blog-masthead-strip {
   background-color: var(--project-tag-color, var(--theme-main-day));
-  background-image: none;
+  background-image: var(--page-lighting, none);
 }
 
 .blog-masthead-meta {

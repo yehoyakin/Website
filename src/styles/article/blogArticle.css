@@ -42,7 +42,7 @@
    same grid as the type instead of blurring. The first header (the masthead
    title) is filled with the post's accent and ringed in white; every heading
    under it is the inverse — white letters, accent ring. */
-:is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6),
+#blog-content :is(h1, h2, h3, h4, h5, h6),
 .blog-masthead-title {
   --heading-step: max(1px, calc(1em / 16));
   --heading-fill: var(--project-tag-color, var(--theme-main-day));

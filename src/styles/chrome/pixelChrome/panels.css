@@ -8,19 +8,10 @@
   --tile-fill: color-mix(in srgb, var(--outline-color) 22%, var(--time-panel));
   position: relative;
   border: var(--outline-width) solid var(--tile-dark);
+  /* Flat fill: the lit-from-above shading (the old radial bloom + dark base)
+     now comes from the ONE shared screen grade
+     (styles/site/pageLighting.css), not a gradient painted per frame. */
   background-color: var(--tile-fill);
-  /* Shaded plate: a light bloom and a dark base instead of a flat fill. */
-  background-image:
-    radial-gradient(
-      140% 90% at 50% -25%,
-      color-mix(in srgb, var(--tile-light) 45%, transparent) 0%,
-      transparent 72%
-    ),
-    linear-gradient(
-      to bottom,
-      transparent 48%,
-      color-mix(in srgb, var(--tile-dark) 55%, transparent) 100%
-    );
   transition:
     border-color var(--duration-fast) var(--ease-soft),
     background-color var(--duration-fast) var(--ease-soft);

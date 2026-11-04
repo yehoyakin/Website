@@ -2,10 +2,7 @@
 
 @import "galleryThumbnailStrip.css";
 @import "galleryThumbnailSlide.css";
-@import "galleryThumbnailLinks.css";
 @import "galleryPanelShell.css";
-@import "galleryPanelHoverPreview.css";
-@import "galleryPanelContent.css";
 @import "galleryPhoneLayout.css";
 
 /* Gallery root: the thumbnail strip and its backdrop stack inside it. */

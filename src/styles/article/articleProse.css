@@ -1,10 +1,10 @@
 /* Long-form prose shared by the article and the project write-up. */
 
-:is(#blog-content, .project-panel-body) {
+#blog-content {
   color: var(--time-ink);
   font-size: 0.875rem;
   text-align: left;
-  text-shadow: 1px 2px 0 var(--time-shadow);
+  text-shadow: var(--text-shadow-drop) 0 var(--time-shadow);
 }
 
 /* CompactBody — the long-form reading size, shared by the article and the
@@ -21,18 +21,18 @@
   letter-spacing: 0.01em;
 }
 
-:is(#blog-content, .project-panel-body) p {
+#blog-content p {
   margin: 0 0 0.9rem;
   /* Leading belongs to the body above, not to each paragraph. */
   line-height: inherit;
   text-align: left;
-  text-shadow: 1px 2px 0 var(--time-shadow);
+  text-shadow: var(--text-shadow-drop) 0 var(--time-shadow);
 }
 
 @media (max-width: 767px) {
-  :is(#blog-content, .project-panel-body),
-  :is(#blog-content, .project-panel-body) p {
-    text-shadow: 1px 1px 0 var(--time-shadow);
+  #blog-content,
+  #blog-content p {
+    text-shadow: var(--text-shadow-drop) 0 var(--time-shadow);
   }
 }
 
@@ -118,7 +118,7 @@
 
 /* Geometry only: the outline cut (fill + ring) is shared with the masthead
    title in styles/article/blogArticle.css. */
-:is(#blog-content, .project-panel-body) :is(h1, h2, h3, h4, h5, h6) {
+#blog-content :is(h1, h2, h3, h4, h5, h6) {
   margin-left: 0;
   margin-right: 0;
   letter-spacing: 0.015em;
@@ -135,7 +135,7 @@
   line-height: 1.05;
 }
 
-:is(#blog-content, .project-panel-body) h2 {
+#blog-content h2 {
   margin-top: 2.6rem;
   margin-bottom: 0.9rem;
   padding-left: 0.85rem;
@@ -144,19 +144,19 @@
   font-size: clamp(2.5rem, 3.6vw, 3.2rem);
 }
 
-:is(#blog-content, .project-panel-body) h3 {
+#blog-content h3 {
   margin-top: 1.9rem;
   margin-bottom: 0.65rem;
   font-size: clamp(2rem, 2.7vw, 2.4rem);
 }
 
-:is(#blog-content, .project-panel-body) h4 {
+#blog-content h4 {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   font-size: clamp(1.7rem, 2.1vw, 2rem);
 }
 
-:is(#blog-content, .project-panel-body) h5 {
+#blog-content h5 {
   margin-top: 1.2rem;
   margin-bottom: 0.4rem;
   font-size: clamp(1.35rem, 1.7vw, 1.65rem);
@@ -165,7 +165,7 @@
   --heading-fill: var(--time-ink-muted);
 }
 
-:is(#blog-content, .project-panel-body) h6 {
+#blog-content h6 {
   margin-top: 1.1rem;
   margin-bottom: 0.35rem;
   font-size: clamp(1.15rem, 1.4vw, 1.35rem);
@@ -182,14 +182,14 @@
    for ordered lists. Both hang in a fixed gutter, so a wrapped line starts
    flush with the first line's text instead of sliding back under the marker. */
 
-:is(#blog-content, .project-panel-body) :where(ul, ol) {
+#blog-content :where(ul, ol) {
   margin: 0.4rem 0 1.15rem;
   padding-left: 0;
   list-style: none;
   counter-reset: blog-item;
 }
 
-:is(#blog-content, .project-panel-body) :where(ul, ol) > li {
+#blog-content :where(ul, ol) > li {
   position: relative;
   margin-bottom: 0.5rem;
   padding-left: 0;
@@ -199,14 +199,14 @@
   gap: 0.65rem;
 }
 
-:is(#blog-content, .project-panel-body) :where(ul, ol) > li::before {
+#blog-content :where(ul, ol) > li::before {
   content: none;
 }
 
 /* Bullet and number markers are both drawn from theme icon assets so the list
    style is consistent no matter whether the markdown is unordered or ordered. */
-:is(#blog-content, .project-panel-body) .list-bullet-icon,
-:is(#blog-content, .project-panel-body) .list-number-icon {
+#blog-content .list-bullet-icon,
+#blog-content .list-number-icon {
   position: relative;
   display: inline-flex;
   flex: 0 0 auto;
@@ -215,8 +215,8 @@
   margin-top: 0.14em;
 }
 
-:is(#blog-content, .project-panel-body) .list-bullet-icon img,
-:is(#blog-content, .project-panel-body) .list-number-icon img {
+#blog-content .list-bullet-icon img,
+#blog-content .list-number-icon img {
   display: block;
   width: 100%;
   height: 100%;
@@ -224,17 +224,17 @@
   image-rendering: pixelated;
 }
 
-:is(#blog-content, .project-panel-body) .markdown-list-text {
+#blog-content .markdown-list-text {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-:is(#blog-content, .project-panel-body) ol > li {
+#blog-content ol > li {
   counter-increment: blog-item;
 }
 
 /* Quote. */
-:is(#blog-content, .project-panel-body) blockquote {
+#blog-content blockquote {
   margin: 1.4rem 0;
   padding: 0.85rem 1.1rem;
   border-left: var(--outline-width) solid
@@ -249,16 +249,16 @@
   line-height: 1.6;
 }
 
-:is(#blog-content, .project-panel-body) strong {
+#blog-content strong {
   color: var(--project-tag-color, var(--theme-main-day));
   text-shadow:
-    2px 3px 0
+    var(--text-shadow-drop) 0
       color-mix(
         in srgb,
         var(--project-tag-color-dark, var(--theme-main-night)) 56%,
         var(--time-black)
       ),
-    4px 6px 0
+    var(--text-shadow-drop-far) 0
       color-mix(
         in srgb,
         var(--project-tag-color-dark, var(--theme-main-night)) 64%,
@@ -266,16 +266,16 @@
       );
 }
 
-:is(#blog-content, .project-panel-body) em {
+#blog-content em {
   color: color-mix(in srgb, white 88%, var(--project-tag-color, var(--theme-main-day)) 12%);
   text-shadow:
-    2px 3px 0
+    var(--text-shadow-drop) 0
       color-mix(
         in srgb,
         var(--project-tag-color, var(--theme-main-day)) 66%,
         var(--project-tag-color-dark, var(--theme-main-night)) 34%
       ),
-    4px 6px 0
+    var(--text-shadow-drop-far) 0
       color-mix(
         in srgb,
         var(--project-tag-color-dark, var(--theme-main-night)) 78%,
@@ -284,7 +284,7 @@
 }
 
 /* Links. */
-:is(#blog-content, .project-panel-body) a {
+#blog-content a {
   --link-box: var(--project-tag-color, var(--theme-orange));
   padding: 0.05em 0.3em;
   border: var(--control-outline-width) solid
@@ -300,8 +300,8 @@
     border-color var(--duration-fast) var(--ease-soft);
 }
 
-:is(#blog-content, .project-panel-body) a:hover,
-:is(#blog-content, .project-panel-body) a:focus-visible {
+#blog-content a:hover,
+#blog-content a:focus-visible {
   /* Filled tile, label flipped to the page ink for contrast. */
   background: var(--link-box);
   border-color: var(--project-tag-color-dark, var(--theme-main-night));
@@ -310,7 +310,7 @@
 }
 
 /* Divider: a run of accent pixels, not a hairline. */
-:is(#blog-content, .project-panel-body) hr {
+#blog-content hr {
   height: 4px;
   margin: 2.4rem 0;
   border: 0;
@@ -327,7 +327,7 @@
 }
 
 /* Code. */
-:is(#blog-content, .project-panel-body) :not(pre) > code {
+#blog-content :not(pre) > code {
   padding: 0.1em 0.35em;
   border: 1px solid var(--time-border-soft);
   background: var(--time-wash);
@@ -336,7 +336,7 @@
   font-size: 0.9em;
 }
 
-:is(#blog-content, .project-panel-body) pre {
+#blog-content pre {
   margin: 1.4rem 0;
   padding: 1rem 1.1rem;
   overflow-x: auto;
@@ -347,40 +347,24 @@
   line-height: 1.55;
 }
 
-:is(#blog-content, .project-panel-body) pre code {
+#blog-content pre code {
   font-family: inherit;
   font-size: inherit;
 }
 
-/* Figures. */
-:is(#blog-content, .project-panel-body) figure {
+/* Figures: a SOLID accent border, not the accent ramp they used to paint —
+   the light-to-dark grade belongs to the shared screen grade
+   (styles/site/pageLighting.css); the frame only marks the figure with its
+   accent. The inset bevel shadows below keep the raised edge. */
+#blog-content figure {
   margin-top: 1.6rem;
   margin-bottom: 1.6rem;
-  border: var(--outline-width) solid transparent;
-  border-image: linear-gradient(
-    to bottom,
+  border: var(--outline-width) solid
     color-mix(
       in srgb,
-      var(--project-tag-color, var(--theme-main-day)) 92%,
-      var(--project-tag-color-dark, var(--theme-main-night)) 8%
-    )
-      0%,
-    var(--project-tag-color, var(--theme-main-day)) 18%,
-    color-mix(
-      in srgb,
-      var(--project-tag-color, var(--theme-main-day)) 78%,
-      var(--project-tag-color-dark, var(--theme-main-night)) 22%
-    )
-      52%,
-    color-mix(
-      in srgb,
-      var(--project-tag-color, var(--theme-main-day)) 45%,
-      var(--project-tag-color-dark, var(--theme-main-night)) 55%
-    )
-      82%,
-    var(--project-tag-color-dark, var(--theme-main-night)) 100%
-  )
-    1;
+      var(--project-tag-color, var(--theme-main-day)) 72%,
+      var(--project-tag-color-dark, var(--theme-main-night)) 28%
+    );
   box-shadow:
     inset var(--control-bevel) var(--control-bevel) 0 0
       color-mix(in srgb, var(--project-tag-color, var(--theme-main-day)) 36%, transparent),
@@ -401,26 +385,26 @@
     font-size: clamp(1.9rem, 8.2vw, 2.35rem);
   }
 
-  :is(#blog-content, .project-panel-body) h2 {
+  #blog-content h2 {
     margin-top: 1.9rem;
     font-size: clamp(1.55rem, 6.6vw, 1.95rem);
   }
 
-  :is(#blog-content, .project-panel-body) h3 {
+  #blog-content h3 {
     margin-top: 1.5rem;
     font-size: clamp(1.35rem, 5.6vw, 1.7rem);
   }
 
-  :is(#blog-content, .project-panel-body) h4 {
+  #blog-content h4 {
     margin-top: 1.3rem;
     font-size: clamp(1.2rem, 4.8vw, 1.45rem);
   }
 
-  :is(#blog-content, .project-panel-body) h5 {
+  #blog-content h5 {
     font-size: 1.1rem;
   }
 
-  :is(#blog-content, .project-panel-body) h6 {
+  #blog-content h6 {
     font-size: 1rem;
   }
 

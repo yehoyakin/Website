@@ -90,12 +90,6 @@
   color: var(--time-white);
 }
 
-/* A post's links arrive grouped by card; the groups stack as blocks on the one
-   plate rather than as panels of their own. */
-.links-panel .links-panel-group + .links-panel-group {
-  margin-top: 0.85rem;
-}
-
 /* A TALL LINKS PANEL SCROLLS INSIDE ITSELF.
 
    The plate's motif is drawn by `::before` / `::after` layers at `inset: 0`.

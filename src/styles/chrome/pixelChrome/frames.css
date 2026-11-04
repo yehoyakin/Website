@@ -30,14 +30,10 @@
 .blog-card,
 .portrait-frame,
 .rail-panel,
-.project-panel-frame,
-.project-panel-body,
 .blog-article-body,
-.article-reading-surface,
 .retro-contribution,
 .thumb-carousel-media,
-#blog-content :is(figure img, video, iframe),
-.project-panel-body :is(figure img, video, iframe) {
+#blog-content :is(figure img, video, iframe) {
   --frame-accent: var(--project-tag-color, var(--time-border));
   /* Also the plain `border:` colour of every surface: it was frozen to the
      mode tint for the same reason. */
@@ -66,15 +62,15 @@
 
 /* THE RECIPE. `.pixel-frame` is the site's surface class (panels, plates,
    cards, the portrait, the rail panel); `.blog-card` is a card that is not
-   always a plate. */
+   always a plate. The long reading column (`.blog-article-body`) is EXEMPT:
+   its border is a FLAT accent line (articleReadingSurface.css), so the
+   light-to-dark grade on it is the ONE shared screen grade
+   (styles/site/pageLighting.css), not a per-element bevel restated down a
+   ten-thousand-pixel column. */
 .pixel-frame:not(.retro-link):not(.split-card-action),
 .blog-card,
 .portrait-frame,
 .rail-panel,
-.project-panel-frame,
-.project-panel-body,
-.blog-article-body,
-.article-reading-surface,
 .retro-contribution {
   border-image: var(--frame-bevel) 1;
   /* The hard inner edge the border image cannot give: one pixel of light along
@@ -85,8 +81,10 @@
 }
 
 /* Hover lifts the frame instead of recolouring the border: with a border image
-   the border colour is no longer part of the picture. */
-.pixel-frame:not(.retro-link):not(.split-card-action):hover,
+   the border colour is no longer part of the picture. Plates are exempt — a
+   filter would localise their viewport-pinned screen grade for the hover
+   (styles/site/pageLighting.css). */
+.pixel-frame:not(.retro-link):not(.split-card-action):not(.pattern-plate):hover,
 .blog-card:hover,
 .portrait-frame:hover {
   filter: brightness(1.04);
@@ -97,8 +95,7 @@
    <iframe> embeds are excluded: border-image breaks iframe rendering in browsers,
    making embedded videos invisible. */
 .thumb-carousel-media,
-#blog-content :is(figure img, video),
-.project-panel-body :is(figure img, video) {
+#blog-content :is(figure img, video) {
   border: var(--control-outline-width) solid transparent;
   border-image: var(--frame-bevel) 1;
   box-shadow:
