@@ -298,6 +298,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       <BackLink href={`${baseUrl}portfolio/`} text="Back to portfolio" />
 
       <section class="project-page-shell pt-20 pb-8 md:pt-24 md:pb-12">
+        <div class="screen-grade-ring">
         <header class="project-page-header project-page-masthead pixel-frame pattern-plate pattern-plate--medium">
           <p class="project-page-tag">{project.data.tag}</p>
           <Title level={1} theme={themeName} class="project-page-title">
@@ -314,6 +315,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
             ))}
           </div>
         </header>
+        </div>
 
         <div class="project-page-lower-grid">
           <section class="project-page-left-stack">
@@ -330,12 +332,14 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
               </div>
             </section>
 
+            <div class="screen-grade-ring screen-grade-ring--hairline">
             <CompactBody
               theme={themeName}
               class="project-page-content-panel blog-article-body pattern-plate pattern-plate--text-backdrop pattern-plate--huge"
             >
               <div id="blog-content" set:html={bodyHtml} />
             </CompactBody>
+            </div>
           </section>
 
           {
@@ -676,7 +680,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
   .project-page-header {
     padding: clamp(0.9rem, 1.8vw, 1.5rem);
-    margin-bottom: 0.9rem;
+    /* The breathing room below the masthead moved to its screen-grade-ring */
+       /* wrapper (styles/site/pageLighting.css), which paints the border ring. */
   }
 
   .project-page-masthead {

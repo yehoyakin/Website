@@ -21,6 +21,7 @@ const { title, description, date, theme = "orange" } = Astro.props as Props;
 const panelStyle = `--plate-pattern: url('${patternForTheme(theme)}')`;
 ---
 
+<div class="screen-grade-ring">
 <header
   class="blog-masthead pixel-frame pattern-plate pattern-plate--medium"
   style={panelStyle}
@@ -53,3 +54,4 @@ const panelStyle = `--plate-pattern: url('${patternForTheme(theme)}')`;
     )
   }
 </header>
+</div>

@@ -455,6 +455,7 @@ const renderInlineMarkdown = (text: string) => {
 ---
 
 {/* Reading surface. The frame, plate and padding live in styles/article/blogArticle.css (`#blog-content`), which is also where the prose typography is: one file owns how an article reads. `pattern-plate--huge` carries the post's texture across the column: the biggest tile on the site, scrolling at about half the card speed and at a seventh of their opacity, so it registers as a surface and never as movement behind the words. The tile URL comes from the page, which owns the post's theme. */}
+<div class="screen-grade-ring screen-grade-ring--hairline">
 <div
   class="blog-article-body pattern-plate pattern-plate--text-backdrop pattern-plate--huge"
   id="blog-content"
@@ -725,6 +726,7 @@ const renderInlineMarkdown = (text: string) => {
       })}
     </div>
   </CompactBody>
+</div>
 </div>
 
 <script>
