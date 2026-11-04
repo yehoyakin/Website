@@ -162,24 +162,15 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   line-height: 1.25;
 }
 
-/* PHONES — the strip row is one shared height, card for card. */
-   /* `50dvh` is half a phone window for a card that is only ~86vw wide, and the */
-   /* artwork is inset (contain) inside whatever height is left. On a 390x844 */
-   /* phone that made the picture box 303x281 for a 16:9 cover: ~100px of empty */
-   /* plate above and below every card. Half a screen is the right card for a */
-   /* landscape window; on a portrait phone the cards stretch to the tallest */
-   /* slide and fill it, so every card in the row is the same box — the artwork */
-   /* absorbs whatever the copy bars leave over. See */
-   /* file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailStrip.css. */
+/* PHONES — the shared card height steps down with the token, not with a */
+   /* fill-the-slide override. `--listing-card-height` is redefined for phones in */
+   /* designTokens.css, so the base height rule above already gives every card the */
+   /* same phone box — landing included. Half a portrait screen (50dvh) was too */
+   /* tall for a contain-fit cover (~100px of empty plate above and below the art), */
+   /* which is why the token drops to a fixed card size there. The artwork wrap */
+   /* still grows to absorb whatever height the copy bars leave over. See */
+   /* file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/designTokens.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailStrip.css. */
 @media (max-width: 767px) {
-  .blog-cards-scroll .blog-card-item .blog-card,
-  .project-gallery:not(.markdown-gallery) .gallery-project-item .blog-card {
-    /* Fill the stretched slide, so all cards in the row share one height. */
-    height: 100%;
-    max-height: none;
-    min-height: 0;
-  }
-
   .blog-cards-scroll .blog-card-item .blog-card-image-wrap,
   .project-gallery:not(.markdown-gallery) .gallery-project-item .blog-card-image-wrap {
     /* 16:10 is the preferred shape; grow so the artwork takes the spare height. */

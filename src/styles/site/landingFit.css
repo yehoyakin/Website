@@ -95,8 +95,8 @@
 
 :root[data-view="desktop"] .page-card {
   /* Same token as cards/pageCards.css, so both views agree on the size. */
-  height: var(--landing-card-height);
-  max-height: var(--landing-card-height);
+  height: var(--listing-card-height);
+  max-height: var(--listing-card-height);
 }
 
 @media (min-width: 768px) and (max-height: 840px) {

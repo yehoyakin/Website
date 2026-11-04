@@ -86,15 +86,14 @@
   border-color: var(--outline-color-hover);
 }
 
-/* Landing cards are one step under the listing strip's 50dvh — see */
-   /* --landing-card-height in file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/designTokens.css */
-   /* — so the pair fits one screen with the hero. Both listings and landing */
-   /* read the same token, so the size stays consistent across views. */
-@media (min-width: 40rem) {
-  .page-card {
-    height: var(--landing-card-height);
-    max-height: var(--landing-card-height);
-  }
+/* Landing cards read the same card-height token as the blog and portfolio */
+   /* listing strips — see --listing-card-height in */
+   /* file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/designTokens.css */
+   /* — so a card is the same height on every page, on phones too (the token */
+   /* steps down to a fixed card size for portrait screens). */
+.page-card {
+  height: var(--listing-card-height);
+  max-height: var(--listing-card-height);
 }
 
 /* ARTWORK. On a phone it is a picture with a shape of its own; on a row it is */

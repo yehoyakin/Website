@@ -112,16 +112,23 @@
   --lightbox-width-phone: min(94vw, 100%);
 }
 
-/* Listing strip card height (half the viewport). */
+/* Card height — half the viewport, shared by every gallery card. Read by the */
+   /* blog and portfolio listing strips (carousel/carouselLayout.css) and by the */
+   /* landing cards (cards/pageCards.css, site/landingFit.css), so a card is the */
+   /* same height on every page. */
 :root {
   --listing-card-height: 50dvh;
 }
 
-/* Landing card height — one step under the listing card, so the landing pair */
-   /* fits one screen with the hero. Read by cards/pageCards.css and */
-   /* site/landingFit.css. */
-:root {
-  --landing-card-height: 44dvh;
+/* PHONES — half a portrait screen is too tall for a contain-fit cover: the art */
+   /* letterboxes ~100px of empty plate above and below it. The shared card height */
+   /* steps down to a fixed card size instead, and EVERY gallery still reads this */
+   /* one token, so the cards stay equal across pages on a phone too. See */
+   /* file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css */
+@media (max-width: 767px) {
+  :root {
+    --listing-card-height: 20rem;
+  }
 }
 
 /* Carousel slide width (shared by blog & gallery strips). */
