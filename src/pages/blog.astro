@@ -16,6 +16,12 @@ const posts = (await getCollection("blog")) as BlogPost[];
 const sortedPosts = posts.sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
+// The strip's card covers join the backgrounds in the head's preload list — the
+   // wiring MyLayout.astro emits; without it a first visit fetches them only
+   // after the render queue, seconds per picture, while a refresh reads the
+   // HTTP cache instantly. See
+   // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
+const cardCovers = sortedPosts.map((post) => post.data.cardBackground).filter(Boolean);
 ---
 
 <MyLayout
@@ -24,6 +30,7 @@ const sortedPosts = posts.sort(
   preloadImages={[
     "images/pageBackgrounds/BlogDay.webp",
     "images/pageBackgrounds/BlogNight.webp",
+    ...cardCovers,
   ]}
 >
   {/* Layered page background for the blog listing. */}

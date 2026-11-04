@@ -594,7 +594,6 @@ const renderInlineMarkdown = (text: string) => {
                                     src={image.src}
                                     alt={titleText || ""}
                                     class="thumb-carousel-media thumb-carousel-img active"
-                                    loading="lazy"
                                     decoding="async"
                                   />
                                 </div>
@@ -672,7 +671,7 @@ const renderInlineMarkdown = (text: string) => {
                           <div class="blog-card-image-wrap">
                             <div class="thumb-carousel">
                               {item.kind === "image" && (
-                                <img src={item.src} alt={titleText || `Image ${index + 1}`} class="thumb-carousel-media thumb-carousel-img active" loading="lazy" decoding="async" />
+                                <img src={item.src} alt={titleText || `Image ${index + 1}`} class="thumb-carousel-media thumb-carousel-img active" decoding="async" />
                               )}
                               {item.kind === "video" && (
                                 <video src={item.src} poster={item.poster} class="thumb-carousel-media thumb-carousel-video active" controls playsinline preload="metadata" />

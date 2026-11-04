@@ -5,12 +5,29 @@ import "../styles/site.css";  // file:///C:/Users/UsuarioCompuElite/Documents/Fo
 import { ClientRouter } from "astro:transitions";
 import { toThemeName, toThemeToken } from "../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
 import { asset } from "../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
+import { isRemoteUrl } from "../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
 import ModeToggle from "../components/shared/ModeToggle.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/ModeToggle.astro
 import Icon from "../components/shared/Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
 import { defaultIconColor, defaultIconColorNight } from "../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
 import { CUSTOM_CAROUSEL_CONTROLS } from "../config/carousel";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/carousel.ts
 
-const { title = "JoacoDev", theme, page } = Astro.props;
+const { title = "JoacoDev", theme, page, preloadImages = [] } = Astro.props;
+
+// THE PRELOAD WIRE-UP — the listing galleries' covers and the slug pages' media
+   // are handed in `preloadImages`; emitting them as `<link rel="preload">` starts
+   // their fetch during HTML parse, before the CSS/JS/font queue eats the
+   // connection — the gap that made a first visit take seconds per gallery picture
+   // while a refresh (HTTP cache) showed them instantly. See
+   // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio.astro
+   // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/blog.astro
+   // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro
+   // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/blog/[slug].astro
+const preloadList = [...new Set(preloadImages.filter(Boolean))];
+// A caller may hand the raw path (blog.astro) or one already through `asset()`
+   // (portfolio.astro, the slugs) — a leading `/` is already root-absolute, so it
+   // must not be prefixed twice.
+const preloadHref = (src: string) =>
+  isRemoteUrl(src) || src.startsWith("/") ? src : asset(src);
 
 // A page that assigns a theme carries the tokens.css token in `data-theme`,
 // which is what fonts.css keys the page's font set off.
@@ -82,6 +99,16 @@ const themeAttribute =
     <link rel="icon" type="image/x-icon" href={asset("favicon.ico")} sizes="32x32" />
     <link rel="apple-touch-icon" href={asset("apple-touch-icon.png")} />
     <meta name="theme-color" content="#1E9AEC" />
+
+    {/* One preload line per key image, deduped; remote URLs are fetched as-is. */}
+    {preloadList.map((src) => (
+      <link
+        rel="preload"
+        as="image"
+        href={preloadHref(src)}
+        fetchpriority="high"
+      />
+    ))}
 
     <ClientRouter />
   </head>

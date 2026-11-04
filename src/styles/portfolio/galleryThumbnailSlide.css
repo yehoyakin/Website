@@ -412,7 +412,10 @@
    /* already has `min-height: 0`, is what gives way when the card is short. */
 .markdown-gallery .gallery-thumb .blog-card-bar,
 .markdown-gallery .gallery-thumb .blog-card-info-bar {
-  flex: 1 1 auto;
+  /* 0 0 auto, not 1 1 auto: the bar hugs its caption (which may wrap) */
+     /* and never grows into the card's leftover space — see the `0 0 auto` */
+     /* rule at the bottom of this file, which already outranks this one. */
+  flex: 0 0 auto;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -641,6 +644,8 @@ html body .markdown-gallery .blog-card-info-bar {
    /* so spare space goes to the picture instead of to an empty banner. The */
    /* clamp() below is the media box's minimum, not a fixed size. */
 html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-info-bar {
+  /* The banner never stretches: it is exactly as tall as its wrapped caption, */
+     /* and the media box (flex 1 1 auto below) takes any extra card height. */
   flex: 0 0 auto !important;
 }
 

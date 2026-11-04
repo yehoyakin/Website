@@ -376,7 +376,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                                         src={item.src}
                                         alt={titleText || `Image ${index + 1}`}
                                         class="thumb-carousel-media thumb-carousel-img active"
-                                        loading="lazy"
                                         decoding="async"
                                       />
                                     )}
@@ -907,7 +906,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   }
 
   .project-page-gallery-plain .blog-card-info-bar {
-    flex: 1 1 auto !important;
+    /* The banner is only as tall as its (wrapping) caption — it must never */
+    /* swallow the card's leftover space; the image wrap above takes it. */
+    flex: 0 0 auto !important;
     min-width: 0;
     display: flex;
     flex-direction: column;
