@@ -41,7 +41,7 @@
   width: calc(var(--link-button-height) * 0.8);
 }
 
-/* The idle shake for these buttons lives in text/linkIdleShake.css. */
+/* The hover / press states for these buttons live in text/linkStates.css. */
 
 .pixel-highlight {
   display: none;

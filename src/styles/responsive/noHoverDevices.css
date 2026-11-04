@@ -1,12 +1,6 @@
-/* Touch screens: no sticky :hover, no idle shake. */
+/* Touch screens: no sticky :hover. */
 
 @media (hover: none) {
-  .retro-link,
-  .blog-card,
-  .gallery-thumb,
-  .split-card-action {
-    animation: none;
-  }
   .blog-card:hover,
   .gallery-thumb:hover {
     transform: none;

@@ -1,4 +1,17 @@
-/* Scrolling pattern plates and their size steps. */
+/* Pattern plates and their size steps.
+
+   THE MOTIF IS STILL, AND THAT IS A COST DECISION. Every plate's texture used
+   to drift one tile along a loop (18s on a card, 120s on a post's reading
+   surface). The loop animated `background-position`, which no browser can put
+   on the compositor: each frame of each plate re-rastered its whole texture,
+   and a listing page has a dozen plates on screen at once. Measured on the
+   heaviest post, scrolling spent 383ms of main-thread style work per 3s of
+   scroll with the loops running and 97ms with them off — the drift was most of
+   the cost of the site feeling slow, for a pattern moving 7px a second at 0.14
+   opacity, which nobody can see. The textures stay; the drift does not. The
+   large panels keep their `background-attachment: fixed`, so scrolling still
+   slides the motif against them — that parallax costs nothing (measured) and is
+   the motion that was actually visible. */
 
 .pattern-plate {
   /* Deliberately NO `position` here: the host owns that. */
@@ -41,10 +54,6 @@
     /* Secondary pass: inverted tile in multiply mode so very light themes still
       show the motif without changing their base colour token. */
     --plate-pattern-shadow-opacity: 0.08;
-  /* One loop scrolls exactly one tile, so the SPEED is tile ÷ duration. */
-  --plate-pattern-duration: 18s;
-  /* Travel direction: -1 drifts up-left (day), 1 drifts down-right (night). */
-  --plate-pattern-shift: -1;
 }
 
 /* Text backdrop variant: far lighter and more transparent, intended to sit under
@@ -72,13 +81,11 @@
     );
   background-blend-mode: normal, screen;
   --plate-pattern-opacity: 0.08;
-  --plate-pattern-duration: 24s;
 }
 
-/* Mid-size surfaces: a panel or a masthead, slower and calmer than a card. */
+/* Mid-size surfaces: a panel or a masthead. */
 .pattern-plate--medium {
   --plate-pattern-size: var(--pattern-size-medium, 512px);
-  --plate-pattern-duration: 60s;
   --plate-pattern-opacity: 0.09;
 }
 
@@ -87,7 +94,6 @@
    more of the shape than the card tiles do. */
 .pattern-plate--huge {
   --plate-pattern-size: var(--pattern-size-huge, 1024px);
-  --plate-pattern-duration: 120s;
   --plate-pattern-opacity: 0.06;
 }
 
@@ -112,8 +118,6 @@
   background-image: var(--plate-pattern, none);
   background-size: var(--pattern-tile) var(--pattern-tile);
   background-repeat: repeat;
-  animation: plate-pattern-scroll var(--plate-pattern-duration, 18s) linear
-    infinite;
   image-rendering: pixelated;
   mix-blend-mode: screen;
   opacity: var(--plate-pattern-opacity, 0.16);
@@ -131,8 +135,6 @@
   background-image: var(--plate-pattern, none);
   background-size: var(--pattern-tile) var(--pattern-tile);
   background-repeat: repeat;
-  animation: plate-pattern-scroll var(--plate-pattern-duration, 18s) linear
-    infinite;
   image-rendering: pixelated;
   filter: invert(1);
   mix-blend-mode: multiply;
@@ -199,7 +201,6 @@
       rgb(0 0 0 / 0.16)
     );
   --plate-pattern-opacity: 0.06;
-  --plate-pattern-shift: 1;
 }
 
 :root[data-mode="night"] .pattern-plate::before {
@@ -443,8 +444,8 @@
    on the reading column, the small tile at 0.2 on the header, and both pinned to
    the VIEWPORT by the parallax rule above, so the motif slid against the panel
    instead of with it. The cards that lead here take theirs from the small step
-   of the plain plate — a 128px tile at 0.14 by day, 0.07 by night, drifting one
-   tile every 18s, moving with the surface it is painted on.
+   of   the plain plate — a 128px tile at 0.14 by day, 0.07 by night, standing still
+   on the surface it is painted on.
 
    The header and the reading surface now wear that card recipe, so the panel a
    reader lands on carries the same motif as the card they clicked. This reaches
@@ -457,7 +458,6 @@
   #blog-article-section
   :is(.blog-masthead, .blog-article-body) {
   --plate-pattern-size: var(--pattern-size-small, 128px);
-  --plate-pattern-duration: 18s;
   --plate-pattern-opacity: 0.14;
   --plate-pattern-shadow-opacity: 0.08;
 }
@@ -469,7 +469,6 @@
   #blog-article-section
   :is(.blog-masthead, .blog-article-body) {
   --plate-pattern-size: var(--pattern-size-small, 128px);
-  --plate-pattern-duration: 18s;
   --plate-pattern-opacity: 0.07;
   --plate-pattern-shadow-opacity: 0.04;
 }
@@ -533,7 +532,6 @@
   background: var(--plate-pattern, none) repeat;
   background-size: var(--pattern-tile) var(--pattern-tile);
   background-attachment: fixed;
-  animation: plate-pattern-scroll 120s linear infinite;
   filter: none;
   mix-blend-mode: screen;
   opacity: 0.1;
@@ -637,14 +635,13 @@
    the ghost group above), so they darken after dark like the cards that lead to
    them. What they still borrowed from the ghost layer was its texture: the huge
    tile on the write-up, the medium one on the header, both pinned to the
-   VIEWPORT by the parallax rule. They take the card recipe instead — the 128px
-   tile, one tile every 18s, travelling with the surface it is painted on — so a
+   VIEWPORT by the parallax rule.   They take the card recipe instead — the same 128px
+   tile, standing still on the surface it is painted on — so a
    project's header carries the same motif as the card that opened it. */
 :root:not([data-mode="night"])
   .project-page
   :is(.project-page-masthead, .project-page-content-panel) {
   --plate-pattern-size: var(--pattern-size-small, 128px);
-  --plate-pattern-duration: 18s;
   --plate-pattern-opacity: 0.14;
   --plate-pattern-shadow-opacity: 0.08;
 }
@@ -653,7 +650,6 @@
   .project-page
   :is(.project-page-masthead, .project-page-content-panel) {
   --plate-pattern-size: var(--pattern-size-small, 128px);
-  --plate-pattern-duration: 18s;
   --plate-pattern-opacity: 0.07;
   --plate-pattern-shadow-opacity: 0.04;
 }
@@ -704,7 +700,6 @@
   background: var(--plate-pattern, none) repeat;
   background-size: var(--pattern-tile) var(--pattern-tile);
   background-attachment: fixed;
-  animation: plate-pattern-scroll 120s linear infinite;
   filter: none;
   mix-blend-mode: screen;
   opacity: 0.1;
@@ -716,9 +711,3 @@
   opacity: 0.12;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .pattern-plate::before,
-  .pattern-plate::after {
-    animation: none;
-  }
-}
