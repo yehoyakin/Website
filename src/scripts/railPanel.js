@@ -21,16 +21,11 @@
 
 const OPEN_CLASS = "is-open";
 
-/* HOVER COOLDOWN.
-
-   The handle is a normal control and gets the site hover (a short grow), so
-   sliding the panel at the same moment made the two transforms fight: the
-   handle was still growing as the rail left its hiding position, and still
-   shrinking as it went back, which clipped the edge that was crossing the
-   window. These delays let the pointer settle before the rail moves, and give
-   it a moment to be re-entered on the way out without flickering. */
-const OPEN_DELAY_MS = 140;
-const CLOSE_DELAY_MS = 240;
+/* Hover responds immediately — no open/close cooldown. The scheduling below is
+   kept for its flicker-safety (a re-entry cancels a queued leave), not for any
+   deliberate pause. */
+const OPEN_DELAY_MS = 0;
+const CLOSE_DELAY_MS = 0;
 
 /* FORGIVING HOVER TARGET.
 
