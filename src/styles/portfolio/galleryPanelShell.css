@@ -39,17 +39,15 @@
   padding: clamp(1rem, 2vw, 1.5rem);
   isolation: isolate;
   overflow: hidden;
-  /* The panel wears the active theme as a vertical grade — the assigned accent
-     up top easing down to a dark base — so the enlarged media sits on shaded
-     depth instead of a flat fill. --plate-tint is the day/night-aware form of
-     the theme, so a themed post grades in its own colour and night darkens it. */
+  /* The overlay sits on a denser tinted fill so the enlarged media stays readable
+     on it, and it is lit by the ONE shared grade every panel wears
+     (styles/site/pageLighting.css) — no per-panel theme ramp here. The name
+     has to be restated on this rule: the slug pages import this stylesheet
+     directly, so their bundle loads after the global one and the base
+     `.pattern-plate` pass would otherwise be outranked by a custom ramp. */
   background-color: color-mix(in srgb, var(--plate-tint) 30%, var(--time-black));
-  background-image: linear-gradient(
-    158deg,
-    color-mix(in srgb, var(--project-tag-color, var(--plate-tint)) 85%, transparent) 0%,
-    color-mix(in srgb, var(--plate-tint) 60%, transparent) 46%,
-    color-mix(in srgb, var(--time-black) 45%, var(--plate-tint)) 100%
-  );
+  background-image: var(--page-lighting, none);
+  background-attachment: fixed;
   border: 2px solid transparent;
   border-image: linear-gradient(
     to bottom,
@@ -95,18 +93,9 @@
   pointer-events: none;
 }
 
-.blog-gallery-lightbox__panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--project-tag-color, var(--theme-orange)) 18%, transparent) 0%,
-    rgba(0, 0, 0, 0.08) 30%,
-    rgba(0, 0, 0, 0.18) 100%
-  );
-  pointer-events: none;
-}
+/* No custom ::after here: the plate's own inverted texture pass
+   (chrome/pixelChrome/patternPlates) lights and textures the overlay exactly
+   like every other panel, on top of the shared grade above. */
 
 .blog-gallery-lightbox__close {
   position: absolute;
