@@ -24,7 +24,7 @@
    /* already in scope — a themed surface frames itself in its theme, and an */
    /* unthemed one still falls back to the day / night tint. */
 .pixel-frame:not(.retro-link):not(.split-card-action),
-.blog-card,
+.retro-card,
 .portrait-frame,
 .rail-panel,
 .blog-article-body,
@@ -58,14 +58,14 @@
 }
 
 /* THE RECIPE. `.pixel-frame` is the site's surface class (panels, plates, */
-   /* cards, the portrait, the rail panel); `.blog-card` is a card that is not */
+   /* cards, the portrait, the rail panel); `.retro-card` is a card that is not */
    /* always a plate. The long reading column (`.blog-article-body`) is EXEMPT: */
    /* its border is a FLAT accent line (articleReadingSurface.css), so the */
    /* light-to-dark grade on it is the ONE shared screen grade */
    /* (styles/site/pageLighting.css), not a per-element bevel restated down a */
    /* ten-thousand-pixel column. */
 .pixel-frame:not(.retro-link):not(.split-card-action),
-.blog-card,
+.retro-card,
 .portrait-frame,
 .rail-panel,
 .retro-contribution {
@@ -82,7 +82,7 @@
    /* filter would localise their viewport-pinned screen grade for the hover */
    /* (styles/site/pageLighting.css). */
 .pixel-frame:not(.retro-link):not(.split-card-action):not(.pattern-plate):hover,
-.blog-card:hover,
+.retro-card:hover,
 .portrait-frame:hover {
   filter: brightness(1.04);
 }

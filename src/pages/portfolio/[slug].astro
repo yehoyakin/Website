@@ -361,7 +361,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                           return (
                             <div class="gallery-project-item">
                               <button
-                                class="gallery-thumb blog-card pixel-frame blog-inner-image-card"
+                                class="retro-card pixel-frame retro-card--media"
                                 aria-label={hasTitleText ? `View ${titleText}` : `View media ${index + 1}`}
                                 title={titleText || undefined}
                                 data-thumb-index={0}
@@ -372,7 +372,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                                 data-lightbox-poster={item.kind === "file" ? (item.poster || "") : ""}
                                 style={galleryStyle}
                               >
-                                <div class="blog-card-image-wrap">
+                                <div class="retro-card-media">
                                   <div class="thumb-carousel">
                                     {item.kind === "image" && (
                                       <img
@@ -405,8 +405,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                                   <div class="thumb-overlay" />
                                 </div>
                                 {hasTitleText && (
-                                  <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-                                    <span class="gallery-thumb-desc">{titleText}</span>
+                                  <div class="retro-card-bar retro-card-info-bar pattern-plate pattern-plate--small">
+                                    <span class="retro-card-caption">{titleText}</span>
                                   </div>
                                 )}
                               </button>
@@ -459,7 +459,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       galleries.forEach((gallery) => {
         gallery.dataset.galleryReady = "true";
 
-        const thumbs = [...gallery.querySelectorAll(".gallery-thumb[data-lightbox-index]")];
+        const thumbs = [...gallery.querySelectorAll(".retro-card[data-lightbox-index]")];
         // The lightbox sits outside the gallery container so that position: fixed
            // is never clipped. Find it among the gallery's parent's siblings.
         const lightbox = (gallery.closest(".project-gallery-group") || gallery).querySelector("[data-gallery-lightbox]");
@@ -476,7 +476,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
         const itemsFor = (thumb) => {
           const owner = thumb?.closest(".project-gallery") || gallery;
 
-          return [...owner.querySelectorAll(".gallery-thumb[data-lightbox-index]")].map((node) => ({
+          return [...owner.querySelectorAll(".retro-card[data-lightbox-index]")].map((node) => ({
             kind: node.dataset.lightboxKind || "image",
             src: node.dataset.lightboxSrc,
             poster: node.dataset.lightboxPoster || "",
@@ -807,14 +807,14 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     max-width: none;
   }
 
-  .project-page-gallery-plain .gallery-thumb {
+  .project-page-gallery-plain .retro-card {
     width: 100% !important;
     height: var(--gallery-card-height) !important;
     box-sizing: border-box;
   }
 
-  /* Prevent the blog-card and its image wrap from overflowing. */
-  .project-page-gallery-plain .blog-card {
+  /* Prevent the retro-card and its image wrap from overflowing. */
+  .project-page-gallery-plain .retro-card {
     max-width: 100% !important;
     box-sizing: border-box;
     overflow: hidden;
@@ -824,7 +824,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     width: 100% !important;
   }
 
-  .project-page-gallery-plain .blog-card-image-wrap {
+  .project-page-gallery-plain .retro-card-media {
     max-width: 100% !important;
     max-height: var(--gallery-media-max-height) !important;
     overflow: hidden;
@@ -832,7 +832,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
        height the equal-height pass has left over, so the caption banner is
        always pushed flush to the card's bottom edge — exactly the behaviour a
        post's gallery gets from `html body .markdown-gallery:not(--single)
-       .blog-card-image-wrap` in styles/portfolio/galleryThumbnailSlide.css.
+       .retro-card-media` in styles/portfolio/galleryThumbnailSlide.css.
        With 0 0 auto the short-caption cards floated a gap under the banner and
        the long-caption cards overflowed it. The box can shrink too (min-height
        0), so a caption taller than the room allotted still fits. */
@@ -842,7 +842,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     height: auto !important;
   }
 
-  .project-page-gallery-plain .markdown-gallery--single .blog-card-image-wrap {
+  .project-page-gallery-plain .markdown-gallery--single .retro-card-media {
     /* THE SAME LIFT FOR A ONE-SLIDE GALLERY. The card above is pinned to */
     /* `--gallery-card-height`, but the media box below it was capped at */
     /* `--gallery-media-max-height` — a cap only the equal-height pass could */
@@ -854,7 +854,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     max-height: none !important;
   }
 
-  .project-page-gallery-plain .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap {
+  .project-page-gallery-plain .markdown-gallery:not(.markdown-gallery--single) .retro-card-media {
     /* Lift the media cap in a multi-image strip so the box is free to grow to */
     /* the card's full leftover height. That growth is what lands every caption */
     /* banner on the bottom edge together — a post's gallery does the same with */
@@ -864,7 +864,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     max-height: none !important;
   }
 
-  .project-page-gallery-plain .blog-card-info-bar {
+  .project-page-gallery-plain .retro-card-info-bar {
     /* The banner is only as tall as its (wrapping) caption — it must never */
     /* swallow the card's leftover space; the image wrap above takes it. */
     flex: 0 0 auto !important;
@@ -873,15 +873,15 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     flex-direction: column;
   }
 
-  .project-page-gallery-plain .blog-card-image-wrap iframe,
-  .project-page-gallery-plain .blog-card-image-wrap video {
+  .project-page-gallery-plain .retro-card-media iframe,
+  .project-page-gallery-plain .retro-card-media video {
     max-width: 100% !important;
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
   }
 
-  .project-page-gallery-plain .blog-card-image-wrap img {
+  .project-page-gallery-plain .retro-card-media img {
     max-width: 100% !important;
     max-height: var(--gallery-media-max-height) !important;
     width: 100% !important;
@@ -964,26 +964,26 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
        /* full-width card, captions included, exactly like the write-up's media. */
        /* A video or an embed has no ratio of its own, so those keep a 16:9 */
        /* window. */
-    .project-page-gallery-plain .gallery-thumb,
-    .project-page-gallery-plain .blog-card {
+    .project-page-gallery-plain .retro-card,
+    .project-page-gallery-plain .retro-card {
       height: auto !important;
       max-height: none !important;
       min-height: 0 !important;
     }
 
-    .project-page-gallery-plain .blog-card-image-wrap,
+    .project-page-gallery-plain .retro-card-media,
     .project-page-gallery-plain .thumb-carousel {
       max-height: none !important;
     }
 
-    .project-page-gallery-plain .blog-card-image-wrap:has(
+    .project-page-gallery-plain .retro-card-media:has(
         .thumb-carousel-frame,
         .thumb-carousel-video
       ) {
       aspect-ratio: var(--embed-aspect-ratio);
     }
 
-    .project-page-gallery-plain .blog-card-image-wrap img,
+    .project-page-gallery-plain .retro-card-media img,
     .project-page-gallery-plain .thumb-carousel-img {
       max-height: none !important;
       height: auto !important;

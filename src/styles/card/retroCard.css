@@ -1,7 +1,23 @@
-/* Blog card tile: frame, artwork, overlay, copy. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro */
+/* THE CARD — one tile for every entry on the site. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
+   /* One anatomy everywhere: meta bar, artwork, copy bar. The blog listing, the
+   /* portfolio strip, the landing's page cards and the galleries inside posts are
+   /* literally the same markup; where a context needs different measures (a
+   /* strip card is shorter than a landing card) it sets them from the context
+   /* class, never with a second card. */
 
-.blog-card {
+:root {
+  /* The bar's fill is the card's accent beaten down toward black; hover lifts
+     /* it. One pair of numbers for every card on the site. */
+  --card-bar-mix: 72%;
+  --card-bar-mix-hover: 82%;
+  /* A card-level description: two lines at most — extra lines come out of the
+     /* picture, not out of the card. */
+  --card-desc-lines: 2;
+  --card-desc-size: clamp(0.639rem, 1.02vw, 0.812rem);
+}
+
+.retro-card {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -18,17 +34,17 @@
 }
 
 /* Hover brightens the frame and the artwork; it never moves the card. */
-.blog-card:hover {
+.retro-card:hover {
   border-color: var(--outline-color-hover);
   box-shadow: 2px 3px 0 var(--time-shadow);
 }
 
-.blog-card-bar {
+.retro-card-bar {
   position: relative;
   padding: 0.75rem 1.25rem;
   background-color: color-mix(
     in srgb,
-    var(--project-tag-color, var(--plate-tint)) 72%,
+    var(--project-tag-color, var(--plate-tint)) var(--card-bar-mix),
     rgb(0 0 0 / 0.18)
   );
   /* The bar is a small plate: the shared screen grade rides on its */
@@ -37,15 +53,15 @@
   transition: background-color var(--duration-base) var(--ease-soft);
 }
 
-.blog-card:hover .blog-card-bar {
+.retro-card:hover .retro-card-bar {
   background-color: color-mix(
     in srgb,
-    var(--project-tag-color, var(--plate-tint)) 82%,
+    var(--project-tag-color, var(--plate-tint)) var(--card-bar-mix-hover),
     rgb(0 0 0 / 0.12)
   );
 }
 
-.blog-card-info-bar {
+.retro-card-info-bar {
   padding: 1rem 1.25rem 1.25rem;
 }
 
@@ -53,7 +69,7 @@
    /* `24vw`/`18rem` made a desktop listing card a 750x570 slab: the artwork alone */
    /* was 307px tall whatever the card's width was. 18vw/14rem keeps the picture in */
    /* proportion to the window and lets the whole card come down with it. */
-.blog-card-image-wrap {
+.retro-card-media {
   flex: 1 1 auto;
   width: 100%;
   min-height: clamp(4rem, 18vw, 14rem);
@@ -66,7 +82,7 @@
   );
 }
 
-.blog-card-bg {
+.retro-card-img {
   position: absolute;
   inset: 0;
   display: block;
@@ -84,14 +100,14 @@
     filter 320ms var(--ease-soft);
 }
 
-.blog-card:hover .blog-card-bg {
+.retro-card:hover .retro-card-img {
   transform: translateZ(0) scale(1.05);
   opacity: 1;
   filter: brightness(1.1);
 }
 
 /* Dark overlay like split card. */
-.blog-card-overlay {
+.retro-card-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -105,11 +121,11 @@
   z-index: 1;
 }
 
-.blog-card:hover .blog-card-overlay {
+.retro-card:hover .retro-card-overlay {
   opacity: 0.4;
 }
 
-.blog-card-title {
+.retro-card-title {
   font-size: clamp(2.5rem, 6vw, 3.5rem);
   line-height: 1.2;
   word-break: break-word;
@@ -121,22 +137,12 @@
    /* that suits its fill: */
      /* white / muted copy  → a soft shadow; it separates the letters from the plate */
                            /* without thickening them; */
-     /* accent copy         → a hard ring in the current day / night colour, so a */
-                           /* glyph filled with its own tint keeps its shape. */
-   /* `.gallery-thumb` carries `.blog-card`, so the portfolio cards are covered by */
-   /* the same two rules. */
+     /* accent copy         → a hard ring (see the card-title cut below). */
 
-.blog-card .blog-card-date,
-.blog-card .blog-card-desc,
-.blog-card .gallery-thumb-desc {
+.retro-card .retro-card-meta,
+.retro-card .retro-card-desc,
+.retro-card .retro-card-caption {
   text-shadow: var(--text-shadow-drop) 0 var(--time-shadow);
-}
-
-/* Accent fill: the project tag always carries the card's accent, so it needs no */
-   /* shadow. (A blog card title is accent all the time; see the card-title cut */
-   /* below.) */
-.blog-card .thumb-tag {
-  text-shadow: none;
 }
 
 /* CARD TITLE — the article title's cut, at card scale. */
@@ -145,7 +151,7 @@
    /* entry's own accent as the fill, the ring as eight shadows one pixel step */
    /* apart. After dark the masthead rings with the night black instead, and the */
    /* card follows. */
-.blog-card .blog-card-title {
+.retro-card .retro-card-title {
   --card-title-step: max(1px, calc(1em / 16));
   --card-title-fill: var(--project-tag-color, var(--theme-main-day));
   --card-title-ring: var(--time-white);
@@ -167,14 +173,14 @@
       var(--card-title-ring);
 }
 
-:root[data-mode="night"] .blog-card .blog-card-title {
+:root[data-mode="night"] .retro-card .retro-card-title {
   --card-title-ring: var(--time-black);
 }
 
 /* The meta label — a post's date, a project's engine tag — carries the card's */
    /* own accent the way the small description does: white with a heavy wash of */
    /* the theme. */
-.blog-card .blog-card-date {
+.retro-card .retro-card-meta {
   color: color-mix(
     in srgb,
     var(--time-white) 50%,
@@ -182,11 +188,11 @@
   );
 }
 
-.blog-card-date {
+.retro-card-meta {
   transition: color var(--duration-fast) var(--ease-soft);
 }
 
-.blog-card-desc {
+.retro-card-desc {
   color: color-mix(
     in srgb,
     rgb(255 255 255 / 0.9) 80%,
@@ -195,35 +201,76 @@
   transition: color var(--duration-fast) var(--ease-soft);
 }
 
+/* SHORT-CARD CONTEXTS — a strip item and a landing card are both capped boxes, */
+   /* so their copy is packed to the same measure wherever the card sits. */
+.blog-card-item .retro-card-desc,
+.gallery-project-item .retro-card-desc,
+.retro-card--landing .retro-card-desc {
+  margin-top: 0.2rem;
+  font-size: var(--card-desc-size);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--card-desc-lines);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* STRIP CONTEXT — listing cards are entries in a strip, not posters: the bars
+   /* tighten and the title steps down. See styles/carousel/carouselLayout.css */
+   /* for the height cap itself. !important keeps these on top of the gallery */
+   /* sheets, which used to win this measure from a later import. */
+.blog-card-item .retro-card-bar,
+.gallery-project-item .retro-card-bar {
+  padding: 0.3rem 0.9rem !important;
+}
+
+.blog-card-item .retro-card-info-bar,
+.gallery-project-item .retro-card-info-bar {
+  padding: 0.45rem 0.9rem 0.6rem !important;
+}
+
+.blog-card-item .retro-card-title,
+.gallery-project-item .retro-card-title {
+  font-size: clamp(1.5rem, 2vw, 2.3rem);
+  line-height: 1.15;
+}
+
+/* The meta line: 1.6 body leading is half the bar at card scale. */
+.blog-card-item .retro-card-meta,
+.gallery-project-item .retro-card-meta {
+  font-size: clamp(0.7rem, 1vw, 0.9rem);
+  line-height: 1.25;
+}
+
 @media (max-width: 768px) {
-  .blog-card-image-wrap {
+  .retro-card-media {
     min-height: 10rem;
   }
-  .blog-card-title {
+  .retro-card-title {
     font-size: clamp(1.1rem, 4vw, 1.5rem);
   }
 }
 
 @media (max-width: 480px) {
-  .blog-card-image-wrap {
+  .retro-card-media {
     min-height: 8.5rem;
   }
-  .blog-card-bar {
+  .retro-card-bar {
     padding: 0.6rem 0.85rem;
   }
-  .blog-card-info-bar {
+  .retro-card-info-bar {
     padding: 0.75rem 0.85rem 1rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blog-card,
-  .blog-card-bg,
-  .blog-card-bar,
-  .blog-card-overlay,
-  .blog-card-title,
-  .blog-card-date,
-  .blog-card-desc {
+  .retro-card,
+  .retro-card-img,
+  .retro-card-bar,
+  .retro-card-overlay,
+  .retro-card-title,
+  .retro-card-meta,
+  .retro-card-desc {
     transition: none !important;
     animation: none !important;
   }

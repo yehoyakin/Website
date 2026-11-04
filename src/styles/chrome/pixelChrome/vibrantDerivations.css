@@ -4,8 +4,7 @@
 @supports (color: hsl(from red h s l)) {
   .pixel-frame,
   .retro-link.pixel-frame,
-  .split-card-action,
-  .gallery-thumb.pixel-frame {
+  .split-card-action {
     --tile-light: hsl(from var(--outline-color) h s min(calc(l + 18), 90));
     --outline-color-hover: hsl(from var(--outline-color) h s min(calc(l + 14), 86));
   }

@@ -135,9 +135,9 @@ function equalizeGallery(gallery) {
     const media = item.querySelector(
       ".thumb-carousel-img, .thumb-carousel-video, .thumb-carousel-frame"
     );
-    const wrap = item.querySelector(".blog-card-image-wrap");
+    const wrap = item.querySelector(".retro-card-media");
     const carouselWrapper = item.querySelector(".thumb-carousel-media");
-    const card = item.querySelector(".gallery-thumb");
+    const card = item.querySelector(".retro-card");
     if (media) allMedia.push(media);
     if (wrap) wraps.push(wrap);
     if (carouselWrapper) carouselWrappers.push(carouselWrapper);
@@ -181,7 +181,7 @@ function equalizeGallery(gallery) {
   // images, decoded for videos, assumed for embeds) since aspect-ratio is unset.
   let maxHeight = 0;
   allMedia.forEach((el) => {
-    const wrap = el.closest(".blog-card-image-wrap");
+    const wrap = el.closest(".retro-card-media");
     if (!wrap) return;
 
     const wrapWidth = wrap.getBoundingClientRect().width;
@@ -209,7 +209,7 @@ function equalizeGallery(gallery) {
   // STEP 5: Measure the caption bar height from the first card that has one
   let captionHeight = 0;
   items.forEach((item) => {
-    const bar = item.querySelector(".blog-card-bar, .blog-card-info-bar");
+    const bar = item.querySelector(".retro-card-bar, .retro-card-info-bar");
     if (bar) {
       const barRect = bar.getBoundingClientRect();
       if (barRect.height > captionHeight) captionHeight = barRect.height;

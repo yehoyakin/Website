@@ -122,7 +122,7 @@
 
 /* BLOG HEADER — the card's outline, on the header. */
    /* A card rings itself in white by day and in black after dark (see the title */
-   /* ring in blogCardTile.css), and the header followed the day half of that in */
+   /* ring in card/retroCard.css), and the header followed the day half of that in */
    /* both modes: a white ring around a panel that went dark underneath. It now */
    /* switches with the mode the way the cards do.   The frame recipe has to be */
    /* switched off, because the shared one (chrome/pixelChrome/frames.css) draws */

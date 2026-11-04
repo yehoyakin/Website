@@ -100,7 +100,7 @@
   --gallery-media-max-height: clamp(7rem, 31.5vw, 24.5rem);
   --gallery-media-min-height: clamp(4.9rem, 22.05vw, 17.15rem);
   --gallery-slide-width-md: max(542px, 77vw);
-  --gallery-blog-card-width: clamp(310px, 44vw, 500px);
+  --gallery-strip-card-width: clamp(310px, 44vw, 500px);
   --gallery-phone-max-width: min(100%, 35rem);
 }
 
@@ -134,6 +134,13 @@
 /* Carousel slide width (shared by blog & gallery strips). */
 :root {
   --carousel-slide: min(100% - 3rem, 24rem);
+}
+
+/* The floor under the small button type: below it the pixel face stops */
+   /* resolving letters, whatever the box allows (text/linkButtons.css, */
+   /* chrome/backLink.css). */
+:root {
+  --link-font-min: 6px;
 }
 
 /* Embedded media aspect ratio (mirrors EMBED_ASPECT in galleryEqualHeight.js). */

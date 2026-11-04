@@ -1,6 +1,6 @@
 ---
 // Purpose: Component - src/components/sections/ProjectGallery.astro (Project cards on the portfolio listing)
-// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/blogCard/blogCardTile.css
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/card/retroCard.css
 import { asset } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/utils/asset.ts
 import { resolveThemeToken, toThemeName } from "../../config/uiDictionary";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts
 import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
@@ -45,18 +45,18 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
             <div class="gallery-project-item">
               <a
                 href={projectHref}
-                class="gallery-thumb blog-card pixel-frame group"
+                class="retro-card pixel-frame group"
                 aria-label={`Open project ${project.data.title ?? index + 1}`}
                 title={project.data.title}
                 style={`--thumb-theme-color: ${themeToken}; --project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --plate-pattern: url('${patternForTheme(themeName)}')`}
               >
-                <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
-                  <Body theme={themeName} class="blog-card-date text-xs sm:text-sm">
+                <div class="retro-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
+                  <Body theme={themeName} class="retro-card-meta text-xs sm:text-sm">
                     {project.data.tag}
                   </Body>
                 </div>
 
-                <div class="blog-card-image-wrap">
+                <div class="retro-card-media">
                   <div class="thumb-carousel">
                     <img
                       src={asset(project.data.cardBackground)}
@@ -69,14 +69,14 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                 </div>
 
                 {hasDescription && (
-                  <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-                    <Title level={3} theme={themeName} class="blog-card-title">
+                  <div class="retro-card-bar retro-card-info-bar pattern-plate pattern-plate--small">
+                    <Title level={3} theme={themeName} class="retro-card-title">
                       {project.data.title}
                     </Title>
 
                     <Body
                       theme={themeName}
-                      class="blog-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
+                      class="retro-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
                     >
                       {project.data.description}
                     </Body>

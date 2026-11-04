@@ -6,25 +6,25 @@
     gap: 0.75rem;
     padding: 0 0.6rem;
   }
-  .gallery-thumb {
+  .project-gallery .retro-card {
     width: 72vw !important;
   }
-  .gallery-thumb-desc {
+  .retro-card-caption {
     font-size: clamp(0.78rem, 2.65vw, 1.2rem);
   }
-  .thumb-tag {
+  .retro-card--landing .retro-card-meta {
     font-size: clamp(0.6rem, 1.8vw, 0.75rem);
   }
 }
 
 @media (max-width: 480px) {
-  .gallery-thumb {
+  .project-gallery .retro-card {
     width: 86vw !important;
   }
-  .gallery-thumb-desc {
+  .retro-card-caption {
     font-size: clamp(0.74rem, 2.4vw, 1rem);
   }
-  .thumb-tag {
+  .retro-card--landing .retro-card-meta {
     font-size: 0.7rem;
   }
 }
@@ -34,7 +34,7 @@
   .thumb-carousel-media {
     transition: none !important;
   }
-  .gallery-thumb {
+  .project-gallery .retro-card {
     transition: none !important;
   }
   .gallery-project-item {

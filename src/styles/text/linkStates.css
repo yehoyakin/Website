@@ -7,23 +7,17 @@
    /* rather than as motion. The wobble is gone: the controls sit still until the */
    /* pointer reaches them. Hover and press are unchanged. */
 
-.markdown-gallery .gallery-thumb,
-.markdown-gallery .gallery-thumb:hover,
-.markdown-gallery .gallery-thumb:focus,
-.markdown-gallery .gallery-thumb:active,
-.markdown-gallery .blog-card,
-.markdown-gallery .blog-card:hover,
-.markdown-gallery .blog-card:focus,
-.markdown-gallery .blog-card:active {
+.markdown-gallery .retro-card,
+.markdown-gallery .retro-card:hover,
+.markdown-gallery .retro-card:focus,
+.markdown-gallery .retro-card:active {
   transform: none !important;
   filter: none !important;
   box-shadow: none !important;
 }
 
-.markdown-gallery .gallery-thumb:hover .thumb-carousel-media.active,
-.markdown-gallery .gallery-thumb:focus .thumb-carousel-media.active,
-.markdown-gallery .gallery-thumb:hover .thumb-overlay,
-.markdown-gallery .gallery-thumb:focus .thumb-overlay {
+.markdown-gallery .retro-card:is(:hover, :focus) .thumb-carousel-media.active,
+.markdown-gallery .retro-card:is(:hover, :focus) .thumb-overlay {
   transform: none !important;
   filter: none !important;
   opacity: 1 !important;
@@ -36,9 +30,8 @@
    /* appears to stretch along Y. */
 .retro-link:hover,
 .retro-link:focus,
-.blog-card:hover,
-.gallery-thumb:hover,
-.gallery-thumb:focus,
+.retro-card:hover,
+.retro-card:focus,
 .split-card-action:hover,
 .split-card-action:focus {
   transform: scale(1.03);
@@ -47,8 +40,7 @@
 
 /* Active / pressed. */
 .retro-link:active,
-.blog-card:active,
-.gallery-thumb:active,
+.retro-card:active,
 .split-card-action:active {
   transform: translateY(-4px);
 }

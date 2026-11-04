@@ -1,6 +1,6 @@
 ---
 // Purpose: Component - src/components/sections/BlogCard.astro (Card for blog posts and projects)
-// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/blogCard/blogCardTile.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/cards/pageCards.css
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/card/retroCard.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/card/pageCards.css
 import type { BlogPost } from "../../types/blog";
 import type { ProjectEntry } from "../../types/project";
 import Title from "../UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
@@ -72,15 +72,15 @@ const cardStyle = [
   href={href}
   target={external ? "_blank" : undefined}
   rel={external ? "noopener noreferrer" : undefined}
-  class="blog-card pixel-frame group"
+  class="retro-card pixel-frame group"
   style={cardStyle}
 >
   {/* TOP BAR - date, or the project's engine / tool tag */}
-  <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
+  <div class="retro-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
     {metaIcon && <Icon name={metaIcon} theme={themeName} class="h-8 w-8" />}
     <Body
       theme={themeName}
-      class="blog-card-date text-xs sm:text-sm"
+      class="retro-card-meta text-xs sm:text-sm"
     >
       {metaText}
     </Body>
@@ -89,32 +89,32 @@ const cardStyle = [
   {/* IMAGE */}
   {
     image && (
-      <div class="blog-card-image-wrap">
+      <div class="retro-card-media">
         <img
-          class="blog-card-bg"
+          class="retro-card-img"
           src={asset(image)}
           alt=""
           decoding="async"
         />
-        <div class="blog-card-overlay" />
+        <div class="retro-card-overlay" />
       </div>
     )
   }
 
   {/* BOTTOM BAR - Title + Description */}
   {hasDescription && (
-    <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
+    <div class="retro-card-bar retro-card-info-bar pattern-plate pattern-plate--small">
       <Title
         level={3}
         theme={themeName}
-        class="blog-card-title"
+        class="retro-card-title"
       >
         {title}
       </Title>
 
       <Body
         theme={themeName}
-        class="blog-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
+        class="retro-card-desc mt-2 text-sm sm:text-base text-[color:var(--time-ink-muted)] group-hover:text-[color:var(--time-ink)] readable-text"
       >
         {description}
       </Body>

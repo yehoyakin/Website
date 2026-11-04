@@ -7,6 +7,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -79,6 +80,8 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
 
 .blog-cards-scroll,
 .gallery-thumbnails {
+  display: flex;
+  align-items: stretch;
   min-width: 0;
   gap: 0.5rem;
   padding: 0;
@@ -108,15 +111,10 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   scroll-snap-stop: always;
 }
 
-/* The gallery thumbnail fills its carousel slide. */
-.gallery-thumb {
-  width: 100% !important;
-}
-
 /* Markdown galleries inside blog/project slugs control their own card width */
-   /* through the slide variable or the single-gallery clamp — the 100% rule above */
-   /* would override those widths. galleryThumbnailSlide.css sets the clamp with */
-   /* !important so it wins here. */
+   /* through the slide variable or the single-gallery clamp in */
+   /* galleryThumbnailSlide.css, which sets those sizes with !important so they */
+   /* win here. */
 
 /* CARD HEIGHT — half the screen. */
    /* A listing card is an entry in a strip, not a poster. Left to its own content */
@@ -124,61 +122,24 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
    /* strip's controls under the fold. `50dvh` is half the window at every size */
    /* (360px at 720, 450 at 900, 540 at 1080) and the copy below is packed to fit */
    /* inside it — the PICTURE is what gives when the card is short. */
-.blog-card-item .blog-card,
-.gallery-project-item .blog-card {
+.blog-card-item .retro-card,
+.gallery-project-item .retro-card {
   height: var(--listing-card-height);
   max-height: var(--listing-card-height);
 }
 
-.markdown-gallery .gallery-project-item .blog-card,
-.markdown-gallery .gallery-project-item .gallery-thumb {
+.markdown-gallery .gallery-project-item .retro-card {
   height: auto !important;
   max-height: none !important;
   min-height: 0 !important;
 }
 
-.blog-card-item .blog-card-image-wrap,
-.gallery-project-item .blog-card-image-wrap {
+.blog-card-item .retro-card-media,
+.gallery-project-item .retro-card-media {
   flex: 1 1 auto;
   /* The shared card floors the artwork at 4-14rem; in a capped card that floor */
      /* would push the copy out of the bottom. */
   min-height: 0;
-}
-
-.blog-card-item .blog-card-bar,
-.gallery-project-item .blog-card-bar {
-  padding: 0.3rem 0.9rem;
-}
-
-.blog-card-item .blog-card-info-bar,
-.gallery-project-item .blog-card-info-bar {
-  padding: 0.45rem 0.9rem 0.6rem;
-}
-
-.blog-card-item .blog-card-title,
-.gallery-project-item .blog-card-title {
-  font-size: clamp(1.5rem, 2vw, 2.3rem);
-  line-height: 1.15;
-}
-
-/* A card-level description: two lines at most, and no paragraph margins. */
-   /* Extra lines come out of the picture, not out of the card. */
-.blog-card-item .blog-card-desc,
-.gallery-project-item .blog-card-desc {
-  margin-top: 0.2rem;
-  font-size: clamp(0.639rem, 1.02vw, 0.812rem);
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* The meta line: 1.6 body leading is half the bar at card scale. */
-.blog-card-item .blog-card-date,
-.gallery-project-item .blog-card-date {
-  font-size: clamp(0.7rem, 1vw, 0.9rem);
-  line-height: 1.25;
 }
 
 /* PHONES — the shared card height steps down with the token, not with a */
@@ -190,8 +151,8 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
    /* still grows to absorb whatever height the copy bars leave over. See */
    /* file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/designTokens.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailStrip.css. */
 @media (max-width: 767px) {
-  .blog-cards-scroll .blog-card-item .blog-card-image-wrap,
-  .project-gallery:not(.markdown-gallery) .gallery-project-item .blog-card-image-wrap {
+  .blog-cards-scroll .blog-card-item .retro-card-media,
+  .project-gallery:not(.markdown-gallery) .gallery-project-item .retro-card-media {
     /* 16:10 is the preferred shape; grow so the artwork takes the spare height. */
     flex: 1 1 auto;
     min-height: 0;

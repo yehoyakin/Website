@@ -289,7 +289,7 @@ const renderVideo = (
     : `<video
         src="${video.src}"
         ${video.poster ? `poster="${video.poster}"` : ""}
-        class="block w-full ${hasFixedAspect ? "h-full object-cover object-center" : "h-auto"}"
+        class="block w-full ${hasFixedAspect ?"h-full object-cover object-center" : "h-auto"}"
         controls
         playsinline
         preload="metadata"
@@ -297,7 +297,7 @@ const renderVideo = (
 
   const caption = captionText
     ? `
-      <figcaption class="blog-figcaption blog-figcaption--video blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small ${getCaptionAlignmentClass(align)}">
+      <figcaption class="blog-figcaption blog-figcaption--video retro-card-bar retro-card-info-bar pattern-plate pattern-plate--small ${getCaptionAlignmentClass(align)}">
         ${captionText}
       </figcaption>
     `
@@ -579,7 +579,7 @@ const renderInlineMarkdown = (text: string) => {
                     return (
                       <div class="gallery-project-item">
                         <button
-                          class="gallery-thumb blog-card pixel-frame blog-inner-image-card"
+                          class="retro-card pixel-frame retro-card--media"
                           aria-label={hasTitleText ? `View ${titleText}` : `View image ${index + 1}`}
                           title={titleText || undefined}
                           data-thumb-index={0}
@@ -589,7 +589,7 @@ const renderInlineMarkdown = (text: string) => {
                           style={galleryStyle}
                         >
                               <div
-                                class="blog-card-image-wrap relative flex min-h-0 flex-col"
+                                class="retro-card-media relative flex min-h-0 flex-col"
                               >
                                 <div class="thumb-carousel">
                                   <img
@@ -602,8 +602,8 @@ const renderInlineMarkdown = (text: string) => {
                                 <div class="thumb-overlay" />
                               </div>
                               {hasTitleText && (
-                                <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-                                  <span class="gallery-thumb-desc">{titleText}</span>
+                                <div class="retro-card-bar retro-card-info-bar pattern-plate pattern-plate--small">
+                                  <span class="retro-card-caption">{titleText}</span>
                                 </div>
                               )}
                         </button>
@@ -647,7 +647,7 @@ const renderInlineMarkdown = (text: string) => {
                     return (
                       <div class="gallery-project-item">
                         <button
-                          class="gallery-thumb blog-card pixel-frame blog-inner-image-card"
+                          class="retro-card pixel-frame retro-card--media"
                           aria-label={hasTitleText ? `View ${titleText}` : `View media ${index + 1}`}
                           title={titleText || undefined}
                           data-thumb-index={0}
@@ -658,7 +658,7 @@ const renderInlineMarkdown = (text: string) => {
                           data-lightbox-poster={item.kind === "video" ? (item.poster || "") : ""}
                           style={galleryStyle}
                         >
-                          <div class="blog-card-image-wrap">
+                          <div class="retro-card-media">
                             <div class="thumb-carousel">
                               {item.kind === "image" && (
                                 <img src={item.src} alt={titleText || `Image ${index + 1}`} class="thumb-carousel-media thumb-carousel-img active" decoding="async" />
@@ -673,8 +673,8 @@ const renderInlineMarkdown = (text: string) => {
                             <div class="thumb-overlay" />
                           </div>
                           {hasTitleText && (
-                            <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-                              <span class="gallery-thumb-desc">{titleText}</span>
+                            <div class="retro-card-bar retro-card-info-bar pattern-plate pattern-plate--small">
+                              <span class="retro-card-caption">{titleText}</span>
                             </div>
                           )}
                         </button>
@@ -719,7 +719,7 @@ const renderInlineMarkdown = (text: string) => {
       galleries.forEach((gallery) => {
         gallery.dataset.galleryReady = "true";
 
-        const thumbs = [...gallery.querySelectorAll(".gallery-thumb[data-lightbox-index]")];
+        const thumbs = [...gallery.querySelectorAll(".retro-card[data-lightbox-index]")];
         const lightbox = gallery.querySelector("[data-gallery-lightbox]");
         if (!lightbox || !thumbs.length) return;
 
@@ -734,7 +734,7 @@ const renderInlineMarkdown = (text: string) => {
         const itemsFor = (thumb) => {
           const owner = thumb?.closest(".project-gallery") || gallery;
 
-          return [...owner.querySelectorAll(".gallery-thumb[data-lightbox-index]")].map((node) => ({
+          return [...owner.querySelectorAll(".retro-card[data-lightbox-index]")].map((node) => ({
             kind: node.dataset.lightboxKind || "image",
             src: node.dataset.lightboxSrc,
             poster: node.dataset.lightboxPoster || "",

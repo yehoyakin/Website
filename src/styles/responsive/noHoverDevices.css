@@ -2,13 +2,12 @@
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 
 @media (hover: none) {
-  .blog-card:hover,
-  .gallery-thumb:hover {
+  .retro-card:hover {
     transform: none;
   }
-  .blog-card:hover .blog-card-bg,
-  .gallery-thumb:hover .thumb-carousel-img.active,
-  .gallery-thumb:hover .blog-card-bar {
+  .retro-card:hover .retro-card-img,
+  .retro-card:hover .thumb-carousel-img.active,
+  .retro-card:hover .retro-card-bar {
     transform: none;
   }
 }

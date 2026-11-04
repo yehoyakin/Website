@@ -66,7 +66,7 @@ body {
 
 /* Card titles: the outline cut is turned inside out on card headings. */
 
-:where(.blog-card) :is(h1, h2, h3) {
+:where(.retro-card) :is(h1, h2, h3) {
   -webkit-text-fill-color: currentColor;
   --pixel-outline-color: rgb(
     from currentColor calc(255 - r) calc(255 - g) calc(255 - b)

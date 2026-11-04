@@ -30,7 +30,7 @@
 }
 
 /* Gallery thumbnails carry a per-project colour in thumb-theme-color. */
-.gallery-thumb.pixel-frame {
+.project-gallery .retro-card.pixel-frame {
   --outline-color: var(
     --thumb-theme-color,
     var(--project-tag-color, var(--time-border))

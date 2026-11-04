@@ -508,13 +508,13 @@
 }
 
 /* MEDIA BANNERS IN A POST — flat, like the card's base bar. */
-   /* The caption under a scene image or a clip is a `.blog-card-bar` in the */
+   /* The caption under a scene image or a clip is a `.retro-card-bar` in the */
    /* reading column: it shares the cards' classes but not their bar. It used to */
    /* paint the card banner's ramp here — the accent lifted with white along the */
    /* top edge, stepping down through the plate tint to the accent's dark end — */
    /* one light-from-above grade per caption inside a long article. */
    /* The bars now keep only the card's FLAT base fill */
-   /* (styles/blogCard/blogCardTile.css) and are lit by the ONE shared screen */
+   /* (styles/card/retroCard.css) and are lit by the ONE shared screen */
    /* grade (styles/site/pageLighting.css), like every other surface on the */
    /* page. There is no rule left here: deleting the ramps was the whole change. */
 

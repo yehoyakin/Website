@@ -1,4 +1,4 @@
-/* Thumbnail slide: the gallery's blog-card tile and its screenshot carousel. */
+/* Thumbnail slide: the gallery's retro-card tile and its screenshot carousel. */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro */
 
 .gallery-project-item {
@@ -9,10 +9,11 @@
   transition: transform 320ms var(--ease-settle);
 }
 
-/* The tile IS a blog card: `.blog-card` carries the frame, the two bars and the */
-   /* hover. This class only turns the <button> into one and fixes its width in the */
-   /* horizontal strip. */
-.gallery-thumb {
+/* The tile IS a card: `.retro-card` carries the frame, the two bars and the */
+   /* hover. These rules only turn the gallery <button>/<a> into one and fix its */
+   /* width in the horizontal strip — scoped to `.project-gallery` so the listing */
+   /* and landing cards, which share the tile, stay out of it. */
+.project-gallery .retro-card {
   width: clamp(180px, 26vw, 300px);
   padding: 0;
   text-align: left;
@@ -23,14 +24,14 @@
   border-radius: 0;
 }
 
-.gallery-thumb:hover {
+.project-gallery .retro-card:hover {
   box-shadow:
     0 16px 40px rgba(0, 0, 0, 0.5),
     0 0 30px
       color-mix(in srgb, var(--thumb-theme-color, white) 15%, transparent);
 }
 
-.gallery-thumb:focus {
+.project-gallery .retro-card:focus {
   outline: none;
   border-color: white;
   box-shadow:
@@ -38,19 +39,9 @@
     0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
-/* Top bar: the project's engine / tool name, where a post puts its date. */
-.thumb-tag {
-  color: rgb(255 255 255 / 1);
-  font-size: clamp(0.7rem, 1vw, 1.05rem);
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-shadow: 1px 2px 0 var(--time-shadow);
-}
-
 /* Copy bar: the description role, in the page ink (the title itself wears the */
-   /* blog-card title cut in blogCard/blogCardTile.css). */
-.gallery-thumb-desc {
+   /* retro-card title cut in blogCard/card/retroCard.css). */
+.retro-card-caption {
   display: block;
   margin-top: 0.25rem;
   /* Centre the gallery caption in its bar on the slugs. The bar is a column */
@@ -103,7 +94,7 @@
   background: var(--time-black, #000);
 }
 
-.markdown-gallery .gallery-thumb {
+.markdown-gallery .retro-card {
   width: min(100%, var(--gallery-slide-width-md)) !important;
   max-width: min(100%, var(--gallery-slide-width-md)) !important;
   height: var(--gallery-card-height) !important;
@@ -122,8 +113,7 @@
   height: var(--gallery-card-height);
 }
 
-.markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .blog-card,
-.markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .gallery-thumb {
+.markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .retro-card {
   display: flex !important;
   flex-direction: column !important;
   height: var(--gallery-card-height) !important;
@@ -135,7 +125,7 @@
    /* being absolutely positioned. Images display at their natural aspect ratio, */
    /* filling the full width with no side deadspace. Max-height keeps images */
    /* proportional to the blog listing page's card sizing. */
-.markdown-gallery .gallery-thumb .blog-card-image-wrap {
+.markdown-gallery .retro-card .retro-card-media {
   flex: 0 0 auto;
   position: relative !important;
   min-height: 0;
@@ -144,13 +134,13 @@
   overflow: hidden;
 }
 
-.markdown-gallery .gallery-thumb .blog-card-image-wrap .thumb-carousel {
+.markdown-gallery .retro-card .retro-card-media .thumb-carousel {
   position: relative !important;
   inset: auto !important;
   height: auto;
 }
 
-.markdown-gallery .gallery-thumb .blog-card-image-wrap .thumb-carousel-media {
+.markdown-gallery .retro-card .retro-card-media .thumb-carousel-media {
   position: relative !important;
   inset: auto !important;
   width: 100% !important;
@@ -167,9 +157,9 @@
    /* screenshots do: the accent border */
    /* one step darker than the panel, the 21:10 box, and the image contained on the */
    /* theme-tinted letterbox instead of on a card plate. Selectors outrank */
-   /* chrome/pixelChrome/frames.css, which frames every `.blog-card` by class. */
-.markdown-gallery .gallery-thumb.blog-inner-image-card,
-.markdown-gallery .gallery-project-item .gallery-thumb.blog-card {
+   /* chrome/pixelChrome/frames.css, which frames every `.retro-card` by class. */
+.markdown-gallery .retro-card.retro-card--media,
+.markdown-gallery .gallery-project-item .retro-card {
   background: transparent;
   border: var(--outline-width) solid
     color-mix(
@@ -184,19 +174,19 @@
   box-shadow: none;
 }
 
-.markdown-gallery .blog-inner-image-card .blog-card-image-wrap,
-.markdown-gallery .gallery-project-item .gallery-thumb .blog-card-image-wrap {
+.markdown-gallery .retro-card--media .retro-card-media,
+.markdown-gallery .gallery-project-item .retro-card .retro-card-media {
   background: transparent;
   max-height: var(--gallery-media-max-height);
   overflow: hidden;
 }
 
-.markdown-gallery .blog-inner-image-card .thumb-carousel,
-.markdown-gallery .gallery-project-item .gallery-thumb .thumb-carousel {
+.markdown-gallery .retro-card--media .thumb-carousel,
+.markdown-gallery .gallery-project-item .retro-card .thumb-carousel {
   height: auto;
 }
 
-.markdown-gallery .blog-card-image-wrap .thumb-carousel-media {
+.markdown-gallery .retro-card-media .thumb-carousel-media {
   height: 100% !important;
   max-height: var(--gallery-media-max-height) !important;
   /* The letterbox stays black, matching every other gallery picture. */
@@ -205,7 +195,7 @@
 }
 
 /* Iframes in multi-image blog galleries need absolute positioning. */
-.markdown-gallery .blog-card-image-wrap .thumb-carousel-frame {
+.markdown-gallery .retro-card-media .thumb-carousel-frame {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
@@ -216,29 +206,29 @@
 }
 
 
-.markdown-gallery .gallery-thumb:hover .thumb-carousel-media.active,
-.markdown-gallery .gallery-thumb:focus-visible .thumb-carousel-media.active {
+.markdown-gallery .retro-card:hover .thumb-carousel-media.active,
+.markdown-gallery .retro-card:focus-visible .thumb-carousel-media.active {
   transform: none !important;
   filter: none !important;
 }
 
-.blog-inner-image-card {
-  width: min(100%, var(--gallery-blog-card-width));
-  max-width: var(--gallery-blog-card-width);
+.retro-card--media {
+  width: min(100%, var(--gallery-strip-card-width));
+  max-width: var(--gallery-strip-card-width);
   height: var(--gallery-card-height);
   margin-inline: auto;
 }
 
-/* When blog-inner-image-card sits inside a markdown gallery, the gallery's own */
+/* When retro-card--media sits inside a markdown gallery, the gallery's own */
    /* width rules (the carousel slide or the single-gallery clamp) control the card. */
    /* The standalone 42rem width would otherwise stretch the card to the full reading */
    /* column and defeat the listing-page consistency. */
-.markdown-gallery .blog-inner-image-card {
+.markdown-gallery .retro-card--media {
   width: auto;
   max-width: none;
 }
 
-.blog-inner-image-card .blog-card-image-wrap {
+.retro-card--media .retro-card-media {
   min-height: 0;
   max-height: var(--gallery-media-max-height);
   height: auto;
@@ -247,7 +237,7 @@
   flex: 0 0 auto;
 }
 
-.blog-inner-image-card .thumb-carousel {
+.retro-card--media .thumb-carousel {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -255,7 +245,7 @@
   overflow: hidden;
 }
 
-.blog-inner-image-card .thumb-carousel-media {
+.retro-card--media .thumb-carousel-media {
   position: static;
   inset: auto;
   width: 100%;
@@ -270,8 +260,8 @@
 }
 
 /* Videos and iframes in blog inner cards need absolute positioning to fill the carousel frame. */
-.blog-inner-image-card .thumb-carousel-video,
-.blog-inner-image-card .thumb-carousel-frame {
+.retro-card--media .thumb-carousel-video,
+.retro-card--media .thumb-carousel-frame {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
@@ -282,17 +272,17 @@
 }
 
 @media (max-width: 767px) {
-  .blog-inner-image-card {
+  .retro-card--media {
     width: var(--gallery-phone-max-width);
     max-width: var(--gallery-phone-max-width);
   }
 
-  .markdown-gallery .blog-inner-image-card {
+  .markdown-gallery .retro-card--media {
     width: auto;
     max-width: none;
   }
 
-  .markdown-gallery .gallery-thumb {
+  .markdown-gallery .retro-card {
     width: var(--gallery-phone-max-width) !important;
     max-width: var(--gallery-phone-max-width) !important;
   }
@@ -303,18 +293,18 @@
     flex: 0 0 var(--gallery-phone-max-width);
   }
 
-  .markdown-gallery--single .gallery-thumb {
+  .markdown-gallery--single .retro-card {
     width: var(--gallery-phone-max-width);
     max-width: var(--gallery-phone-max-width);
   }
 }
 
-.blog-inner-image-card .thumb-overlay {
+.retro-card--media .thumb-overlay {
   opacity: 1;
   transition: opacity 320ms var(--ease-soft);
 }
 
-.blog-inner-image-card:hover .thumb-overlay {
+.retro-card--media:hover .thumb-overlay {
   opacity: 0.4;
 }
 
@@ -334,8 +324,8 @@
   flex: 0 0 100%;
 }
 
-.markdown-gallery--single .gallery-project-item .blog-card,
-.markdown-gallery--single .gallery-project-item .gallery-thumb {
+.markdown-gallery--single .gallery-project-item .retro-card,
+.markdown-gallery--single .gallery-project-item .retro-card {
   display: flex !important;
   flex-direction: column !important;
   height: var(--gallery-card-height) !important;
@@ -343,14 +333,14 @@
   min-height: var(--gallery-card-height) !important;
 }
 
-.markdown-gallery--single .gallery-thumb {
-  width: var(--gallery-blog-card-width);
-  max-width: var(--gallery-blog-card-width);
+.markdown-gallery--single .retro-card {
+  width: var(--gallery-strip-card-width);
+  max-width: var(--gallery-strip-card-width);
   height: var(--gallery-card-height);
   margin-inline: auto;
 }
 
-.markdown-gallery--single .blog-card-image-wrap {
+.markdown-gallery--single .retro-card-media {
   background: transparent;
   min-height: 0;
   max-height: var(--gallery-media-max-height);
@@ -363,7 +353,7 @@
   transition: opacity 320ms var(--ease-soft);
 }
 
-.markdown-gallery--single .gallery-thumb:hover .thumb-overlay {
+.markdown-gallery--single .retro-card:hover .thumb-overlay {
   opacity: 0.4;
 }
 
@@ -374,7 +364,7 @@
 }
 
 /* Iframes in single-image blog galleries also need absolute positioning. */
-.markdown-gallery--single .blog-card-image-wrap .thumb-carousel-frame {
+.markdown-gallery--single .retro-card-media .thumb-carousel-frame {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
@@ -384,13 +374,16 @@
   box-shadow: none !important;
 }
 
-.markdown-gallery--single .gallery-thumb-desc {
+.markdown-gallery--single .retro-card-caption {
   font-size: clamp(0.576rem, 0.896vw, 0.864rem);
   line-height: 1.45;
 }
 
-.markdown-gallery .blog-card-info-bar,
-.markdown-gallery--single .blog-card-info-bar {
+/* The bar keeps its own height for a wrapping caption. Strip items are exempt */
+   /* in fact: card/retroCard.css wins this measure with `!important`, the way */
+   /* the old strip sheet used to win it from a later import. */
+.markdown-gallery .retro-card-info-bar,
+.markdown-gallery--single .retro-card-info-bar {
   min-height: 0;
   display: flex;
   align-items: flex-start;
@@ -410,8 +403,8 @@
    /* the bar down to a sliver and the words spilled out over the card, the frame */
    /* and the page. The bar now holds its own height and wraps; the artwork, which */
    /* already has `min-height: 0`, is what gives way when the card is short. */
-.markdown-gallery .gallery-thumb .blog-card-bar,
-.markdown-gallery .gallery-thumb .blog-card-info-bar {
+.markdown-gallery .retro-card .retro-card-bar,
+.markdown-gallery .retro-card .retro-card-info-bar {
   /* 0 0 auto, not 1 1 auto: the bar hugs its caption (which may wrap) */
      /* and never grows into the card's leftover space — see the `0 0 auto` */
      /* rule at the bottom of this file, which already outranks this one. */
@@ -421,8 +414,8 @@
   flex-direction: column;
 }
 
-.markdown-gallery .gallery-thumb-desc,
-.markdown-gallery--single .gallery-thumb-desc {
+.markdown-gallery .retro-card-caption,
+.markdown-gallery--single .retro-card-caption {
   font-size: 0.9rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -443,13 +436,13 @@
 }
 
 /* The slide zooms and brightens on hover. */
-.gallery-thumb:hover .thumb-carousel-media.active {
+.retro-card:hover .thumb-carousel-media.active {
   transform: scale(1.05);
   filter: brightness(1.1);
 }
 
-.markdown-gallery .gallery-thumb:hover .thumb-carousel-media.active,
-.markdown-gallery .gallery-thumb:focus-visible .thumb-carousel-media.active {
+.markdown-gallery .retro-card:hover .thumb-carousel-media.active,
+.markdown-gallery .retro-card:focus-visible .thumb-carousel-media.active {
   transform: none !important;
   filter: none !important;
 }
@@ -468,7 +461,7 @@
   z-index: 1;
 }
 
-.gallery-thumb:hover .thumb-overlay {
+.retro-card:hover .thumb-overlay {
   opacity: 0.4;
 }
 
@@ -484,8 +477,8 @@ html body .markdown-gallery.markdown-gallery--single {
 }
 
 html body .markdown-gallery.markdown-gallery--single .gallery-project-item,
-html body .markdown-gallery.markdown-gallery--single .gallery-thumb,
-html body .markdown-gallery.markdown-gallery--single .blog-card {
+html body .markdown-gallery.markdown-gallery--single .retro-card,
+html body .markdown-gallery.markdown-gallery--single .retro-card {
   flex: 0 0 auto !important;
   width: fit-content !important;
   max-width: min(100%, 50vw) !important;
@@ -494,7 +487,7 @@ html body .markdown-gallery.markdown-gallery--single .blog-card {
   max-height: none !important;
 }
 
-html body .markdown-gallery.markdown-gallery--single .blog-card-image-wrap,
+html body .markdown-gallery.markdown-gallery--single .retro-card-media,
 html body .markdown-gallery.markdown-gallery--single .thumb-carousel {
   width: auto !important;
   max-width: 100% !important;
@@ -512,7 +505,7 @@ html body .markdown-gallery.markdown-gallery--single .thumb-carousel-img {
 /* Videos and embeds have no intrinsic width to shrink to, so a single one */
    /* takes the full cap with a 16:9 frame. */
 html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, .thumb-carousel-video),
-html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, .thumb-carousel-video) :is(.gallery-project-item, .gallery-thumb, .blog-card, .blog-card-image-wrap, .thumb-carousel) {
+html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, .thumb-carousel-video) :is(.gallery-project-item, .retro-card, .retro-card, .retro-card-media, .thumb-carousel) {
   width: min(100%, 50vw) !important;
 }
 
@@ -551,8 +544,8 @@ html body .markdown-gallery:not(.markdown-gallery--single) {
 }
 
 html body .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item,
-html body .markdown-gallery:not(.markdown-gallery--single) .gallery-thumb,
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card {
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card,
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card {
   max-width: 100% !important;
   min-width: 0 !important;
 }
@@ -568,14 +561,14 @@ html body .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item
   height: auto !important;
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .gallery-thumb,
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card {
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card,
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card {
   height: 100% !important;
   min-height: 0 !important;
   max-height: none !important;
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap,
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card-media,
 html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel {
   flex: 0 0 auto !important;
   height: auto !important;
@@ -586,14 +579,14 @@ html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel:has(.
   aspect-ratio: var(--embed-aspect-ratio);
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-info-bar {
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card-info-bar {
   flex: 1 1 auto !important;
 }
 
 /* Multi-item galleries: the media box is 30% shorter than the old */
    /* var(--gallery-media-max-height) and the whole picture is shown (contain), */
    /* letterboxed on black. */
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap,
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card-media,
 html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel {
   height: var(--gallery-media-min-height) !important;
   aspect-ratio: auto !important;
@@ -616,8 +609,8 @@ html body .markdown-gallery .gallery-project-item {
   max-height: none !important;
 }
 
-html body .markdown-gallery .gallery-thumb,
-html body .markdown-gallery .blog-card {
+html body .markdown-gallery .retro-card,
+html body .markdown-gallery .retro-card {
   display: flex !important;
   flex-direction: column !important;
   height: auto !important;
@@ -626,12 +619,12 @@ html body .markdown-gallery .blog-card {
   overflow: visible !important;
 }
 
-html body .markdown-gallery .blog-card-image-wrap {
+html body .markdown-gallery .retro-card-media {
   flex-shrink: 0 !important;
   position: relative !important;
 }
 
-html body .markdown-gallery .blog-card-info-bar {
+html body .markdown-gallery .retro-card-info-bar {
   position: relative !important;
   inset: auto !important;
   transform: none !important;
@@ -643,13 +636,13 @@ html body .markdown-gallery .blog-card-info-bar {
    /* media box takes any extra card height (cards in a strip match the tallest), */
    /* so spare space goes to the picture instead of to an empty banner. The */
    /* clamp() below is the media box's minimum, not a fixed size. */
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-info-bar {
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card-info-bar {
   /* The banner never stretches: it is exactly as tall as its wrapped caption, */
      /* and the media box (flex 1 1 auto below) takes any extra card height. */
   flex: 0 0 auto !important;
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap {
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card-media {
   flex: 1 1 auto !important;
   height: auto !important;
   min-height: var(--gallery-media-min-height) !important;
@@ -657,13 +650,13 @@ html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap
   flex-direction: column !important;
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap .thumb-carousel {
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card-media .thumb-carousel {
   flex: 1 1 auto !important;
   height: auto !important;
   min-height: 0 !important;
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .blog-card-image-wrap .thumb-carousel-media {
+html body .markdown-gallery:not(.markdown-gallery--single) .retro-card-media .thumb-carousel-media {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
@@ -680,8 +673,8 @@ html body .markdown-gallery {
   --gallery-deadspace: var(--time-black, #000);
 }
 
-html body .markdown-gallery .gallery-thumb.blog-card,
-html body .markdown-gallery .blog-card-image-wrap,
+html body .markdown-gallery .retro-card.retro-card,
+html body .markdown-gallery .retro-card-media,
 html body .markdown-gallery .thumb-carousel,
 html body .markdown-gallery .thumb-carousel-media {
   background: var(--gallery-deadspace) !important;
@@ -727,8 +720,8 @@ html body .project-gallery .thumb-carousel-media {
   html body .markdown-gallery.markdown-gallery--single,
   html body .markdown-gallery.markdown-gallery--single :is(
       .gallery-project-item,
-      .gallery-thumb,
-      .blog-card
+      .retro-card,
+      .retro-card
     ) {
     max-width: 100% !important;
   }
@@ -754,8 +747,8 @@ html body .project-gallery .thumb-carousel-media {
       .gallery-thumbnails-wrapper,
       .gallery-thumbnails,
       .gallery-project-item,
-      .gallery-thumb,
-      .blog-card
+      .retro-card,
+      .retro-card
     ) {
     width: 100% !important;
     max-width: 100% !important;
@@ -769,13 +762,13 @@ html body .project-gallery .thumb-carousel-media {
      /* is 403px beside a 952px column on a desktop and 123px beside a 290px one */
      /* on a phone, so a contained picture was left with black bars on all four */
      /* sides of a box twice its height. */
-  html body .markdown-gallery.markdown-gallery--single .blog-card-image-wrap,
+  html body .markdown-gallery.markdown-gallery--single .retro-card-media,
   html body .markdown-gallery.markdown-gallery--single .thumb-carousel,
   html body .markdown-gallery.markdown-gallery--single .thumb-carousel-img,
   html body
     .markdown-gallery--single
-    .gallery-thumb
-    .blog-card-image-wrap
+    .retro-card
+    .retro-card-media
     .thumb-carousel-media {
     height: auto !important;
     max-height: none !important;
@@ -794,9 +787,9 @@ html body .project-gallery .thumb-carousel-media {
     )
     :is(
       .gallery-project-item,
-      .gallery-thumb,
-      .blog-card,
-      .blog-card-image-wrap,
+      .retro-card,
+      .retro-card,
+      .retro-card-media,
       .thumb-carousel
     ) {
     width: 100% !important;

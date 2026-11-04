@@ -93,7 +93,7 @@
   flex: 0 0 auto;
 }
 
-:root[data-view="desktop"] .page-card {
+:root[data-view="desktop"] .retro-card--landing {
   /* Same token as cards/pageCards.css, so both views agree on the size. */
   height: var(--listing-card-height);
   max-height: var(--listing-card-height);
@@ -122,10 +122,10 @@
 
   /* Cards: title and the gaps around the button tighten, which is what keeps */
      /* the card from being taller than the space left under the hero. */
-  #landing-content .page-card .blog-card-title {
+  #landing-content .retro-card--landing .retro-card-title {
     font-size: clamp(1.05rem, 1.6vw, 1.3rem);
   }
-  #landing-content .page-card .blog-card-desc {
+  #landing-content .retro-card--landing .retro-card-desc {
     margin-top: 0.25rem;
   }
   #landing-content .page-card-action {

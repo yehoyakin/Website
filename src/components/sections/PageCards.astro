@@ -1,6 +1,6 @@
 ---
 // Purpose: Component - src/components/sections/PageCards.astro (The site's pages as cards)
-// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/cards/pageCards.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/blogCard/blogCardTile.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/card/pageCards.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/card/retroCard.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css
 //
 // The landing used to be a hard-coded split: a left half and a right half, and
 // adding a page meant editing that markup and the component's props. It is a
@@ -40,29 +40,29 @@ const { pages = [], credits = [] } = Astro.props as Props;
             <li>
               <a
                 href={page.href}
-                class="page-card blog-card pixel-frame"
+                class="retro-card--landing retro-card pixel-frame"
                 style={`--project-tag-color: ${themeToken}; --project-tag-color-dark: var(--theme-${themeName}-dark); --thumb-theme-color: ${themeToken}; --plate-pattern: url('${patternForTheme(themeName)}')`}
               >
                 {/* META BAR — the card's own label, where a post shows its date. */}
-                <div class="blog-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
-                  <span class="thumb-tag">{page.tag}</span>
+                <div class="retro-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
+                  <span class="retro-card-meta">{page.tag}</span>
                 </div>
 
                 {/* ARTWORK */}
-                <div class="blog-card-image-wrap">
+                <div class="retro-card-media">
                   <div
                     class="mode-art"
                     style={artStyle}
                     role="img"
                     aria-label={page.title}
                   />
-                  <div class="blog-card-overlay" />
+                  <div class="retro-card-overlay" />
                 </div>
 
                 {/* COPY BAR — title, description, call to action. */}
-                <div class="blog-card-bar blog-card-info-bar pattern-plate pattern-plate--small">
-                  <h2 class="blog-card-title">{page.title}</h2>
-                  <p class="blog-card-desc">{page.description}</p>
+                <div class="retro-card-bar retro-card-info-bar pattern-plate pattern-plate--small">
+                  <h2 class="retro-card-title">{page.title}</h2>
+                  <p class="retro-card-desc">{page.description}</p>
                   <span
                     class="split-card-action page-card-action"
                     data-link-theme={themeName || undefined}
