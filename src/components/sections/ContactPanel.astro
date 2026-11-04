@@ -28,11 +28,12 @@ const links = [
   id="contacts"
   label="Toggle contact links"
   icon="contacts"
-  /* Same plate as a project's links panel (chrome/pixelChrome/linkPanels.css): the pixel frame and the white motif, tinted by the mode base colour, so the panel follows day / night rather than a theme. */
-  style={`--project-tag-color: var(--icon-accent); --plate-pattern: url('${patternForTheme("white")}')`}
-  panelClass="links-panel w-56"
+  /* The same plate as a post's links panel (chrome/pixelChrome/linkPanels.css): the pixel frame and the white motif, tinted by the mode base colour, so the panel follows day / night rather than a page theme. The dark half is a real shade of the accent, so the frame and the chips band the way the themed panels do. */
+  style={`--project-tag-color: var(--icon-accent); --project-tag-color-dark: color-mix(in srgb, var(--icon-accent) 55%, var(--time-black)); --plate-pattern: url('${patternForTheme("white")}')`}
+  /* Same panel shape as the post's links rail: the scroll-capped plate at the same width, and the buttons in one merged column of full-width chips. */
+  panelClass="links-panel links-panel--scroll w-80"
 >
-  <div class="links-panel-links">
+  <div class="links-panel-links links-panel-links--merged">
     {
       links.map((link) => (
         <SocialLink
@@ -41,8 +42,7 @@ const links = [
           external={link.external}
           icon={link.icon}
           tinted
-          /* The accent, not a named theme: `--icon-accent` is the day colour by day and the night colour at night, so the tiles keep following the mode with the themed tile's white outline. */
-          style="--project-tag-color: var(--icon-accent); --project-tag-color-dark: var(--icon-accent)"
+          /* The accent pair above inherits in: `--icon-accent` is the day colour by day and the night colour at night, so the tiles keep following the mode with the themed tile's white outline. */
         />
       ))
     }
