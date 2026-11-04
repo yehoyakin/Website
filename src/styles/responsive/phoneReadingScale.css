@@ -5,11 +5,14 @@
   :is(#blog-content, .project-panel-body) p {
     text-align: left;
   }
-  /* The long-form body sits on a slightly larger mobile floor to match the
-     site-wide 2px scale bump without making the reading surface too dense. */
+  /* The long-form body reads at the pixel face's own 16px grid. It sat at
+     18px, which on a ~290px column came out at ~34 characters a line — a
+     90-character desktop paragraph reflowed into two and a half screens of
+     very large type. 16px is the floor the face is drawn on, so this is as
+     small as the copy can go and still land on whole pixels. */
   .compact-body {
-    font-size: 18px;
-    line-height: 1.52;
+    font-size: 16px;
+    line-height: 1.5;
   }
   :is(#blog-content, .project-panel-body) p {
     margin-top: 0;

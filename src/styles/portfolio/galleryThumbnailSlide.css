@@ -726,3 +726,92 @@ html body .project-gallery .thumb-carousel-media {
   background: var(--time-black, #000);
   object-position: center;
 }
+
+/* PHONES — a single picture takes the reading column, not half the screen.
+
+   The 50vw cap above is a desktop measure: half of a 1280px window is a wide
+   figure beside a 952px reading column. Half of a 390px phone is 195px — a
+   thumbnail centred in a 356px column, with the copy continuing around it, and
+   the letterboxed frame around the picture. The column is the measure at both
+   sizes, so on a phone the cap is the column's own width and the picture keeps
+   its aspect ratio inside it. */
+@media (max-width: 767px) {
+  html body .markdown-gallery.markdown-gallery--single,
+  html body .markdown-gallery.markdown-gallery--single :is(
+      .gallery-project-item,
+      .gallery-thumb,
+      .blog-card
+    ) {
+    max-width: 100% !important;
+  }
+
+  /* BIGGER THAN THE COPY — media takes the reading surface edge to edge.
+
+     On a phone the picture is the reason the page is being read, and the
+     reading column it used to share with the prose was inset by the surface's
+     padding on both sides. A single picture now gives that padding back and
+     spans the panel, while the copy stays inset — the one place on the site
+     where the media deliberately out-measures the text. `--reading-inset` is
+     the surface's own inline padding (article/articleReadingSurface.css, and
+     the project write-up panel for the same measure). */
+  html body .blog-article-body .markdown-gallery.markdown-gallery--single {
+    width: calc(100% + (var(--reading-inset, 0px) * 2)) !important;
+    max-width: calc(100% + (var(--reading-inset, 0px) * 2)) !important;
+    margin-inline: calc(-1 * var(--reading-inset, 0px)) !important;
+  }
+
+  html body
+    .blog-article-body
+    .markdown-gallery.markdown-gallery--single
+    :is(
+      .gallery-thumbnails-wrapper,
+      .gallery-thumbnails,
+      .gallery-project-item,
+      .gallery-thumb,
+      .blog-card
+    ) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  html body .markdown-gallery.markdown-gallery--single .thumb-carousel-img {
+    max-width: 100% !important;
+  }
+
+  /* The picture sets the frame's height here. `clamp(7rem, 31.5vw, 24.5rem)`
+     is 403px beside a 952px column on a desktop and 123px beside a 290px one
+     on a phone, so a contained picture was left with black bars on all four
+     sides of a box twice its height. */
+  html body .markdown-gallery.markdown-gallery--single .blog-card-image-wrap,
+  html body .markdown-gallery.markdown-gallery--single .thumb-carousel,
+  html body .markdown-gallery.markdown-gallery--single .thumb-carousel-img,
+  html body
+    .markdown-gallery--single
+    .gallery-thumb
+    .blog-card-image-wrap
+    .thumb-carousel-media {
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* A video or an embed has no natural width to shrink to: it fills the
+     column, in its 16:9 window. */
+  html body .markdown-gallery.markdown-gallery--single:has(
+      .thumb-carousel-frame,
+      .thumb-carousel-video
+    ),
+  html body
+    .markdown-gallery.markdown-gallery--single:has(
+      .thumb-carousel-frame,
+      .thumb-carousel-video
+    )
+    :is(
+      .gallery-project-item,
+      .gallery-thumb,
+      .blog-card,
+      .blog-card-image-wrap,
+      .thumb-carousel
+    ) {
+    width: 100% !important;
+  }
+}

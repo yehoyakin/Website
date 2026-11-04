@@ -178,3 +178,27 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   font-size: clamp(0.7rem, 1vw, 0.9rem);
   line-height: 1.25;
 }
+
+/* PHONES — the card sizes itself instead of taking half the screen.
+
+   `50dvh` is half a phone window for a card that is only ~86vw wide, and the
+   artwork is inset (contain) inside whatever height is left. On a 390x844
+   phone that made the picture box 303x281 for a 16:9 cover: ~100px of empty
+   plate above and below every card. Half a screen is the right card for a
+   landscape window; on a portrait phone the card takes the landing card's
+   shape instead — meta bar, a 16:10 picture, copy — and its height follows. */
+@media (max-width: 767px) {
+  .blog-cards-scroll .blog-card-item .blog-card,
+  .project-gallery:not(.markdown-gallery) .gallery-project-item .blog-card {
+    height: auto;
+    max-height: none;
+    min-height: 0;
+  }
+
+  .blog-cards-scroll .blog-card-item .blog-card-image-wrap,
+  .project-gallery:not(.markdown-gallery) .gallery-project-item .blog-card-image-wrap {
+    flex: 0 0 auto;
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+}

@@ -133,11 +133,16 @@ function nearHandle(rail, pointer) {
 }
 
 function nearRail(rail, pointer) {
-  return withinRect(
-    pointer.x,
-    pointer.y,
-    rail.getBoundingClientRect(),
-    HOVER_PAD_PX,
+  /* The rail's own box is only the handle: the panel is positioned against it
+     (styles/chrome/sideRails.css), so it has to be measured on its own — the
+     pointer is on the panel's content once the rail is open. */
+  const panel = rail.querySelector(".rail-panel");
+  const handle = handleFor(rail);
+
+  return [panel, handle].some(
+    (node) =>
+      node &&
+      withinRect(pointer.x, pointer.y, node.getBoundingClientRect(), HOVER_PAD_PX),
   );
 }
 

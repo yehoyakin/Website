@@ -45,6 +45,17 @@
   }
 }
 
+/* PHONES — the surface keeps its inline padding for the copy, and publishes
+   that number so media inside it can give the padding back and run to the
+   panel's edges (styles/portfolio/galleryThumbnailSlide.css). The copy stays
+   inset; the pictures do not. */
+@media (max-width: 767px) {
+  .blog-article-body,
+  .project-panel-body {
+    --reading-inset: 1rem;
+  }
+}
+
 @media (min-width: 1024px) {
   .blog-article-body,
   .project-panel-body {

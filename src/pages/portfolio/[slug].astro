@@ -976,13 +976,70 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       font-size: clamp(1.3rem, 4.6vw, 2rem) !important;
     }
 
+    /* ONE COLUMN. The desktop split (write-up beside the media) left a phone
+       track of ~119px: the write-up panel could not shrink below its own
+       min-content width (~192px), so it spilled out of its track and sat on
+       top of the gallery column instead of beside it. Stacked, each panel gets
+       the whole width, which is the measure the copy reads at on a phone. */
     .project-page-lower-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+      grid-template-columns: minmax(0, 1fr);
       gap: 0.8rem;
+    }
+
+    .project-page-left-stack,
+    .project-page-gallery-column,
+    :global(.project-page-content-panel) {
+      /* Grid items are min-content sized by default; these panels are text and
+         pictures, so they must be allowed to shave down to their track. */
+      min-width: 0;
     }
 
     .project-page-left-stack {
       gap: 0.65rem;
+    }
+
+    /* SLUG GALLERY — the picture sets the card's height.
+
+       The desktop cap (`clamp(11.3rem, 37.8vw, 30.4rem)`) is tuned for a column
+       beside the copy; across a phone's full width it is shorter than the
+       picture, so the media box was a letterbox with the screenshot cropped
+       into a shallow strip. Here the image keeps its own aspect ratio inside a
+       full-width card, captions included, exactly like the write-up's media.
+       A video or an embed has no ratio of its own, so those keep a 16:9
+       window. */
+    .project-page-gallery-plain .gallery-thumb,
+    .project-page-gallery-plain .blog-card {
+      height: auto !important;
+      max-height: none !important;
+      min-height: 0 !important;
+    }
+
+    .project-page-gallery-plain .blog-card-image-wrap,
+    .project-page-gallery-plain .thumb-carousel {
+      max-height: none !important;
+    }
+
+    .project-page-gallery-plain .blog-card-image-wrap:has(
+        .thumb-carousel-frame,
+        .thumb-carousel-video
+      ) {
+      aspect-ratio: 16 / 9;
+    }
+
+    .project-page-gallery-plain .blog-card-image-wrap img,
+    .project-page-gallery-plain .thumb-carousel-img {
+      max-height: none !important;
+      height: auto !important;
+    }
+
+    .project-page-gallery-plain .thumb-carousel-media:is(
+        .thumb-carousel-frame,
+        .thumb-carousel-video
+      ) {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
     }
 
     .project-page-description {
@@ -1008,8 +1065,14 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     }
 
     :global(.project-page-content-panel.compact-body) {
-      font-size: calc(0.72rem + 6px) !important;
-      line-height: 1.46 !important;
+      /* The same 16px grid the article's copy reads at; the write-up used to
+         sit a pixel or two above it, which made the two surfaces disagree on
+         exactly the page that shows both. */
+      font-size: 16px !important;
+      line-height: 1.5 !important;
+      /* This panel's own inline padding, published so gallery media inside it
+         can run to the panel's edges. */
+      --reading-inset: 0.9rem;
     }
   }
   /* The masthead plate is a tint of the project accent, so the tag cannot be

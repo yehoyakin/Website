@@ -149,7 +149,7 @@ The game's *main mechanic is the control of our two protagonists*, the ever happ
 The game's structure is that of chapters, which is required, given the storyline, this may upset completionists but to me, it was a breath of fresh air given the boom of open world games at that time.
 
 [scene[6],"John and Sam will have plenty of city life and roaming."]
-[scene[21],"Incredible detail on escenary, such as signs, billboards, every building is unique."]
+[scene[21],"Incredible detail on scenery, such as signs, billboards, every building is unique."]
 [scene[10],"The flamethrowers is always handy against miasma enemies."]
 
 ### Cooking
@@ -163,9 +163,9 @@ Cooking is a big part of the narrative, as it is an activity that brings people 
 
 ### Earthborn
 
-Earthborn is diagetic game, a turn-based rpg with a timer and random battles. It can be accessed from the very start of the game. While simple, not knowing or managing your resources correctly (mostly time) will quickly wear you down.
+Earthborn is diegetic game, a turn-based rpg with a timer and random battles. It can be accessed from the very start of the game. While simple, not knowing or managing your resources correctly (mostly time) will quickly wear you down.
 
-A pachinko-like mechanic allows to buy objects that yeild unique advantages while playing Earthborn, making it easier to finish. 
+A pachinko-like mechanic allows to buy objects that yield unique advantages while playing Earthborn, making it easier to finish. 
 
 An incredible detail to me is that this "mini-game" its completely recontextualized once the game finishes, its our story, but with a happier ending.
 
@@ -175,7 +175,7 @@ An incredible detail to me is that this "mini-game" its completely recontextuali
 
 [background[2]]
 
-While simple, the game's mechanics are polished, every input in the game feels impactful, all animations across the board(characters and enviroment), the damage types effects such when John or Sam are electrocuted and their skeletons flash a-la looney toons. 
+While simple, the game's mechanics are polished, every input in the game feels impactful, all animations across the board(characters and environment), the damage types effects such when John or Sam are electrocuted and their skeletons flash a-la looney toons. 
 
 Other aspects that are many times disregarded by some videogames such as the user interface's style, here are full of *the juice, a feel of polish and confidence*. Panels, menus, font, sound navigation, icons, everything is full style, a style that fits the aesthetic perfectly. 
 
@@ -183,15 +183,15 @@ The game even has an optional diegetic manual save system where a refrigerator h
 
 [scene[13,12], "From optional levels and upgrades, to stylish UI, there is care in every detail."]
 
-Eastward has incredible sound design and a heartwarmming soundtrack. **Joel Corelitz** *is compositon delivers a somehow retro and modern sound*, in a way that I can't put to technical explination, but only feel. The music fits every moment perfectly, from the exploration of ruins, an industrial complex, a busy town, a cold morning, or action sequences, there is no track missplaced in this game, especially during the story's most poigniant moments.
+Eastward has incredible sound design and a heartwarming soundtrack. **Joel Corelitz** *is composition delivers a somehow retro and modern sound*, in a way that I can't put to technical explanation, but only feel. The music fits every moment perfectly, from the exploration of ruins, an industrial complex, a busy town, a cold morning, or action sequences, there is no track missplaced in this game, especially during the story's most poigniant moments.
 
 Lastly I must mention the incredible use of lightning, time of day and weather, which accompany every scene and level perfectly.
 
-[scene[18,20], "Lightning is used to its full extent, to bring memorable scenes to life all thanks to pixpil's engine."]
+[scene[18,20], "Lightning is used to its full extent, to bring memorable scenes to life all thanks to Pixpil's engine."]
 
 # Their story
 
-The game's narrative begins with one of my favorite story-telling devices, *the story within the story*, in this case represented by a videogame (Earthborn) that our protagonist Sam is playing. Later on we realize that Earthborn's story mirrors our protagonist's journey. Afterwards we are dropped right in the middle of their lives, their past will unfold as we progress through the game. 
+The game's narrative begins with one of my favorite story-telling devices, *the story within the story*, in this case represented by a video-game (Earthborn) that our protagonist Sam is playing. Later on we realize that Earthborn's story mirrors our protagonist's journey. Afterwards we are dropped right in the middle of their lives, their past will unfold as we progress through the game. 
 
 [scene[22,23], "Plethora of cool and unique bosses all over this game."]
 
@@ -199,7 +199,7 @@ The plot is very lossesly held together; There is an overarching story but most 
 
 Most of these episodes within the game's chapters are there to give and breathe life into the world and the characters, if you are looking for a heavy plot and straight narrative you'll bounce off this game HARD. If you enjoy piecing together the story and world by paying attention to dialogues, character animations and level design this game is for you.
 
-[scene[0], "One of many train stations, love the Ghibli-eske look of this one."]
+[scene[0], "One of many train stations, love the Ghibli-esque look of this one."]
 [scene[1], "The in-game sunset give me a nostalgic mood that's hard to achieve in most games."]
 
 
@@ -211,7 +211,7 @@ I got to play this while lockdowns were still active, but I missed family relati
 
 3 years before the game's release, in 2018 I went abroad to study **film-making** in Argentina, *coincidentally travelling eastward* (from Chile). The day before travelling I accidentally bumped into many important people in my life, and got plenty of encouraging texts as well. That very night, the landlord of the place I would rent in Buenos Aires realized he had sold my spot, and so, I would have to find a new place. For a secluded guy like me it was a bit scary but I had to get my wits about me and manage it, I would be on my own. 
 
-[scene[19], "No joke, one of the landords I spoke to while looking for a place was smoking pot in his room and it was this thick with smoke."]
+[scene[19], "No joke, one of the landords I spoke to while looking for a place was smoking pot in his room, and it was this thick with smoke."]
 
 For a whole month I walked through Buenos Aires looking for a place to stay while also attending classes. Searching for a place to stay was a fight against time as I had very limited cash. 
 
@@ -226,13 +226,13 @@ And so I finished this game when I missed those I loved the most, and seeing mys
 
 # Closing up
 
-Pixpil released an expansion called **Octopia** which is farming sim, I haven't gotten around it yet, but I'm sure it won't dissapoint.
+Pixpil released an expansion called **Octopia** which is farming sim, I haven't gotten around it yet, but I'm sure it won't disappoint.
 
 Last year I bought the behind the scenes book of the game, it is a great read, full of inspiration, specially for game devs, highly recommended. 
 
 [scene[27,28], "Me with my super happy expression (no expression)"]
 
-Check the link's panel for different Eastward related info!
+Check the link's panel for different Eastward related info, but beware, sadly the game runs very very bad on high resolution devices, my OLED monitor with 240hz and a 4090 get stuttered like crazy, sadly, but a reduction of resolution will help a bit, I just wish it had proper support.
 
 
 
