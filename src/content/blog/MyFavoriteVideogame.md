@@ -124,7 +124,7 @@ Once in a while you get to play a game that just "clicks" with you, it is just w
 
 [background[0]]
 
-[scene[16]
+[scene[16]]
 
 Developed by **Pixpil** and published by **Chucklefish**, the first trailer of this adventure game looked like it was ready to entertain me, feast my eyes, ears and pull at my heartstrings. 
 
@@ -228,7 +228,7 @@ And so I finished this game when I missed those I loved the most, and seeing mys
 
 Pixpil released an expansion called **Octopia** which is farming sim, I haven't gotten around it yet, but I'm sure it won't dissapoint.
 
-Last year I bought the behind the scenes book of the game, it is a great read, full of inspiration, specially for game devs, highly recommended.
+Last year I bought the behind the scenes book of the game, it is a great read, full of inspiration, specially for game devs, highly recommended. 
 
 [scene[27,28], "Me with my super happy expression (no expression)"]
 
