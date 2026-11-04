@@ -236,9 +236,17 @@
 :root:not([data-mode="night"]) .pattern-plate--ghost,
 :root[data-mode="night"] .pattern-plate--ghost {
   background-color: color-mix(in srgb, var(--plate-accent) 10%, transparent);
-  /* The shared screen grade rides ON the plate background, so the ghost's */
-     /* no-gradient override from the overlay era has to let it through. */
-  background-image: var(--page-lighting, none);
+  /* The general screen grade must NOT ride on this plate. The ghost IS the */
+     /* page's BACKGROUND band — a near-transparent layer whose surface is the */
+     /* backdrop artwork showing through it — so `var(--page-lighting)` painted */
+     /* the whole-window ramp straight over the artwork and graded the page */
+     /* background, which is not its job. `none` here beats the base */
+     /* `.pattern-plate` grade (this `:root … .pattern-plate--ghost` selector is */
+     /* more specific), so the background stays a clean accent wash. The panels */
+     /* sitting ON it — masthead, reading column, write-up — are separate */
+     /* `.pattern-plate`s that take the grade from the base rule untouched, so */
+     /* the rest of the page keeps its lighting. */
+  background-image: none;
   --plate-pattern-opacity: 0.1;
   --plate-pattern-shadow-opacity: 0.04;
 }
