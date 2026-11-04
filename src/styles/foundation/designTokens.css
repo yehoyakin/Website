@@ -117,6 +117,13 @@
   --listing-card-height: 50dvh;
 }
 
+/* Landing card height — one step under the listing card, so the landing pair */
+   /* fits one screen with the hero. Read by cards/pageCards.css and */
+   /* site/landingFit.css. */
+:root {
+  --landing-card-height: 44dvh;
+}
+
 /* Carousel slide width (shared by blog & gallery strips). */
 :root {
   --carousel-slide: min(100% - 3rem, 24rem);

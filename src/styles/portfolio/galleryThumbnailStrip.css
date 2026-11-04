@@ -18,11 +18,13 @@
   height: 0;
 }
 
+/* stretch, not flex-start: every slide in the row grows to the tallest card, */
+   /* which is what lets carouselLayout.css fill them to one height on phones. */
 .gallery-thumbnails {
   display: flex;
   gap: clamp(0.7rem, 1.3vw, 1.1rem);
   padding: 0 0.85rem;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: center;
   min-width: min-content;
 }

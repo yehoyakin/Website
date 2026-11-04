@@ -86,13 +86,14 @@
   border-color: var(--outline-color-hover);
 }
 
-/* Landing page cards match the blog card height exactly (50dvh) inside a */
-   /* container of natural width. Cards are compact, not stretched to fill the */
-   /* remaining viewport space. */
+/* Landing cards are one step under the listing strip's 50dvh — see */
+   /* --landing-card-height in file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/designTokens.css */
+   /* — so the pair fits one screen with the hero. Both listings and landing */
+   /* read the same token, so the size stays consistent across views. */
 @media (min-width: 40rem) {
   .page-card {
-    height: 44dvh;
-    max-height: 44dvh;
+    height: var(--landing-card-height);
+    max-height: var(--landing-card-height);
   }
 }
 
