@@ -205,9 +205,11 @@ const matchFile = (dir: string, wanted: string): string => {
 /**
  * Resolves an icon name to a path inside public/, in the given colour.
  *
- * Returns undefined when the name is not in the registry. Inputs that already
- * look like a path or file name are passed through, so one-off artwork can
- * still be referenced directly.
+ * A name in the generic set resolves per colour; a name it does not carry is
+ * tried against the brand glyphs below, so `icon: "github"` / `icon:
+ * "discord"` work exactly like the set's own names. Inputs that already look
+ * like a path or file name are passed through, so one-off artwork can still
+ * be referenced directly. Returns undefined only when no set knows the name.
  */
 export const iconPath = (
   name?: string,
@@ -226,7 +228,11 @@ export const iconPath = (
 
   const file = iconRegistry[normalizeIconName(trimmed) as IconName];
 
-  if (!file) return undefined;
+  // Not a generic-set name: a brand glyph answers the same ask, so content
+   // and components can name a network by meaning ("github", "discord")
+   // instead of repeating the artwork path. (netIconPath is declared below
+   // but only ever runs here, after the module is initialised.)
+  if (!file) return netIconPath(trimmed);
 
   const folder = isIconColor(color) ? color : defaultIconColor;
   const dir = `${ICON_DIRECTORY}/${folder}`;
@@ -260,7 +266,6 @@ export const netIconRegistry: Record<string, string> = {
   gamemaker: "GameMaker112",
   github: "github112",
   godot: "godot112",
-  gog: "gog112",
   instagram: "instagram112",
   itch: "itch112",
   kick: "kick112",
@@ -311,8 +316,9 @@ const netDomains: [string, string][] = [
   ["discord.gg", "discord"],
   ["discord.com", "discord"],
   ["github.com", "github"],
+  // No GOG glyph ships in the set (the gog112 file was never drawn), so the
+   // host gets no icon rather than a broken image.
   ["gitlab.com", ""],
-  ["gog.com", "gog"],
   ["linkedin.com", ""],
   ["pixiv.net", "pixiv"],
   ["bilibili.com", "bilibili"],

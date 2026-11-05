@@ -7,7 +7,6 @@
 // behaviour (scripts/railPanel.js), one stylesheet (chrome/sideRails.css).
 import SocialLink from "../shared/Link.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro
 import RailPanel from "../shared/RailPanel.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/RailPanel.astro
-import { netIconPath } from "../../config/icons";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/icons.ts
 import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
 
 // This panel is site chrome, not content, so it wears the MODE base colour
@@ -18,7 +17,7 @@ import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/Us
 
 const links = [
   { href: "mailto:joaquinignacio.herrerabriones@email.com", text: "Email", external: false, icon: "email" },
-  { href: "https://github.com/yehoyakin", text: "GitHub", external: true, icon: netIconPath("github") },
+  { href: "https://github.com/yehoyakin", text: "GitHub", external: true, icon: "github" },
   { href: "https://gitlab.com/yehoyakin", text: "GitLab", external: true, icon: "internet" },
   { href: "https://www.linkedin.com/in/joaquín-herrera-366b2a175", text: "LinkedIn", external: true, icon: "internet" }
 ];
