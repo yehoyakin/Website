@@ -1,5 +1,5 @@
 /* A lit tile: radial bloom under the top edge over a sinking fill. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 .retro-link.pixel-frame {
   --outline-color: var(--project-tag-color, var(--theme-main-day));
   --outline-color-hover: var(--outline-color);
@@ -61,8 +61,10 @@
    /* the bevel's own size (so the cut is exactly one pixel-art step at the */
    /* control's scale). The frame is clipped with the fill, which is what a */
    /* pixel-art corner looks like: the outline simply stops at the step. The */
-   /* bare chrome controls (day / night switch, view toggle, back arrow) are not */
-   /* in this list — they have no plate to cut. */
+   /* bare chrome controls (day / night switch, view toggle) are not in this list */
+   /* — they have no plate to cut. The back arrow used to be one of them; it now */
+   /* wears this family (`retro-link pixel-frame`), so its corners are cut here */
+   /* like every other button's. */
 .retro-link.pixel-frame {
   /* One step and a half of the bevel: at the control size the icon set's own */
      /* corner step, and still legible on a 20px phone button. */

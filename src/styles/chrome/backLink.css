@@ -1,31 +1,39 @@
-/* Back arrow: a bare chrome icon button fixed to the top-left corner, the */
-   /* left twin of the day / night switch (chrome/modeToggleSwitch.css). */
+/* Back arrow: the site's one themed button tile, fixed to the top-left */
+   /* corner — the left twin of the day / night switch */
+   /* (chrome/modeToggleSwitch.css). */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro */
 
-.back-link {
+/* The class chain repeats the button family's own selectors: the tile recipe */
+   /* in pixelChrome/buttons.css declares `position: relative` at two classes, */
+   /* and the pin below has to outrank it to keep the control in the corner. */
+.back-link.retro-link.pixel-frame {
   /* Chrome rail: top-left corner, on the same gutter as the right-hand */
      /* switch and contact rail — one row across from the day / night switch. */
   position: fixed;
   top: var(--chrome-gutter);
   left: var(--chrome-gutter);
   z-index: 60;
-  /* Site chrome, not page content: like the switch it is nothing but a glyph */
-     /* on the page ink. No plate, no frame, no theme — the box comes from the */
-     /* shared bare-icon recipe (pixelChrome/iconButtons.css, via the */
-     /* `icon-button` class on the markup) and the hover from the one shared */
-     /* button hover (pixelChrome/controlHover.css). */
-  color: var(--time-ink);
-  background: transparent;
   cursor: pointer;
   touch-action: manipulation;
+  /* THE CHROME BOX, RESTATED. The markup joins this control to the one button */
+     /* family (`retro-link pixel-frame` + `data-link-theme` in */
+     /* pixelChrome/buttons.css and tintedButtons.css), so the fill, frame, */
+     /* bevel, cut corners, hover and press all come from that recipe and are */
+     /* NOT re-declared here. But `.retro-link` sizes its box for a text label */
+     /* (min-height, padding-inline); this sheet imports after text/linkButtons.css, */
+     /* so the square below wins and the control keeps the shared chrome measure */
+     /* — the same size and top row as the toggles. */
+  width: var(--icon-button-size, 2.75rem);
+  height: var(--icon-button-size, 2.75rem);
+  padding: 0;
 }
 
-/* THE ARROW IS THE NAVIGATOR'S GLYPH. ◄ (U+25C4) drawn in the pixel face, */
-   /* exactly what the gallery's prev button shows (scripts/cardCarousel.js, */
-   /* carousel/carouselArrows.css) — no image artwork anywhere in the chrome. */
-   /* A fraction of the box, like the gallery arrow fills its square at every */
-   /* size; `line-height: 1` on a fixed box keeps the fallback face (used when */
-   /* the pixel font has no arrow) from growing the control. */
+/* THE ARROW IS ITS OWN GLYPH. ↩ (U+21A9, "return") drawn in the pixel face — */
+   /* deliberately NOT the navigator's ◄ / ▶ triangles (scripts/cardCarousel.js), */
+   /* so the corner control can never be read as the strip's prev button. A */
+   /* fraction of the box, like the gallery arrows fill their squares */
+   /* (carousel/carouselArrows.css); `line-height: 1` on the fixed box keeps the */
+   /* fallback face (used when the pixel font has no ↩) from growing the control. */
 .back-link-arrow {
   font-size: calc(var(--icon-button-size, 2.75rem) * 0.62);
   line-height: 1;

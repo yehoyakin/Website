@@ -1,5 +1,5 @@
 /* Per-theme tinted button plates. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
 
 .retro-link.pixel-frame {
   --plate-base: var(--project-tag-color, var(--theme-main-day));
@@ -48,15 +48,16 @@
    /* (chrome/pixelChrome/tileTokens.css). So the gradient was computed once with */
    /* the mode tint and inherited as a fixed picture: every button in the site lit */
    /* white by day and black at night, even inside a red project or a themed card. */
-   /* A button that carries the `data-link-theme` attribute (shared/Link.astro */
-   /* and the carousel's navigator buttons always set it, named or empty) */
+   /* A button that carries the `data-link-theme` attribute (shared/Link.astro, */
+   /* shared/BackLink.astro and the carousel's navigator buttons always set it, */
+   /* named or empty) */
    /* re-declares that recipe ON the button, where its own or inherited */
    /* `--project-tag-color` is in scope, and opts out of the mode swaps above */
    /* entirely: the same tile in day and night, a white pixel border, and white */
-   /* type over it. That is the ONE button visual — credits, contacts and the */
-   /* navigator all wear it. Bare chrome (the day / night switch, the view */
-   /* toggle, the back arrow) is a glyph on the page ink instead: it wears no */
-   /* tile at all, so no page theme can reach it either. */
+   /* type over it. That is the ONE button visual — credits, contacts, the */
+   /* navigator and the back arrow all wear it. The rest of the bare chrome (the */
+   /* day / night switch, the view toggle) is a glyph on the page ink instead: */
+   /* it wears no tile at all, so no page theme can reach it either. */
 :root[data-mode] .retro-link.pixel-frame[data-link-theme] {
   --link-tile: var(--project-tag-color, var(--theme-main-day));
   --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));

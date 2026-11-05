@@ -1,6 +1,6 @@
 ---
-// Purpose: Component - src/components/shared/BackLink.astro (Top-left back arrow: a bare chrome icon button, the left twin of the day / night switch)
-// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/backLink.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselArrows.css
+// Purpose: Component - src/components/shared/BackLink.astro (Top-left back arrow: the site's one themed button tile, the left twin of the day / night switch)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/backLink.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/buttons.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/tintedButtons.css
 
 interface Props {
   href?: string;
@@ -19,19 +19,19 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 // Prefer an explicit link when provided; otherwise fall back to the site root.
 const resolvedHref = href || baseUrl;
 
-// Site chrome, not page content: this is a bare glyph on the page ink, the
-   // same shape as the day / night switch — no plate, no frame, no theme.
-   // chrome/backLink.css fixes it to the top-left corner of the shared chrome
-   // gutter (directly across from that switch) and gives it the one bare-icon
-   // box (pixelChrome/iconButtons.css) plus the ink colour; the arrow itself
-   // is the gallery navigator's own glyph — ◄ drawn in the pixel face by
-   // scripts/cardCarousel.js — so the chrome carries no image artwork, and
-   // chrome/pixelChrome/controlHover.css gives it the one grow-and-shine
-   // hover every button shares.
-const classes = "back-link icon-button";
+// Site chrome wearing the site's ONE button visual: the themed gradient tile
+   // every button gets (`retro-link pixel-frame` + `data-link-theme`, the same
+   // recipe the Link panels use and the gallery navigator builds in
+   // scripts/cardCarousel.js). `icon-button` keeps the shared chrome box so it
+   // stays the same size and row as the day / night switch, and
+   // chrome/backLink.css pins it to the top-left corner and restates the
+   // square so the button family's label sizing cannot stretch it. The arrow
+   // is its own glyph — ↩ ("return"), deliberately NOT the navigator's ◄ / ▶
+   // triangles — so nobody mistakes the corner for the strip's prev button.
+const classes = "back-link retro-link pixel-frame icon-button";
 ---
 
-<a href={resolvedHref} class={classes} aria-label={text} title={text}>
-  {/* The same pointing triangle the carousel's prev button carries (scripts/cardCarousel.js); `text` is the screen-reader name, never shown. */}
-  <span class="back-link-arrow" aria-hidden="true">&#x25C4;</span>
+<a href={resolvedHref} class={classes} data-link-theme="" aria-label={text} title={text}>
+  {/* Its own return arrow, not the carousel's direction triangles (scripts/cardCarousel.js emits ◄ U+25C4 / ▶ U+25BA there); `text` is the screen-reader name, never shown. */}
+  <span class="back-link-arrow" aria-hidden="true">&#x21A9;</span>
 </a>
