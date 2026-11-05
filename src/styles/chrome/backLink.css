@@ -15,27 +15,35 @@
   z-index: 60;
   cursor: pointer;
   touch-action: manipulation;
-  /* THE CHROME BOX, RESTATED. The markup joins this control to the one button */
-     /* family (`retro-link pixel-frame` + `data-link-theme` in */
-     /* pixelChrome/buttons.css and tintedButtons.css), so the fill, frame, */
-     /* bevel, cut corners, hover and press all come from that recipe and are */
-     /* NOT re-declared here. But `.retro-link` sizes its box for a text label */
-     /* (min-height, padding-inline); this sheet imports after text/linkButtons.css, */
-     /* so the square below wins and the control keeps the shared chrome measure */
-     /* — the same size and top row as the toggles. */
-  width: var(--icon-button-size, 2.75rem);
-  height: var(--icon-button-size, 2.75rem);
+  /* THE NAVIGATOR'S OWN MEASURE. The gallery's squares size themselves with */
+     /* `--gallery-nav-size` (carousel/carouselArrows.css) — the identical */
+     /* formula text/linkButtons.css declares as `--link-button-height` on */
+     /* `.retro-link`, which this control now wears — so the tile is the same */
+     /* box as a navigator button at every width, including the phone step-down */
+     /* (65% of the chrome control less 6px: ~34px desktop, 20px phone, where */
+     /* the navigator hard-codes the same 1.25rem). The square is restated here */
+     /* because `.retro-link` sizes its box for a text label (min-height, */
+     /* padding-inline); this sheet imports after text/linkButtons.css, so the */
+     /* box below wins. Fill, frame, bevel, cut corners, hover and press all */
+     /* come from the one tile recipe (pixelChrome/buttons.css and */
+     /* tintedButtons.css) and are NOT re-declared here. */
+  width: var(--link-button-height, calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px));
+  height: var(--link-button-height, calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px));
   padding: 0;
 }
 
 /* THE ARROW IS ITS OWN GLYPH. ↩ (U+21A9, "return") drawn in the pixel face — */
    /* deliberately NOT the navigator's ◄ / ▶ triangles (scripts/cardCarousel.js), */
-   /* so the corner control can never be read as the strip's prev button. A */
-   /* fraction of the box, like the gallery arrows fill their squares */
-   /* (carousel/carouselArrows.css); `line-height: 1` on the fixed box keeps the */
-   /* fallback face (used when the pixel font has no ↩) from growing the control. */
+   /* so the corner control can never be read as the strip's prev button. */
+   /* A fraction of THIS box — the same 0.62 the gallery arrows use */
+   /* (carousel/carouselArrows.css) — so the glyph fills its square at every */
+   /* size; `line-height: 1` on the fixed box keeps the fallback face (used when */
+   /* the pixel font has no ↩) from growing the control. */
 .back-link-arrow {
-  font-size: calc(var(--icon-button-size, 2.75rem) * 0.62);
+  font-size: calc(
+    var(--link-button-height, calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px)) *
+      0.62
+  );
   line-height: 1;
 }
 
