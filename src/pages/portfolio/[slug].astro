@@ -596,7 +596,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
 <style>
   .project-page-shell {
-    max-width: 64rem;
+    max-width: var(--slug-page-measure);
     margin-inline: auto;
   }
 
@@ -610,7 +610,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
     gap: 0.9rem;
     align-items: start;
-    max-width: 64rem;
+    max-width: var(--slug-page-measure);
     margin-inline: auto;
   }
 

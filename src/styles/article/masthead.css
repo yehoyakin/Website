@@ -1,6 +1,7 @@
 /* The one masthead: accent strip, meta row, title, description — shared by */
-   /* the blog post header and the project write-up header (the old */
-   /* `.blog-masthead` / `.project-page-masthead` twins are gone). */
+   /* the blog post header and the project write-up header under the single */
+   /* `.retro-masthead` name set (the project's tighter type is the */
+   /* `--project` variant at the bottom of this sheet). */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Masthead.astro */
 
 .retro-masthead {

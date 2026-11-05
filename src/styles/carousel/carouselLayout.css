@@ -4,7 +4,8 @@
 /* THE ONE STRIP. Every carousel on the site — the blog and portfolio listings */
    /* and the slug galleries alike — is `.card-carousel` (the scroller), */
    /* `.card-carousel-track` (the row of slides) and `.card-carousel-item` (one */
-   /* slide). The old `.blog-cards-*` / `.gallery-thumbnails-*` twins are gone. */
+   /* slide). Listing and gallery strips differ only by modifiers */
+   /* (`.card-carousel--listing`, `.markdown-gallery`). */
 .card-carousel {
   width: 100%;
   padding: 0;

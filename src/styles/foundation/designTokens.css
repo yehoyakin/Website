@@ -147,3 +147,16 @@
 :root {
   --embed-aspect-ratio: 16 / 9;
 }
+
+/* The project write-up's measure — the shell and its lower grid stop at this */
+   /* width so the read stays one column wide on big screens */
+   /* (pages/portfolio/[slug].astro). */
+:root {
+  --slug-page-measure: 64rem;
+}
+
+/* Lightbox backdrop wash — the near-black scrim behind the expanded media */
+   /* (portfolio/galleryPanelShell.css). */
+:root {
+  --lightbox-backdrop: rgba(2, 6, 23, 0.83);
+}

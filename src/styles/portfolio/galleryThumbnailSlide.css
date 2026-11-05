@@ -793,11 +793,11 @@ html body .project-gallery .thumb-carousel-media {
    /* reading-column figure. Its wrapper `<section>` carries */
    /* `.markdown-gallery--full`, and the strip spans the whole media column at a */
    /* pinned card height instead of shrink-wrapping to the single-image 50vw cap a */
-   /* post uses. These are the rules the slug page used to scope to */
-   /* `.project-page-gallery-plain`; every selector stands in for the page's */
-   /* `[data-astro-cid]` with one extra `.markdown-gallery` class, so it keeps the */
-   /* same weight over (and under) the shared markdown-gallery recipe above as the */
-   /* scoped block had. */
+   /* post uses. These are the rules the slug page used to scope inside its own */
+   /* `<style>` block; every selector stands in for the page's `[data-astro-cid]` */
+   /* with one extra `.markdown-gallery` class, so it keeps the same weight over */
+   /* (and under) the shared markdown-gallery recipe above as the scoped block */
+   /* had. */
 .markdown-gallery--full {
   padding: 0;
   min-width: 0;

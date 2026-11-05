@@ -1,5 +1,5 @@
 /* Shared component baseline styles. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/LinkCard.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/404.astro */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/uiDictionary.ts (the `text-ui-*` classes are handed out as dictionary strings), file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/404.astro */
 
 .text-ui-base {
   color: var(--ui-base);
