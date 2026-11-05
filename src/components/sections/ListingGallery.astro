@@ -1,0 +1,61 @@
+---
+// Purpose: Component - src/components/sections/ListingGallery.astro (THE one listing gallery: the card-carousel strip both listing pages share, fed with posts or projects)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/cardCarousel.js
+//
+// ONE GALLERY, TWO COLLECTIONS.
+// The blog listing used to hand-roll this strip in the page and the portfolio
+// listing had a second gallery component of its own (ProjectGallery.astro)
+// with a duplicated card. Both pages now pass their collection HERE, and the
+// card is the shared BlogCard either way, so the two listings are literally
+// the same markup and cannot drift apart again. The look is the blog's: plain
+// `.card-carousel--listing` strip, no `.project-gallery` wrapper — that hook
+// belongs to the slug galleries' media tiles (portfolio/galleryThumbnailSlide.css),
+// not to a listing.
+import type { BlogPost } from "../../types/blog";
+import type { ProjectEntry } from "../../types/project";
+import BlogCard from "./BlogCard.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro
+
+interface Props {
+  // Exactly one of these feeds the strip: `posts` on the blog listing,
+  // `projects` on the portfolio listing.
+  posts?: BlogPost[];
+  projects?: ProjectEntry[];
+  // The navigator's accessible name (`data-carousel-label` below).
+  label: string;
+}
+
+const { posts, projects, label } = Astro.props as Props;
+
+const isPost = Boolean(posts);
+const entries = (posts ?? projects ?? []) as (BlogPost | ProjectEntry)[];
+---
+
+{/* `data-carousel-nav="on"` is this strip's own switch — see scripts/cardCarousel.js. It builds the arrow + numbered navigator and hides the browser's scrollbar for this strip (styles/carousel/carouselLayout.css). Set it to "off" to hand the strip back to the native scrollbar. */}
+<div
+  class="card-carousel card-carousel--listing"
+  data-carousel
+  data-carousel-nav="on"
+  data-carousel-item=".card-carousel-item"
+  data-carousel-label={label}
+>
+  <div class="card-carousel-track" data-carousel-track>
+    {
+      entries.map((entry) => (
+        <div class="card-carousel-item">
+          {isPost
+            ? <BlogCard post={entry as BlogPost} />
+            : <BlogCard project={entry as ProjectEntry} />}
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  import { initCardCarousels } from "../../scripts/cardCarousel.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/cardCarousel.js
+
+  // The strip is server-rendered above; build its controls on load. The module
+     // registers its own `astro:page-load` listener, so client-side navigations
+     // back to a listing rebuild them too.
+  initCardCarousels();
+</script>

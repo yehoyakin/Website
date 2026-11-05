@@ -1,11 +1,11 @@
 ---
 // Purpose: Page - src/pages/portfolio.astro (Portfolio listing)
-// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/listingMasthead.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/card/retroCard.css
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ListingGallery.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/listingMasthead.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/card/retroCard.css
 import MyLayout from "../layouts/MyLayout.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
 import Title from "../components/UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
 import Body from "../components/UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
 import BackLink from "../components/shared/BackLink.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro
-import ProjectGallery from "../components/sections/ProjectGallery.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro
+import ListingGallery from "../components/sections/ListingGallery.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ListingGallery.astro
 import PageBackdrop from "../components/shared/PageBackdrop.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro
 
 import { getCollection } from "astro:content";
@@ -53,7 +53,8 @@ const imagesToPreload = [bgDay, bgNight, ...cardPreviews];
         </Body>
 
         <div class="listing-gap">
-          <ProjectGallery projects={projects} />
+          {/* THE ONE LISTING GALLERY: the same component the blog listing feeds its posts through (sections/ListingGallery.astro) — the portfolio's own ProjectGallery.astro and its duplicated card are gone, so this strip is the blog's look by construction. */}
+          <ListingGallery projects={projects} label="Projects" />
         </div>
       </section>
     </div>

@@ -20,7 +20,7 @@
    /* `--project-tag-color` is the general day / night tint, so every themed card */
    /* inherited that tint and framed itself in the mode colour instead of its own */
    /* accent. These are declared on the frame itself, where the host's inline */
-   /* `--project-tag-color` (BlogCard, ProjectGallery, the article masthead, …) is */
+   /* `--project-tag-color` (BlogCard, the article masthead, …) is */
    /* already in scope — a themed surface frames itself in its theme, and an */
    /* unthemed one still falls back to the day / night tint. */
 .pixel-frame:not(.retro-link),

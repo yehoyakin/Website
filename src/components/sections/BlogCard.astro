@@ -15,10 +15,11 @@ import { asset } from "../../utils/asset";  // file:///C:/Users/UsuarioCompuElit
    // A post and a project carry the same things a card needs: a title, a
    // one-line description, an image and a theme. The portfolio therefore reuses
    // this component instead of keeping a card of its own, so both listings are
-   // literally the same markup and cannot drift apart again.
+   // literally the same markup and cannot drift apart again — both fed through
+   // the one gallery (sections/ListingGallery.astro).
    // The two differences live in the meta line and the destination:
      // blog post  date + calendar glyph, links to the article
-     // project    its engine / tool tag, links to its first store page
+     // project    its engine / tool tag, links to its write-up page
 type Props = {
   post?: BlogPost;
   project?: ProjectEntry;
@@ -30,8 +31,6 @@ if (!post && !project) {
   throw new Error("BlogCard needs a `post` or a `project`.");
 }
 
-const isExternal = (url: string) => /^https?:\/\//i.test(url);
-
 const themeName = toThemeName((post ?? project)!.data.theme);
 const dynamicToken = resolveThemeToken(themeName);
 
@@ -39,9 +38,10 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 
+// Both destinations are internal: the article, or the project's write-up.
 const href = post
   ? `${baseUrl}blog/${post.id}/`
-  : project!.data.links?.[0]?.href;
+  : `${baseUrl}portfolio/${project!.id}/`;
 
 const metaText = post
   ? new Date(post.data.date).toDateString()
@@ -53,11 +53,6 @@ const title = post ? post.data.title : project!.data.title;
 const description = post ? post.data.description : project!.data.description;
 const hasDescription = Boolean(description && description.trim().length > 0);
 
-// Without a destination (a project with no links) the card renders as a plain
-   // block: nothing that is not clickable should wear the link hover.
-const Tag = (href ? "a" : "div") as any;
-const external = href ? isExternal(href) : false;
-
 // The card's scrolling texture, in the entry's own theme colour. Declared on
    // the root so both bars inherit it; the drawing lives in
    // styles/chrome/pixelChrome.css under `.pattern-plate`.
@@ -68,13 +63,7 @@ const cardStyle = [
 ].join("; ");
 ---
 
-<Tag
-  href={href}
-  target={external ? "_blank" : undefined}
-  rel={external ? "noopener noreferrer" : undefined}
-  class="retro-card pixel-frame group"
-  style={cardStyle}
->
+<a href={href} class="retro-card pixel-frame group" style={cardStyle}>
   {/* TOP BAR - date, or the project's engine / tool tag */}
   <div class="retro-card-bar pattern-plate pattern-plate--small flex items-center gap-2">
     {metaIcon && <Icon name={metaIcon} theme={themeName} class="h-8 w-8" />}
@@ -120,4 +109,4 @@ const cardStyle = [
       </Body>
     </div>
   )}
-</Tag>
+</a>

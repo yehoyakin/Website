@@ -61,8 +61,8 @@ function initStrip(scroller) {
      /* Whether a strip gets an on-page navigator is no longer decided by the */
      /* site-wide `CUSTOM_CAROUSEL_CONTROLS` flag: each gallery opts in with */
      /* `data-carousel-nav="on"` on its own `[data-carousel]` strip. Every */
-     /* gallery on the site sets it — the blog and portfolio listings */
-     /* (blog.astro, ProjectGallery.astro) and the slug galleries */
+     /* gallery on the site sets it — both listings go through the one */
+     /* ListingGallery.astro strip and the slug galleries */
      /* (BlogContent.astro, portfolio/[slug].astro) alike. Strips that never ask */
      /* (the landing) build nothing and keep the browser's own scrollbar exactly */
      /* as before. To drop the arrows and the numbered index from a gallery */

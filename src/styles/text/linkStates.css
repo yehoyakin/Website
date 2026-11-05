@@ -1,5 +1,5 @@
 /* Button and card states: the grow on hover, the press on click. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
    /* These controls used to carry an idle wobble — `idleShake`, a ±2px jitter on a */
    /* 6s loop, the first one 2s after load. A listing page has a dozen of them and */
    /* they were all out of phase, so something on screen was always twitching while */

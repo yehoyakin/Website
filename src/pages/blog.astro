@@ -1,12 +1,12 @@
 ---
 // Purpose: Page - src/pages/blog.astro (Blog listing)
-// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselLayout.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/fluidTypeScale.css
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ListingGallery.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/site/fluidTypeScale.css
 import MyLayout from "../layouts/MyLayout.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
 import Title from "../components/UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
 import Body from "../components/UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
 import { getCollection } from "astro:content";
 import type { BlogPost } from "../types/blog";
-import BlogCard from "../components/sections/BlogCard.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro
+import ListingGallery from "../components/sections/ListingGallery.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ListingGallery.astro
 import BackLink from "../components/shared/BackLink.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro
 import PageBackdrop from "../components/shared/PageBackdrop.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro
 
@@ -62,36 +62,8 @@ const cardCovers = sortedPosts.map((post) => post.data.cardBackground).filter(Bo
 
       <div class="listing-gap"></div>
 
-      {
-        /* On phones this becomes a one-card-at-a-time carousel (see styles/responsive/responsive.css + scripts/cardCarousel.js). */
-      }
-      {/* `data-carousel-nav="on"` is this strip's own switch — see scripts/cardCarousel.js. It builds the arrow + numbered navigator and hides the browser's scrollbar for this strip (styles/carousel/carouselLayout.css). Set it to "off" to hand the strip back to the native scrollbar. */}
-      <div
-        class="card-carousel card-carousel--listing"
-        data-carousel
-        data-carousel-nav="on"
-        data-carousel-item=".card-carousel-item"
-        data-carousel-label="Blog posts"
-      >
-        <div class="card-carousel-track" data-carousel-track>
-          {
-            sortedPosts.map((post) => (
-              <div class="card-carousel-item">
-                <BlogCard post={post} />
-              </div>
-            ))
-          }
-        </div>
-      </div>
+      {/* THE ONE LISTING GALLERY: the strip, its navigator switch and the card are all ListingGallery.astro's — the portfolio passes its projects through the same component. On phones the strip becomes a one-card-at-a-time carousel (see styles/responsive/responsive.css + scripts/cardCarousel.js). */}
+      <ListingGallery posts={sortedPosts} label="Blog posts" />
     </section>
   </div>
-
-  <script>
-    import { initCardCarousels } from "../scripts/cardCarousel.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/cardCarousel.js
-
-    // The strip is server-rendered above; build its controls on load. The
-       // module registers its own `astro:page-load` listener, so client-side
-       // navigations back to the listing rebuild them too.
-    initCardCarousels();
-  </script>
 </MyLayout>
