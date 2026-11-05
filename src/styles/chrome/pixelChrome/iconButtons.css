@@ -19,7 +19,8 @@
 }
 
 /* ONE glyph size for every icon control — switch, rail handle, carousel */
-   /* arrows, back-link arrow. Set here, never by utility classes on a button. */
+   /* arrows. Set here, never by utility classes on a button. (The back arrow */
+   /* is text now, not artwork: see chrome/backLink.css.) */
 .mode-toggle-icon,
 .card-carousel-arrow img,
 .card-carousel-arrow .card-carousel-arrow-icon,

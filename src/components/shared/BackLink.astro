@@ -1,7 +1,6 @@
 ---
 // Purpose: Component - src/components/shared/BackLink.astro (Top-left back arrow: a bare chrome icon button, the left twin of the day / night switch)
-// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/backLink.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/iconButtons.css
-import Icon from "./Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/backLink.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/carousel/carouselArrows.css
 
 interface Props {
   href?: string;
@@ -23,15 +22,16 @@ const resolvedHref = href || baseUrl;
 // Site chrome, not page content: this is a bare glyph on the page ink, the
    // same shape as the day / night switch — no plate, no frame, no theme.
    // chrome/backLink.css fixes it to the top-left corner of the shared chrome
-   // gutter (directly across from that switch), pixelChrome/iconButtons.css
-   // gives it the one bare-icon box and glyph size, and
-   // chrome/pixelChrome/controlHover.css gives it the one grow-and-shine hover
-   // every button shares. The arrow stays unthemed so Icon.astro renders its
-   // day / night pair.
+   // gutter (directly across from that switch) and gives it the one bare-icon
+   // box (pixelChrome/iconButtons.css) plus the ink colour; the arrow itself
+   // is the gallery navigator's own glyph — ◄ drawn in the pixel face by
+   // scripts/cardCarousel.js — so the chrome carries no image artwork, and
+   // chrome/pixelChrome/controlHover.css gives it the one grow-and-shine
+   // hover every button shares.
 const classes = "back-link icon-button";
 ---
 
 <a href={resolvedHref} class={classes} aria-label={text} title={text}>
-  {/* The arrow is the set's `arrow-left` artwork at the shared chrome glyph size (chrome/pixelChrome/iconButtons.css); `text` is its screen-reader name, never shown. */}
-  <Icon name="arrow-left" class="chrome-icon" />
+  {/* The same pointing triangle the carousel's prev button carries (scripts/cardCarousel.js); `text` is the screen-reader name, never shown. */}
+  <span class="back-link-arrow" aria-hidden="true">&#x25C4;</span>
 </a>

@@ -10,14 +10,25 @@
   left: var(--chrome-gutter);
   z-index: 60;
   /* Site chrome, not page content: like the switch it is nothing but a glyph */
-     /* on the page ink. No plate, no frame, no theme — the box and glyph size */
-     /* come from the shared bare-icon recipe (pixelChrome/iconButtons.css, */
-     /* via the `icon-button` class on the markup) and the hover from the one */
-     /* shared button hover (pixelChrome/controlHover.css). */
+     /* on the page ink. No plate, no frame, no theme — the box comes from the */
+     /* shared bare-icon recipe (pixelChrome/iconButtons.css, via the */
+     /* `icon-button` class on the markup) and the hover from the one shared */
+     /* button hover (pixelChrome/controlHover.css). */
   color: var(--time-ink);
   background: transparent;
   cursor: pointer;
   touch-action: manipulation;
+}
+
+/* THE ARROW IS THE NAVIGATOR'S GLYPH. ◄ (U+25C4) drawn in the pixel face, */
+   /* exactly what the gallery's prev button shows (scripts/cardCarousel.js, */
+   /* carousel/carouselArrows.css) — no image artwork anywhere in the chrome. */
+   /* A fraction of the box, like the gallery arrow fills its square at every */
+   /* size; `line-height: 1` on a fixed box keeps the fallback face (used when */
+   /* the pixel font has no arrow) from growing the control. */
+.back-link-arrow {
+  font-size: calc(var(--icon-button-size, 2.75rem) * 0.62);
+  line-height: 1;
 }
 
 /* The same focus ring as the day / night switch. */
