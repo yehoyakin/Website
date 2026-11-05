@@ -118,7 +118,7 @@ function waitForMedia(gallery) {
 function equalizeGallery(gallery) {
   if (gallery.dataset.equalHeightReady === "true") return;
 
-  const items = gallery.querySelectorAll(".gallery-project-item");
+  const items = gallery.querySelectorAll(".card-carousel-item");
   if (items.length <= 1) {
     // Nothing to equalize; allow a later pass to re-check if items appear.
     gallery.dataset.equalHeightScheduled = "false";

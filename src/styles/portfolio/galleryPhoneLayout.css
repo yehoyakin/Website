@@ -2,7 +2,7 @@
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro */
 
 @media (max-width: 768px) {
-  .gallery-thumbnails {
+  .card-carousel-track {
     gap: 0.75rem;
     padding: 0 0.6rem;
   }
@@ -37,7 +37,7 @@
   .project-gallery .retro-card {
     transition: none !important;
   }
-  .gallery-project-item {
+  .card-carousel-item {
     transition: none !important;
   }
 }

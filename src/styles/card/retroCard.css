@@ -203,8 +203,7 @@
 
 /* SHORT-CARD CONTEXTS — a strip item and a landing card are both capped boxes, */
    /* so their copy is packed to the same measure wherever the card sits. */
-.blog-card-item .retro-card-desc,
-.gallery-project-item .retro-card-desc,
+.card-carousel-item .retro-card-desc,
 .retro-card--landing .retro-card-desc {
   margin-top: 0.2rem;
   font-size: var(--card-desc-size);
@@ -219,25 +218,21 @@
    /* tighten and the title steps down. See styles/carousel/carouselLayout.css */
    /* for the height cap itself. !important keeps these on top of the gallery */
    /* sheets, which used to win this measure from a later import. */
-.blog-card-item .retro-card-bar,
-.gallery-project-item .retro-card-bar {
+.card-carousel-item .retro-card-bar {
   padding: 0.3rem 0.9rem !important;
 }
 
-.blog-card-item .retro-card-info-bar,
-.gallery-project-item .retro-card-info-bar {
+.card-carousel-item .retro-card-info-bar {
   padding: 0.45rem 0.9rem 0.6rem !important;
 }
 
-.blog-card-item .retro-card-title,
-.gallery-project-item .retro-card-title {
+.card-carousel-item .retro-card-title {
   font-size: clamp(1.5rem, 2vw, 2.3rem);
   line-height: 1.15;
 }
 
 /* The meta line: 1.6 body leading is half the bar at card scale. */
-.blog-card-item .retro-card-meta,
-.gallery-project-item .retro-card-meta {
+.card-carousel-item .retro-card-meta {
   font-size: clamp(0.7rem, 1vw, 0.9rem);
   line-height: 1.25;
 }

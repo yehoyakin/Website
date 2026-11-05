@@ -570,14 +570,14 @@ const renderInlineMarkdown = (text: string) => {
           return (
             <div class="project-gallery markdown-gallery markdown-gallery--single" data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={siteBaseUrl}>
               {/* `data-carousel-nav="on"` is this gallery's own switch — see scripts/cardCarousel.js. Set it to "off" to hand the strip back to the browser's scrollbar. A one-slide strip builds nothing either way: the script stops before it. */}
-              <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-nav="on" data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
-                <div class="gallery-thumbnails" data-carousel-track>
+              <div class="card-carousel" data-carousel data-carousel-nav="on" data-carousel-item=".card-carousel-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+                <div class="card-carousel-track" data-carousel-track>
                   {images.map((image, index) => {
                     const titleText = image.alt?.trim();
                     const hasTitleText = Boolean(titleText && titleText.length > 0);
 
                     return (
-                      <div class="gallery-project-item">
+                      <div class="card-carousel-item">
                         <button
                           class="retro-card pixel-frame retro-card--media"
                           aria-label={hasTitleText ? `View ${titleText}` : `View image ${index + 1}`}
@@ -635,8 +635,8 @@ const renderInlineMarkdown = (text: string) => {
           return (
             <div class={`project-gallery markdown-gallery${isSingleGallery ? " markdown-gallery--single" : ""}`} data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={siteBaseUrl}>
               {/* `data-carousel-nav="on"` is this gallery's own switch — see scripts/cardCarousel.js. Set it to "off" to hand the strip back to the browser's scrollbar. */}
-              <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-nav="on" data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
-                <div class="gallery-thumbnails" data-carousel-track>
+              <div class="card-carousel" data-carousel data-carousel-nav="on" data-carousel-item=".card-carousel-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+                <div class="card-carousel-track" data-carousel-track>
                   {items.map((item, index) => {
                     const titleText = item.kind === "image" ? item.alt?.trim() : (item.title?.trim() || `Media ${index + 1}`);
                     const hasTitleText = Boolean(titleText && titleText.length > 0);
@@ -645,7 +645,7 @@ const renderInlineMarkdown = (text: string) => {
                     const lightboxAlt = item.kind === "image" ? item.alt : (item.title || `Media ${index + 1}`);
 
                     return (
-                      <div class="gallery-project-item">
+                      <div class="card-carousel-item">
                         <button
                           class="retro-card pixel-frame retro-card--media"
                           aria-label={hasTitleText ? `View ${titleText}` : `View media ${index + 1}`}

@@ -349,17 +349,17 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
               <div class="project-page-gallery-column">
               {mediaGroups.map((mediaItems) => (
               <div class="project-gallery-group">
-                <section class="project-page-gallery-plain" aria-label="Project media">
+                <section class="markdown-gallery--full" aria-label="Project media">
                   <div class={`project-gallery markdown-gallery${mediaItems.length === 1 ? " markdown-gallery--single" : ""}`} data-gallery-ready="false" data-icon-color={galleryThemeIconColor} data-site-base-url={baseUrl}>
                     {/* `data-carousel-nav="on"` is this gallery's own switch — see scripts/cardCarousel.js. Set it to "off" to hand the strip back to the browser's scrollbar. */}
-                    <div class="gallery-thumbnails-wrapper" data-carousel data-carousel-nav="on" data-carousel-item=".gallery-project-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
-                      <div class="gallery-thumbnails" data-carousel-track>
+                    <div class="card-carousel" data-carousel data-carousel-nav="on" data-carousel-item=".card-carousel-item" data-carousel-label="Gallery" data-icon-color={galleryThemeIconColor}>
+                      <div class="card-carousel-track" data-carousel-track>
                         {mediaItems.map((item, index) => {
                           const titleText = item.kind === "image" ? (item.alt ?? `${project.data.title} screenshot ${index + 1}`) : (item.title ?? `Media ${index + 1}`);
                           const hasTitleText = Boolean(titleText && titleText.length > 0);
 
                           return (
-                            <div class="gallery-project-item">
+                            <div class="card-carousel-item">
                               <button
                                 class="retro-card pixel-frame retro-card--media"
                                 aria-label={hasTitleText ? `View ${titleText}` : `View media ${index + 1}`}
@@ -764,121 +764,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     min-width: 0;
   }
 
-  .project-page-gallery-plain {
-    padding: 0;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  /* Project slug gallery: full-width cards with images at their natural */
-     /* aspect ratio. Images fill the width with object-fit: contain so the full */
-     /* image is visible without cropping or side deadspace. */
-  .project-page-gallery-plain .gallery-thumbnails {
-    --carousel-slide: 100%;
-  }
-
-  .project-page-gallery-plain .gallery-project-item {
-    flex: 0 0 var(--carousel-slide);
-    width: var(--carousel-slide);
-    max-width: none;
-  }
-
-  .project-page-gallery-plain .retro-card {
-    width: 100% !important;
-    height: var(--gallery-card-height) !important;
-    box-sizing: border-box;
-  }
-
-  /* Prevent the retro-card and its image wrap from overflowing. */
-  .project-page-gallery-plain .retro-card {
-    max-width: 100% !important;
-    box-sizing: border-box;
-    overflow: hidden;
-    height: var(--gallery-card-height) !important;
-    max-height: var(--gallery-card-height) !important;
-    min-height: var(--gallery-card-height) !important;
-    width: 100% !important;
-  }
-
-  .project-page-gallery-plain .retro-card-media {
-    max-width: 100% !important;
-    max-height: var(--gallery-media-max-height) !important;
-    overflow: hidden;
-    /* flex 1 1 auto, not 0 0 auto: the media box grows to swallow any card
-       height the equal-height pass has left over, so the caption banner is
-       always pushed flush to the card's bottom edge — exactly the behaviour a
-       post's gallery gets from `html body .markdown-gallery:not(--single)
-       .retro-card-media` in styles/portfolio/galleryThumbnailSlide.css.
-       With 0 0 auto the short-caption cards floated a gap under the banner and
-       the long-caption cards overflowed it. The box can shrink too (min-height
-       0), so a caption taller than the room allotted still fits. */
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .project-page-gallery-plain .markdown-gallery--single .retro-card-media {
-    /* THE SAME LIFT FOR A ONE-SLIDE GALLERY. The card above is pinned to */
-    /* `--gallery-card-height`, but the media box below it was capped at */
-    /* `--gallery-media-max-height` — a cap only the equal-height pass could */
-    /* outgrow, and a single-item gallery never runs that pass. The few pixels */
-    /* of leftover card fell UNDER the caption banner, so the banner floated */
-    /* above the card's bottom edge. With the cap lifted the media box grows to */
-    /* the card's full leftover height (flex 1 1 auto above) and lands the */
-    /* banner flush with the base, exactly like the multi-image strip below. */
-    max-height: none !important;
-  }
-
-  .project-page-gallery-plain .markdown-gallery:not(.markdown-gallery--single) .retro-card-media {
-    /* Lift the media cap in a multi-image strip so the box is free to grow to */
-    /* the card's full leftover height. That growth is what lands every caption */
-    /* banner on the bottom edge together — a post's gallery does the same with */
-    /* `max-height: none` in styles/portfolio/galleryThumbnailSlide.css. Left at */
-    /* var(--gallery-media-max-height), a short caption could only swell the box */
-    /* to the media's own maximum and still floated a few pixels above the base. */
-    max-height: none !important;
-  }
-
-  .project-page-gallery-plain .retro-card-info-bar {
-    /* The banner is only as tall as its (wrapping) caption — it must never */
-    /* swallow the card's leftover space; the image wrap above takes it. */
-    flex: 0 0 auto !important;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .project-page-gallery-plain .retro-card-media iframe,
-  .project-page-gallery-plain .retro-card-media video {
-    max-width: 100% !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-  }
-
-  .project-page-gallery-plain .retro-card-media img {
-    max-width: 100% !important;
-    max-height: var(--gallery-media-max-height) !important;
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-  }
-
-  .project-page-gallery-plain .thumb-carousel {
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .project-page-gallery-plain .thumb-carousel-media {
-    object-fit: contain !important;
-    max-height: var(--gallery-media-max-height) !important;
-    height: auto !important;
-  }
-
-  .project-page-gallery-plain .thumb-carousel-frame {
-    height: 100% !important;
-  }
+  /* The slug gallery's full-width sizing moved to the shared sheet */
+     /* (styles/portfolio/galleryThumbnailSlide.css) under `.markdown-gallery--full` */
+     /* — the one carousel family, no page-scoped !important stack. */
 
   /* The overlay's stage. The blog's panel sizes one <img>; this one is filled by */
      /* the script, so an embed needs its own shape. */
@@ -932,48 +820,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       gap: 0.65rem;
     }
 
-    /* SLUG GALLERY — the picture sets the card's height. */
-       /* The desktop cap (`clamp(11.3rem, 37.8vw, 30.4rem)`) is tuned for a column */
-       /* beside the copy; across a phone's full width it is shorter than the */
-       /* picture, so the media box was a letterbox with the screenshot cropped */
-       /* into a shallow strip. Here the image keeps its own aspect ratio inside a */
-       /* full-width card, captions included, exactly like the write-up's media. */
-       /* A video or an embed has no ratio of its own, so those keep a 16:9 */
-       /* window. */
-    .project-page-gallery-plain .retro-card,
-    .project-page-gallery-plain .retro-card {
-      height: auto !important;
-      max-height: none !important;
-      min-height: 0 !important;
-    }
-
-    .project-page-gallery-plain .retro-card-media,
-    .project-page-gallery-plain .thumb-carousel {
-      max-height: none !important;
-    }
-
-    .project-page-gallery-plain .retro-card-media:has(
-        .thumb-carousel-frame,
-        .thumb-carousel-video
-      ) {
-      aspect-ratio: var(--embed-aspect-ratio);
-    }
-
-    .project-page-gallery-plain .retro-card-media img,
-    .project-page-gallery-plain .thumb-carousel-img {
-      max-height: none !important;
-      height: auto !important;
-    }
-
-    .project-page-gallery-plain .thumb-carousel-media:is(
-        .thumb-carousel-frame,
-        .thumb-carousel-video
-      ) {
-      position: absolute !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-    }
+    /* The phone slug-gallery sizing (picture sets the card height) also moved */
+       /* to galleryThumbnailSlide.css under `.markdown-gallery--full`. */
 
     .project-page-description {
       margin-top: 0.35rem;

@@ -1,8 +1,12 @@
 /* Card carousels: one slide per view, snapping, peek, end spacers. */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 
-.blog-cards-wrapper,
-.gallery-thumbnails-wrapper {
+/* THE ONE STRIP. Every carousel on the site — the blog and portfolio listings */
+   /* and the slug galleries alike — is `.card-carousel` (the scroller), */
+   /* `.card-carousel-track` (the row of slides) and `.card-carousel-item` (one */
+   /* slide). The old `.blog-cards-*` / `.gallery-thumbnails-*` twins are gone. */
+.card-carousel {
+  width: 100%;
   padding: 0;
   overflow-x: auto;
   overflow-y: hidden;
@@ -10,10 +14,13 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  /* Galleries stack an expandable panel behind the strip; the scroller sits */
+     /* one layer above it. Harmless on a listing that has no such panel. */
+  position: relative;
+  z-index: 3;
 }
 
-.blog-cards-wrapper::-webkit-scrollbar,
-.gallery-thumbnails-wrapper::-webkit-scrollbar {
+.card-carousel::-webkit-scrollbar {
   display: none;
   height: 0;
 }
@@ -25,21 +32,21 @@
    /* selectors are keyed to the root attribute so they outrank every per-strip */
    /* rule elsewhere — including the markdown-gallery block that used to force its */
    /* scrollbar visible even while the custom controls were showing. */
-html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper) {
+html[data-carousel-controls="native"] .card-carousel {
   scrollbar-width: auto;
   scrollbar-color: color-mix(in srgb, var(--time-ink, #fff) 30%, transparent) transparent;
 }
 
-html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper)::-webkit-scrollbar {
+html[data-carousel-controls="native"] .card-carousel::-webkit-scrollbar {
   display: block;
   height: 0.625rem;
 }
 
-html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper)::-webkit-scrollbar-track {
+html[data-carousel-controls="native"] .card-carousel::-webkit-scrollbar-track {
   background: transparent;
 }
 
-html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper)::-webkit-scrollbar-thumb {
+html[data-carousel-controls="native"] .card-carousel::-webkit-scrollbar-thumb {
   background: color-mix(in srgb, var(--time-ink, #fff) 30%, transparent);
 }
 
@@ -49,26 +56,26 @@ html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnai
    /* blog and portfolio listings and the slug galleries alike): once the row */
    /* under the strip says where the content is, the browser's bar is the same */
    /* information twice, so it goes — for those strips only. The selector repeats */
-   /* the root attribute above and adds the classes, which is why it outranks the */
+   /* the root attribute above and adds the class, which is why it outranks the */
    /* native-scroller fallback without touching any strip that never asked for a */
    /* navigator. */
-html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper).has-carousel-nav {
+html[data-carousel-controls="native"] .card-carousel.has-carousel-nav {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-html[data-carousel-controls="native"] :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper).has-carousel-nav::-webkit-scrollbar {
+html[data-carousel-controls="native"] .card-carousel.has-carousel-nav::-webkit-scrollbar {
   display: none;
   height: 0;
 }
 
 /* Custom mode, the default: no native scrollbar anywhere. */
-html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper) {
+html:not([data-carousel-controls="native"]) .card-carousel {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-thumbnails-wrapper)::-webkit-scrollbar {
+html:not([data-carousel-controls="native"]) .card-carousel::-webkit-scrollbar {
   display: none;
   height: 0;
 }
@@ -78,8 +85,7 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
   scroll-snap-type: none;
 }
 
-.blog-cards-scroll,
-.gallery-thumbnails {
+.card-carousel-track {
   display: flex;
   align-items: stretch;
   min-width: 0;
@@ -89,26 +95,31 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
 }
 
 /* Slide width (--carousel-slide) is defined once in foundation/designTokens.css, */
-   /* so both carousels read alike. */
+   /* so every strip reads alike. */
 
 /* Spacers let the first and last slide centre like the middle ones. */
-.blog-cards-scroll::before,
-.blog-cards-scroll::after,
-.gallery-thumbnails::before,
-.gallery-thumbnails::after {
+.card-carousel-track::before,
+.card-carousel-track::after {
   content: "";
   flex: 0 0 calc((100% - var(--carousel-slide)) / 2 - 0.5rem);
   align-self: stretch;
   min-height: 1px;
 }
 
-.blog-card-item,
-.gallery-project-item {
+.card-carousel-item {
   flex: 0 0 var(--carousel-slide);
   width: var(--carousel-slide);
   max-width: none;
   scroll-snap-align: center;
   scroll-snap-stop: always;
+}
+
+/* A markdown gallery is not a peeking carousel: its slides size themselves */
+   /* (single-item clamp / natural aspect) and it never wants the end spacers, so */
+   /* they are dropped here — the rule the old thumbnail-strip sheet used to own. */
+.markdown-gallery .card-carousel-track::before,
+.markdown-gallery .card-carousel-track::after {
+  display: none;
 }
 
 /* Markdown galleries inside blog/project slugs control their own card width */
@@ -122,20 +133,18 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
    /* strip's controls under the fold. `50dvh` is half the window at every size */
    /* (360px at 720, 450 at 900, 540 at 1080) and the copy below is packed to fit */
    /* inside it — the PICTURE is what gives when the card is short. */
-.blog-card-item .retro-card,
-.gallery-project-item .retro-card {
+.card-carousel-item .retro-card {
   height: var(--listing-card-height);
   max-height: var(--listing-card-height);
 }
 
-.markdown-gallery .gallery-project-item .retro-card {
+.markdown-gallery .card-carousel-item .retro-card {
   height: auto !important;
   max-height: none !important;
   min-height: 0 !important;
 }
 
-.blog-card-item .retro-card-media,
-.gallery-project-item .retro-card-media {
+.card-carousel-item .retro-card-media {
   flex: 1 1 auto;
   /* The shared card floors the artwork at 4-14rem; in a capped card that floor */
      /* would push the copy out of the bottom. */
@@ -149,10 +158,9 @@ html:not([data-carousel-controls="native"]) :is(.blog-cards-wrapper, .gallery-th
    /* tall for a contain-fit cover (~100px of empty plate above and below the art), */
    /* which is why the token drops to a fixed card size there. The artwork wrap */
    /* still grows to absorb whatever height the copy bars leave over. See */
-   /* file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/designTokens.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailStrip.css. */
+   /* file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/designTokens.css. */
 @media (max-width: 767px) {
-  .blog-cards-scroll .blog-card-item .retro-card-media,
-  .project-gallery:not(.markdown-gallery) .gallery-project-item .retro-card-media {
+  .card-carousel--listing .card-carousel-item .retro-card-media {
     /* 16:10 is the preferred shape; grow so the artwork takes the spare height. */
     flex: 1 1 auto;
     min-height: 0;

@@ -24,13 +24,13 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 <div id="project-gallery" class="project-gallery">
   {/* `data-carousel-nav="on"` is this strip's own switch — see scripts/cardCarousel.js. It builds the arrow + numbered navigator and hides the browser's scrollbar for this strip (styles/carousel/carouselLayout.css). Set it to "off" to hand the strip back to the native scrollbar. */}
   <div
-    class="gallery-thumbnails-wrapper"
+    class="card-carousel card-carousel--listing"
     data-carousel
     data-carousel-nav="on"
-    data-carousel-item=".gallery-project-item"
+    data-carousel-item=".card-carousel-item"
     data-carousel-label="Projects"
   >
-    <div class="gallery-thumbnails" data-carousel-track>
+    <div class="card-carousel-track" data-carousel-track>
       {
         projects.map((project, index) => {
           const themeName = toThemeName(project.data.theme);
@@ -42,7 +42,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           );
 
           return (
-            <div class="gallery-project-item">
+            <div class="card-carousel-item">
               <a
                 href={projectHref}
                 class="retro-card pixel-frame group"

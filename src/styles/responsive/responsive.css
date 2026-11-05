@@ -14,8 +14,7 @@
    /* width. Otherwise the scrollbar is hidden. This ensures the gallery and page */
    /* content don't show a scrollbar when there's no horizontal overflow. */
 @supports (overflow: hidden) {
-  .blog-cards-wrapper,
-  .gallery-thumbnails-wrapper,
+  .card-carousel,
   [data-carousel-track] {
     scrollbar-width: auto;
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
@@ -34,8 +33,7 @@
 }
 
 @media (max-width: 767px) {
-  .blog-cards-wrapper,
-  .gallery-thumbnails-wrapper,
+  .card-carousel,
   [data-carousel-track] {
     scrollbar-width: auto;
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;

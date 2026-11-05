@@ -67,16 +67,16 @@ const cardCovers = sortedPosts.map((post) => post.data.cardBackground).filter(Bo
       }
       {/* `data-carousel-nav="on"` is this strip's own switch — see scripts/cardCarousel.js. It builds the arrow + numbered navigator and hides the browser's scrollbar for this strip (styles/carousel/carouselLayout.css). Set it to "off" to hand the strip back to the native scrollbar. */}
       <div
-        class="blog-cards-wrapper"
+        class="card-carousel card-carousel--listing"
         data-carousel
         data-carousel-nav="on"
-        data-carousel-item=".blog-card-item"
+        data-carousel-item=".card-carousel-item"
         data-carousel-label="Blog posts"
       >
-        <div class="blog-cards-scroll" data-carousel-track>
+        <div class="card-carousel-track" data-carousel-track>
           {
             sortedPosts.map((post) => (
-              <div class="blog-card-item">
+              <div class="card-carousel-item">
                 <BlogCard post={post} />
               </div>
             ))

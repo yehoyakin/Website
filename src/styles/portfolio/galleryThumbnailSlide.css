@@ -1,7 +1,7 @@
 /* Thumbnail slide: the gallery's retro-card tile and its screenshot carousel. */
 /* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro */
 
-.gallery-project-item {
+.card-carousel-item {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
@@ -104,7 +104,7 @@
    /* width as a blog listing card so long descriptions wrap and raise the bottom */
    /* banner instead of widening the card. All cards have the same total height so */
    /* the bottom banner reaches down to align every card's base. */
-.markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
+.markdown-gallery:not(.markdown-gallery--single) .card-carousel-item {
   display: flex;
   align-items: stretch;
   width: min(100%, var(--gallery-slide-width-md));
@@ -113,7 +113,7 @@
   height: var(--gallery-card-height);
 }
 
-.markdown-gallery:not(.markdown-gallery--single) .gallery-project-item .retro-card {
+.markdown-gallery:not(.markdown-gallery--single) .card-carousel-item .retro-card {
   display: flex !important;
   flex-direction: column !important;
   height: var(--gallery-card-height) !important;
@@ -159,7 +159,7 @@
    /* theme-tinted letterbox instead of on a card plate. Selectors outrank */
    /* chrome/pixelChrome/frames.css, which frames every `.retro-card` by class. */
 .markdown-gallery .retro-card.retro-card--media,
-.markdown-gallery .gallery-project-item .retro-card {
+.markdown-gallery .card-carousel-item .retro-card {
   background: transparent;
   border: var(--outline-width) solid
     color-mix(
@@ -175,14 +175,14 @@
 }
 
 .markdown-gallery .retro-card--media .retro-card-media,
-.markdown-gallery .gallery-project-item .retro-card .retro-card-media {
+.markdown-gallery .card-carousel-item .retro-card .retro-card-media {
   background: transparent;
   max-height: var(--gallery-media-max-height);
   overflow: hidden;
 }
 
 .markdown-gallery .retro-card--media .thumb-carousel,
-.markdown-gallery .gallery-project-item .retro-card .thumb-carousel {
+.markdown-gallery .card-carousel-item .retro-card .thumb-carousel {
   height: auto;
 }
 
@@ -287,7 +287,7 @@
     max-width: var(--gallery-phone-max-width) !important;
   }
 
-  .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
+  .markdown-gallery:not(.markdown-gallery--single) .card-carousel-item {
     width: var(--gallery-phone-max-width);
     max-width: var(--gallery-phone-max-width);
     flex: 0 0 var(--gallery-phone-max-width);
@@ -308,24 +308,23 @@
   opacity: 0.4;
 }
 
-.markdown-gallery--single .gallery-thumbnails-wrapper {
+.markdown-gallery--single .card-carousel {
   overflow: visible;
 }
 
-.markdown-gallery--single .gallery-thumbnails {
+.markdown-gallery--single .card-carousel-track {
   display: block;
   padding: 0;
   justify-content: center;
 }
 
-.markdown-gallery--single .gallery-project-item {
+.markdown-gallery--single .card-carousel-item {
   width: 100%;
   max-width: none;
   flex: 0 0 100%;
 }
 
-.markdown-gallery--single .gallery-project-item .retro-card,
-.markdown-gallery--single .gallery-project-item .retro-card {
+.markdown-gallery--single .card-carousel-item .retro-card {
   display: flex !important;
   flex-direction: column !important;
   height: var(--gallery-card-height) !important;
@@ -476,8 +475,7 @@ html body .markdown-gallery.markdown-gallery--single {
   margin-inline: auto;
 }
 
-html body .markdown-gallery.markdown-gallery--single .gallery-project-item,
-html body .markdown-gallery.markdown-gallery--single .retro-card,
+html body .markdown-gallery.markdown-gallery--single .card-carousel-item,
 html body .markdown-gallery.markdown-gallery--single .retro-card {
   flex: 0 0 auto !important;
   width: fit-content !important;
@@ -505,7 +503,7 @@ html body .markdown-gallery.markdown-gallery--single .thumb-carousel-img {
 /* Videos and embeds have no intrinsic width to shrink to, so a single one */
    /* takes the full cap with a 16:9 frame. */
 html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, .thumb-carousel-video),
-html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, .thumb-carousel-video) :is(.gallery-project-item, .retro-card, .retro-card, .retro-card-media, .thumb-carousel) {
+html body .markdown-gallery.markdown-gallery--single:has(.thumb-carousel-frame, .thumb-carousel-video) :is(.card-carousel-item, .retro-card, .retro-card-media, .thumb-carousel) {
   width: min(100%, 50vw) !important;
 }
 
@@ -543,8 +541,7 @@ html body .markdown-gallery:not(.markdown-gallery--single) {
   margin-inline: auto;
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item,
-html body .markdown-gallery:not(.markdown-gallery--single) .retro-card,
+html body .markdown-gallery:not(.markdown-gallery--single) .card-carousel-item,
 html body .markdown-gallery:not(.markdown-gallery--single) .retro-card {
   max-width: 100% !important;
   min-width: 0 !important;
@@ -553,15 +550,14 @@ html body .markdown-gallery:not(.markdown-gallery--single) .retro-card {
 /* Multi-item galleries: cards are as tall as their media plus caption instead */
    /* of a fixed height, so a narrower card no longer leaves a tall empty banner. */
    /* Cards in one strip still stretch to the tallest so their bases line up. */
-html body .markdown-gallery:not(.markdown-gallery--single) .gallery-thumbnails {
+html body .markdown-gallery:not(.markdown-gallery--single) .card-carousel-track {
   align-items: stretch !important;
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .gallery-project-item {
+html body .markdown-gallery:not(.markdown-gallery--single) .card-carousel-item {
   height: auto !important;
 }
 
-html body .markdown-gallery:not(.markdown-gallery--single) .retro-card,
 html body .markdown-gallery:not(.markdown-gallery--single) .retro-card {
   height: 100% !important;
   min-height: 0 !important;
@@ -603,13 +599,12 @@ html body .markdown-gallery:not(.markdown-gallery--single) .thumb-carousel-media
    /* (no flex shrinking, no clipping by the card), the banner stacks below it, */
    /* and the card and strip grow to fit both instead of being capped. Applies to */
    /* every markdown gallery, single or multiple. */
-html body .markdown-gallery .gallery-thumbnails,
-html body .markdown-gallery .gallery-project-item {
+html body .markdown-gallery .card-carousel-track,
+html body .markdown-gallery .card-carousel-item {
   height: auto !important;
   max-height: none !important;
 }
 
-html body .markdown-gallery .retro-card,
 html body .markdown-gallery .retro-card {
   display: flex !important;
   flex-direction: column !important;
@@ -719,8 +714,7 @@ html body .project-gallery .thumb-carousel-media {
 @media (max-width: 767px) {
   html body .markdown-gallery.markdown-gallery--single,
   html body .markdown-gallery.markdown-gallery--single :is(
-      .gallery-project-item,
-      .retro-card,
+      .card-carousel-item,
       .retro-card
     ) {
     max-width: 100% !important;
@@ -744,10 +738,9 @@ html body .project-gallery .thumb-carousel-media {
     .blog-article-body
     .markdown-gallery.markdown-gallery--single
     :is(
-      .gallery-thumbnails-wrapper,
-      .gallery-thumbnails,
-      .gallery-project-item,
-      .retro-card,
+      .card-carousel,
+      .card-carousel-track,
+      .card-carousel-item,
       .retro-card
     ) {
     width: 100% !important;
@@ -786,12 +779,147 @@ html body .project-gallery .thumb-carousel-media {
       .thumb-carousel-video
     )
     :is(
-      .gallery-project-item,
-      .retro-card,
+      .card-carousel-item,
       .retro-card,
       .retro-card-media,
       .thumb-carousel
     ) {
     width: 100% !important;
+  }
+}
+
+
+/* THE PORTFOLIO-SLUG GALLERY — the one markdown gallery that is not a post's */
+   /* reading-column figure. Its wrapper `<section>` carries */
+   /* `.markdown-gallery--full`, and the strip spans the whole media column at a */
+   /* pinned card height instead of shrink-wrapping to the single-image 50vw cap a */
+   /* post uses. These are the rules the slug page used to scope to */
+   /* `.project-page-gallery-plain`; every selector stands in for the page's */
+   /* `[data-astro-cid]` with one extra `.markdown-gallery` class, so it keeps the */
+   /* same weight over (and under) the shared markdown-gallery recipe above as the */
+   /* scoped block had. */
+.markdown-gallery--full {
+  padding: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.markdown-gallery--full .markdown-gallery .card-carousel-track {
+  --carousel-slide: 100%;
+}
+
+.markdown-gallery--full .markdown-gallery .card-carousel-item {
+  flex: 0 0 var(--carousel-slide);
+  width: var(--carousel-slide);
+  max-width: none;
+}
+
+/* Full-width card at the shared gallery height; the media never overflows it. */
+.markdown-gallery--full .markdown-gallery .retro-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: var(--gallery-card-height) !important;
+  max-height: var(--gallery-card-height) !important;
+  min-height: var(--gallery-card-height) !important;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.markdown-gallery--full .markdown-gallery .retro-card-media {
+  max-width: 100% !important;
+  max-height: var(--gallery-media-max-height) !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: hidden;
+  /* flex 1 1 auto, not 0 0 auto: the media box grows to swallow any card height */
+     /* the equal-height pass leaves over, so the caption banner sits flush on the */
+     /* base; min-height 0 lets it shrink when a caption is taller than the room. */
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+}
+
+/* Lift the media cap — single and multi alike — so the box reaches the card's */
+   /* full leftover height and every banner lands on the bottom edge together. */
+.markdown-gallery--full .markdown-gallery.markdown-gallery--single .retro-card-media,
+.markdown-gallery--full .markdown-gallery:not(.markdown-gallery--single) .retro-card-media {
+  max-height: none !important;
+}
+
+.markdown-gallery--full .markdown-gallery .retro-card-info-bar {
+  flex: 0 0 auto !important;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.markdown-gallery--full .markdown-gallery .retro-card-media iframe,
+.markdown-gallery--full .markdown-gallery .retro-card-media video {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+.markdown-gallery--full .markdown-gallery .retro-card-media img {
+  max-width: 100% !important;
+  max-height: var(--gallery-media-max-height) !important;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+.markdown-gallery--full .markdown-gallery .thumb-carousel {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.markdown-gallery--full .markdown-gallery .thumb-carousel-media {
+  object-fit: contain !important;
+  max-height: var(--gallery-media-max-height) !important;
+  height: auto !important;
+}
+
+.markdown-gallery--full .markdown-gallery .thumb-carousel-frame {
+  height: 100% !important;
+}
+
+/* PHONES — the picture sets the card's height, not the desktop cap: across a */
+   /* phone's full width the pinned height is shorter than the image, so the media */
+   /* box letterboxes a crop. Let the image keep its own ratio in a full-width */
+   /* card, captions included; a video or embed has no ratio, so it holds a 16:9 */
+   /* window. */
+@media (max-width: 767px) {
+  .markdown-gallery--full .markdown-gallery .retro-card {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+  }
+
+  .markdown-gallery--full .markdown-gallery .retro-card-media,
+  .markdown-gallery--full .markdown-gallery .thumb-carousel {
+    max-height: none !important;
+  }
+
+  .markdown-gallery--full .markdown-gallery .retro-card-media:has(
+      .thumb-carousel-frame,
+      .thumb-carousel-video
+    ) {
+    aspect-ratio: var(--embed-aspect-ratio);
+  }
+
+  .markdown-gallery--full .markdown-gallery .retro-card-media img,
+  .markdown-gallery--full .markdown-gallery .thumb-carousel-img {
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  .markdown-gallery--full .markdown-gallery .thumb-carousel-media:is(
+      .thumb-carousel-frame,
+      .thumb-carousel-video
+    ) {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 }
