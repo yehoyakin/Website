@@ -1,0 +1,73 @@
+---
+// Purpose: Component - src/components/shared/Masthead.astro (The one page masthead: accent strip, kicker/meta row, title, description, plus an `extra` slot)
+// See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/article/masthead.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/patternPlates.css
+import Title from "../UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
+import Body from "../UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
+import Icon from "./Icon.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Icon.astro
+import { patternForTheme } from "../../config/patterns";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/config/patterns.ts
+
+interface Props {
+  // The eyebrow word: "Article" on a post, the project's tag on a write-up.
+  kicker: string;
+  title: string;
+  description?: string;
+  // A post passes its date; the kicker + rule + time row is built only when set.
+  date?: Date;
+  theme?: string;
+  // Marks the project page's tighter title/kicker variant (masthead.css).
+  variant?: "project";
+}
+
+const { kicker, title, description, date, theme = "orange", variant } =
+  Astro.props as Props;
+
+// The masthead wears the page's pattern at MID size: a card-sized tile behind
+   // a title would compete with the letters, and the reading column below
+   // already carries the huge one. The accent strip keeps its own small tile.
+const panelStyle = `--plate-pattern: url('${patternForTheme(theme)}')`;
+---
+
+<div class="screen-grade-ring">
+<header
+  class:list={[
+    "retro-masthead pixel-frame pattern-plate pattern-plate--medium",
+    variant && `retro-masthead--${variant}`,
+  ]}
+  style={panelStyle}
+>
+  <span
+    class="retro-masthead-strip pattern-plate pattern-plate--small"
+    aria-hidden="true"></span
+  >
+
+  {/* Eyebrow: what this is, then when it was written. */}
+  <div class="retro-masthead-meta">
+    <span class="retro-masthead-kicker">{kicker}</span>
+    {
+      date && (
+        <>
+          <span class="retro-masthead-rule" aria-hidden="true"></span>
+          <time datetime={date.toISOString()}>
+            <Icon name="Calendar" theme={theme} class="h-5 w-5" />
+            {date.toLocaleDateString()}
+          </time>
+        </>
+      )
+    }
+  </div>
+
+  <Title level={1} theme={theme} class="retro-masthead-title">
+    {title}
+  </Title>
+
+  {
+    description && (
+      <Body theme={theme} class="retro-masthead-desc">
+        {description}
+      </Body>
+    )
+  }
+
+  <slot name="extra" />
+</header>
+</div>

@@ -1,5 +1,5 @@
 /* PAGE LIGHTING — ONE SCREEN GRADIENT, NOT ONE PER PANEL. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Masthead.astro */
    /* Every plate used to paint its own lit-from-above ramp: a light band along */
    /* its top edge stepping down to a dark base at its bottom, restated per panel */
    /* (the plain plate, the text backdrop, the ghost fills, the pixel frame). A */

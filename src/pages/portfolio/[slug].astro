@@ -3,8 +3,7 @@
 // See: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryThumbnailSlide.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/portfolio/galleryPanelShell.css, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/chrome/pixelChrome/patternPlates.css
 import MyLayout from "../../layouts/MyLayout.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/layouts/MyLayout.astro
 import BackLink from "../../components/shared/BackLink.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro
-import Title from "../../components/UI/Title.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Title.astro
-import Body from "../../components/UI/Body.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro
+import Masthead from "../../components/shared/Masthead.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Masthead.astro
 import CompactBody from "../../components/UI/CompactBody.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro
 import Link from "../../components/shared/Link.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Link.astro
 import PageBackdrop from "../../components/shared/PageBackdrop.astro";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/PageBackdrop.astro
@@ -300,24 +299,19 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       <BackLink href={`${baseUrl}portfolio/`} text="Back to portfolio" />
 
       <section class="project-page-shell pt-20 pb-8 md:pt-24 md:pb-12">
-        <div class="screen-grade-ring">
-        <header class="project-page-header project-page-masthead pixel-frame pattern-plate pattern-plate--medium">
-          <p class="project-page-tag">{project.data.tag}</p>
-          <Title level={1} theme={themeName} class="project-page-title">
-            {project.data.title}
-          </Title>
-
-          <Body theme={themeName} class="project-page-description">
-            {project.data.description}
-          </Body>
-
-          <div class="project-page-roles">
+        <Masthead
+          variant="project"
+          kicker={project.data.tag}
+          title={project.data.title}
+          description={project.data.description}
+          theme={themeName}
+        >
+          <div slot="extra" class="retro-masthead-roles">
             {(project.data.roles ?? []).map((role) => (
               <span class="project-role">{roleLabels[role as ProjectRole] ?? role}</span>
             ))}
           </div>
-        </header>
-        </div>
+        </Masthead>
 
         <div class="project-page-lower-grid">
           <section class="project-page-left-stack">
@@ -606,44 +600,10 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     margin-inline: auto;
   }
 
-  .project-page-header {
-    padding: clamp(0.9rem, 1.8vw, 1.5rem);
-    /* The breathing room below the masthead moved to its screen-grade-ring */
-       /* wrapper (styles/site/pageLighting.css), which paints the border ring. */
-  }
-
-  .project-page-masthead {
-    padding: clamp(1rem, 2vw, 1.6rem);
-    max-width: 64rem;
-    margin-inline: auto;
-  }
-
-  .project-page-tag {
-    margin: 0;
-    color: var(--project-tag-color, var(--theme-orange));
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-size: clamp(0.72rem, 1vw, 0.9rem);
-    text-shadow: 1px 2px 0 var(--time-shadow);
-  }
-
-  :global(.project-page-title) {
-    margin-top: 0.3rem;
-    font-size: clamp(1.35rem, 2.6vw, 2.35rem) !important;
-    line-height: 1.06;
-  }
-
-  .project-page-description {
-    margin-top: 0.45rem;
-    max-width: 62rem;
-  }
-
-  .project-page-roles {
-    margin-top: 0.65rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-  }
+  /* THE ONE MASTHEAD. The header is the shared <Masthead> component */
+     /* (components/shared/Masthead.astro); the project's tighter type lives in */
+     /* styles/article/masthead.css under `.retro-masthead--project`. Nothing is */
+     /* scoped here. */
 
   .project-page-lower-grid {
     display: grid;
@@ -789,15 +749,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
       padding-bottom: 0.5rem;
     }
 
-    .project-page-header {
-      padding: 0.9rem;
-      margin-bottom: 0.85rem;
-    }
-
-    :global(.project-page-title) {
-      font-size: clamp(1.3rem, 4.6vw, 2rem) !important;
-    }
-
     /* ONE COLUMN. The desktop split (write-up beside the media) left a phone */
        /* track of ~119px: the write-up panel could not shrink below its own */
        /* min-content width (~192px), so it spilled out of its track and sat on */
@@ -823,15 +774,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
     /* The phone slug-gallery sizing (picture sets the card height) also moved */
        /* to galleryThumbnailSlide.css under `.markdown-gallery--full`. */
 
-    .project-page-description {
-      margin-top: 0.35rem;
-    }
-
-    .project-page-roles {
-      margin-top: 0.6rem;
-      gap: 0.4rem;
-    }
-
     :global(.project-page-content-panel) {
       padding: 0.9rem;
     }
@@ -846,18 +788,5 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
          /* can run to the panel's edges. */
       --reading-inset: 0.9rem;
     }
-  }
-  /* The masthead plate is a tint of the project accent, so the tag cannot be */
-     /* the accent too: it takes the reading ink and keeps the theme in its hard */
-     /* shadow. On the near-transparent slug plate that is also what makes it */
-     /* readable in both modes. */
-  .project-page-tag {
-    color: var(--time-ink);
-    text-shadow: 1px 2px 0
-      color-mix(
-        in srgb,
-        var(--project-tag-color, var(--theme-orange)) 45%,
-        var(--time-black)
-      );
   }
 </style>

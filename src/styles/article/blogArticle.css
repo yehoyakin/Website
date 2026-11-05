@@ -1,7 +1,7 @@
 /* Blog article: masthead, surface, prose, figures. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Masthead.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro */
 
-@import "articleMasthead.css";
+@import "masthead.css";
 @import "articleReadingSurface.css";
 @import "articleProse.css";
 @import "articleFigures.css";
@@ -15,7 +15,7 @@
    /* the div INSIDE the write-up panel on a project page, where this border width */
    /* (Tailwind's preflight makes every element `border-style: solid`) drew a plain */
    /* ink-coloured frame around the whole write-up. */
-:is(.blog-masthead, .blog-article-body) {
+:is(.retro-masthead, .blog-article-body) {
   --time-border: color-mix(
     in srgb,
     var(--project-tag-color, var(--theme-main-day)) 86%,
@@ -42,7 +42,7 @@
    /* title) is filled with the post's accent and ringed in white; every heading */
    /* under it is the inverse — white letters, accent ring. */
 #blog-content :is(h1, h2, h3, h4, h5, h6),
-.blog-masthead-title {
+.retro-masthead-title {
   --heading-step: max(1px, calc(1em / 16));
   --heading-fill: var(--project-tag-color, var(--theme-main-day));
   --heading-ring: var(--project-tag-color-dark, var(--theme-main-night));
@@ -68,7 +68,7 @@
    /* variant after dark. Only the ring switches: white by day, black at night, the */
    /* same outline switch a card's title makes (card/retroCard.css). */
    /* Only `#blog-content` is targeted: the masthead title above it is a */
-   /* white-on-accent cut (see styles/article/articleMasthead.css) and must not */
+   /* white-on-accent cut (see styles/article/masthead.css) and must not */
    /* follow the copy. These outrank the base heading rule above and the h5/h6 */
    /* muted fill in articleProse.css, so every level takes the theme. */
 :root:not([data-mode="night"]) #blog-content :is(h1, h2, h3, h4, h5, h6) {

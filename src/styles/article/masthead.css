@@ -1,7 +1,9 @@
-/* Article masthead: accent strip, meta row, title, description. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogHeader.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/pages/portfolio/[slug].astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/Blog/BlogContent.astro */
+/* The one masthead: accent strip, meta row, title, description — shared by */
+   /* the blog post header and the project write-up header (the old */
+   /* `.blog-masthead` / `.project-page-masthead` twins are gone). */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/Masthead.astro */
 
-.blog-masthead {
+.retro-masthead {
   position: relative;
   overflow: hidden;
   padding: 0.9rem 1rem 1rem;
@@ -11,20 +13,20 @@
 }
 
 @media (min-width: 640px) {
-  .blog-masthead {
+  .retro-masthead {
     padding: 1rem 1.25rem 1.1rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .blog-masthead {
+  .retro-masthead {
     padding: 1.2rem 1.5rem 1.25rem;
   }
 }
 
-/* The animated pattern strip, in the post's accent colour. Scoped to the */
+/* The animated pattern strip, in the page's accent colour. Scoped to the */
    /* masthead so it keeps its solid accent fill over the plate's dark default. */
-.blog-masthead .blog-masthead-strip {
+.retro-masthead .retro-masthead-strip {
   position: absolute;
   inset: 0 0 auto 0;
   height: 0.38rem;
@@ -35,16 +37,16 @@
    /* The strip is a `.pattern-plate`, so the ghost page's panel rule repaints it */
    /* like any other surface — and that rule outranks the two-class selector above */
    /* by one class, which used to land the panel's darkened band across the top */
-   /* edge as a single dark bar. The strip takes the post's accent back, flat: */
+   /* edge as a single dark bar. The strip takes the page's accent back, flat: */
    /* no ramp of its own beyond the shared screen grade, because there is nothing */
    /* to shade — the texture still runs over it through the plate's two */
    /* pseudo-elements. */
-:root[data-mode] .blog-masthead .blog-masthead-strip {
+:root[data-mode] .retro-masthead .retro-masthead-strip {
   background-color: var(--project-tag-color, var(--theme-main-day));
   background-image: var(--page-lighting, none);
 }
 
-.blog-masthead-meta {
+.retro-masthead-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -59,7 +61,7 @@
 }
 
 /* `time` carries its own size from global.css; the row sets the rhythm. */
-.blog-masthead-meta time {
+.retro-masthead-meta time {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -71,15 +73,15 @@
   );
 }
 
-.blog-masthead-meta time svg,
-.blog-masthead-meta time .icon {
+.retro-masthead-meta time svg,
+.retro-masthead-meta time .icon {
   color: var(
     --project-tag-color-very-dark,
     var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)))
   );
 }
 
-.blog-masthead-kicker {
+.retro-masthead-kicker {
   color: var(
     --project-tag-color-very-dark,
     var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)))
@@ -91,7 +93,7 @@
 }
 
 /* Accent hairline that fills the space between "Article" and the date. */
-.blog-masthead-rule {
+.retro-masthead-rule {
   flex: 0 1 2.8rem;
   height: 2px;
   background: var(
@@ -102,7 +104,7 @@
 
 /* Size only: this is the page's first header, so its accent fill and white */
    /* ring come from the shared blog-header outline (styles/article/blogArticle.css). */
-.blog-masthead-title {
+.retro-masthead-title {
   margin-top: 0.35rem;
   font-size: clamp(1.3rem, 2.6vw, 2.2rem);
   line-height: 1.08;
@@ -111,7 +113,7 @@
   text-wrap: balance;
 }
 
-.blog-masthead-desc {
+.retro-masthead-desc {
   margin-top: 0.45rem;
   max-width: 46rem;
   font-size: clamp(0.85rem, 1.2vw, 1rem);
@@ -120,7 +122,7 @@
   color: var(--time-ink-muted);
 }
 
-/* BLOG HEADER — the card's outline, on the header. */
+/* HEADER FRAME — the card's outline, on the header. */
    /* A card rings itself in white by day and in black after dark (see the title */
    /* ring in card/retroCard.css), and the header followed the day half of that in */
    /* both modes: a white ring around a panel that went dark underneath. It now */
@@ -130,53 +132,39 @@
    /* switched off with `border-image-source`, NOT the `border-image` shorthand: */
    /* the CSS minifier collapses `border-image: none` to an empty declaration, so */
    /* the bevel stayed on both headers in the built stylesheet. */
-/* `.blog-masthead.pixel-frame` is deliberate: the shared frame recipe in */
+/* `.retro-masthead.pixel-frame` is deliberate: the shared frame recipe in */
    /* chrome/pixelChrome/frames.css is `.pixel-frame:not(.retro-link):not(...)`, */
    /* the same weight, and it is imported LAST — the extra class is what keeps */
    /* this ring, rather than the accent bevel, on the header. */
-:root[data-mode] .blog-masthead.pixel-frame {
+:root[data-mode] .retro-masthead.pixel-frame {
   border-image-source: none !important;
   border-color: var(--time-white) !important;
 }
 
-:root[data-mode="night"] .blog-masthead.pixel-frame {
-  border-color: var(--time-black) !important;
-}
-
-/* THE PROJECT HEADER — the same outline switch as the post header's. */
-   /* `.project-page-masthead` wears the same `.pixel-frame`, so it followed the */
-   /* frame recipe's bevel in both modes while the post header it now matches */
-   /* switches white by day and black after dark. `border-image: none` is what lets */
-   /* `border-color` paint, exactly as on `.blog-masthead` above. */
-:root[data-mode] .project-page-masthead.pixel-frame {
-  border-image-source: none !important;
-  border-color: var(--time-white) !important;
-}
-
-:root[data-mode="night"] .project-page-masthead.pixel-frame {
+:root[data-mode="night"] .retro-masthead.pixel-frame {
   border-color: var(--time-black) !important;
 }
 
 /* INK — the page ink, on the card plate the header now shares with the bars of */
    /* the cards that lead here (see the panel rule in */
    /* chrome/pixelChrome/patternPlates.css): dark surface, so white copy. */
-:root[data-mode] .blog-masthead {
+:root[data-mode] .retro-masthead {
   --header-ink: var(--time-ink);
 }
 
 :root[data-mode]
-  .blog-masthead
+  .retro-masthead
   :is(
-    .blog-masthead-kicker,
-    .blog-masthead-meta,
-    .blog-masthead-meta time,
-    .blog-masthead-desc
+    .retro-masthead-kicker,
+    .retro-masthead-meta,
+    .retro-masthead-meta time,
+    .retro-masthead-desc
   ) {
   color: var(--header-ink);
 }
 
 /* The hairline in the meta row is part of that same ink. */
-:root[data-mode] .blog-masthead .blog-masthead-meta .blog-masthead-rule {
+:root[data-mode] .retro-masthead .retro-masthead-meta .retro-masthead-rule {
   background: var(--header-ink);
 }
 
@@ -184,7 +172,54 @@
    /* which is declared on the title itself — so the tokens are re-declared here, */
    /* at a weight that outranks it. White letters with the accent's dark variant as */
    /* the hard ring: on an accent-filled header that is the readable pairing. */
-:root[data-mode] .blog-masthead .blog-masthead-title {
+:root[data-mode] .retro-masthead .retro-masthead-title {
   --heading-fill: var(--time-white);
   --heading-ring: var(--project-tag-color-dark, var(--theme-main-night));
+}
+
+/* THE PROJECT VARIANT — the write-up's header IS the masthead; only its type */
+   /* runs tighter than a post's. The tag becomes the kicker, and on an */
+   /* accent-filled plate the kicker cannot be the accent too: it takes the */
+   /* reading ink (the recipe above) and keeps the theme in its hard shadow. */
+.retro-masthead--project .retro-masthead-kicker {
+  text-shadow: 1px 2px 0
+    color-mix(
+      in srgb,
+      var(--project-tag-color, var(--theme-orange)) 45%,
+      var(--time-black)
+    );
+}
+
+.retro-masthead--project .retro-masthead-title {
+  margin-top: 0.3rem;
+  font-size: clamp(1.35rem, 2.6vw, 2.35rem);
+  line-height: 1.06;
+}
+
+.retro-masthead--project .retro-masthead-desc {
+  max-width: 62rem;
+}
+
+/* ROLES — the project's extra row under the description (the component's */
+   /* `extra` slot supplies this wrapper). */
+.retro-masthead-roles {
+  margin-top: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+@media (max-width: 767px) {
+  .retro-masthead--project .retro-masthead-title {
+    font-size: clamp(1.3rem, 4.6vw, 2rem);
+  }
+
+  .retro-masthead--project .retro-masthead-desc {
+    margin-top: 0.35rem;
+  }
+
+  .retro-masthead-roles {
+    margin-top: 0.6rem;
+    gap: 0.4rem;
+  }
 }
