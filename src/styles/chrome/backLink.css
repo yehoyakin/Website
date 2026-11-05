@@ -1,83 +1,41 @@
-/* Back link: mode tile, chrome-rail position, phone sizing. */
-/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/Body.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/UI/CompactBody.astro */
+/* Back arrow: a bare chrome icon button fixed to the top-left corner, the */
+   /* left twin of the day / night switch (chrome/modeToggleSwitch.css). */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/shared/BackLink.astro */
 
 .back-link {
   /* Chrome rail: top-left corner, on the same gutter as the right-hand */
-     /* switch and contact rail. */
+     /* switch and contact rail — one row across from the day / night switch. */
   position: fixed;
   top: var(--chrome-gutter);
   left: var(--chrome-gutter);
-  z-index: 50;
-  display: inline-flex;
-  align-items: center;
-  /* Site chrome, not page content. The LOOK is the shared button recipe */
-     /* (chrome/pixelChrome/buttons.css plus the themed-tile pass in */
-     /* chrome/pixelChrome/tintedButtons.css — the markup carries */
-     /* `retro-link pixel-frame` and the empty `data-link-theme`, exactly like */
-     /* the carousel's navigator buttons); only the TILE INPUTS are restated */
-     /* here. They used to read the inherited --project-tag-color, which on a */
-     /* blog post or a project page is that page's accent (set on the article */
-     /* section / the project wrapper this control sits inside), so the back */
-     /* link painted itself red, green or pink on exactly the pages that theme */
-     /* themselves. The chrome floats over every page and has to read as */
-     /* chrome everywhere, so the tile pair is the mode base colours: the day */
-     /* white with its dark shade, the night black with its dark shade — */
-     /* declared on the control itself, where no ancestor theme can reach. */
-  --project-tag-color: var(--theme-main-day);
-  --project-tag-color-dark: var(--theme-white-dark);
-  /* Same control scale as the shared link button: 65% of an icon button's */
-     /* height less six pixels, a thin frame, and a label one step down. */
-  --back-link-height: calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px);
-  /* Fixed: the label is `nowrap`, so it can never need a second line and this */
-     /* rule needs no growth. */
-  height: var(--back-link-height);
-  padding: 0 0.5rem;
-  /* Not `1`: the pixel face draws outside its em box, and a line box that is */
-     /* exactly the font size cuts the glyph. */
-  line-height: 1.4;
+  z-index: 60;
+  /* Site chrome, not page content: like the switch it is nothing but a glyph */
+     /* on the page ink. No plate, no frame, no theme — the box and glyph size */
+     /* come from the shared bare-icon recipe (pixelChrome/iconButtons.css, */
+     /* via the `icon-button` class on the markup) and the hover from the one */
+     /* shared button hover (pixelChrome/controlHover.css). */
+  color: var(--time-ink);
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
-/* Night tile pair: the dark base colour and its shade, same route as above. */
-:root[data-mode="night"] .back-link {
-  --project-tag-color: var(--theme-main-night);
-  --project-tag-color-dark: var(--theme-black-dark);
-}
-
-/* The label is the control's, not a paragraph's: `a.back-link` has to outrank */
-   /* the `.text-base` type role, which is declared later in the cascade and set */
-   /* this label one whole step larger than the buttons beside it. */
-a.back-link {
-  font-size: max(var(--link-font-min), calc(var(--font-size-base) - 20px));
-}
-
-/* The glyph shrinks with the box: at the chrome glyph size it would sit on the */
-   /* frame of a button that is no longer icon-height. */
-a.back-link .chrome-icon {
-  width: calc(var(--back-link-height) * 0.75);
-  height: calc(var(--back-link-height) * 0.75);
-}
-
-/* Same tightening inside the label row: less air between arrow and text. */
-a.back-link span {
-  gap: 0.3rem;
+/* The same focus ring as the day / night switch. */
+.back-link:focus-visible {
+  outline: 2px solid var(--project-tag-color, var(--theme-orange));
+  outline-offset: 3px;
 }
 
 /* The rail panels (contacts, blog links) are positioned in */
    /* styles/chrome/sideRails.css, on the same gutter as this control. */
 
-/* PHONES — back link. */
-
+/* PHONES — the chrome steps down with the page: 1rem gutter, 2.5rem control. */
+   /* The day / night switch, the desktop-view toggle and the rail handles all */
+   /* read these tokens from here, which is why none of them carries a phone */
+   /* block of its own. */
 @media (max-width: 767px) {
-  /* The chrome steps down with the page: 1rem gutter, 2.5rem control. */
   :root {
     --chrome-gutter: max(1rem, env(safe-area-inset-right));
     --chrome-control: 2.5rem;
-  }
-  a.back-link {
-    height: calc(var(--icon-button-size, 2.5rem) * 0.65 - 6px);
-    max-width: calc(100vw - 5.5rem);
-    padding: 0 0.7rem;
-    font-size: 6px;
-    white-space: nowrap;
   }
 }

@@ -137,8 +137,7 @@
 }
 
 /* The floor under the small button type: below it the pixel face stops */
-   /* resolving letters, whatever the box allows (text/linkButtons.css, */
-   /* chrome/backLink.css). */
+   /* resolving letters, whatever the box allows (text/linkButtons.css). */
 :root {
   --link-font-min: 6px;
 }

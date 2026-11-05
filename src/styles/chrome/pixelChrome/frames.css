@@ -11,7 +11,7 @@
    /* BUTTONS ARE EXEMPT. They keep chrome/pixelChrome/buttons.css — the lit */
    /* gradient with the bloom across the top edge — which is what tells a control */
    /* apart from a surface. Anything with `.retro-link`, */
-   /* `.icon-button`, `.mode-toggle`, `.back-link` or the carousel arrows is left */
+   /* `.icon-button`, `.mode-toggle` or the carousel arrows is left */
    /* alone here. */
 
 /* THE ACCENT, RESOLVED PER FRAME — not at `:root`. */

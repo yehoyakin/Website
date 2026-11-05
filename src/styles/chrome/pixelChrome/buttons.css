@@ -60,9 +60,10 @@
    /* is cut the same way: one stepped notch per corner, drawn with `clip-path` at */
    /* the bevel's own size (so the cut is exactly one pixel-art step at the */
    /* control's scale). The frame is clipped with the fill, which is what a */
-   /* pixel-art corner looks like: the outline simply stops at the step. */
-.retro-link.pixel-frame,
-.back-link {
+   /* pixel-art corner looks like: the outline simply stops at the step. The */
+   /* bare chrome controls (day / night switch, view toggle, back arrow) are not */
+   /* in this list — they have no plate to cut. */
+.retro-link.pixel-frame {
   /* One step and a half of the bevel: at the control size the icon set's own */
      /* corner step, and still legible on a 20px phone button. */
   --pixel-corner: 3px;

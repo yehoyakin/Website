@@ -53,12 +53,10 @@
    /* re-declares that recipe ON the button, where its own or inherited */
    /* `--project-tag-color` is in scope, and opts out of the mode swaps above */
    /* entirely: the same tile in day and night, a white pixel border, and white */
-   /* type over it. That is the ONE button visual — credits, contacts, the back */
-   /* link and the navigator all wear it. Chrome that must not take a page */
-   /* theme (the back link) declares the mode base pair as its own tile inputs */
-   /* on the element (chrome/backLink.css) rather than being excluded here: an */
-   /* ancestor's accent cannot override a custom property the control sets on */
-   /* itself. */
+   /* type over it. That is the ONE button visual — credits, contacts and the */
+   /* navigator all wear it. Bare chrome (the day / night switch, the view */
+   /* toggle, the back arrow) is a glyph on the page ink instead: it wears no */
+   /* tile at all, so no page theme can reach it either. */
 :root[data-mode] .retro-link.pixel-frame[data-link-theme] {
   --link-tile: var(--project-tag-color, var(--theme-main-day));
   --link-tile-dark: var(--project-tag-color-dark, var(--project-tag-color, var(--theme-main-day)));
