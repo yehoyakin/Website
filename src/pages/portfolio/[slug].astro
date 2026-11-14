@@ -449,6 +449,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
      // 404'd in the browser, which stopped every gallery from opening.
   import { initGalleryEqualHeight } from "../../scripts/galleryEqualHeight.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/galleryEqualHeight.js
   import { initCardCarousels } from "../../scripts/cardCarousel.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/cardCarousel.js
+  import { buildLightboxControls } from "../../scripts/galleryLightboxControls.js";  // file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/scripts/galleryLightboxControls.js
   {
     const initMarkdownGalleries = () => {
       const galleries = document.querySelectorAll(".project-gallery[data-gallery-ready='false']");
@@ -467,6 +468,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
         let items = [];
         let currentIndex = 0;
+        // Assigned once the lightbox markup is found below; `updateLightbox`
+           // uses it to keep the numbered counter on the media currently shown.
+        let lightboxControls = null;
 
         // Build a media list from the thumbnails in this gallery. Each thumb
            // carries data-lightbox-kind ("image", "file", or "embed") so the
@@ -522,6 +526,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           const normalizedIndex = ((index % items.length) + items.length) % items.length;
           currentIndex = normalizedIndex;
           render(currentIndex);
+          lightboxControls?.setIndex(currentIndex);
         };
 
         // One panel on screen at a time: a gallery opened while another panel is
@@ -559,6 +564,18 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           }
         };
 
+        // The enlarged view carries the strip's own navigator: prev / next
+           // through this gallery's media, and a close button — built from the
+           // same themed plate the carousel arrows use (see
+           // scripts/galleryLightboxControls.js).
+        lightboxControls = buildLightboxControls(lightbox, {
+          count: itemsFor(thumbs[0]).length,
+          onSelect: (index) => openLightbox(index),
+          onPrev: () => openLightbox(currentIndex - 1),
+          onNext: () => openLightbox(currentIndex + 1),
+          onClose: closeLightbox,
+        });
+
         // The thumbnail's own index inside its strip is what opens it, so the
            // number of galleries above it on the page cannot shift the picture.
         thumbs.forEach((thumb) => {
@@ -568,8 +585,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
           });
         });
 
-        // The overlay is image-only: any click anywhere on it — the media or the
-           // dimmed surround — closes it. There is no panel, caption or close button.
+        // Any click on the overlay — the media or the dimmed surround — closes
+           // it; the navigator buttons above stop their own clicks first.
         lightbox.addEventListener("click", () => closeLightbox());
 
         document.addEventListener("keydown", (event) => {

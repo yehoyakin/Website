@@ -7,10 +7,16 @@
   z-index: 10;
 }
 
-/* IMAGE-ONLY OVERLAY. The enlarged media floats on the dimmed backdrop with no */
-/* panel chrome, caption, close button or navigators: any click anywhere on it */
-/* closes it (the click handler lives in the two slug scripts linked above). */
+/* MEDIA OVERLAY. The enlarged media floats on the dimmed backdrop with no */
+/* panel chrome or caption. It carries the gallery strip's own navigator — */
+/* prev / next arrows and a close button, built by */
+/* scripts/galleryLightboxControls.js — and any click on the media or the */
+/* dimmed surround still closes it (the click handler lives in the two slug */
+/* scripts linked above). The navigator's size is the carousel's own token */
+/* (carouselArrows.css), so the enlarged view's controls read as the same */
+/* family as the ones under the strip. */
 .blog-gallery-lightbox {
+  --gallery-nav-size: calc(var(--icon-button-size, 2.75rem) * 0.65 - 6px);
   position: fixed;
   inset: 0;
   display: none;
@@ -81,6 +87,90 @@
   max-height: 100%;
   aspect-ratio: var(--embed-aspect-ratio);
   border: 0;
+}
+
+/* THE NAVIGATOR. The arrows ride the overlay's full height so they sit */
+/* vertically centred without a transform (the themed plate's hover grows with */
+/* `transform: scale()`, which would replace any translate used for centring). */
+/* The row itself takes no pointer events — only the buttons do — so the */
+/* backdrop and the media still receive the click that closes the overlay. */
+.blog-gallery-lightbox .blog-gallery-lightbox__controls {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(0.5rem, 2vw, 1.25rem);
+  pointer-events: none;
+}
+
+/* Sized like the strip's arrows and numbered index: the same square, glyph */
+/* fraction and min/max box, so the overlay's controls are the same control. */
+.blog-gallery-lightbox .blog-gallery-lightbox__nav,
+.blog-gallery-lightbox .blog-gallery-lightbox__close {
+  z-index: 2;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--gallery-nav-size);
+  block-size: var(--gallery-nav-size);
+  /* Both edges set, not an `aspect-ratio`: same reasoning as the strip's */
+     /* arrows in carouselArrows.css — a fallback face for the glyph must not */
+     /* grow the box out of square. */
+  min-height: var(--gallery-nav-size);
+  padding: 0;
+  font-size: calc(var(--gallery-nav-size) * 0.62);
+  line-height: 1;
+  box-sizing: border-box;
+  cursor: pointer;
+  touch-action: manipulation;
+  pointer-events: auto;
+}
+
+/* The arrows are the controls row's two ends. */
+.blog-gallery-lightbox .blog-gallery-lightbox__nav {
+  position: relative;
+}
+
+/* The close sits in the overlay's top corner, not in the arrow row. The extra */
+/* `.is-open` class is load-bearing: `buttons.css` declares */
+/* `.retro-link.pixel-frame { position: relative }` later in the bundle at the */
+/* same specificity, which otherwise wins and leaves the X as a flex child of */
+/* the overlay — centred next to the media instead of pinned in the corner. */
+.blog-gallery-lightbox.is-open .blog-gallery-lightbox__close {
+  position: absolute;
+  z-index: 3;
+  top: clamp(0.5rem, 2vw, 1.25rem);
+  right: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+/* THE COUNTER — the strip's numbered index, class for class, laid along the */
+/* overlay's bottom edge. The row's layout, square size, selected ring and */
+/* mouse states all come from carouselDots.css; this rule only places the row. */
+/* Like the arrows' row it takes no pointer events itself, so a click on the */
+/* media behind it still closes the overlay. */
+.blog-gallery-lightbox .blog-gallery-lightbox__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(0.5rem, 2vw, 1.25rem);
+  z-index: 2;
+  flex-wrap: wrap;
+  padding-inline: clamp(0.5rem, 2vw, 1.25rem);
+  pointer-events: none;
+}
+
+.blog-gallery-lightbox .blog-gallery-lightbox__dots .card-carousel-dot {
+  pointer-events: auto;
+}
+
+/* PHONES — one smaller step, matching the strip's navigator. */
+@media (max-width: 767px) {
+  .blog-gallery-lightbox {
+    --gallery-nav-size: 1.25rem;
+  }
 }
 
 body.lightbox-open {

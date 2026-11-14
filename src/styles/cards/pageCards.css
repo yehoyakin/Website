@@ -1,0 +1,213 @@
+/* Landing page cards: the blog card, one step wider. */
+/* Used by: file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/PageCards.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/BlogCard.astro, file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/components/sections/ProjectGallery.astro */
+   /* These wore the old split-landing tile (`.split-card`), a half-screen panel */
+   /* with its copy laid over its artwork. They are normal cards now — the same */
+   /* anatomy as the blog and portfolio listings (meta bar, artwork, copy bar) — */
+   /* only wider, because a landing card is a destination rather than an item in a */
+   /* strip. */
+   /* Two layouts, one markup: */
+     /* PHONE     the card is the screen. Artwork at a fixed 16:10, copy under it, */
+               /* page scrolls naturally — the way a phone site behaves. */
+     /* TABLET+   the card keeps the size a card has (its width sets its height); */
+               /* it is only squeezed when the room left under the hero is */
+               /* smaller than the card, so the credits stay on screen. */
+
+.page-cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0.55rem;
+  list-style: none;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+/* A CARD IS AS WIDE AS THE ROW ALLOWS, NOT 32rem OR NOTHING. */
+   /* Below the tablet breakpoint every card was pinned to the full width, so a */
+   /* window narrower than two 32rem cards stacked them one per row however much */
+   /* room there was. The row now wraps on a 20rem basis — two cards share the row */
+   /* from about 41rem up — and the 32rem maximum keeps the desktop row the size it */
+   /* always was. */
+.page-cards > li {
+  display: flex;
+  flex: 1 1 min(100%, 20rem);
+  width: auto;
+  max-width: 32rem;
+  min-width: 0;
+  min-height: 0;
+}
+
+@media (min-width: 40rem) {
+  .page-cards {
+    /* A ROW OF CARDS, NOT A FILLED PANEL. */
+       /* Each card keeps its own size (50dvh tall, natural width) — nothing is */
+       /* stretched to fill the remaining room. `align-items: flex-start` keeps */
+       /* each card at its natural height; the row is centred in the column with */
+       /* `align-content: center` so there is no dead space above or below the */
+       /* cards when there are only two of them. */
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: center;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 0.55rem;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .page-cards > li {
+    /* Tablet and up: the same 20rem basis, growing to the desktop width and no */
+       /* further, so two or three cards share the row instead of one waiting for */
+       /* the window to reach 32rem. */
+    flex: 1 1 20rem;
+    width: auto;
+    max-width: 32rem;
+    max-height: none;
+  }
+}
+
+.retro-card--landing {
+  width: 100%;
+  max-width: 32rem;
+  height: auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: var(--outline-width) solid var(--outline-color);
+  background-color: var(--time-panel);
+}
+
+.retro-card--landing:hover .retro-card--landing {
+  border-color: var(--outline-color-hover);
+}
+
+/* Landing cards read the same card-height token as the blog and portfolio */
+   /* listing strips — see --listing-card-height in */
+   /* file:///C:/Users/UsuarioCompuElite/Documents/ForkRepositories/Website/src/styles/foundation/designTokens.css */
+   /* — so a card is the same height on every page, on phones too (the token */
+   /* steps down to a fixed card size for portrait screens). */
+.retro-card--landing {
+  height: var(--listing-card-height);
+  max-height: var(--listing-card-height);
+}
+
+/* ARTWORK. On a phone it is a picture with a shape of its own; on a row it is */
+   /* the part that gives when the window is too short for the card. */
+.retro-card--landing .retro-card-media {
+  /* 16:10 is the picture's own shape; it may still give a little when the card */
+     /* hits its height cap, and it stops giving at 5rem. */
+  flex: 1 1 auto;
+  min-height: 5rem;
+  aspect-ratio: 16 / 10;
+}
+
+/* Card header: same padding scale as card/retroCard.css, same plate. */
+.retro-card--landing .retro-card-bar {
+  padding: 0.6rem 1rem;
+}
+
+/* The landing tag is the loud version of a card's meta line: full white, bold, */
+   /* letterspaced, hard-edged — it names a destination, not a date. */
+.retro-card--landing .retro-card-meta {
+  color: rgb(255 255 255 / 1);
+  font-size: clamp(0.8rem, 1.2vw, 1.35rem);
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-shadow: 1px 2px 0 var(--time-shadow);
+}
+
+.retro-card--landing .retro-card-info-bar {
+  padding: 0.75rem 1rem 0.9rem;
+}
+
+.retro-card--landing .retro-card-title {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.4vw, 3.4rem);
+  line-height: 1.2;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* A landing card's description is a sentence: the two-line clamp, size and */
+   /* mix come with the shared short-card block in card/retroCard.css. */
+
+/* The card's call to action sits on the copy bar as the site's lit tile. */
+.retro-card--landing .page-card-action {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.65rem;
+  font-size: clamp(0.62rem, 0.85vw, 0.76rem);
+  letter-spacing: 0.12em;
+  padding: 0.38rem 0.72rem;
+  height: fit-content;
+  min-height: 0;
+  padding-block: 0;
+  color: var(--time-white);
+  text-shadow: 2px 2px 0 var(--time-shadow);
+}
+
+.retro-card--landing .page-card-action > span {
+  text-shadow: 2px 2px 0 var(--time-shadow);
+}
+
+/* Hovering the card lights the action too, so the tile reads as the target. */
+.retro-card--landing:hover .page-card-action {
+  background-color: color-mix(in srgb, var(--outline-color) 85%, white);
+  border-color: color-mix(in srgb, var(--outline-color) 45%, var(--time-black));
+  color: var(--time-black);
+}
+
+/* THE ACTION TILE — the site's shared pixel button (`.split-card-action`), */
+   /* whose base cut used to live with the retired split tile. Declared here, ahead */
+   /* of the pixel-chrome files that light it, so the cascade order is unchanged. */
+.split-card-action {
+  display: inline-flex;
+  margin-top: 0.8rem;
+  padding: 0.55rem 1rem;
+  font-family: var(--retro-font);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition:
+    background 0.15s var(--ease-soft),
+    color 0.15s var(--ease-soft),
+    transform var(--duration-press) var(--ease-press);
+  height: fit-content;
+  min-height: 0;
+  padding-block: 0;
+}
+
+.retro-card--landing .page-card-action {
+  height: fit-content;
+  min-height: 0;
+}
+
+/* CREDITS ROW — one line when it fits, more when it does not. */
+   /* It used to be `nowrap` with `overflow-x: auto` as the escape hatch, and that */
+   /* does not work for a CENTRED flex row: when the content is wider than the box */
+   /* it spills past BOTH edges, and the left overflow cannot be scrolled to — so */
+   /* the first and last credit came out cut in half on any window narrower than */
+   /* the three buttons. Wrapping keeps every credit whole instead. */
+.landing-credits-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 0.25rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* The credit chips are ordinary buttons: the shared recipe's type scale */
+   /* (text-xs) stays in place — the old 6px override just made them read as */
+   /* something other than the buttons they sit beside. Tighter padding only. */
+.landing-credits-row .retro-link {
+  flex: 0 0 auto;
+  padding-inline: 0.5rem;
+  white-space: nowrap;
+}
